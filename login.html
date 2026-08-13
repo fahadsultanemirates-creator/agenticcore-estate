@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body data-page="login">
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <a href="index.html" class="auth-logo" aria-label="Home">
+      <svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#22D3EE" stroke-width="4"/><polygon points="50,28 70,40 70,60 50,72 30,60 30,40" stroke="#3B82F6" stroke-width="3"/></svg>
+    </a>
+    <h1 data-i18n="auth_login_title"></h1>
+    <p class="auth-sub" data-i18n="auth_login_sub"></p>
+
+    <div class="auth-error" id="authError"></div>
+
+    <form id="loginForm">
+      <div class="field-group">
+        <label for="identifier">Phone number or email</label>
+        <input type="text" id="identifier" required placeholder="+92 3XX XXXXXXX or you@email.com">
+      </div>
+      <div class="field-group">
+        <label for="password" data-i18n="field_password"></label>
+        <input type="password" id="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary" id="loginBtn" data-i18n="auth_login_btn"></button>
+    </form>
+
+    <p class="auth-footer"><span data-i18n="auth_no_account"></span> <a href="signup.html" data-i18n="auth_create_one"></a></p>
+    <p style="text-align:center;margin-top:var(--space-md);">
+      <a href="index.html" class="btn btn-primary btn-sm auth-home-btn">Home</a>
+    </p>
+    <div class="demo-creds">
+      Demo accounts — buyer: ayesha@example.com / password · developer (approved): bilal@builder.pk / password · developer (pending): noor@builder.pk / password · admin: admin@agenticcore.estate / admin123
+    </div>
+  </div>
+</div>
+
+<script src="mock-db.js"></script>
+<script src="i18n.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>

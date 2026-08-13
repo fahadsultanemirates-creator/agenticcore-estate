@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Your Property — AgenticCore Estate</title>
+<meta name="description" content="List your property for sale or rent on AgenticCore Estate.">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="sell">
+
+<div id="site-header"></div>
+
+<header class="inner-hero">
+  <div class="container">
+    <span class="hero-eyebrow"><span class="dot"></span> <span data-i18n="search_sell"></span></span>
+    <h1>List your property</h1>
+    <p class="hero-sub">Individual sellers can post directly. Builders and agencies get more — head to the <a href="developer-corner.html" style="color:var(--accent-gold-bright);">Developer Corner</a> for verified, tiered listing plans.</p>
+  </div>
+</header>
+
+<section class="deep-section" style="padding-top:var(--space-lg);">
+  <div class="container narrow">
+    <div class="panel" style="padding:var(--space-lg);">
+      <form id="sellForm">
+        <div class="form-field">
+          <label>Listing type</label>
+          <div class="role-choice">
+            <label class="role-option checked"><input type="radio" name="sellType" value="buy" checked> For sale</label>
+            <label class="role-option"><input type="radio" name="sellType" value="rent"> For rent</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="sellTitle">Title</label>
+          <input type="text" id="sellTitle" required placeholder="e.g. DHA Phase 6 1-Kanal Bungalow">
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="sellCity">City</label>
+            <input type="text" id="sellCity" required placeholder="e.g. Lahore">
+          </div>
+          <div class="form-field">
+            <label for="sellArea">Area / society</label>
+            <input type="text" id="sellArea" required placeholder="e.g. DHA Phase 6">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="sellPrice">Price (PKR)</label>
+            <input type="number" id="sellPrice" required min="1">
+          </div>
+          <div class="form-field">
+            <label for="sellSize">Size (marla)</label>
+            <input type="number" id="sellSize" required min="1">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="sellBeds">Bedrooms</label>
+            <input type="number" id="sellBeds" min="0">
+          </div>
+          <div class="form-field">
+            <label for="sellBaths">Bathrooms</label>
+            <input type="number" id="sellBaths" min="0">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="sellDescription">Description</label>
+          <textarea id="sellDescription" required placeholder="Describe the property, condition, and nearby landmarks."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Post listing</button>
+        <p class="form-field .hint" style="font-size:0.8rem;color:var(--text-tertiary);margin-top:0.6rem;">You need an account to post — <a href="signup.html" style="color:var(--accent-gold-bright);">sign up</a> or <a href="login.html" style="color:var(--accent-gold-bright);">log in</a> first.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="mock-db.js"></script>
+<script src="i18n.js"></script>
+<script src="listings.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="partials.js"></script>
+<script src="auth.js"></script>
+<script src="sell.js"></script>
+</body>
+</html>

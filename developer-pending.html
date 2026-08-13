@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Pending — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="developer-pending">
+
+<div id="site-header"></div>
+
+<section style="padding-top:8rem;padding-bottom:var(--space-2xl);">
+  <div class="container narrow" id="pendingRoot">
+    <div class="pending-banner">
+      <div>
+        <h3 data-i18n="dev_pending_title" style="margin-bottom:0.3rem;"></h3>
+        <p style="color:var(--text-secondary);font-size:0.9rem;" data-i18n="dev_pending_sub"></p>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:var(--space-lg);">
+      <table class="data-table">
+        <tbody>
+          <tr><td style="color:var(--text-tertiary);">Company</td><td id="pendingCompany">—</td></tr>
+          <tr><td style="color:var(--text-tertiary);">Tier applied for</td><td id="pendingTier">—</td></tr>
+          <tr><td style="color:var(--text-tertiary);">Submitted</td><td id="pendingSubmitted">—</td></tr>
+          <tr><td style="color:var(--text-tertiary);">Time remaining in review window</td><td class="countdown" id="pendingCountdown">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel" id="pendingRejected" style="display:none;border-color:rgba(226,114,107,0.4);">
+      <h3 style="color:var(--danger);">Application not approved</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;" id="pendingRejectedNote"></p>
+      <a href="developer-apply.html" class="btn btn-secondary btn-sm" style="margin-top:0.8rem;">Resubmit documents</a>
+    </div>
+
+    <div class="approval-timeline" style="margin-top:var(--space-lg);">
+      <div class="timeline-step done"><div class="timeline-dot">✓</div><div><h4>Documents submitted</h4><p>Your CNIC and company document were received.</p></div></div>
+      <div class="timeline-step active"><div class="timeline-dot">2</div><div><h4>Under human review</h4><p>An admin reviewer checks both documents against your account details.</p></div></div>
+      <div class="timeline-step"><div class="timeline-dot">3</div><div><h4>Decision</h4><p>You'll be able to log in and see your Developer Dashboard unlock automatically once approved.</p></div></div>
+    </div>
+
+    <p style="margin-top:var(--space-lg);color:var(--text-secondary);font-size:0.9rem;">This page updates automatically — check back, or refresh after logging back in.</p>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="mock-db.js"></script>
+<script src="i18n.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="partials.js"></script>
+<script src="auth.js"></script>
+<script src="developer.js"></script>
+</body>
+</html>

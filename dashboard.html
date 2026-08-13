@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="dashboard">
+
+<div class="dash-shell" id="dashRoot">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="nav-logo"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#22D3EE" stroke-width="4"/><polygon points="50,28 70,40 70,60 50,72 30,60 30,40" stroke="#3B82F6" stroke-width="3"/></svg>Agentic<span class="brand-suffix">Estate</span></a>
+    <ul class="dash-nav">
+      <li><a href="dashboard.html" class="active">Overview</a></li>
+      <li><a href="sell.html">List a property</a></li>
+      <li><a href="referral-dashboard.html">Referrals</a></li>
+      <li><a href="buy.html">Browse listings</a></li>
+      <li><a href="index.html">Back to site</a></li>
+      <li><a href="#" id="dashLogout">Log out</a></li>
+    </ul>
+  </aside>
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Welcome, <span id="dashName">—</span></h1>
+      <a href="sell.html" class="btn btn-primary btn-sm">+ List a property</a>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><span class="stat-label">My listings</span><div class="stat-value" id="dashListingCount">0</div></div>
+      <div class="stat-card"><span class="stat-label">Points balance</span><div class="stat-value" id="dashPoints">0</div></div>
+      <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="dashReferralCode" style="font-size:1.1rem;">—</div></div>
+      <div class="stat-card"><span class="stat-label">People in my network</span><div class="stat-value" id="dashReferralCount">0</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>My listings</h3>
+      <table class="data-table">
+        <thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody id="dashListingsBody"></tbody>
+      </table>
+    </div>
+
+    <a href="referral-dashboard.html" class="btn btn-secondary btn-sm">Open referral dashboard →</a>
+  </main>
+</div>
+
+<script src="mock-db.js"></script>
+<script src="i18n.js"></script>
+<script src="listings.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="auth.js"></script>
+<script src="dashboard.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('dashLogout').addEventListener('click', function (e) {
+      e.preventDefault(); AcDB.logOut(); window.location.href = 'index.html';
+    });
+    acMountPropertyAdvisor();
+  });
+</script>
+</body>
+</html>
