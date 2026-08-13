@@ -230,8 +230,8 @@ html[dir="rtl"] .data-table th, html[dir="rtl"] .data-table td { text-align: rig
   position: relative;
 }
 
-.ai-widget .badge { position: absolute; top: var(--space-md); right: var(--space-md); }
-html[dir="rtl"] .ai-widget .badge { right: auto; left: var(--space-md); }
+.ai-widget > .badge:first-child { position: absolute; top: var(--space-md); right: var(--space-md); }
+html[dir="rtl"] .ai-widget > .badge:first-child { right: auto; left: var(--space-md); }
 .ai-widget h4 { font-size: 1rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.5rem; }
 .ai-widget p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
 
