@@ -50,7 +50,10 @@
   </main>
 </div>
 
-<script src="mock-db.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="property-taxonomy.js"></script>
 <script src="i18n.js"></script>
 <script src="listings.js"></script>
 <script src="ai-placeholders.js"></script>
@@ -58,8 +61,8 @@
 <script src="developer.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('devLogout').addEventListener('click', function (e) {
-      e.preventDefault(); AcDB.logOut(); window.location.href = 'index.html';
+    document.getElementById('devLogout').addEventListener('click', async function (e) {
+      e.preventDefault(); await AcDB.logOut(); window.location.href = 'index.html';
     });
     acMountPropertyAdvisor();
   });

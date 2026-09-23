@@ -1,20 +1,17 @@
-// AgenticCore Estate — Supabase client configuration (NOT YET WIRED UP)
+// AgenticCore Estate — Supabase client configuration
 // ------------------------------------------------------------
-// No Supabase project has been provisioned for this repo yet, so no page
-// currently includes this file — every page uses mock-db.js (a localStorage
-// stand-in) instead. Once a real project exists:
-//   1. Run supabase/migrations/0001_init_estate_schema.sql against it.
-//   2. Fill in the URL + publishable (anon) key below.
-//   3. Replace the AcDB.* calls in mock-db.js's callers with calls against
-//      `supabaseClient` (auth.signUp/signInWithPassword, .from('listings')...),
-//      using the same function names so page code doesn't need to change.
+// Project: Agenticcore-estate (dedicated to this site, separate from
+// the AgenticCore token site's project, so real-estate identity/CNIC
+// data never mixes with unrelated data).
 //
-// The publishable key is safe for browser use — security is enforced by the
-// Row Level Security policies defined in the migration above.
+// The publishable (anon) key is safe for browser use — access is
+// enforced by the Row Level Security policies in
+// supabase/migrations/0001_init_estate_schema.sql and
+// supabase/migrations/0002_launch_cities_property_types_photos.sql.
 
-const SUPABASE_URL = 'REPLACE_WITH_SUPABASE_PROJECT_URL';
-const SUPABASE_PUBLISHABLE_KEY = 'REPLACE_WITH_SUPABASE_PUBLISHABLE_KEY';
+const SUPABASE_URL = 'https://iuwjlvcfnxbfhbkztsel.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_h6IgoqSDyVscFbKVaxWMiQ_Lsws9lWv';
 
-const supabaseClient = (typeof window !== 'undefined' && window.supabase && SUPABASE_URL.indexOf('REPLACE_WITH') === -1)
+const supabaseClient = (typeof window !== 'undefined' && window.supabase)
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;

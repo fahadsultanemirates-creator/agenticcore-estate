@@ -51,7 +51,7 @@
             <input type="file" id="companyDocFile" accept=".pdf,.jpg,.jpeg,.png" style="display:none;">
           </div>
         </div>
-        <span class="hint" style="display:block;margin:-0.5rem 0 1.2rem;">Files stay on this device for this scaffold demo — a real deployment would upload these to secure storage for the admin review queue.</span>
+        <span class="hint" style="display:block;margin:-0.5rem 0 1.2rem;">Documents are uploaded to private, secure storage — only you and an admin reviewer can access them.</span>
 
         <div class="form-field">
           <label>Choose a listing tier</label>
@@ -85,7 +85,9 @@
 
 <div id="site-footer"></div>
 
-<script src="mock-db.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
 <script src="i18n.js"></script>
 <script src="ai-placeholders.js"></script>
 <script src="partials.js"></script>

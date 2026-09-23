@@ -12,22 +12,30 @@ function acFormatPKR(n) {
   return '₨ ' + n.toLocaleString('en-PK');
 }
 
+function acListingThumbHTML(l) {
+  if (l.photos && l.photos.length) {
+    return '<img src="' + l.photos[0] + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;">';
+  }
+  return AC_HOUSE_ICON;
+}
+
 function acListingCardHTML(l) {
   const lang = localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en';
   const dict = AC_I18N[lang];
   const priceSuffix = l.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
   const verifiedBadge = l.verified ? '<span class="listing-badge verified">✓</span>' : '';
+  const featuredBadge = l.featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '';
   return (
     '<a href="listing.html?id=' + l.id + '" class="listing-card">' +
       '<div class="listing-thumb">' +
         '<span class="listing-badge ' + l.type + '">' + (l.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
-        verifiedBadge +
-        AC_HOUSE_ICON +
+        verifiedBadge + featuredBadge +
+        acListingThumbHTML(l) +
       '</div>' +
       '<div class="listing-body">' +
         '<div class="listing-price">' + acFormatPKR(l.price) + priceSuffix + '</div>' +
         '<div class="listing-title">' + l.title + '</div>' +
-        '<div class="listing-location">' + l.area + ', ' + l.city + '</div>' +
+        '<div class="listing-location">' + acPropertyTypeLabel(l.property_type) + ' · ' + l.area + ', ' + l.city + '</div>' +
         '<div class="listing-specs">' +
           (l.beds ? '<span>' + l.beds + ' ' + dict.listing_beds + '</span>' : '') +
           (l.baths ? '<span>' + l.baths + ' ' + dict.listing_baths + '</span>' : '') +
@@ -48,8 +56,8 @@ function acRenderListings(containerId, list) {
   el.innerHTML = list.map(acListingCardHTML).join('');
 }
 
-function acPopulateCityOptions(selectEl) {
-  const cities = Array.from(new Set(AcDB.getListings().map(function (l) { return l.city; }))).sort();
+async function acPopulateCityOptions(selectEl) {
+  const cities = await AcDB.getActiveCities();
   cities.forEach(function (c) {
     const opt = document.createElement('option');
     opt.value = c; opt.textContent = c;
@@ -62,33 +70,39 @@ function acInitListingPage(fixedType) {
   if (!grid) return;
 
   const citySelect = document.getElementById('filterCity');
+  const typeSelect = document.getElementById('filterPropertyType');
   const priceInput = document.getElementById('filterMaxPrice');
   const bedsSelect = document.getElementById('filterBeds');
   const qInput = document.getElementById('filterQuery');
   const countEl = document.getElementById('listingCount');
 
-  if (citySelect) acPopulateCityOptions(citySelect);
+  (async function () {
+    if (citySelect) await acPopulateCityOptions(citySelect);
+    if (typeSelect) typeSelect.innerHTML = '<option value="">Any property type</option>' + acPropertyTypeOptionsHTML();
 
-  const params = new URLSearchParams(window.location.search);
-  if (citySelect && params.get('city')) citySelect.value = params.get('city');
-  if (priceInput && params.get('maxPrice')) priceInput.value = params.get('maxPrice');
-  if (qInput && params.get('q')) qInput.value = params.get('q');
+    const params = new URLSearchParams(window.location.search);
+    if (citySelect && params.get('city')) citySelect.value = params.get('city');
+    if (typeSelect && params.get('propertyType')) typeSelect.value = params.get('propertyType');
+    if (priceInput && params.get('maxPrice')) priceInput.value = params.get('maxPrice');
+    if (qInput && params.get('q')) qInput.value = params.get('q');
 
-  function apply() {
-    const filters = { type: fixedType };
-    if (citySelect && citySelect.value) filters.city = citySelect.value;
-    if (priceInput && priceInput.value) filters.maxPrice = priceInput.value;
-    if (bedsSelect && bedsSelect.value) filters.beds = bedsSelect.value;
-    if (qInput && qInput.value) filters.q = qInput.value;
-    const results = AcDB.getListings(filters);
-    acRenderListings('listingGrid', results);
-    if (countEl) countEl.textContent = results.length + (results.length === 1 ? ' listing' : ' listings');
-  }
+    async function apply() {
+      const filters = { type: fixedType };
+      if (citySelect && citySelect.value) filters.city = citySelect.value;
+      if (typeSelect && typeSelect.value) filters.propertyType = typeSelect.value;
+      if (priceInput && priceInput.value) filters.maxPrice = priceInput.value;
+      if (bedsSelect && bedsSelect.value) filters.beds = bedsSelect.value;
+      if (qInput && qInput.value) filters.q = qInput.value;
+      const results = await AcDB.getListings(filters);
+      acRenderListings('listingGrid', results);
+      if (countEl) countEl.textContent = results.length + (results.length === 1 ? ' listing' : ' listings');
+    }
 
-  [citySelect, priceInput, bedsSelect, qInput].forEach(function (el) {
-    if (el) el.addEventListener('input', apply);
-  });
+    [citySelect, typeSelect, priceInput, bedsSelect, qInput].forEach(function (el) {
+      if (el) el.addEventListener('input', apply);
+    });
 
-  window.acOnLanguageChange = apply;
-  apply();
+    window.acOnLanguageChange = apply;
+    apply();
+  })();
 }

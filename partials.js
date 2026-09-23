@@ -15,10 +15,10 @@ function acNavLink(href, page, key) {
   return '<a href="' + href + '" class="' + active.trim() + '" data-i18n="' + key + '"></a>';
 }
 
-function acRenderHeader() {
+async function acRenderHeader() {
   const el = document.getElementById('site-header');
   if (!el) return;
-  const user = (typeof AcDB !== 'undefined') ? AcDB.currentUser() : null;
+  const user = (typeof AcDB !== 'undefined') ? await AcDB.currentUser() : null;
 
   let ctaHtml;
   if (user) {
@@ -61,8 +61,8 @@ function acRenderHeader() {
 
   const logoutBtn = document.getElementById('acLogoutBtn');
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', function () {
-      AcDB.logOut();
+    logoutBtn.addEventListener('click', async function () {
+      await AcDB.logOut();
       window.location.href = 'index.html';
     });
   }
@@ -118,8 +118,8 @@ function acRenderFooter() {
     '</footer>';
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  acRenderHeader();
+document.addEventListener('DOMContentLoaded', async function () {
+  await acRenderHeader();
   acRenderFooter();
   if (typeof acInitLanguage === 'function') acInitLanguage();
 });

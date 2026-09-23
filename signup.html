@@ -26,6 +26,7 @@
           <label class="role-option checked"><input type="radio" name="role" value="buyer" checked> <span data-i18n="role_buyer"></span></label>
           <label class="role-option"><input type="radio" name="role" value="developer"> <span data-i18n="role_developer"></span></label>
         </div>
+        <span class="hint" style="display:block;margin-top:0.4rem;">Developers verify with a CNIC and company document on the next step. Buyers and individual sellers don't need to provide either to hold an account.</span>
       </div>
       <div class="field-group">
         <label for="fullName" data-i18n="field_full_name"></label>
@@ -34,11 +35,6 @@
       <div class="field-group">
         <label for="phone" data-i18n="field_phone"></label>
         <input type="tel" id="phone" required autocomplete="tel" placeholder="+92 3XX XXXXXXX">
-      </div>
-      <div class="field-group">
-        <label for="cnic" data-i18n="field_cnic"></label>
-        <input type="text" id="cnic" required placeholder="XXXXX-XXXXXXX-X">
-        <span class="hint" data-i18n="auth_id_note"></span>
       </div>
       <div class="field-group">
         <label for="email" data-i18n="field_email"></label>
@@ -62,7 +58,9 @@
   </div>
 </div>
 
-<script src="mock-db.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
 <script src="i18n.js"></script>
 <script src="auth.js"></script>
 <script>
