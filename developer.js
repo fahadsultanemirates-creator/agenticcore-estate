@@ -112,14 +112,19 @@ if (devDashRoot) {
 
     document.getElementById('devName').textContent = user.full_name;
     const tierNames = { 1: 'Starter', 2: 'Growth', 3: 'Elite' };
-    const tierPrices = { 1: 'Rs 2,000', 2: 'Rs 10,000', 3: 'Rs 20,000' };
-    document.getElementById('devTierBadge').textContent = 'Tier ' + user.developer_tier + ' — ' + tierNames[user.developer_tier];
-    document.getElementById('devTierPrice').textContent = tierPrices[user.developer_tier] + '/month';
+    const tierPrices = { 1: 'Rs 2,000/mo', 2: 'Rs 10,000/mo', 3: 'Rs 20,000/mo' };
+    const tierCaps = { 1: 5, 2: 25, 3: null }; // null = unlimited
+    document.getElementById('devTierBadge').textContent = tierNames[user.developer_tier] + ' package';
+    document.getElementById('devTierPrice').textContent = tierPrices[user.developer_tier];
 
     const myListings = await AcDB.getListingsByOwner(user.id);
+    const verifiedCount = myListings.filter(function (l) { return l.verified; }).length;
+    const cap = tierCaps[user.developer_tier];
     document.getElementById('devListingCount').textContent = myListings.length;
-    document.getElementById('devVerifiedCount').textContent = myListings.filter(function (l) { return l.verified; }).length;
-    document.getElementById('devPoints').textContent = user.points;
+    document.getElementById('devListingCap').textContent = cap === null ? 'unlimited' : cap;
+    document.getElementById('devVerifiedNote').textContent = verifiedCount ? (' — ' + verifiedCount + ' verified') : '';
+    const barPct = cap === null ? Math.min(100, myListings.length * 4) : Math.min(100, Math.round((myListings.length / cap) * 100));
+    document.getElementById('devQuotaBar').style.width = barPct + '%';
 
     const tbody = document.getElementById('devListingsBody');
     if (tbody) {

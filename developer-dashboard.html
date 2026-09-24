@@ -15,27 +15,31 @@
     <ul class="dash-nav">
       <li><a href="developer-dashboard.html" class="active">Overview</a></li>
       <li><a href="sell.html">Post a listing</a></li>
-      <li><a href="pricing.html">Change tier</a></li>
-      <li><a href="referral-dashboard.html">Referrals</a></li>
+      <li><a href="pricing.html">Change package</a></li>
       <li><a href="business-pool.html">Business Pool</a></li>
+      <li><a href="developer-corner.html">Agency services</a></li>
       <li><a href="index.html">Back to site</a></li>
       <li><a href="#" id="devLogout">Log out</a></li>
     </ul>
   </aside>
   <main class="dash-main">
     <div class="dash-header">
-      <div>
-        <h1>Welcome, <span id="devName">—</span></h1>
-        <span class="badge badge-gold" id="devTierBadge" style="margin-top:0.4rem;display:inline-flex;">—</span>
-      </div>
+      <h1>Welcome, <span id="devName">—</span></h1>
       <a href="sell.html" class="btn btn-primary btn-sm">+ Post a listing</a>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card"><span class="stat-label">Active listings</span><div class="stat-value" id="devListingCount">0</div></div>
-      <div class="stat-card"><span class="stat-label">Verified listings</span><div class="stat-value" id="devVerifiedCount">0</div></div>
-      <div class="stat-card"><span class="stat-label">Points balance</span><div class="stat-value" id="devPoints">0</div></div>
-      <div class="stat-card"><span class="stat-label">Current plan</span><div class="stat-value" id="devTierPrice" style="font-size:1.2rem;">—</div></div>
+    <div class="package-card" id="devPackageCard">
+      <div class="package-card-top">
+        <div>
+          <div class="package-card-brand">AgenticCore Estate — Active Package</div>
+          <div class="package-card-tier" id="devTierBadge">—</div>
+        </div>
+        <div class="package-card-price" id="devTierPrice">—</div>
+      </div>
+      <div>
+        <div class="package-card-quota"><strong id="devListingCount">0</strong> of <span id="devListingCap">—</span> listings used<span id="devVerifiedNote"></span></div>
+        <div class="package-card-bar"><div class="package-card-bar-fill" id="devQuotaBar" style="width:0%;"></div></div>
+      </div>
     </div>
 
     <div class="panel">

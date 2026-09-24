@@ -1,6 +1,6 @@
 // AgenticCore Estate — 5-level referral dashboard
 
-const REFERRAL_PCT = [10, 5, 3, 2, 1];
+const REFERRAL_PCT = [25, 15, 10, 5, 2.5];
 const DEMO_TASK_VALUE = 500000; // sample transaction used for illustrative point math
 
 const refRoot = document.getElementById('refRoot');

@@ -46,6 +46,22 @@ const AC_I18N = {
     ai_advisor_title: 'Property Advisor', ai_advisor_desc: 'A conversational assistant that helps buyers narrow down listings and answers questions about a specific property.',
     coming_soon: 'Coming soon',
 
+    section_membership_eyebrow: 'Developer Corner pricing',
+    section_membership_title: 'Three tiers, one dashboard',
+    section_membership_sub: 'Starter, Growth, and Elite — priced monthly, document-verified either way.',
+
+    section_why_eyebrow: 'Built differently',
+    section_why_title: "What sets AgenticCore Estate apart",
+    section_why_sub: "We looked at Pakistan's established property portals closely before building this — here's what we do differently.",
+
+    section_referral_eyebrow: 'Earn by referring',
+    section_referral_title: 'Five levels, starting at 25%',
+    section_referral_sub: 'Refer someone, and when they — or the four levels below them — transact, you earn AgenticCore Points up the whole chain.',
+
+    section_family_eyebrow: 'One family, several companies',
+    section_family_title: 'Part of the AgenticCore family',
+    section_family_sub: 'AgenticCore Estate shares its team with sister companies — developers get more than a listing here.',
+
     quick_links_pool: 'Explore Business Pool →', quick_links_referral: 'Refer & Earn →',
     quick_links_pricing: 'See Developer Pricing →',
 
@@ -132,6 +148,22 @@ const AC_I18N = {
     ai_doccheck_title: 'AI دستاویز چیک', ai_doccheck_desc: 'انسانی تصدیق سے پہلے CNIC اور کمپنی دستاویزات کا خودکار ابتدائی جائزہ — بے میل اور ناقص اسکینز کی نشاندہی کرتا ہے۔',
     ai_advisor_title: 'پراپرٹی ایڈوائزر', ai_advisor_desc: 'ایک گفتگو کرنے والا معاون جو خریداروں کو فہرستیں منتخب کرنے اور کسی خاص جائیداد کے بارے میں سوالات کے جواب دینے میں مدد دیتا ہے۔',
     coming_soon: 'جلد آ رہا ہے',
+
+    section_membership_eyebrow: 'ڈویلپر کارنر قیمتیں',
+    section_membership_title: 'تین درجے، ایک ڈیش بورڈ',
+    section_membership_sub: 'اسٹارٹر، گروتھ، اور ایلیٹ — ماہانہ قیمت، ہر صورت میں دستاویز تصدیق شدہ۔',
+
+    section_why_eyebrow: 'مختلف انداز میں بنایا گیا',
+    section_why_title: 'AgenticCore Estate کو دوسروں سے کیا ممتاز کرتا ہے',
+    section_why_sub: 'یہ بنانے سے پہلے ہم نے پاکستان کے قائم شدہ پراپرٹی پورٹلز کو غور سے دیکھا — یہاں وہ چیزیں ہیں جو ہم مختلف طریقے سے کرتے ہیں۔',
+
+    section_referral_eyebrow: 'ریفر کرکے کمائیں',
+    section_referral_title: 'پانچ درجے، 25% سے شروع',
+    section_referral_sub: 'کسی کو ریفر کریں، اور جب وہ — یا ان کے نیچے کے چار درجے — لین دین کریں تو آپ پوری زنجیر میں AgenticCore پوائنٹس کماتے ہیں۔',
+
+    section_family_eyebrow: 'ایک خاندان، کئی کمپنیاں',
+    section_family_title: 'AgenticCore خاندان کا حصہ',
+    section_family_sub: 'AgenticCore Estate اپنی ٹیم بہن کمپنیوں کے ساتھ شریک کرتا ہے — ڈویلپرز کو یہاں محض ایک فہرست سے زیادہ ملتا ہے۔',
 
     quick_links_pool: 'بزنس پول دیکھیں ←', quick_links_referral: 'ریفر کریں اور کمائیں ←',
     quick_links_pricing: 'ڈویلپر قیمتیں دیکھیں ←',
