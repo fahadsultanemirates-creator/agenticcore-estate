@@ -22,43 +22,31 @@ if (devApplyForm) {
     if (user.developer_status === 'pending') { window.location.href = 'developer-pending.html'; return; }
     if (user.developer_status === 'approved') { window.location.href = 'developer-dashboard.html'; return; }
 
-    acWireFileDrop('cnicFile', 'cnicDrop');
-    acWireFileDrop('companyDocFile', 'companyDocDrop');
-
     devApplyForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-      const cnicFile = document.getElementById('cnicFile').files[0];
-      const companyDocFile = document.getElementById('companyDocFile').files[0];
       const errorEl = document.getElementById('authError');
       const submitBtn = devApplyForm.querySelector('button[type="submit"]');
-
-      if (!cnicFile || !companyDocFile) {
-        errorEl.textContent = 'Please upload both your CNIC and a company/registration document to continue.';
-        errorEl.style.display = 'block';
-        return;
-      }
 
       const tier = document.querySelector('input[name="tier"]:checked').value;
       const companyName = document.getElementById('companyName').value.trim();
       const phone = document.getElementById('devPhone').value.trim();
-      const cnic = document.getElementById('devCnic').value.trim();
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Uploading documents…';
+      submitBtn.textContent = 'Setting up…';
 
       const result = await AcDB.submitDeveloperApplication({
-        userId: user.id, companyName, phone, cnic, cnicFile, companyDocFile, tier: Number(tier)
+        userId: user.id, companyName, phone, tier: Number(tier)
       });
 
       if (result.error) {
         errorEl.textContent = result.error;
         errorEl.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit for verification';
+        submitBtn.textContent = 'Create developer account';
         return;
       }
 
-      window.location.href = 'developer-pending.html';
+      window.location.href = 'developer-dashboard.html';
     });
   })();
 }

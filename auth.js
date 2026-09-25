@@ -1,10 +1,8 @@
 // AgenticCore Estate — authentication (Supabase Auth)
 // CNIC/government ID is intentionally NOT collected here — only phone,
-// email and password are needed to hold an account. Individual sellers
-// are asked for CNIC the first time they post a listing (sell.js), and
-// developers/agencies provide it with supporting documents at the
-// verification step (developer.js) — matching how Zameen/Graana only
-// ask for ID at the point identity actually matters, not at signup.
+// email and password are needed to hold an account. CNIC collection at
+// listing time (sell.js) and document upload for developers (developer.js)
+// are currently switched off for the launch window; see sell.js/db-client.js.
 
 function showAuthError(el, message) {
   el.textContent = message;

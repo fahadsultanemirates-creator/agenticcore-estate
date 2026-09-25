@@ -26,10 +26,10 @@ if (sellForm) {
       });
     }
 
-    // Individual sellers (not developers) need a CNIC on file before their
-    // first listing goes public — developers already provided one at
-    // verification. Buyers/browsers never see this unless they try to sell.
-    const needsCnic = user.role !== 'developer' && !user.cnic;
+    // CNIC verification is switched off for the initial launch window so
+    // sellers can list quickly; the form field and update logic stay in
+    // place to switch back on later without rebuilding this flow.
+    const needsCnic = false;
     if (needsCnic && cnicGroup) {
       cnicGroup.style.display = 'block';
     }

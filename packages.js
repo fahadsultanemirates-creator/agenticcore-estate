@@ -12,16 +12,18 @@
 
 const AC_SELLER_PACKAGES = [
   { tier: 1, name: 'Starter', price: 'Rs 5,000', cap: 5,
-    perks: ['Up to 5 active listings', 'Standard search placement', 'Verified-seller badge'] },
+    perks: ['Up to 5 active listings', 'Standard search placement', 'Seller badge'] },
   { tier: 2, name: 'Growth', price: 'Rs 15,000', cap: 25,
     perks: ['Up to 25 active listings', 'Priority placement in search', 'Free PDF brochure & banner design, if needed'] },
   { tier: 3, name: 'Elite', price: 'Rs 30,000', cap: null,
-    perks: ['Unlimited active listings', 'Top placement + featured badge', '30% discount across AgenticCore family sites'] }
+    perks: ['Unlimited active listings', 'Top placement + featured badge', '30% discount across AgenticCore family sites'] },
+  { tier: 4, name: '4th tier', price: 'Coming soon', cap: null,
+    perks: ['Details announced soon'], comingSoon: true }
 ];
 
 const AC_DEV_PACKAGES = [
   { tier: 1, name: 'Launch', price: 'Rs 15,000', cap: 3,
-    perks: ['Up to 3 projects', 'Standard project placement', 'Document-verified badge'] },
+    perks: ['Up to 3 projects', 'Standard project placement', 'Developer badge'] },
   { tier: 2, name: 'Growth', price: 'Rs 50,000', cap: 10,
     perks: ['Up to 10 projects', 'Priority placement', 'Social content + brochures, free'] },
   { tier: 3, name: 'Scale', price: 'Rs 200,000', cap: 20,
@@ -48,13 +50,24 @@ function acTierCardIconColor(tier, maxTier) {
 // no real payment flow exists yet, so non-active cards link to `ctaHref`
 // rather than claiming a live checkout.
 function acPackageGridHTML(list, activeTier, ctaHref) {
-  const maxTier = list[list.length - 1].tier;
+  const realTiers = list.filter(function (p) { return !p.comingSoon; });
+  const maxRealTier = realTiers[realTiers.length - 1].tier;
   return '<div class="tier-table tier-table-4">' + list.map(function (pkg) {
+    if (pkg.comingSoon) {
+      return (
+        '<div class="tier-card locked">' +
+          '<div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#9BB9A9" stroke-width="6"/></svg></div>' +
+          '<span class="tier-name">' + pkg.name + '</span>' +
+          '<h3>' + pkg.price + '</h3>' +
+          '<ul>' + pkg.perks.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>' +
+        '</div>'
+      );
+    }
     const isActive = activeTier === pkg.tier;
-    const featuredClass = pkg.tier === maxTier - 1 ? ' featured' : '';
-    const eliteClass = pkg.tier === maxTier ? ' tier-elite' : '';
+    const featuredClass = pkg.tier === maxRealTier - 1 ? ' featured' : '';
+    const eliteClass = pkg.tier === maxRealTier ? ' tier-elite' : '';
     const lockedClass = !isActive ? ' locked' : ' active-tier';
-    const color = acTierCardIconColor(pkg.tier, maxTier);
+    const color = acTierCardIconColor(pkg.tier, maxRealTier);
     const priceSuffix = pkg.price === 'Custom' ? '' : '<span class="period">/mo</span>';
     return (
       '<div class="tier-card' + featuredClass + eliteClass + lockedClass + '">' +

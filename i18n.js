@@ -12,10 +12,10 @@ const AC_I18N = {
     nav_login: 'Log in', nav_signup: 'Get started', nav_dashboard: 'Dashboard', nav_logout: 'Log out',
     nav_admin: 'Admin',
 
-    hero_eyebrow: 'Real estate, run by agents and verified by people',
+    hero_eyebrow: 'Real estate, run by agents and AI',
     hero_title_pre: 'Find, list, and sell property across ',
     hero_title_accent: 'Pakistan',
-    hero_sub: 'Search verified buy and rent listings, or list your own property in minutes — with a Developer Corner built for builders and agencies.',
+    hero_sub: 'Search buy and rent listings, or list your own property in minutes — with a Developer Corner built for builders and agencies.',
     hero_cta_browse: 'Browse listings',
     hero_cta_sell: 'List your property',
 
@@ -27,7 +27,7 @@ const AC_I18N = {
 
     section_featured_eyebrow: 'Fresh on the market',
     section_featured_title: 'Featured listings',
-    section_featured_sub: 'A mix of verified developer listings and individual sellers, updated daily.',
+    section_featured_sub: 'A mix of developer listings and individual sellers, updated daily.',
     view_all: 'View all listings',
     listing_view: 'View details',
     listing_beds: 'beds', listing_baths: 'baths', listing_marla: 'marla',
@@ -35,7 +35,7 @@ const AC_I18N = {
 
     section_devcorner_eyebrow: 'For builders & agencies',
     section_devcorner_title: 'The Developer Corner',
-    section_devcorner_sub: 'A dedicated space for verified developers — document-checked, tiered, and built for volume.',
+    section_devcorner_sub: 'A dedicated space for developers — its own packages, its own dashboard, built for volume.',
     devcorner_cta: 'Explore Developer Corner',
 
     section_ai_eyebrow: 'Coming to your dashboard',
@@ -46,13 +46,13 @@ const AC_I18N = {
     ai_advisor_title: 'Property Advisor', ai_advisor_desc: 'A conversational assistant that helps buyers narrow down listings and answers questions about a specific property.',
     coming_soon: 'Coming soon',
 
-    section_membership_eyebrow: 'Developer Corner pricing',
-    section_membership_title: 'Three tiers, one dashboard',
-    section_membership_sub: 'Starter, Growth, and Elite — priced monthly, document-verified either way.',
+    section_membership_eyebrow: 'Listing Packages',
+    section_membership_title: 'Pick a package, list at your pace',
+    section_membership_sub: 'Starter, Growth, Elite, and more — priced monthly, no document verification required.',
 
     section_why_eyebrow: 'Built differently',
     section_why_title: "What sets AgenticCore Estate apart",
-    section_why_sub: "We looked at Pakistan's established property portals closely before building this — here's what we do differently.",
+    section_why_sub: "A few things that make AgenticCore Estate different from the start.",
 
     section_referral_eyebrow: 'Earn by referring',
     section_referral_title: 'Five levels, starting at 25%',
@@ -66,8 +66,8 @@ const AC_I18N = {
     quick_links_pricing: 'See Developer Pricing →',
 
     final_cta_title: 'Ready to find your next property?',
-    final_cta_sub: 'Browse verified listings or list your own — free to get started.',
-    final_cta_btn: 'Get started free',
+    final_cta_sub: 'Browse listings or list your own — get your dashboard in minutes.',
+    final_cta_btn: 'Get started',
 
     footer_tagline: 'AI-run real estate marketplace for Pakistan. Part of the AgenticCore family, alongside AgenticCore Agency and AgenticCore Biz.',
     footer_explore: 'Explore', footer_developers: 'Developers', footer_company: 'Company', footer_legal: 'Legal',
@@ -103,7 +103,7 @@ const AC_I18N = {
     admin_login_title: 'Admin sign in', admin_login_sub: 'Restricted to AgenticCore Estate reviewers.',
 
     dev_pending_title: 'Your application is under review',
-    dev_pending_sub: 'Our team verifies every CNIC and company document before a developer account goes live. This normally takes up to 72 hours.',
+    dev_pending_sub: 'Our team is finishing setting up your developer account.',
 
     ai_chat_title: 'Property Advisor', ai_chat_sub: 'This assistant is not connected yet — the chat panel is ready for the agent backend.',
     ai_chat_placeholder: 'Ask about this property… (coming soon)'
@@ -115,10 +115,10 @@ const AC_I18N = {
     nav_login: 'لاگ ان', nav_signup: 'شروع کریں', nav_dashboard: 'ڈیش بورڈ', nav_logout: 'لاگ آؤٹ',
     nav_admin: 'ایڈمن',
 
-    hero_eyebrow: 'رئیل اسٹیٹ، ایجنٹس کے ذریعے چلائی گئی اور انسانوں سے تصدیق شدہ',
+    hero_eyebrow: 'رئیل اسٹیٹ، ایجنٹس اور AI کے ذریعے چلائی گئی',
     hero_title_pre: 'پورے ',
     hero_title_accent: 'پاکستان',
-    hero_sub: 'تصدیق شدہ خرید و کرایہ کی جائیدادیں تلاش کریں، یا چند منٹوں میں اپنی جائیداد کی فہرست بنائیں — ڈویلپرز اور ایجنسیوں کے لیے مخصوص ڈویلپر کارنر کے ساتھ۔',
+    hero_sub: 'خرید و کرایہ کی جائیدادیں تلاش کریں، یا چند منٹوں میں اپنی جائیداد کی فہرست بنائیں — ڈویلپرز اور ایجنسیوں کے لیے مخصوص ڈویلپر کارنر کے ساتھ۔',
     hero_cta_browse: 'فہرستیں دیکھیں',
     hero_cta_sell: 'اپنی جائیداد درج کریں',
 
@@ -130,7 +130,7 @@ const AC_I18N = {
 
     section_featured_eyebrow: 'مارکیٹ میں نئی',
     section_featured_title: 'نمایاں فہرستیں',
-    section_featured_sub: 'تصدیق شدہ ڈویلپر فہرستوں اور انفرادی فروخت کنندگان کا مجموعہ، روزانہ اپ ڈیٹ ہوتا ہے۔',
+    section_featured_sub: 'ڈویلپر فہرستوں اور انفرادی فروخت کنندگان کا مجموعہ، روزانہ اپ ڈیٹ ہوتا ہے۔',
     view_all: 'تمام فہرستیں دیکھیں',
     listing_view: 'تفصیل دیکھیں',
     listing_beds: 'بیڈ', listing_baths: 'باتھ', listing_marla: 'مرلہ',
@@ -138,7 +138,7 @@ const AC_I18N = {
 
     section_devcorner_eyebrow: 'بلڈرز اور ایجنسیوں کے لیے',
     section_devcorner_title: 'ڈویلپر کارنر',
-    section_devcorner_sub: 'تصدیق شدہ ڈویلپرز کے لیے مخصوص جگہ — دستاویزات کی جانچ، درجہ بندی، اور بڑے پیمانے کے لیے تیار۔',
+    section_devcorner_sub: 'ڈویلپرز کے لیے مخصوص جگہ — اپنے پیکجز، اپنا ڈیش بورڈ، بڑے پیمانے کے لیے تیار۔',
     devcorner_cta: 'ڈویلپر کارنر دیکھیں',
 
     section_ai_eyebrow: 'آپ کے ڈیش بورڈ میں جلد آ رہا ہے',
@@ -149,13 +149,13 @@ const AC_I18N = {
     ai_advisor_title: 'پراپرٹی ایڈوائزر', ai_advisor_desc: 'ایک گفتگو کرنے والا معاون جو خریداروں کو فہرستیں منتخب کرنے اور کسی خاص جائیداد کے بارے میں سوالات کے جواب دینے میں مدد دیتا ہے۔',
     coming_soon: 'جلد آ رہا ہے',
 
-    section_membership_eyebrow: 'ڈویلپر کارنر قیمتیں',
-    section_membership_title: 'تین درجے، ایک ڈیش بورڈ',
-    section_membership_sub: 'اسٹارٹر، گروتھ، اور ایلیٹ — ماہانہ قیمت، ہر صورت میں دستاویز تصدیق شدہ۔',
+    section_membership_eyebrow: 'لسٹنگ پیکجز',
+    section_membership_title: 'ایک پیکج منتخب کریں، اپنی رفتار سے لسٹ کریں',
+    section_membership_sub: 'اسٹارٹر، گروتھ، ایلیٹ، اور مزید — ماہانہ قیمت، کسی دستاویز کی تصدیق درکار نہیں۔',
 
     section_why_eyebrow: 'مختلف انداز میں بنایا گیا',
     section_why_title: 'AgenticCore Estate کو دوسروں سے کیا ممتاز کرتا ہے',
-    section_why_sub: 'یہ بنانے سے پہلے ہم نے پاکستان کے قائم شدہ پراپرٹی پورٹلز کو غور سے دیکھا — یہاں وہ چیزیں ہیں جو ہم مختلف طریقے سے کرتے ہیں۔',
+    section_why_sub: 'چند چیزیں جو AgenticCore Estate کو شروع سے ہی مختلف بناتی ہیں۔',
 
     section_referral_eyebrow: 'ریفر کرکے کمائیں',
     section_referral_title: 'پانچ درجے، 25% سے شروع',
@@ -169,8 +169,8 @@ const AC_I18N = {
     quick_links_pricing: 'ڈویلپر قیمتیں دیکھیں ←',
 
     final_cta_title: 'اپنی اگلی جائیداد تلاش کرنے کے لیے تیار ہیں؟',
-    final_cta_sub: 'تصدیق شدہ فہرستیں دیکھیں یا اپنی جائیداد درج کریں — شروع کرنا مفت ہے۔',
-    final_cta_btn: 'مفت شروع کریں',
+    final_cta_sub: 'فہرستیں دیکھیں یا اپنی جائیداد درج کریں — منٹوں میں اپنا ڈیش بورڈ بنائیں۔',
+    final_cta_btn: 'شروع کریں',
 
     footer_tagline: 'پاکستان کے لیے AI سے چلنے والا رئیل اسٹیٹ مارکیٹ پلیس۔ AgenticCore ایجنسی اور AgenticCore بز کے ساتھ AgenticCore خاندان کا حصہ۔',
     footer_explore: 'دریافت کریں', footer_developers: 'ڈویلپرز', footer_company: 'کمپنی', footer_legal: 'قانونی',
@@ -206,7 +206,7 @@ const AC_I18N = {
     admin_login_title: 'ایڈمن سائن ان', admin_login_sub: 'صرف AgenticCore Estate جائزہ لینے والوں کے لیے مخصوص۔',
 
     dev_pending_title: 'آپ کی درخواست زیر جائزہ ہے',
-    dev_pending_sub: 'ہماری ٹیم ڈویلپر اکاؤنٹ فعال کرنے سے پہلے ہر CNIC اور کمپنی دستاویز کی تصدیق کرتی ہے۔ اس میں عام طور پر 72 گھنٹے تک لگتے ہیں۔',
+    dev_pending_sub: 'ہماری ٹیم آپ کا ڈویلپر اکاؤنٹ مکمل کر رہی ہے۔',
 
     ai_chat_title: 'پراپرٹی ایڈوائزر', ai_chat_sub: 'یہ معاون ابھی جڑا نہیں ہے — چیٹ پینل ایجنٹ بیک اینڈ کے لیے تیار ہے۔',
     ai_chat_placeholder: 'اس جائیداد کے بارے میں پوچھیں… (جلد آ رہا ہے)'

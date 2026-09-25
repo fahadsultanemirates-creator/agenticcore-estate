@@ -96,34 +96,40 @@ const AcDB = (function () {
   }
 
   // ---------- developer applications ----------
+  // Launch-phase: document verification is switched off, so applications are
+  // approved immediately instead of sitting in the admin review queue. The
+  // upload paths stay optional in the schema so this can flip back on later.
   async function submitDeveloperApplication(payload) {
-    const cnicExt = (payload.cnicFile.name.split('.').pop() || 'bin').toLowerCase();
-    const companyExt = (payload.companyDocFile.name.split('.').pop() || 'bin').toLowerCase();
-    const cnicPath = payload.userId + '/cnic-' + Date.now() + '.' + cnicExt;
-    const companyPath = payload.userId + '/company-doc-' + Date.now() + '.' + companyExt;
-
-    const [cnicUpload, companyUpload] = await Promise.all([
-      supabaseClient.storage.from('developer-docs').upload(cnicPath, payload.cnicFile),
-      supabaseClient.storage.from('developer-docs').upload(companyPath, payload.companyDocFile)
-    ]);
-    if (cnicUpload.error || companyUpload.error) {
-      return { error: (cnicUpload.error || companyUpload.error).message };
-    }
-
-    const { data: app, error } = await supabaseClient.from('developer_applications').insert({
+    const insertRow = {
       user_id: payload.userId,
       company_name: payload.companyName,
       phone: payload.phone,
-      cnic: payload.cnic,
-      cnic_document_path: cnicPath,
-      company_document_path: companyPath,
-      tier: payload.tier
-    }).select().single();
+      tier: payload.tier,
+      status: 'approved',
+      decision_at: nowIso()
+    };
+    if (payload.cnicFile) {
+      const cnicExt = (payload.cnicFile.name.split('.').pop() || 'bin').toLowerCase();
+      const cnicPath = payload.userId + '/cnic-' + Date.now() + '.' + cnicExt;
+      const cnicUpload = await supabaseClient.storage.from('developer-docs').upload(cnicPath, payload.cnicFile);
+      if (cnicUpload.error) return { error: cnicUpload.error.message };
+      insertRow.cnic_document_path = cnicPath;
+    }
+    if (payload.companyDocFile) {
+      const companyExt = (payload.companyDocFile.name.split('.').pop() || 'bin').toLowerCase();
+      const companyPath = payload.userId + '/company-doc-' + Date.now() + '.' + companyExt;
+      const companyUpload = await supabaseClient.storage.from('developer-docs').upload(companyPath, payload.companyDocFile);
+      if (companyUpload.error) return { error: companyUpload.error.message };
+      insertRow.company_document_path = companyPath;
+    }
+    if (payload.cnic) insertRow.cnic = payload.cnic;
+
+    const { data: app, error } = await supabaseClient.from('developer_applications').insert(insertRow).select().single();
     if (error) return { error: error.message };
 
-    await supabaseClient.from('profiles')
-      .update({ developer_status: 'pending', developer_tier: payload.tier, cnic: payload.cnic })
-      .eq('id', payload.userId);
+    const profileUpdate = { developer_status: 'approved', developer_tier: payload.tier };
+    if (payload.cnic) profileUpdate.cnic = payload.cnic;
+    await supabaseClient.from('profiles').update(profileUpdate).eq('id', payload.userId);
 
     return { application: app };
   }
