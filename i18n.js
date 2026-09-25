@@ -61,8 +61,8 @@ const AC_I18N = {
     section_why_sub: "A few things that make AgenticCore Estate different from the start.",
 
     section_referral_eyebrow: 'Earn by referring',
-    section_referral_title: 'Five levels, starting at 25%',
-    section_referral_sub: 'Refer someone, and when they — or the four levels below them — transact, you earn AgenticCore Points up the whole chain.',
+    section_referral_title: 'Referral System',
+    section_referral_sub: 'Once you get your dashboard, you can activate your referral link and join the AgenticCore Estate referral system if you’d like. Earn rewards up to 10 levels deep — real money, on top of AgenticCore’s special services.',
 
     section_family_eyebrow: 'One family, several companies',
     section_family_title: 'Part of the AgenticCore family',
@@ -170,8 +170,8 @@ const AC_I18N = {
     section_why_sub: 'چند چیزیں جو AgenticCore Estate کو شروع سے ہی مختلف بناتی ہیں۔',
 
     section_referral_eyebrow: 'ریفر کرکے کمائیں',
-    section_referral_title: 'پانچ درجے، 25% سے شروع',
-    section_referral_sub: 'کسی کو ریفر کریں، اور جب وہ — یا ان کے نیچے کے چار درجے — لین دین کریں تو آپ پوری زنجیر میں AgenticCore پوائنٹس کماتے ہیں۔',
+    section_referral_title: 'ریفرل سسٹم',
+    section_referral_sub: 'ڈیش بورڈ ملنے کے بعد، اگر آپ چاہیں تو اپنا ریفرل لنک ایکٹیویٹ کرکے AgenticCore Estate کے ریفرل سسٹم میں شامل ہو سکتے ہیں۔ 10 درجوں تک انعامات کمائیں — AgenticCore کی خصوصی سہولیات کے ساتھ ساتھ اصل رقم بھی۔',
 
     section_family_eyebrow: 'ایک خاندان، کئی کمپنیاں',
     section_family_title: 'AgenticCore خاندان کا حصہ',
