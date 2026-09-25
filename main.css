@@ -329,6 +329,8 @@ img, svg { display: block; max-width: 100%; }
 .hero-actions { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); flex-wrap: wrap; }
 .hero-actions .btn { padding: 0.9rem 1.8rem; }
 
+.hero-text-below { margin-top: var(--space-2xl); }
+
 /* ============================================
    Property search bar
    ============================================ */
