@@ -8,7 +8,7 @@
    nav link.
    ============================================ */
 
-const AC_LOGO_SVG = '<svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#22D3EE" stroke-width="4"/><polygon points="50,28 70,40 70,60 50,72 30,60 30,40" stroke="#3B82F6" stroke-width="3"/></svg>';
+const AC_LOGO_SVG = '<img src="images/agenticcore-icon.png" alt="AgenticCore" class="nav-logo-icon">';
 
 function acNavLink(href, page, key) {
   const active = document.body.getAttribute('data-page') === page ? ' active' : '';
@@ -37,7 +37,7 @@ async function acRenderHeader() {
   el.innerHTML =
     '<nav class="nav" id="nav">' +
       '<div class="container nav-inner">' +
-        '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'Agentic<span class="brand-suffix">Estate</span></a>' +
+        '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
         '<div class="nav-links">' +
           acNavLink('buy.html', 'buy', 'nav_buy') +
           acNavLink('rent.html', 'rent', 'nav_rent') +
@@ -82,7 +82,7 @@ function acRenderFooter() {
       '<div class="container">' +
         '<div class="footer-top">' +
           '<div class="footer-brand">' +
-            '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'Agentic<span class="brand-suffix">Estate</span></a>' +
+            '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
             '<p data-i18n="footer_tagline"></p>' +
           '</div>' +
           '<div class="footer-col">' +

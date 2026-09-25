@@ -144,7 +144,7 @@ img, svg { display: block; max-width: 100%; }
   flex-shrink: 0;
 }
 
-.nav-logo svg { width: 28px; height: 28px; }
+.nav-logo svg, .nav-logo-icon { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
 
 .nav-logo .brand-suffix {
   color: var(--accent-gold);
@@ -743,7 +743,7 @@ section { padding: var(--space-2xl) 0; position: relative; }
 .promo-media.wide { aspect-ratio: 16/9; }
 @media (max-width: 860px) { .promo-split { grid-template-columns: 1fr; } .promo-split .promo-media { max-width: 320px; margin: 0 auto; } }
 
-.hero-banner { width: 100%; }
+.hero-banner { width: 100%; padding-top: 4.5rem; background: var(--bg-primary); }
 .hero-banner img { width: 100%; height: auto; display: block; max-height: 480px; object-fit: cover; }
 
 .city-photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
