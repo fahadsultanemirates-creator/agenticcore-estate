@@ -86,10 +86,43 @@
       <h2 data-i18n="section_featured_title"></h2>
       <p data-i18n="section_featured_sub"></p>
     </div>
-    <div class="listing-grid" id="featuredGrid"></div>
-    <p style="text-align:center;margin-top:var(--space-lg);">
-      <a href="buy.html" style="color:var(--accent-gold-bright);border-bottom:1px solid rgba(212,175,55,0.3);" data-i18n="view_all"></a>
-    </p>
+
+    <div class="featured-block">
+      <div class="featured-block-head">
+        <h3 data-i18n="section_featured_buy_title"></h3>
+        <a href="buy.html" data-i18n="view_all"></a>
+      </div>
+      <div class="hscroll-row" id="featuredBuyRow"></div>
+    </div>
+
+    <div class="featured-block">
+      <div class="featured-block-head">
+        <h3 data-i18n="section_featured_rent_title"></h3>
+        <a href="rent.html" data-i18n="view_all"></a>
+      </div>
+      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
+    </div>
+
+    <div class="featured-block">
+      <div class="featured-block-head">
+        <h3 data-i18n="section_featured_projects_title"></h3>
+      </div>
+      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
+    </div>
+
+    <div class="featured-block">
+      <div class="featured-block-head">
+        <h3 data-i18n="section_featured_agencies_title"></h3>
+      </div>
+      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
+    </div>
+
+    <div class="featured-block">
+      <div class="featured-block-head">
+        <h3 data-i18n="section_featured_developers_title"></h3>
+      </div>
+      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
+    </div>
   </div>
 </section>
 
@@ -444,8 +477,8 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     async function renderFeatured() {
-      const listings = await AcDB.getListings();
-      acRenderListings('featuredGrid', listings.slice(0, 6));
+      const listings = await AcDB.getListings({ type: 'buy' });
+      acRenderListings('featuredBuyRow', listings);
     }
     const prevHook = window.acOnLanguageChange;
     window.acOnLanguageChange = function () { renderFeatured(); if (prevHook) prevHook(); };
