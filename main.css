@@ -279,7 +279,7 @@ img, svg { display: block; max-width: 100%; }
 
 .hero {
   position: relative;
-  padding: 9.5rem 0 var(--space-2xl);
+  padding: 3rem 0 var(--space-2xl);
   overflow: hidden;
 }
 
