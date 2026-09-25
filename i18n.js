@@ -15,7 +15,7 @@ const AC_I18N = {
     hero_eyebrow: 'Real estate, run by agents and AI',
     hero_title_pre: 'Find, list, and sell property across ',
     hero_title_accent: 'Pakistan',
-    hero_sub: 'Search buy and rent listings, or list your own property in minutes — with a Developer Corner built for builders and agencies.',
+    hero_sub: 'Search buy and rent listings, or list your own property in minutes. Builders, developers, agencies, and projects get their own sign-up and dashboard — unlocking AgenticCore’s full set of special features.',
     hero_cta_browse: 'Browse listings',
     hero_cta_sell: 'List your property',
 
@@ -124,7 +124,7 @@ const AC_I18N = {
     hero_eyebrow: 'رئیل اسٹیٹ، ایجنٹس اور AI کے ذریعے چلائی گئی',
     hero_title_pre: 'پورے ',
     hero_title_accent: 'پاکستان',
-    hero_sub: 'خرید و کرایہ کی جائیدادیں تلاش کریں، یا چند منٹوں میں اپنی جائیداد کی فہرست بنائیں — ڈویلپرز اور ایجنسیوں کے لیے مخصوص ڈویلپر کارنر کے ساتھ۔',
+    hero_sub: 'خرید و کرایہ کی جائیدادیں تلاش کریں، یا چند منٹوں میں اپنی جائیداد کی فہرست بنائیں۔ بلڈرز، ڈویلپرز، ایجنسیاں، اور پراجیکٹس اپنا الگ سائن اپ اور ڈیش بورڈ حاصل کرتے ہیں — AgenticCore کی تمام خصوصی خصوصیات کے ساتھ۔',
     hero_cta_browse: 'فہرستیں دیکھیں',
     hero_cta_sell: 'اپنی جائیداد درج کریں',
 

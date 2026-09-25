@@ -845,6 +845,11 @@ section { padding: var(--space-2xl) 0; position: relative; }
 .promo-media.wide { aspect-ratio: 16/9; }
 @media (max-width: 860px) { .promo-split { grid-template-columns: 1fr; } .promo-split .promo-media { max-width: 320px; margin: 0 auto; } }
 
+.promo-image-solo { max-width: 420px; margin: 0 auto; display: block; }
+
+#hero-text-block { padding-bottom: var(--space-lg); }
+#core-actions { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+
 .hero-banner { width: 100%; padding-top: 4.5rem; background: var(--bg-primary); }
 .hero-banner img { width: 100%; height: auto; display: block; max-height: 480px; object-fit: cover; }
 
