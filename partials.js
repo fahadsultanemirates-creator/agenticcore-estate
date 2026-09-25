@@ -38,26 +38,46 @@ async function acRenderHeader() {
     '<nav class="nav" id="nav">' +
       '<div class="container nav-inner">' +
         '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
-        '<div class="nav-links">' +
-          acNavLink('buy.html', 'buy', 'nav_buy') +
-          acNavLink('rent.html', 'rent', 'nav_rent') +
-          acNavLink('sell.html', 'sell', 'nav_sell') +
-          acNavLink('developer-corner.html', 'developer', 'nav_developer') +
-          acNavLink('business-pool.html', 'business-pool', 'nav_business_pool') +
-          acNavLink('referral.html', 'referral', 'nav_referrals') +
-          acNavLink('pricing.html', 'pricing', 'nav_pricing') +
+        '<div class="nav-right" id="navRight">' +
+          '<div class="nav-links">' +
+            acNavLink('buy.html', 'buy', 'nav_buy') +
+            acNavLink('rent.html', 'rent', 'nav_rent') +
+            acNavLink('sell.html', 'sell', 'nav_sell') +
+            acNavLink('developer-corner.html', 'developer', 'nav_developer') +
+            acNavLink('business-pool.html', 'business-pool', 'nav_business_pool') +
+            acNavLink('referral.html', 'referral', 'nav_referrals') +
+            acNavLink('pricing.html', 'pricing', 'nav_pricing') +
+          '</div>' +
+          '<div class="nav-cta">' +
+            '<button class="lang-toggle" id="acLangToggle" type="button" aria-label="Toggle language">' +
+              '<span class="lang-toggle-label">اردو</span>' +
+            '</button>' +
+            ctaHtml +
+          '</div>' +
         '</div>' +
-        '<div class="nav-cta">' +
-          '<button class="lang-toggle" id="acLangToggle" type="button" aria-label="Toggle language">' +
-            '<span class="lang-toggle-label">اردو</span>' +
-          '</button>' +
-          ctaHtml +
-        '</div>' +
+        '<button class="nav-menu-toggle" id="acNavMenuToggle" type="button" aria-label="Toggle menu" aria-expanded="false">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>' +
+        '</button>' +
       '</div>' +
     '</nav>';
 
   const langBtn = document.getElementById('acLangToggle');
   if (langBtn) langBtn.addEventListener('click', acToggleLanguage);
+
+  const menuBtn = document.getElementById('acNavMenuToggle');
+  const navRight = document.getElementById('navRight');
+  if (menuBtn && navRight) {
+    menuBtn.addEventListener('click', function () {
+      const open = navRight.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navRight.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        navRight.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   const logoutBtn = document.getElementById('acLogoutBtn');
   if (logoutBtn) {
