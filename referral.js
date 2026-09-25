@@ -25,11 +25,11 @@ if (refRoot) {
       });
     }
 
-    const tree = await AcDB.getReferralTree(user.id);
+    const tree = await AcDB.getReferralTree(user.id, 10);
     let totalPeople = 0;
-    const body = document.getElementById('refLevelsBody');
-    body.innerHTML = tree.map(function (levelUsers, i) {
-      totalPeople += levelUsers.length;
+
+    const payoutBody = document.getElementById('refLevelsBody');
+    payoutBody.innerHTML = tree.slice(0, 5).map(function (levelUsers, i) {
       const estPoints = Math.round(levelUsers.length * DEMO_TASK_VALUE * (REFERRAL_PCT[i] / 100));
       return (
         '<tr><td><span class="level-badge" style="width:32px;height:32px;font-size:0.75rem;display:inline-flex;">L' + (i + 1) + '</span></td>' +
@@ -37,6 +37,16 @@ if (refRoot) {
         '<td>' + levelUsers.length + '</td>' +
         '<td>' + (levelUsers.map(function (u) { return u.fullName; }).join(', ') || '—') + '</td>' +
         '<td>' + acFormatPKR(estPoints) + '</td></tr>'
+      );
+    }).join('');
+
+    const teamBody = document.getElementById('refTeamBody');
+    teamBody.innerHTML = tree.map(function (levelUsers, i) {
+      totalPeople += levelUsers.length;
+      return (
+        '<tr><td><span class="level-badge" style="width:32px;height:32px;font-size:0.75rem;display:inline-flex;">L' + (i + 1) + '</span></td>' +
+        '<td>' + levelUsers.length + '</td>' +
+        '<td>' + (levelUsers.map(function (u) { return u.fullName; }).join(', ') || '—') + '</td></tr>'
       );
     }).join('');
 

@@ -111,20 +111,20 @@ if (devDashRoot) {
     }
 
     document.getElementById('devName').textContent = user.full_name;
-    const tierNames = { 1: 'Starter', 2: 'Growth', 3: 'Elite' };
-    const tierPrices = { 1: 'Rs 2,000/mo', 2: 'Rs 10,000/mo', 3: 'Rs 20,000/mo' };
-    const tierCaps = { 1: 5, 2: 25, 3: null }; // null = unlimited
-    document.getElementById('devTierBadge').textContent = tierNames[user.developer_tier] + ' package';
-    document.getElementById('devTierPrice').textContent = tierPrices[user.developer_tier];
+    document.getElementById('devTierBadge').textContent = AC_DEV_PACKAGE_NAMES[user.developer_tier] + ' package';
+    document.getElementById('devTierPrice').textContent = AC_DEV_PACKAGE_PRICES[user.developer_tier];
 
     const myListings = await AcDB.getListingsByOwner(user.id);
     const verifiedCount = myListings.filter(function (l) { return l.verified; }).length;
-    const cap = tierCaps[user.developer_tier];
+    const cap = AC_DEV_PACKAGE_CAPS[user.developer_tier];
     document.getElementById('devListingCount').textContent = myListings.length;
     document.getElementById('devListingCap').textContent = cap === null ? 'unlimited' : cap;
     document.getElementById('devVerifiedNote').textContent = verifiedCount ? (' — ' + verifiedCount + ' verified') : '';
     const barPct = cap === null ? Math.min(100, myListings.length * 4) : Math.min(100, Math.round((myListings.length / cap) * 100));
     document.getElementById('devQuotaBar').style.width = barPct + '%';
+
+    const devPackageGrid = document.getElementById('devPackageGrid');
+    if (devPackageGrid) devPackageGrid.innerHTML = acPackageGridHTML(AC_DEV_PACKAGES, user.developer_tier, 'developer-packages.html');
 
     const tbody = document.getElementById('devListingsBody');
     if (tbody) {

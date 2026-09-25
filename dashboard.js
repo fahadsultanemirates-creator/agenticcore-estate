@@ -23,5 +23,8 @@ if (dashRoot) {
 
     const tree = await AcDB.getReferralTree(user.id);
     document.getElementById('dashReferralCount').textContent = tree.reduce(function (sum, l) { return sum + l.length; }, 0);
+
+    const dashPackageGrid = document.getElementById('dashPackageGrid');
+    if (dashPackageGrid) dashPackageGrid.innerHTML = acPackageGridHTML(AC_SELLER_PACKAGES, user.seller_package, 'pricing.html');
   })();
 }

@@ -2,58 +2,63 @@
 
 AI-run real estate marketplace for Pakistan — forked from AgenticCore Agency's
 base structure, recolored to deep emerald + gold, and extended with buy/sell/rent
-listings, a Developer Corner, an admin approval workflow, a 5-level referral
-system, a Business Pool section, and scaffolding for three upcoming AI features.
+listings, a Developer Corner, an admin approval workflow, a referral system
+(built to scale to 10 levels), two independent pricing tracks, a Business Pool
+section, and scaffolding for three upcoming AI features.
 
 It's a static site (no build step) — open `index.html` directly, or serve the
-folder with any static file server.
+folder with any static file server. Launch scope is Islamabad and Rawalpindi
+only (enforced server-side via a `cities` table); more cities are a row
+insert, not a redeploy.
 
-## How the data layer works right now
+## How the data layer works
 
-**No live backend has been provisioned for this repo yet.** Every flow —
-signup, login, developer document submission, admin approval, listings,
-referrals — runs against `mock-db.js`, a small localStorage-backed store, so
-the whole product is clickable end to end in a browser with zero setup.
+**A real Supabase project backs this site** — `db-client.js` (the `AcDB`
+object every page script calls) talks to real Postgres, Auth, and Storage,
+not a mock. `supabase-client.js` holds the project URL + publishable key.
+Schema lives in `supabase/migrations/` (`0001`–`0005`), including RLS
+policies, a `handle_new_user()` trigger that creates a profile row on
+signup, and security-definer RPCs (`get_referral_tree`, `email_for_phone`)
+that keep phone/CNIC out of any broadly-readable table.
 
-`supabase/migrations/0001_init_estate_schema.sql` documents the schema
-`mock-db.js` was deliberately designed to mirror table-for-table. To move to a
-real backend:
+There are no seeded demo accounts — sign up for real through `signup.html`.
+To get an admin account, sign up normally, then have someone with database
+access run `update profiles set role = 'admin' where email = '...'`.
 
-1. Create a Supabase project and run the migration.
-2. Fill in `supabase-client.js` with the project URL + publishable key.
-3. Swap the `AcDB.*` calls used throughout the page scripts (`auth.js`,
-   `developer.js`, `admin.js`, `referral.js`, `sell.js`, `listings.js`,
-   `listing-detail.js`, `dashboard.js`) for calls against `supabaseClient`
-   and Supabase Auth. Function names were kept close to what Supabase calls
-   would look like to make this a mechanical swap.
-
-Demo accounts (see `login.html` for the same list):
-
-| Role | Identifier | Password |
-|---|---|---|
-| Buyer | ayesha@example.com | password |
-| Developer (approved, Elite) | bilal@builder.pk | password |
-| Developer (pending review) | noor@builder.pk | password |
-| Admin | admin@agenticcore.estate | admin123 |
-
-Reset the demo dataset from a browser console with `AcDB.resetDemoData()`.
+CNIC is collected only where it matters: developers give it at the
+application step (`developer-apply.html`); an individual seller gives it
+once, inline, the first time they post a listing (`sell.js`). Buyers never
+need one.
 
 ## What's fully built
 
 - **Listings**: `buy.html` / `rent.html` (filterable grids), `sell.html`
   (posting form), `listing.html` (detail page).
-- **Auth**: `signup.html` / `login.html` — phone number + government ID
-  (CNIC) required for every account, buyer/seller vs. developer role choice.
+- **Auth**: `signup.html` / `login.html` — phone number + email + password;
+  buyer/seller vs. developer role choice. CNIC is NOT collected at signup —
+  individual sellers give it once, inline, the first time they post a
+  listing (`sell.js`); developers give it at the application step below.
 - **Developer Corner**: `developer-corner.html` (landing), `developer-apply.html`
-  (CNIC + company document upload, tier selection), `developer-pending.html`
+  (CNIC + company document upload, project-package selection), `developer-pending.html`
   (72-hour review SLA with a live countdown), `developer-dashboard.html`.
 - **Admin panel**: `admin-login.html` / `admin-dashboard.html` — review queue
   for pending developer applications, approve/reject with a note, decision
   history.
-- **Pricing**: `pricing.html` — Developer Corner's 3 tiers (Rs 2,000 /
-  10,000 / 20,000 per month).
-- **Referral system**: `referral.html` (explainer, 5 levels) and
-  `referral-dashboard.html` (your link, per-level breakdown, points).
+- **Two pricing tracks** (`packages.js` holds both as shared data):
+  - **Listing Packages** (`pricing.html`) — Starter/Growth/Elite, Rs 5,000 /
+    15,000 / 30,000 per month, for any account listing individual
+    properties. Not tied to developer verification.
+  - **Developer Project Packages** (`developer-packages.html`) — Launch/
+    Growth/Scale/Business Pool, Rs 15,000 / 50,000 / 200,000 / custom per
+    month, for verified developers listing whole projects. Growth and up
+    bundle marketing (social content, brochures, banners) from AgenticCore
+    Agency at no extra cost; Business Pool is a fully custom partnership.
+- **Referral system**: `referral.html` (explainer) and `referral-dashboard.html`
+  (your link, per-level payout breakdown, and a separate "team" view). Payout
+  is 5 levels deep today (25% / 15% / 10% / 5% / 2.5%, paid in AgenticCore
+  Points); `get_referral_tree()` and `AcDB.getReferralTree()` already accept
+  a `max_depth` up to 10 so the payout table can extend without a schema
+  change — the referral-dashboard's "team" table already shows all 10.
 - **Business Pool**: `business-pool.html` — manager Telegram/WhatsApp contact
   and cross-support messaging with AgenticCore Agency / AgenticCore Biz.
 - **Language toggle**: one click, top-right of every page (`i18n.js`) —

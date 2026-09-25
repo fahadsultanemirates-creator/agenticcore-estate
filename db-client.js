@@ -250,11 +250,13 @@ const AcDB = (function () {
   }
 
   // ---------- referrals (5 levels deep, computed server-side) ----------
-  async function getReferralTree(userId) {
-    const { data } = await supabaseClient.rpc('get_referral_tree', { root_id: userId, max_depth: 5 });
-    const levels = [[], [], [], [], []];
+  async function getReferralTree(userId, maxDepth) {
+    maxDepth = maxDepth || 5;
+    const { data } = await supabaseClient.rpc('get_referral_tree', { root_id: userId, max_depth: maxDepth });
+    const levels = [];
+    for (let i = 0; i < maxDepth; i++) levels.push([]);
     (data || []).forEach(function (row) {
-      if (row.level >= 1 && row.level <= 5) levels[row.level - 1].push({ id: row.id, fullName: row.full_name });
+      if (row.level >= 1 && row.level <= maxDepth) levels[row.level - 1].push({ id: row.id, fullName: row.full_name });
     });
     return levels;
   }

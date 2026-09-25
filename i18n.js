@@ -85,8 +85,8 @@ const AC_I18N = {
     auth_create_one: 'Create one', auth_login_link: 'Log in',
     auth_id_note: 'Required for every account — used to verify real listings and prevent fraud. Never shown publicly.',
 
-    pricing_eyebrow: 'Developer Corner pricing', pricing_title: 'Three tiers, one verified marketplace',
-    pricing_sub: 'Every developer account is document-verified before it goes live. Pricing is monthly, per active listing slot.',
+    pricing_eyebrow: 'For sellers & agencies', pricing_title: 'Listing packages',
+    pricing_sub: 'Upgrade your listing capacity and search placement — no document verification required, cancel any time.',
     tier_starter: 'Starter', tier_growth: 'Growth', tier_elite: 'Elite',
     tier_per_month: '/month',
 
@@ -188,8 +188,8 @@ const AC_I18N = {
     auth_create_one: 'ایک بنائیں', auth_login_link: 'لاگ ان کریں',
     auth_id_note: 'ہر اکاؤنٹ کے لیے لازمی — اصل فہرستوں کی تصدیق اور دھوکہ دہی روکنے کے لیے استعمال ہوتا ہے۔ کبھی عوامی طور پر ظاہر نہیں ہوتا۔',
 
-    pricing_eyebrow: 'ڈویلپر کارنر کی قیمتیں', pricing_title: 'تین درجے، ایک تصدیق شدہ مارکیٹ پلیس',
-    pricing_sub: 'ہر ڈویلپر اکاؤنٹ فعال ہونے سے پہلے دستاویزات کی تصدیق سے گزرتا ہے۔ قیمت ماہانہ اور فی فعال لسٹنگ سلاٹ ہے۔',
+    pricing_eyebrow: 'فروخت کنندگان اور ایجنسیوں کے لیے', pricing_title: 'لسٹنگ پیکجز',
+    pricing_sub: 'اپنی لسٹنگ کی گنجائش اور تلاش میں جگہ بہتر بنائیں — کسی دستاویز کی تصدیق کی ضرورت نہیں، کسی بھی وقت منسوخ کریں۔',
     tier_starter: 'اسٹارٹر', tier_growth: 'گروتھ', tier_elite: 'ایلیٹ',
     tier_per_month: '/ماہانہ',
 

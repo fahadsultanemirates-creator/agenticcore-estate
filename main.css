@@ -732,3 +732,7 @@ section { padding: var(--space-2xl) 0; position: relative; }
 
 /* i18n helper: hide element unless matching language attribute is used */
 [data-i18n-ur] {}
+
+/* Expansion map (landing page) */
+.pk-map-wrap { max-width: 460px; margin: 0 auto; padding: var(--space-md); background: radial-gradient(circle at 30% 20%, rgba(212,175,55,0.06), transparent 60%), var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+.pk-map { width: 100%; height: auto; display: block; }

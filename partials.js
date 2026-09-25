@@ -98,6 +98,7 @@ function acRenderFooter() {
             '<h5 data-i18n="footer_developers"></h5>' +
             '<ul>' +
               '<li><a href="developer-corner.html" data-i18n="nav_developer"></a></li>' +
+              '<li><a href="developer-packages.html">Project Packages</a></li>' +
               '<li><a href="developer-apply.html">Apply as developer</a></li>' +
               '<li><a href="admin-login.html" data-i18n="nav_admin"></a></li>' +
             '</ul>' +
