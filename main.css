@@ -636,7 +636,7 @@ section { padding: var(--space-2xl) 0; position: relative; }
   gap: var(--space-sm);
   margin-bottom: var(--space-sm);
 }
-.featured-block-head h3 { font-size: 1.1rem; }
+.featured-block-head h3 { font-size: 1.1rem; color: var(--accent-gold-bright); }
 .featured-block-head a { font-size: 0.82rem; color: var(--accent-gold-bright); white-space: nowrap; }
 
 .featured-coming-soon {
