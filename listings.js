@@ -39,7 +39,7 @@ function acListingCardHTML(l) {
         '<div class="listing-specs">' +
           (l.beds ? '<span>' + l.beds + ' ' + dict.listing_beds + '</span>' : '') +
           (l.baths ? '<span>' + l.baths + ' ' + dict.listing_baths + '</span>' : '') +
-          '<span>' + l.sizeMarla + ' ' + dict.listing_marla + '</span>' +
+          '<span>' + l.sizeMarla + ' ' + acSizeUnitLabel(l.sizeUnit || 'marla') + '</span>' +
         '</div>' +
       '</div>' +
     '</a>'

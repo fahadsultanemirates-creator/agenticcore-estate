@@ -42,7 +42,7 @@ if (detailRoot) {
             '<div class="listing-specs" style="border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1rem;margin-bottom:1.5rem;">' +
               (listing.beds ? '<span>' + listing.beds + ' ' + dict.listing_beds + '</span>' : '') +
               (listing.baths ? '<span>' + listing.baths + ' ' + dict.listing_baths + '</span>' : '') +
-              '<span>' + listing.sizeMarla + ' ' + dict.listing_marla + '</span>' +
+              '<span>' + listing.sizeMarla + ' ' + acSizeUnitLabel(listing.sizeUnit || 'marla') + '</span>' +
             '</div>' +
             '<h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Description</h3>' +
             '<p style="color:var(--text-secondary);">' + listing.description + '</p>' +
@@ -51,7 +51,7 @@ if (detailRoot) {
             '<div class="panel">' +
               '<h3>Listed by</h3>' +
               '<p style="color:var(--text-primary);font-weight:600;">' + (owner ? owner.full_name : 'AgenticCore Estate user') + '</p>' +
-              '<p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">' + (owner && owner.role === 'developer' ? (featured ? 'Elite verified developer' : 'Verified developer account') : 'Individual seller') + '</p>' +
+              '<p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">' + (owner && owner.role === 'developer' ? (featured ? 'Elite developer' : 'Developer account') : 'Individual seller') + '</p>' +
               '<a href="login.html" class="btn btn-primary btn-block">Contact about this property</a>' +
             '</div>' +
             '<div id="detailAiSlot"></div>' +

@@ -9,9 +9,24 @@ if (sellForm) {
     const cnicGroup = document.getElementById('sellCnicGroup');
     const citySelect = document.getElementById('sellCity');
     const areaSelect = document.getElementById('sellArea');
+    const areaManual = document.getElementById('sellAreaManual');
     const typeSelect = document.getElementById('sellPropertyType');
+    const sizeUnitSelect = document.getElementById('sellSizeUnit');
 
     if (typeSelect) typeSelect.innerHTML = acPropertyTypeOptionsHTML();
+    if (sizeUnitSelect) {
+      sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(AC_DEFAULT_SIZE_UNIT[typeSelect.value]);
+      typeSelect.addEventListener('change', function () {
+        sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(AC_DEFAULT_SIZE_UNIT[typeSelect.value]);
+      });
+    }
+
+    const MANUAL_AREA_VALUE = '__manual__';
+    function toggleManualArea() {
+      const isManual = areaSelect.value === MANUAL_AREA_VALUE;
+      areaManual.style.display = isManual ? 'block' : 'none';
+      areaManual.required = isManual;
+    }
 
     if (citySelect) {
       const cities = await AcDB.getActiveCities();
@@ -22,8 +37,11 @@ if (sellForm) {
         areaSelect.innerHTML = '<option value="">Loading…</option>';
         const areas = await AcDB.getAreasForCity(citySelect.value);
         areaSelect.innerHTML = '<option value="">Select an area</option>' +
-          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
+          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('') +
+          '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
+        toggleManualArea();
       });
+      areaSelect.addEventListener('change', toggleManualArea);
     }
 
     // CNIC verification is switched off for the initial launch window so
@@ -52,7 +70,7 @@ if (sellForm) {
       }
 
       const city = citySelect.value;
-      const area = areaSelect.value;
+      const area = areaSelect.value === MANUAL_AREA_VALUE ? areaManual.value.trim() : areaSelect.value;
       const propertyType = typeSelect.value;
       if (!city || !area || !propertyType) {
         errorEl.textContent = 'Please select a property type, city, and area.';
@@ -77,6 +95,7 @@ if (sellForm) {
         beds: Number(document.getElementById('sellBeds').value) || 0,
         baths: Number(document.getElementById('sellBaths').value) || 0,
         sizeMarla: Number(document.getElementById('sellSize').value) || 0,
+        sizeUnit: sizeUnitSelect.value,
         description: document.getElementById('sellDescription').value.trim(),
         photoFiles: photoFiles
       });

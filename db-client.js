@@ -183,6 +183,7 @@ const AcDB = (function () {
       beds: payload.beds || 0,
       baths: payload.baths || 0,
       size_marla: payload.sizeMarla || 0,
+      size_unit: payload.sizeUnit || 'marla',
       description: payload.description
     }).select().single();
     if (error) return { error: error.message };
@@ -205,6 +206,7 @@ const AcDB = (function () {
       }
     }
     listing.sizeMarla = listing.size_marla;
+    listing.sizeUnit = listing.size_unit;
     return { listing };
   }
 
@@ -234,6 +236,7 @@ const AcDB = (function () {
 
     listings.forEach(function (l) {
       l.sizeMarla = l.size_marla;
+      l.sizeUnit = l.size_unit;
       l.ownerDeveloperTier = tierByOwner[l.owner_id] || null;
       l.featured = l.ownerDeveloperTier === 3;
     });
@@ -246,12 +249,13 @@ const AcDB = (function () {
     const { data, error } = await supabaseClient.from('listings').select('*').eq('id', id).single();
     if (error || !data) return null;
     data.sizeMarla = data.size_marla;
+    data.sizeUnit = data.size_unit;
     return data;
   }
 
   async function getListingsByOwner(ownerId) {
     const { data } = await supabaseClient.from('listings').select('*').eq('owner_id', ownerId).order('created_at', { ascending: false });
-    (data || []).forEach(function (l) { l.sizeMarla = l.size_marla; });
+    (data || []).forEach(function (l) { l.sizeMarla = l.size_marla; l.sizeUnit = l.size_unit; });
     return data || [];
   }
 

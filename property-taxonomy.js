@@ -24,6 +24,36 @@ const AC_PROPERTY_TYPES = [
 
 const AC_PROPERTY_GROUPS = ['Residential', 'Plots', 'Commercial'];
 
+// Pakistani portals measure different property types in different units —
+// marla/kanal for houses and residential plots, square feet for flats and
+// commercial space, square yards as an alternate for plots. This gives each
+// type a sensible default; the unit itself stays a manual dropdown so a
+// seller can always override it.
+const AC_SIZE_UNITS = [
+  { value: 'marla', label: 'Marla' },
+  { value: 'kanal', label: 'Kanal' },
+  { value: 'sqft', label: 'Sq. Ft.' },
+  { value: 'sqyd', label: 'Sq. Yd.' }
+];
+
+const AC_DEFAULT_SIZE_UNIT = {
+  house: 'marla', farm_house: 'kanal',
+  flat: 'sqft', upper_portion: 'sqft', lower_portion: 'sqft', room: 'sqft',
+  residential_plot: 'marla', commercial_plot: 'marla', agricultural_land: 'kanal',
+  office: 'sqft', shop: 'sqft', warehouse: 'sqft', building: 'sqft'
+};
+
+function acSizeUnitLabel(value) {
+  const found = AC_SIZE_UNITS.find(function (u) { return u.value === value; });
+  return found ? found.label : value;
+}
+
+function acSizeUnitOptionsHTML(selectedValue) {
+  return AC_SIZE_UNITS.map(function (u) {
+    return '<option value="' + u.value + '"' + (u.value === selectedValue ? ' selected' : '') + '>' + u.label + '</option>';
+  }).join('');
+}
+
 function acPropertyTypeLabel(value) {
   const found = AC_PROPERTY_TYPES.find(function (t) { return t.value === value; });
   return found ? found.label : value;

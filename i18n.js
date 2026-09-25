@@ -30,7 +30,7 @@ const AC_I18N = {
     section_featured_sub: 'A mix of developer listings and individual sellers, updated daily.',
     view_all: 'View all listings',
     listing_view: 'View details',
-    listing_beds: 'beds', listing_baths: 'baths', listing_marla: 'marla',
+    listing_beds: 'beds', listing_baths: 'baths',
     listing_month: '/mo',
 
     section_devcorner_eyebrow: 'For builders & agencies',
@@ -133,7 +133,7 @@ const AC_I18N = {
     section_featured_sub: 'ڈویلپر فہرستوں اور انفرادی فروخت کنندگان کا مجموعہ، روزانہ اپ ڈیٹ ہوتا ہے۔',
     view_all: 'تمام فہرستیں دیکھیں',
     listing_view: 'تفصیل دیکھیں',
-    listing_beds: 'بیڈ', listing_baths: 'باتھ', listing_marla: 'مرلہ',
+    listing_beds: 'بیڈ', listing_baths: 'باتھ',
     listing_month: '/ماہ',
 
     section_devcorner_eyebrow: 'بلڈرز اور ایجنسیوں کے لیے',

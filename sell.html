@@ -49,6 +49,7 @@
           <div class="form-field">
             <label for="sellArea">Area / society</label>
             <select id="sellArea" required><option value="">Select a city first</option></select>
+            <input type="text" id="sellAreaManual" placeholder="Type the area / society name" style="display:none;margin-top:0.5rem;">
           </div>
         </div>
         <div class="form-grid">
@@ -57,8 +58,11 @@
             <input type="number" id="sellPrice" required min="1">
           </div>
           <div class="form-field">
-            <label for="sellSize">Size (marla)</label>
-            <input type="number" id="sellSize" required min="1">
+            <label for="sellSize">Size</label>
+            <div style="display:flex;gap:0.5rem;">
+              <input type="number" id="sellSize" required min="1" style="flex:1;">
+              <select id="sellSizeUnit" style="flex:0 0 110px;"></select>
+            </div>
           </div>
         </div>
         <div class="form-grid">
