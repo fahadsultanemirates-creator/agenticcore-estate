@@ -102,13 +102,12 @@ if (devDashRoot) {
     document.getElementById('devTierBadge').textContent = AC_DEV_PACKAGE_NAMES[user.developer_tier] + ' package';
     document.getElementById('devTierPrice').textContent = AC_DEV_PACKAGE_PRICES[user.developer_tier];
 
-    const myListings = await AcDB.getListingsByOwner(user.id);
-    const verifiedCount = myListings.filter(function (l) { return l.verified; }).length;
+    const myProjects = await AcDB.getProjectsByOwner(user.id);
     const cap = AC_DEV_PACKAGE_CAPS[user.developer_tier];
-    document.getElementById('devListingCount').textContent = myListings.length;
+    document.getElementById('devListingCount').textContent = myProjects.length;
     document.getElementById('devListingCap').textContent = cap === null ? 'unlimited' : cap;
-    document.getElementById('devVerifiedNote').textContent = verifiedCount ? (' — ' + verifiedCount + ' verified') : '';
-    const barPct = cap === null ? Math.min(100, myListings.length * 4) : Math.min(100, Math.round((myListings.length / cap) * 100));
+    document.getElementById('devVerifiedNote').textContent = '';
+    const barPct = cap === null ? Math.min(100, myProjects.length * 4) : Math.min(100, Math.round((myProjects.length / cap) * 100));
     document.getElementById('devQuotaBar').style.width = barPct + '%';
 
     const devPackageGrid = document.getElementById('devPackageGrid');
@@ -116,12 +115,14 @@ if (devDashRoot) {
 
     const tbody = document.getElementById('devListingsBody');
     if (tbody) {
-      tbody.innerHTML = myListings.map(function (l) {
-        return '<tr><td>' + l.title + '</td><td>' + l.city + '</td><td>' + acFormatPKR(l.price) + '</td>' +
-          '<td>' + (l.verified ? '<span class="badge badge-emerald">Verified</span>' : '<span class="badge badge-muted">Unverified</span>') + '</td></tr>';
-      }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">No listings yet — post your first one from the Sell page.</td></tr>';
+      tbody.innerHTML = myProjects.map(function (p) {
+        return '<tr><td>' + p.title + '</td><td>' + p.city + '</td><td>' + acProjectUnitTypeLabel(p.unit_types) + '</td>' +
+          '<td>' + acProjectStatusLabel(p.status) + '</td></tr>';
+      }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">No projects yet — post your first one.</td></tr>';
     }
 
     document.getElementById('devAiSlot').innerHTML = acGrowthScoreWidget(null) + acDocCheckWidget('not_run');
+
+    if (typeof acMountReferralCta === 'function') acMountReferralCta(user);
   })();
 }

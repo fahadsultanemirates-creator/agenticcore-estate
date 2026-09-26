@@ -16,38 +16,56 @@
     <div class="section-head" style="text-align:left;margin-bottom:var(--space-lg);">
       <span class="section-eyebrow">Your network</span>
       <h2>Referral dashboard</h2>
-      <p>Five levels deep — every account below you that transacts pays points up this chain.</p>
+      <p>Ten levels deep — every account below you that transacts pays points up this chain.</p>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="refCode" style="font-size:1.2rem;">—</div></div>
-      <div class="stat-card"><span class="stat-label">AgenticCore Points</span><div class="stat-value" id="refPoints">0</div></div>
-      <div class="stat-card"><span class="stat-label">People in your network</span><div class="stat-value" id="refTotalPeople">0</div></div>
+    <div id="refJoinGate" class="panel" style="display:none;">
+      <h3>Join the referral program</h3>
+      <p id="refJoinCopy" style="color:var(--text-secondary);font-size:0.9rem;"></p>
+      <button class="btn btn-primary btn-sm" id="refJoinBtn">Join the referral program</button>
     </div>
 
-    <div class="panel">
-      <h3>Your referral link</h3>
-      <div style="display:flex;gap:0.6rem;">
-        <input type="text" id="refLink" readonly style="flex:1;padding:0.7rem 0.9rem;background:var(--bg-primary);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);color:var(--text-primary);font-family:var(--font-mono);font-size:0.85rem;">
-        <button class="btn btn-primary btn-sm" id="refCopyBtn">Copy link</button>
+    <div id="refContent" style="display:none;">
+      <div class="stat-grid">
+        <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="refCode" style="font-size:1.2rem;">—</div></div>
+        <div class="stat-card"><span class="stat-label">AgenticCore Points</span><div class="stat-value" id="refPoints">0</div></div>
+        <div class="stat-card"><span class="stat-label">People in your network</span><div class="stat-value" id="refTotalPeople">0</div></div>
       </div>
-    </div>
 
-    <div class="panel">
-      <h3>By level — payout</h3>
-      <table class="data-table">
-        <thead><tr><th>Level</th><th>Payout %</th><th>People</th><th>Names</th><th>Est. points</th></tr></thead>
-        <tbody id="refLevelsBody"></tbody>
-      </table>
-    </div>
+      <div class="panel">
+        <h3>Your referral link</h3>
+        <div style="display:flex;gap:0.6rem;">
+          <input type="text" id="refLink" readonly style="flex:1;padding:0.7rem 0.9rem;background:var(--bg-primary);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);color:var(--text-primary);font-family:var(--font-mono);font-size:0.85rem;">
+          <button class="btn btn-primary btn-sm" id="refCopyBtn">Copy link</button>
+        </div>
+      </div>
 
-    <div class="panel">
-      <h3>Your team — all levels</h3>
-      <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Everyone in your downline, up to 10 levels out. Levels 1–5 earn points on transactions; deeper levels are tracked here ahead of any future payout expansion.</p>
-      <table class="data-table">
-        <thead><tr><th>Level</th><th>People</th><th>Names</th></tr></thead>
-        <tbody id="refTeamBody"></tbody>
-      </table>
+      <h3 style="margin:var(--space-lg) 0 var(--space-sm);">Membership tiers</h3>
+      <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Packages aren't announced yet — this previews where things are headed. Your referral link and team already work today, no package required.</p>
+      <div id="refMembershipGrid"></div>
+
+      <div class="panel">
+        <h3>Your referral tree</h3>
+        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Direct referrals branch from you; their referrals branch from them, and so on.</p>
+        <div id="refTreeViz" class="ref-tree-scroll"></div>
+      </div>
+
+      <div class="panel">
+        <h3>By level — payout</h3>
+        <table class="data-table">
+          <thead><tr><th>Level</th><th>Payout %</th><th>People</th><th>Names</th><th>Est. points</th></tr></thead>
+          <tbody id="refLevelsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3>Your team — all levels</h3>
+        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Everyone in your downline, up to 10 levels out. Levels 1–5 earn points on transactions; deeper levels are tracked here ahead of any future payout expansion.</p>
+        <table class="data-table">
+          <thead><tr><th>Level</th><th>People</th><th>Names</th></tr></thead>
+          <tbody id="refTeamBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -57,6 +75,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-client.js"></script>
 <script src="db-client.js"></script>
+<script src="packages.js"></script>
 <script src="i18n.js"></script>
 <script src="listings.js"></script>
 <script src="ai-placeholders.js"></script>

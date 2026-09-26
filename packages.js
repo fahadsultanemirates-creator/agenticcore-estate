@@ -32,6 +32,31 @@ const AC_DEV_PACKAGES = [
     perks: ['Unlimited projects', 'Website, brochures, business cards', 'Full marketing partnership'] }
 ];
 
+// Referral-program membership tiers — deliberately generic/placeholder.
+// Packages aren't finalized yet; these preview where pricing is headed
+// without promising any specific perk or figure. Once real packages are
+// announced, this dashboard activates with the real cards in their place.
+const AC_REFERRAL_MEMBERSHIP_CARDS = [
+  { name: 'Bronze', perks: ['Referral link + team building', 'Points on your own transactions'] },
+  { name: 'Silver', perks: ['Everything in Bronze', 'Higher point multiplier (to be announced)'] },
+  { name: 'Gold', perks: ['Everything in Silver', 'Priority placement across AgenticCore family sites'] },
+  { name: 'Platinum', perks: ['Everything in Gold', 'Full benefits — details announced with launch'] }
+];
+
+function acReferralMembershipGridHTML() {
+  return '<div class="tier-table tier-table-4">' + AC_REFERRAL_MEMBERSHIP_CARDS.map(function (card, i) {
+    const color = i === 0 ? '#9BB9A9' : i === 1 ? '#3FAE7B' : i === 2 ? '#D4AF37' : '#F0CE63';
+    return (
+      '<div class="tier-card locked">' +
+        '<div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="' + color + '" stroke-width="6"/></svg></div>' +
+        '<span class="tier-name">' + card.name + '</span>' +
+        '<h3 style="font-size:0.95rem;color:var(--text-tertiary);">Pricing coming soon</h3>' +
+        '<ul>' + card.perks.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>' +
+      '</div>'
+    );
+  }).join('') + '</div>';
+}
+
 const AC_DEV_PACKAGE_NAMES = { 1: 'Launch', 2: 'Growth', 3: 'Scale', 4: 'Business Pool' };
 const AC_DEV_PACKAGE_PRICES = { 1: 'Rs 15,000/mo', 2: 'Rs 50,000/mo', 3: 'Rs 200,000/mo', 4: 'Custom' };
 const AC_DEV_PACKAGE_CAPS = { 1: 3, 2: 10, 3: 20, 4: null };

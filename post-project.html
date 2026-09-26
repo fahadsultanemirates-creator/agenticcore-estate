@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post a Project — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="post-project">
+
+<div id="site-header"></div>
+
+<header class="inner-hero">
+  <div class="container">
+    <span class="hero-eyebrow"><span class="dot"></span> Project listing</span>
+    <h1>List a project or society</h1>
+    <p class="hero-sub">For whole developments — off-plan, under construction, or ready — not single units. Unit-level listings go through the standard listing form.</p>
+  </div>
+</header>
+
+<section class="deep-section" style="padding-top:var(--space-lg);">
+  <div class="container narrow">
+    <div class="panel" style="padding:var(--space-lg);">
+      <div class="auth-error" id="projectError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <form id="projectForm">
+        <div class="form-field">
+          <label for="projTitle">Project name</label>
+          <input type="text" id="projTitle" required placeholder="e.g. Al-Kabir Town Phase 2">
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="projCity">City</label>
+            <select id="projCity" required><option value="">Loading…</option></select>
+          </div>
+          <div class="form-field">
+            <label for="projArea">Area / society</label>
+            <select id="projArea" required><option value="">Select a city first</option></select>
+            <input type="text" id="projAreaManual" placeholder="Type the area / society name" style="display:none;margin-top:0.5rem;">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Project status</label>
+          <div class="role-choice" style="grid-template-columns:1fr 1fr 1fr;">
+            <label class="role-option checked"><input type="radio" name="projStatus" value="off_plan" checked> Off-plan</label>
+            <label class="role-option"><input type="radio" name="projStatus" value="under_construction"> Under construction</label>
+            <label class="role-option"><input type="radio" name="projStatus" value="ready"> Ready</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Unit types on offer</label>
+          <span class="hint" style="display:block;margin:-0.1rem 0 0.5rem;">Select every type this project offers — shown to buyers as "Residential, Shops, +2 more".</span>
+          <div id="projUnitTypes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.5rem;"></div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="projTotalUnits">Total units (optional)</label>
+            <input type="number" id="projTotalUnits" min="0" placeholder="e.g. 240">
+          </div>
+          <div class="form-field">
+            <label for="projTotalPlots">Total plots (optional)</label>
+            <input type="number" id="projTotalPlots" min="0" placeholder="e.g. 500">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Size range</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="number" id="projSizeFrom" min="0" placeholder="From" style="flex:1;">
+            <input type="number" id="projSizeTo" min="0" placeholder="To" style="flex:1;">
+            <select id="projSizeUnit" style="flex:0 0 110px;"></select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Price range (PKR)</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="number" id="projPriceFrom" min="0" placeholder="From" style="flex:1;">
+            <input type="number" id="projPriceTo" min="0" placeholder="To" style="flex:1;">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="projPaymentPlan">Payment plan</label>
+          <input type="text" id="projPaymentPlan" placeholder="e.g. 20% down payment, 3-year installment plan">
+        </div>
+        <div class="form-field">
+          <label for="projPossession">Possession</label>
+          <input type="text" id="projPossession" placeholder="e.g. Possession by Dec 2027">
+        </div>
+        <div class="form-field">
+          <label for="projDescription">Description</label>
+          <textarea id="projDescription" placeholder="Location highlights, amenities, developer track record."></textarea>
+        </div>
+        <div class="form-field">
+          <label for="projPhotos">Photos (up to 8)</label>
+          <input type="file" id="projPhotos" accept="image/*" multiple>
+        </div>
+        <div class="form-field">
+          <label>Brochure / price list (PDF)</label>
+          <div class="file-drop" id="projBrochureDrop">
+            <input type="file" id="projBrochureFile" accept="application/pdf" style="display:none;">
+            <span class="file-drop-label">Click to upload a PDF (optional)</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Post project</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="property-taxonomy.js"></script>
+<script src="i18n.js"></script>
+<script src="listings.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="partials.js"></script>
+<script src="auth.js"></script>
+<script src="project.js"></script>
+</body>
+</html>
