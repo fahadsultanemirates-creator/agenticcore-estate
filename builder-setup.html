@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set up your company profile — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="builder-setup">
+
+<div id="site-header"></div>
+
+<header class="inner-hero">
+  <div class="container">
+    <span class="hero-eyebrow"><span class="dot"></span> Step 2 of 2</span>
+    <h1>Set up your company profile</h1>
+    <p class="hero-sub">This is a promotion-only account — no property or project listings here. Buyers see this to find and contact builders and developers.</p>
+  </div>
+</header>
+
+<section class="deep-section" style="padding-top:var(--space-lg);">
+  <div class="container narrow">
+    <div class="panel" style="padding:var(--space-lg);">
+      <div class="auth-error" id="authError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <form id="builderSetupForm">
+        <div class="form-field">
+          <label for="builderCompanyName">Company name</label>
+          <input type="text" id="builderCompanyName" required placeholder="e.g. Bilal Construction &amp; Developers">
+        </div>
+        <div class="form-field">
+          <label for="builderDescription">Company description</label>
+          <textarea id="builderDescription" placeholder="Track record, specialties, notable completed work."></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="builderProjectsCompleted">Projects completed so far</label>
+            <input type="number" id="builderProjectsCompleted" min="0" placeholder="e.g. 12">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="builderServices">Services &amp; quotations</label>
+          <textarea id="builderServices" placeholder="e.g. Turnkey construction from Rs 2,800/sq ft — grey structure and finishing packages available. Free site visit quotations."></textarea>
+        </div>
+        <div class="form-field">
+          <label>Company logo</label>
+          <div class="file-drop" id="builderLogoDrop">
+            <input type="file" id="builderLogoFile" accept="image/*" style="display:none;">
+            <span class="file-drop-label">Click to upload a logo (optional — you can add this later)</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;">Create company dashboard</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="i18n.js"></script>
+<script src="partials.js"></script>
+<script src="auth.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>

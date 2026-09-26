@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder Dashboard — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="builder-dashboard">
+
+<div class="dash-shell" id="builderDashRoot">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="nav-logo"><img src="images/agenticcore-icon.png" alt="" style="width:28px;height:28px;border-radius:6px;object-fit:cover;">Agentic<span class="brand-suffix">Estate</span></a>
+    <ul class="dash-nav">
+      <li><a href="builder-dashboard.html" class="active">Overview</a></li>
+      <li><a href="referral-dashboard.html">Referrals</a></li>
+      <li><a href="index.html">Back to site</a></li>
+      <li><a href="#" id="dashLogout">Log out</a></li>
+    </ul>
+  </aside>
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Welcome, <span id="builderName">—</span></h1>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><span class="stat-label">Projects completed</span><div class="stat-value" id="builderProjectsCount">0</div></div>
+      <div class="stat-card"><span class="stat-label">AgenticCore Points</span><div class="stat-value" id="builderPoints">0</div></div>
+      <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="builderReferralCode" style="font-size:1.1rem;">—</div></div>
+      <div class="stat-card"><span class="stat-label">People in my network</span><div class="stat-value" id="builderReferralCount">0</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>Company profile</h3>
+      <p class="hint" style="margin:-0.3rem 0 0.8rem;">This is what buyers and developers see about you — a promotion-only profile, no listings.</p>
+      <div class="auth-error" id="builderProfileError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <div class="auth-error" id="builderProfileSuccess" style="display:none;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#34D399;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <form id="builderProfileForm">
+        <div id="builderLogoPreviewWrap" style="display:none;margin-bottom:1rem;">
+          <img id="builderLogoPreview" style="width:64px;height:64px;border-radius:10px;object-fit:cover;">
+        </div>
+        <div class="form-field">
+          <label for="builderCompanyNameEdit">Company name</label>
+          <input type="text" id="builderCompanyNameEdit" required>
+        </div>
+        <div class="form-field">
+          <label for="builderDescriptionEdit">Company description</label>
+          <textarea id="builderDescriptionEdit"></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="builderProjectsCompletedEdit">Projects completed so far</label>
+            <input type="number" id="builderProjectsCompletedEdit" min="0">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="builderServicesEdit">Services &amp; quotations</label>
+          <textarea id="builderServicesEdit"></textarea>
+        </div>
+        <div class="form-field">
+          <label>Update logo</label>
+          <div class="file-drop" id="builderLogoEditDrop">
+            <input type="file" id="builderLogoEditFile" accept="image/*" style="display:none;">
+            <span class="file-drop-label">Click to upload a new logo</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">Save changes</button>
+      </form>
+    </div>
+
+    <div class="panel" id="referralJoinPanel">
+      <h3>Referral program</h3>
+      <p id="referralJoinCopy" style="color:var(--text-secondary);font-size:0.9rem;"></p>
+      <button class="btn btn-primary btn-sm" id="referralJoinBtn">Join the referral program</button>
+      <a href="referral-dashboard.html" class="btn btn-secondary btn-sm" id="referralOpenBtn" style="display:none;">Open referral dashboard →</a>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="i18n.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="auth.js"></script>
+<script src="referral-cta.js"></script>
+<script src="builder.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const logoutBtn = document.getElementById('dashLogout');
+    if (logoutBtn) logoutBtn.addEventListener('click', async function (e) {
+      e.preventDefault(); await AcDB.logOut(); window.location.href = 'index.html';
+    });
+  });
+</script>
+</body>
+</html>
