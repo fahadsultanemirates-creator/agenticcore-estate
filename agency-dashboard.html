@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agency Dashboard — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="agency-dashboard">
+
+<div class="dash-shell" id="agencyDashRoot">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="nav-logo"><img src="images/agenticcore-icon.png" alt="" style="width:28px;height:28px;border-radius:6px;object-fit:cover;">Agentic<span class="brand-suffix">Estate</span></a>
+    <ul class="dash-nav">
+      <li><a href="agency-dashboard.html" class="active">Overview</a></li>
+      <li><a href="sell.html">List a property</a></li>
+      <li><a href="referral-dashboard.html">Referrals</a></li>
+      <li><a href="buy.html">Browse listings</a></li>
+      <li><a href="index.html">Back to site</a></li>
+      <li><a href="#" id="dashLogout">Log out</a></li>
+    </ul>
+  </aside>
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Welcome, <span id="agencyName">—</span></h1>
+      <a href="sell.html" class="btn btn-primary btn-sm">+ List a property</a>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><span class="stat-label">My listings</span><div class="stat-value" id="agencyListingCount">0</div></div>
+      <div class="stat-card"><span class="stat-label">AgenticCore Points</span><div class="stat-value" id="agencyPoints">0</div></div>
+      <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="agencyReferralCode" style="font-size:1.1rem;">—</div></div>
+      <div class="stat-card"><span class="stat-label">People in my network</span><div class="stat-value" id="agencyReferralCount">0</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>My listings</h3>
+      <p class="hint" style="margin:-0.3rem 0 0.8rem;">Every listing you post here carries your agency logo automatically.</p>
+      <table class="data-table">
+        <thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody id="agencyListingsBody"></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h3>Agency profile</h3>
+      <div class="auth-error" id="agencyProfileError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <div class="auth-error" id="agencyProfileSuccess" style="display:none;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#34D399;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <form id="agencyProfileForm">
+        <div id="agencyLogoPreviewWrap" style="display:none;margin-bottom:1rem;">
+          <img id="agencyLogoPreview" style="width:64px;height:64px;border-radius:10px;object-fit:cover;">
+        </div>
+        <div class="form-field">
+          <label for="agencyNameEdit">Agency name</label>
+          <input type="text" id="agencyNameEdit" required>
+        </div>
+        <div class="form-field">
+          <label for="agencyDescriptionEdit">Description</label>
+          <textarea id="agencyDescriptionEdit"></textarea>
+        </div>
+        <div class="form-field">
+          <label>Update logo</label>
+          <div class="file-drop" id="agencyLogoEditDrop">
+            <input type="file" id="agencyLogoEditFile" accept="image/*" style="display:none;">
+            <span class="file-drop-label">Click to upload a new logo</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">Save changes</button>
+      </form>
+    </div>
+
+    <div class="panel" id="referralJoinPanel">
+      <h3>Referral program</h3>
+      <p id="referralJoinCopy" style="color:var(--text-secondary);font-size:0.9rem;"></p>
+      <button class="btn btn-primary btn-sm" id="referralJoinBtn">Join the referral program</button>
+      <a href="referral-dashboard.html" class="btn btn-secondary btn-sm" id="referralOpenBtn" style="display:none;">Open referral dashboard →</a>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="i18n.js"></script>
+<script src="listings.js"></script>
+<script src="ai-placeholders.js"></script>
+<script src="auth.js"></script>
+<script src="referral-cta.js"></script>
+<script src="agency.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const logoutBtn = document.getElementById('dashLogout');
+    if (logoutBtn) logoutBtn.addEventListener('click', async function (e) {
+      e.preventDefault(); await AcDB.logOut(); window.location.href = 'index.html';
+    });
+  });
+</script>
+</body>
+</html>

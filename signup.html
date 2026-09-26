@@ -22,11 +22,13 @@
     <form id="signupForm">
       <div class="field-group">
         <label data-i18n="field_account_type"></label>
-        <div class="role-choice">
+        <div class="role-choice role-choice-4">
           <label class="role-option checked"><input type="radio" name="role" value="buyer" checked> <span data-i18n="role_buyer"></span></label>
-          <label class="role-option"><input type="radio" name="role" value="developer"> <span data-i18n="role_developer"></span></label>
+          <label class="role-option"><input type="radio" name="role" value="agency"> <span data-i18n="role_agency"></span></label>
+          <label class="role-option"><input type="radio" name="role" value="developer"> <span data-i18n="role_project"></span></label>
+          <label class="role-option"><input type="radio" name="role" value="builder"> <span data-i18n="role_builder"></span></label>
         </div>
-        <span class="hint" style="display:block;margin-top:0.4rem;">Developers add their company details and pick a package on the next step.</span>
+        <span class="hint" id="roleHint" style="display:block;margin-top:0.4rem;"></span>
       </div>
       <div class="field-group">
         <label for="fullName" data-i18n="field_full_name"></label>
@@ -64,15 +66,28 @@
 <script src="i18n.js"></script>
 <script src="auth.js"></script>
 <script>
+  const ROLE_HINTS = {
+    buyer: 'Shared dashboard for renting or selling your own property — choose rent or sale per listing.',
+    agency: 'Manage your agency\'s listings and your agency profile from one dashboard. Your logo shows on your listings automatically.',
+    developer: 'List a whole project or society — units/plots, size and price ranges, payment plan, and a brochure upload, on the next step.',
+    builder: 'Promotion-only dashboard for builders and developers — company profile, logo, and services. No property listings from this account.'
+  };
   document.addEventListener('DOMContentLoaded', function () {
     const refCode = new URLSearchParams(window.location.search).get('ref');
     if (refCode) document.getElementById('referralCode').value = refCode;
+    const hintEl = document.getElementById('roleHint');
+    function updateHint() {
+      const checked = document.querySelector('.role-option input:checked');
+      if (hintEl && checked) hintEl.textContent = ROLE_HINTS[checked.value] || '';
+    }
     document.querySelectorAll('.role-option input').forEach(function (input) {
       input.addEventListener('change', function () {
         document.querySelectorAll('.role-option').forEach(function (o) { o.classList.remove('checked'); });
         input.closest('.role-option').classList.add('checked');
+        updateHint();
       });
     });
+    updateHint();
   });
 </script>
 </body>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set up your agency — AgenticCore Estate</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="agency-setup">
+
+<div id="site-header"></div>
+
+<header class="inner-hero">
+  <div class="container">
+    <span class="hero-eyebrow"><span class="dot"></span> Step 2 of 2</span>
+    <h1>Set up your agency profile</h1>
+    <p class="hero-sub">This shows up on every listing you post — your logo, name, and description.</p>
+  </div>
+</header>
+
+<section class="deep-section" style="padding-top:var(--space-lg);">
+  <div class="container narrow">
+    <div class="panel" style="padding:var(--space-lg);">
+      <div class="auth-error" id="authError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <form id="agencySetupForm">
+        <div class="form-field">
+          <label for="agencyName">Agency name</label>
+          <input type="text" id="agencyName" required placeholder="e.g. Al-Noor Estate Agency">
+        </div>
+        <div class="form-field">
+          <label for="agencyDescription">Description</label>
+          <textarea id="agencyDescription" placeholder="A short introduction — areas you cover, years active, specialties."></textarea>
+        </div>
+        <div class="form-field">
+          <label>Agency logo</label>
+          <div class="file-drop" id="agencyLogoDrop">
+            <input type="file" id="agencyLogoFile" accept="image/*" style="display:none;">
+            <span class="file-drop-label">Click to upload a logo (optional — you can add this later)</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;">Create agency dashboard</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="i18n.js"></script>
+<script src="partials.js"></script>
+<script src="auth.js"></script>
+<script src="agency.js"></script>
+</body>
+</html>

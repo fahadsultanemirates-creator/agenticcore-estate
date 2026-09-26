@@ -61,6 +61,10 @@ if (signupForm) {
 
     if (role === 'developer') {
       window.location.href = 'developer-apply.html';
+    } else if (role === 'agency') {
+      window.location.href = 'agency-setup.html';
+    } else if (role === 'builder') {
+      window.location.href = 'builder-setup.html';
     } else {
       window.location.href = 'dashboard.html';
     }
@@ -94,6 +98,10 @@ if (loginForm) {
       if (user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';
       else if (user.developer_status === 'pending') window.location.href = 'developer-pending.html';
       else window.location.href = 'developer-dashboard.html';
+    } else if (user.role === 'agency') {
+      window.location.href = user.agency_name ? 'agency-dashboard.html' : 'agency-setup.html';
+    } else if (user.role === 'builder') {
+      window.location.href = user.builder_company_name ? 'builder-dashboard.html' : 'builder-setup.html';
     } else window.location.href = 'dashboard.html';
   });
 }

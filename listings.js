@@ -25,11 +25,13 @@ function acListingCardHTML(l) {
   const priceSuffix = l.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
   const verifiedBadge = l.verified ? '<span class="listing-badge verified">✓</span>' : '';
   const featuredBadge = l.featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '';
+  const agencyLogoHTML = l.agencyLogo ?
+    '<img src="' + l.agencyLogo + '" alt="" class="listing-agency-logo" title="' + (l.agencyName || '') + '">' : '';
   return (
     '<a href="listing.html?id=' + l.id + '" class="listing-card">' +
       '<div class="listing-thumb">' +
         '<span class="listing-badge ' + l.type + '">' + (l.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
-        verifiedBadge + featuredBadge +
+        verifiedBadge + featuredBadge + agencyLogoHTML +
         acListingThumbHTML(l) +
       '</div>' +
       '<div class="listing-body">' +

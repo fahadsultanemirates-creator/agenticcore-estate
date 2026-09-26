@@ -45,7 +45,12 @@
     <h3 style="margin:var(--space-lg) 0 var(--space-sm);">Listing packages</h3>
     <div id="dashPackageGrid"></div>
 
-    <a href="referral-dashboard.html" class="btn btn-secondary btn-sm">Open referral dashboard →</a>
+    <div class="panel" id="referralJoinPanel">
+      <h3>Referral program</h3>
+      <p id="referralJoinCopy" style="color:var(--text-secondary);font-size:0.9rem;"></p>
+      <button class="btn btn-primary btn-sm" id="referralJoinBtn">Join the referral program</button>
+      <a href="referral-dashboard.html" class="btn btn-secondary btn-sm" id="referralOpenBtn" style="display:none;">Open referral dashboard →</a>
+    </div>
   </main>
 </div>
 
@@ -57,6 +62,7 @@
 <script src="listings.js"></script>
 <script src="ai-placeholders.js"></script>
 <script src="auth.js"></script>
+<script src="referral-cta.js"></script>
 <script src="dashboard.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {

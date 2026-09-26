@@ -26,5 +26,7 @@ if (dashRoot) {
 
     const dashPackageGrid = document.getElementById('dashPackageGrid');
     if (dashPackageGrid) dashPackageGrid.innerHTML = acPackageGridHTML(AC_SELLER_PACKAGES, user.seller_package, 'pricing.html');
+
+    if (typeof acMountReferralCta === 'function') acMountReferralCta(user);
   })();
 }

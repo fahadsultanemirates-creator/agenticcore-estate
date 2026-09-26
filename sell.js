@@ -3,7 +3,7 @@
 const sellForm = document.getElementById('sellForm');
 if (sellForm) {
   (async function () {
-    const user = await requireAuth(['buyer', 'seller', 'developer']);
+    const user = await requireAuth(['buyer', 'seller', 'developer', 'agency']);
     if (!user) return;
 
     const cnicGroup = document.getElementById('sellCnicGroup');

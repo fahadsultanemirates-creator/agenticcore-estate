@@ -228,17 +228,21 @@ const AcDB = (function () {
     if (error || !listings) return [];
 
     const ownerIds = Array.from(new Set(listings.map(function (l) { return l.owner_id; })));
-    let tierByOwner = {};
+    let ownersById = {};
     if (ownerIds.length) {
-      const { data: owners } = await supabaseClient.from('public_profiles').select('id, developer_tier').in('id', ownerIds);
-      (owners || []).forEach(function (o) { tierByOwner[o.id] = o.developer_tier; });
+      const { data: owners } = await supabaseClient.from('public_profiles')
+        .select('id, developer_tier, role, agency_name, agency_logo_path').in('id', ownerIds);
+      (owners || []).forEach(function (o) { ownersById[o.id] = o; });
     }
 
     listings.forEach(function (l) {
+      const owner = ownersById[l.owner_id];
       l.sizeMarla = l.size_marla;
       l.sizeUnit = l.size_unit;
-      l.ownerDeveloperTier = tierByOwner[l.owner_id] || null;
+      l.ownerDeveloperTier = owner ? owner.developer_tier : null;
       l.featured = l.ownerDeveloperTier === 3;
+      l.agencyName = owner && owner.role === 'agency' ? owner.agency_name : null;
+      l.agencyLogo = owner && owner.role === 'agency' ? owner.agency_logo_path : null;
     });
 
     listings.sort(function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0); });
@@ -250,6 +254,11 @@ const AcDB = (function () {
     if (error || !data) return null;
     data.sizeMarla = data.size_marla;
     data.sizeUnit = data.size_unit;
+    const owner = await getUser(data.owner_id);
+    if (owner && owner.role === 'agency') {
+      data.agencyName = owner.agency_name;
+      data.agencyLogo = owner.agency_logo_path;
+    }
     return data;
   }
 
@@ -259,16 +268,139 @@ const AcDB = (function () {
     return data || [];
   }
 
-  // ---------- referrals (5 levels deep, computed server-side) ----------
+  // ---------- referrals (10 levels deep, computed server-side) ----------
   async function getReferralTree(userId, maxDepth) {
     maxDepth = maxDepth || 5;
     const { data } = await supabaseClient.rpc('get_referral_tree', { root_id: userId, max_depth: maxDepth });
     const levels = [];
     for (let i = 0; i < maxDepth; i++) levels.push([]);
     (data || []).forEach(function (row) {
-      if (row.level >= 1 && row.level <= maxDepth) levels[row.level - 1].push({ id: row.id, fullName: row.full_name });
+      if (row.level >= 1 && row.level <= maxDepth) {
+        levels[row.level - 1].push({ id: row.id, fullName: row.full_name, referredBy: row.referred_by });
+      }
     });
     return levels;
+  }
+
+  async function joinReferralProgram(userId) {
+    return updateUser(userId, { referral_joined: true, referral_joined_at: nowIso() });
+  }
+
+  // ---------- promotional logo uploads (agency / builder) ----------
+  async function uploadProfileAsset(userId, file, prefix) {
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = userId + '/' + prefix + '-' + Date.now() + '.' + ext;
+    const uploadResult = await supabaseClient.storage.from('profile-assets').upload(path, file);
+    if (uploadResult.error) return { error: uploadResult.error.message };
+    const { data: pub } = supabaseClient.storage.from('profile-assets').getPublicUrl(path);
+    return { path: pub.publicUrl };
+  }
+
+  // ---------- agency profile ----------
+  async function updateAgencyProfile(userId, payload) {
+    const patch = {
+      agency_name: payload.agencyName,
+      agency_description: payload.agencyDescription || null
+    };
+    if (payload.logoFile) {
+      const uploaded = await uploadProfileAsset(userId, payload.logoFile, 'agency-logo');
+      if (uploaded.error) return { error: uploaded.error };
+      patch.agency_logo_path = uploaded.path;
+    }
+    const updated = await updateUser(userId, patch);
+    if (!updated) return { error: 'Could not save agency profile.' };
+    return { user: updated };
+  }
+
+  // ---------- builder / developer company profile ----------
+  async function updateBuilderProfile(userId, payload) {
+    const patch = {
+      builder_company_name: payload.companyName,
+      builder_description: payload.description || null,
+      builder_projects_completed: payload.projectsCompleted || 0,
+      builder_services: payload.services || null
+    };
+    if (payload.logoFile) {
+      const uploaded = await uploadProfileAsset(userId, payload.logoFile, 'builder-logo');
+      if (uploaded.error) return { error: uploaded.error };
+      patch.builder_logo_path = uploaded.path;
+    }
+    const updated = await updateUser(userId, patch);
+    if (!updated) return { error: 'Could not save company profile.' };
+    return { user: updated };
+  }
+
+  // ---------- projects (whole-project / society listings) ----------
+  async function addProject(payload) {
+    const { data: project, error } = await supabaseClient.from('projects').insert({
+      owner_id: payload.ownerId,
+      title: payload.title,
+      city: payload.city,
+      area: payload.area,
+      status: payload.status || 'off_plan',
+      unit_types: payload.unitTypes || [],
+      total_units: payload.totalUnits || null,
+      total_plots: payload.totalPlots || null,
+      size_from: payload.sizeFrom || null,
+      size_to: payload.sizeTo || null,
+      size_unit: payload.sizeUnit || 'sqft',
+      price_from: payload.priceFrom || null,
+      price_to: payload.priceTo || null,
+      payment_plan: payload.paymentPlan || null,
+      possession_date: payload.possessionDate || null,
+      description: payload.description || null
+    }).select().single();
+    if (error) return { error: error.message };
+
+    if (payload.photoFiles && payload.photoFiles.length) {
+      const urls = [];
+      for (let i = 0; i < payload.photoFiles.length; i++) {
+        const file = payload.photoFiles[i];
+        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+        const path = payload.ownerId + '/' + project.id + '/photo-' + i + '.' + ext;
+        const uploadResult = await supabaseClient.storage.from('project-assets').upload(path, file);
+        if (!uploadResult.error) {
+          const { data: pub } = supabaseClient.storage.from('project-assets').getPublicUrl(path);
+          urls.push(pub.publicUrl);
+        }
+      }
+      if (urls.length) {
+        await supabaseClient.from('projects').update({ photos: urls }).eq('id', project.id);
+        project.photos = urls;
+      }
+    }
+
+    if (payload.brochureFile) {
+      const ext = (payload.brochureFile.name.split('.').pop() || 'pdf').toLowerCase();
+      const path = payload.ownerId + '/' + project.id + '/brochure.' + ext;
+      const uploadResult = await supabaseClient.storage.from('project-assets').upload(path, payload.brochureFile, { upsert: true });
+      if (!uploadResult.error) {
+        const { data: pub } = supabaseClient.storage.from('project-assets').getPublicUrl(path);
+        await supabaseClient.from('projects').update({ brochure_path: pub.publicUrl }).eq('id', project.id);
+        project.brochure_path = pub.publicUrl;
+      }
+    }
+
+    return { project: project };
+  }
+
+  async function getProjects(filters) {
+    filters = filters || {};
+    let q = supabaseClient.from('projects').select('*').order('created_at', { ascending: false });
+    if (filters.city) q = q.eq('city', filters.city);
+    if (filters.status) q = q.eq('status', filters.status);
+    const { data } = await q;
+    return data || [];
+  }
+
+  async function getProject(id) {
+    const { data } = await supabaseClient.from('projects').select('*').eq('id', id).single();
+    return data || null;
+  }
+
+  async function getProjectsByOwner(ownerId) {
+    const { data } = await supabaseClient.from('projects').select('*').eq('owner_id', ownerId).order('created_at', { ascending: false });
+    return data || [];
   }
 
   return {
@@ -280,7 +412,9 @@ const AcDB = (function () {
     getApplication: getApplication, getApplicationForUser: getApplicationForUser,
     getSignedDocUrl: getSignedDocUrl, decideApplication: decideApplication,
     addListing: addListing, getListings: getListings, getListing: getListing, getListingsByOwner: getListingsByOwner,
-    getReferralTree: getReferralTree
+    getReferralTree: getReferralTree, joinReferralProgram: joinReferralProgram,
+    updateAgencyProfile: updateAgencyProfile, updateBuilderProfile: updateBuilderProfile,
+    addProject: addProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner
   };
 })();
 

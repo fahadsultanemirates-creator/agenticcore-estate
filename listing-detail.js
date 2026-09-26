@@ -50,8 +50,15 @@ if (detailRoot) {
           '<div>' +
             '<div class="panel">' +
               '<h3>Listed by</h3>' +
-              '<p style="color:var(--text-primary);font-weight:600;">' + (owner ? owner.full_name : 'AgenticCore Estate user') + '</p>' +
-              '<p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">' + (owner && owner.role === 'developer' ? (featured ? 'Elite developer' : 'Developer account') : 'Individual seller') + '</p>' +
+              (owner && owner.role === 'agency' && owner.agency_logo_path ?
+                '<img src="' + owner.agency_logo_path + '" alt="" style="width:48px;height:48px;border-radius:10px;object-fit:cover;margin-bottom:0.5rem;">' : '') +
+              '<p style="color:var(--text-primary);font-weight:600;">' +
+                (owner && owner.role === 'agency' ? (owner.agency_name || owner.full_name) : (owner ? owner.full_name : 'AgenticCore Estate user')) +
+              '</p>' +
+              '<p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">' +
+                (owner && owner.role === 'developer' ? (featured ? 'Elite developer' : 'Developer account') :
+                 owner && owner.role === 'agency' ? 'Agency listing' : 'Individual seller') +
+              '</p>' +
               '<a href="login.html" class="btn btn-primary btn-block">Contact about this property</a>' +
             '</div>' +
             '<div id="detailAiSlot"></div>' +
