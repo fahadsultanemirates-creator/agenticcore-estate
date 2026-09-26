@@ -851,6 +851,12 @@ section { padding: var(--space-2xl) 0; position: relative; }
 #core-actions { padding-top: var(--space-md); padding-bottom: var(--space-md); }
 #developer-packages-teaser { padding-top: var(--space-md); padding-bottom: var(--space-md); }
 
+header.hero { padding-bottom: var(--space-lg); }
+#featured { padding-top: var(--space-lg); }
+.quick-links { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+#expansion-map { padding-bottom: var(--space-lg); }
+.final-cta { padding-top: var(--space-lg); }
+
 .hero-banner { width: 100%; padding-top: 4.5rem; background: var(--bg-primary); }
 .hero-banner img { width: 100%; height: auto; display: block; max-height: 480px; object-fit: cover; }
 
