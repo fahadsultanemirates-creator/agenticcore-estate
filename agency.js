@@ -75,8 +75,8 @@ if (agencyDashRoot) {
       }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">You haven\'t listed a property yet.</td></tr>';
     }
 
-    const tree = await AcDB.getReferralTree(user.id);
-    document.getElementById('agencyReferralCount').textContent = tree.reduce(function (sum, l) { return sum + l.length; }, 0);
+    const referrals = await AcDB.getDirectReferrals();
+    document.getElementById('agencyReferralCount').textContent = referrals.length;
 
     document.getElementById('agencyNameEdit').value = user.agency_name || '';
     document.getElementById('agencyDescriptionEdit').value = user.agency_description || '';

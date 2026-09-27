@@ -14,9 +14,9 @@
 <section style="padding-top:7rem;padding-bottom:var(--space-2xl);" id="refRoot">
   <div class="container narrow" style="max-width:900px;">
     <div class="section-head" style="text-align:left;margin-bottom:var(--space-lg);">
-      <span class="section-eyebrow">Your network</span>
+      <span class="section-eyebrow">Your referrals</span>
       <h2>Referral dashboard</h2>
-      <p>Ten levels deep — every account below you that transacts pays points up this chain.</p>
+      <p>Direct referrals only — earn 10% of what they spend, as AgenticCore Points.</p>
     </div>
 
     <div id="refJoinGate" class="panel" style="display:none;">
@@ -29,7 +29,7 @@
       <div class="stat-grid">
         <div class="stat-card"><span class="stat-label">Referral code</span><div class="stat-value" id="refCode" style="font-size:1.2rem;">—</div></div>
         <div class="stat-card"><span class="stat-label">AgenticCore Points</span><div class="stat-value" id="refPoints">0</div></div>
-        <div class="stat-card"><span class="stat-label">People in your network</span><div class="stat-value" id="refTotalPeople">0</div></div>
+        <div class="stat-card"><span class="stat-label">People you referred</span><div class="stat-value" id="refTotalPeople">0</div></div>
       </div>
 
       <div class="panel">
@@ -38,32 +38,14 @@
           <input type="text" id="refLink" readonly style="flex:1;padding:0.7rem 0.9rem;background:var(--bg-primary);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);color:var(--text-primary);font-family:var(--font-mono);font-size:0.85rem;">
           <button class="btn btn-primary btn-sm" id="refCopyBtn">Copy link</button>
         </div>
-      </div>
-
-      <h3 style="margin:var(--space-lg) 0 var(--space-sm);">Membership tiers</h3>
-      <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Packages aren't announced yet — this previews where things are headed. Your referral link and team already work today, no package required.</p>
-      <div id="refMembershipGrid"></div>
-
-      <div class="panel">
-        <h3>Your referral tree</h3>
-        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Direct referrals branch from you; their referrals branch from them, and so on.</p>
-        <div id="refTreeViz" class="ref-tree-scroll"></div>
+        <p style="color:var(--text-secondary);font-size:0.85rem;margin-top:0.8rem;">1 AgenticCore Point = Rs 1. Points earned here can be spent on any AgenticCore site — same account, same balance.</p>
       </div>
 
       <div class="panel">
-        <h3>By level — payout</h3>
+        <h3>People you've referred</h3>
         <table class="data-table">
-          <thead><tr><th>Level</th><th>Payout %</th><th>People</th><th>Names</th><th>Est. points</th></tr></thead>
-          <tbody id="refLevelsBody"></tbody>
-        </table>
-      </div>
-
-      <div class="panel">
-        <h3>Your team — all levels</h3>
-        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">Everyone in your downline, up to 10 levels out. Levels 1–5 earn points on transactions; deeper levels are tracked here ahead of any future payout expansion.</p>
-        <table class="data-table">
-          <thead><tr><th>Level</th><th>People</th><th>Names</th></tr></thead>
-          <tbody id="refTeamBody"></tbody>
+          <thead><tr><th>Name</th><th>Joined</th></tr></thead>
+          <tbody id="refDirectBody"></tbody>
         </table>
       </div>
     </div>

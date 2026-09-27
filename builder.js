@@ -68,8 +68,8 @@ if (builderDashRoot) {
     document.getElementById('builderPoints').textContent = user.points;
     document.getElementById('builderReferralCode').textContent = user.referral_code;
 
-    const tree = await AcDB.getReferralTree(user.id);
-    document.getElementById('builderReferralCount').textContent = tree.reduce(function (sum, l) { return sum + l.length; }, 0);
+    const referrals = await AcDB.getDirectReferrals();
+    document.getElementById('builderReferralCount').textContent = referrals.length;
 
     document.getElementById('builderCompanyNameEdit').value = user.builder_company_name || '';
     document.getElementById('builderDescriptionEdit').value = user.builder_description || '';

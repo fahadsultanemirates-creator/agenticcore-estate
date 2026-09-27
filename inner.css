@@ -98,39 +98,6 @@ html[dir="rtl"] .tier-card ul li::before { left: auto; right: 0; }
   flex-shrink: 0; font-weight: 700;
 }
 
-.level-row.l2 .level-badge { background: var(--accent-emerald); color: #06180F; }
-.level-row.l3 .level-badge, .level-row.l4 .level-badge, .level-row.l5 .level-badge { background: var(--border-subtle); color: var(--text-primary); }
-
-/* ---------- referral tree (pure-CSS org chart) ---------- */
-.ref-tree-scroll { overflow-x: auto; padding: 0.5rem 0 1rem; }
-.ref-tree, .ref-tree ul { list-style: none; margin: 0; padding: 0; display: flex; }
-.ref-tree { display: inline-flex; }
-.ref-tree li {
-  position: relative; padding: 20px 10px 0 10px; text-align: center;
-}
-.ref-tree li::before, .ref-tree li::after {
-  content: ''; position: absolute; top: 0; right: 50%;
-  border-top: 2px solid var(--border-subtle); width: 50%; height: 20px;
-}
-.ref-tree li::after { right: auto; left: 50%; border-left: 2px solid var(--border-subtle); }
-.ref-tree li:only-child::after, .ref-tree li:only-child::before { display: none; }
-.ref-tree li:only-child { padding-top: 0; }
-.ref-tree li:first-child::before, .ref-tree li:last-child::after { border: 0 none; }
-.ref-tree li:last-child::before { border-right: 2px solid var(--border-subtle); border-radius: 0 6px 0 0; }
-.ref-tree li:first-child::after { border-radius: 6px 0 0 0; }
-.ref-tree ul::before {
-  content: ''; position: absolute; top: 0; left: 50%;
-  border-left: 2px solid var(--border-subtle); width: 0; height: 20px;
-}
-.ref-tree > li { padding-top: 0; }
-.ref-tree > li::before, .ref-tree > li::after, .ref-tree > li > ul::before { display: none; }
-.ref-tree a {
-  border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-panel);
-  color: var(--text-primary); display: inline-block; padding: 0.4rem 0.7rem;
-  font-size: 0.78rem; white-space: nowrap; text-decoration: none;
-}
-.ref-tree > li > a { border-color: var(--accent-gold); color: var(--accent-gold-bright); font-weight: 700; }
-
 .level-info h4 { font-size: 1.05rem; margin-bottom: 0.2rem; }
 .level-info p { color: var(--text-secondary); font-size: 0.88rem; }
 

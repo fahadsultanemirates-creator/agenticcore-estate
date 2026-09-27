@@ -2,9 +2,9 @@
 
 AI-run real estate marketplace for Pakistan — forked from AgenticCore Agency's
 base structure, recolored to deep emerald + gold, and extended with buy/sell/rent
-listings, a Developer Corner, an admin approval workflow, a referral system
-(built to scale to 10 levels), two independent pricing tracks, a Business Pool
-section, and scaffolding for three upcoming AI features.
+listings, a Developer Corner, an admin approval workflow, a flat 10% direct
+referral system, two independent pricing tracks, a Business Pool section,
+and scaffolding for three upcoming AI features.
 
 It's a static site (no build step) — open `index.html` directly, or serve the
 folder with any static file server. Launch scope is Islamabad and Rawalpindi
@@ -16,9 +16,9 @@ insert, not a redeploy.
 **A real Supabase project backs this site** — `db-client.js` (the `AcDB`
 object every page script calls) talks to real Postgres, Auth, and Storage,
 not a mock. `supabase-client.js` holds the project URL + publishable key.
-Schema lives in `supabase/migrations/` (`0001`–`0005`), including RLS
+Schema lives in `supabase/migrations/` (`0001`–`0011`), including RLS
 policies, a `handle_new_user()` trigger that creates a profile row on
-signup, and security-definer RPCs (`get_referral_tree`, `email_for_phone`)
+signup, and security-definer RPCs (`get_my_direct_referrals`, `email_for_phone`)
 that keep phone/CNIC out of any broadly-readable table.
 
 There are no seeded demo accounts — sign up for real through `signup.html`.
@@ -54,11 +54,11 @@ need one.
     bundle marketing (social content, brochures, banners) from AgenticCore
     Agency at no extra cost; Business Pool is a fully custom partnership.
 - **Referral system**: `referral.html` (explainer) and `referral-dashboard.html`
-  (your link, per-level payout breakdown, and a separate "team" view). Payout
-  is 5 levels deep today (25% / 15% / 10% / 5% / 2.5%, paid in AgenticCore
-  Points); `get_referral_tree()` and `AcDB.getReferralTree()` already accept
-  a `max_depth` up to 10 so the payout table can extend without a schema
-  change — the referral-dashboard's "team" table already shows all 10.
+  (your link, points balance, and a list of people you've directly referred).
+  Flat 10% — no levels, no membership cards. Referring account earns 10% of
+  what a directly-referred account spends, paid in AgenticCore Points (1
+  point = Rs 1). `get_my_direct_referrals()` / `AcDB.getDirectReferrals()`
+  are scoped to the caller (`auth.uid()`) only.
 - **Business Pool**: `business-pool.html` — manager Telegram/WhatsApp contact
   and cross-support messaging with AgenticCore Agency / AgenticCore Biz.
 - **Language toggle**: one click, top-right of every page (`i18n.js`) —

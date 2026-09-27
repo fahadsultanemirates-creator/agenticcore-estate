@@ -65,7 +65,7 @@ const AC_I18N = {
 
     section_referral_eyebrow: 'Earn by referring',
     section_referral_title: 'Referral System',
-    section_referral_sub: 'Once you get your dashboard, you can activate your referral link and join the AgenticCore Estate referral system if you’d like. Earn rewards up to 10 levels deep — real money, on top of AgenticCore’s special services.',
+    section_referral_sub: 'Once you get your dashboard, you can activate your referral link and join the AgenticCore Estate referral system if you’d like. Earn 10% in AgenticCore Points whenever someone you referred spends — real money, usable across every AgenticCore site.',
 
     section_family_eyebrow: 'One family, several companies',
     section_family_title: 'Part of the AgenticCore family',
@@ -109,7 +109,7 @@ const AC_I18N = {
     bp_cross_title: 'Cross-platform support', bp_cross_sub: 'Business Pool access extends across the AgenticCore family.',
 
     ref_eyebrow: 'Earn by referring', ref_title: 'The Referral Program',
-    ref_sub: 'Five levels deep — the whole chain gets rewarded when a referred account transacts.',
+    ref_sub: 'One link, flat 10% — earn AgenticCore Points whenever someone you referred spends.',
     ref_dashboard_cta: 'Open referral dashboard',
 
     admin_login_title: 'Admin sign in', admin_login_sub: 'Restricted to AgenticCore Estate reviewers.',
@@ -180,7 +180,7 @@ const AC_I18N = {
 
     section_referral_eyebrow: 'ریفر کرکے کمائیں',
     section_referral_title: 'ریفرل سسٹم',
-    section_referral_sub: 'ڈیش بورڈ ملنے کے بعد، اگر آپ چاہیں تو اپنا ریفرل لنک ایکٹیویٹ کرکے AgenticCore Estate کے ریفرل سسٹم میں شامل ہو سکتے ہیں۔ 10 درجوں تک انعامات کمائیں — AgenticCore کی خصوصی سہولیات کے ساتھ ساتھ اصل رقم بھی۔',
+    section_referral_sub: 'ڈیش بورڈ ملنے کے بعد، اگر آپ چاہیں تو اپنا ریفرل لنک ایکٹیویٹ کرکے AgenticCore Estate کے ریفرل سسٹم میں شامل ہو سکتے ہیں۔ جسے آپ ریفر کریں، اُس کے خرچ کا 10 فیصد AgenticCore Points کی صورت میں کمائیں — اصل رقم، جو ہر AgenticCore ویب سائٹ پر استعمال ہو سکتی ہے۔',
 
     section_family_eyebrow: 'ایک خاندان، کئی کمپنیاں',
     section_family_title: 'AgenticCore خاندان کا حصہ',
@@ -224,7 +224,7 @@ const AC_I18N = {
     bp_cross_title: 'کراس پلیٹ فارم سپورٹ', bp_cross_sub: 'بزنس پول تک رسائی پورے AgenticCore خاندان میں پھیلی ہوئی ہے۔',
 
     ref_eyebrow: 'ریفر کرکے کمائیں', ref_title: 'ریفرل پروگرام',
-    ref_sub: 'پانچ درجے گہرائی میں — جب ریفر شدہ اکاؤنٹ لین دین کرتا ہے تو پوری زنجیر کو انعام ملتا ہے۔',
+    ref_sub: 'ایک لنک، سیدھا 10 فیصد — جسے آپ ریفر کریں اُس کے خرچ پر AgenticCore Points کمائیں۔',
     ref_dashboard_cta: 'ریفرل ڈیش بورڈ کھولیں',
 
     admin_login_title: 'ایڈمن سائن ان', admin_login_sub: 'صرف AgenticCore Estate جائزہ لینے والوں کے لیے مخصوص۔',

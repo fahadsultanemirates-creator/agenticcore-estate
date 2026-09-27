@@ -268,18 +268,12 @@ const AcDB = (function () {
     return data || [];
   }
 
-  // ---------- referrals (10 levels deep, computed server-side) ----------
-  async function getReferralTree(userId, maxDepth) {
-    maxDepth = maxDepth || 5;
-    const { data } = await supabaseClient.rpc('get_referral_tree', { root_id: userId, max_depth: maxDepth });
-    const levels = [];
-    for (let i = 0; i < maxDepth; i++) levels.push([]);
-    (data || []).forEach(function (row) {
-      if (row.level >= 1 && row.level <= maxDepth) {
-        levels[row.level - 1].push({ id: row.id, fullName: row.full_name, referredBy: row.referred_by });
-      }
+  // ---------- referrals (direct only -- 10% flat, no levels) ----------
+  async function getDirectReferrals() {
+    const { data } = await supabaseClient.rpc('get_my_direct_referrals');
+    return (data || []).map(function (row) {
+      return { id: row.id, fullName: row.full_name, joinedAt: row.joined_at };
     });
-    return levels;
   }
 
   async function joinReferralProgram(userId) {
@@ -412,7 +406,7 @@ const AcDB = (function () {
     getApplication: getApplication, getApplicationForUser: getApplicationForUser,
     getSignedDocUrl: getSignedDocUrl, decideApplication: decideApplication,
     addListing: addListing, getListings: getListings, getListing: getListing, getListingsByOwner: getListingsByOwner,
-    getReferralTree: getReferralTree, joinReferralProgram: joinReferralProgram,
+    getDirectReferrals: getDirectReferrals, joinReferralProgram: joinReferralProgram,
     updateAgencyProfile: updateAgencyProfile, updateBuilderProfile: updateBuilderProfile,
     addProject: addProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner
   };

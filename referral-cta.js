@@ -11,13 +11,13 @@ function acMountReferralCta(user) {
   if (!copyEl || !joinBtn || !openBtn) return;
 
   function renderJoined() {
-    copyEl.textContent = 'You\'re in. Share your referral link to start building your team — rewards go up to 10 levels deep, and any current or future AgenticCore package can be unlocked through it.';
+    copyEl.textContent = 'You\'re in. Share your referral link — whenever someone you referred spends on AgenticCore, you earn 10% of it as AgenticCore Points.';
     joinBtn.style.display = 'none';
     openBtn.style.display = 'inline-block';
   }
 
   function renderNotJoined() {
-    copyEl.textContent = 'Activate your referral link and start building your team today. Earn AgenticCore Points — and real rewards — up to 10 levels deep. Packages aren\'t announced yet, but your link and team already work.';
+    copyEl.textContent = 'Activate your referral link and start sharing it today. Earn 10% of what the people you refer spend, as AgenticCore Points — usable across every AgenticCore site.';
     joinBtn.style.display = 'inline-block';
     openBtn.style.display = 'none';
   }
