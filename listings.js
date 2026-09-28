@@ -5,6 +5,17 @@
 
 const AC_HOUSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"/></svg>';
 
+// Listing text is typed by users, so it is always escaped before it goes
+// into innerHTML (otherwise a listing title could run script on every visitor).
+function acEsc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// Only http(s) URLs (our own storage) are allowed into src attributes.
+function acSafeUrl(u) { return /^https?:\/\//i.test(String(u || '')) ? acEsc(u) : ''; }
+
 function acFormatPKR(n) {
   n = Number(n) || 0;
   if (n >= 10000000) return '₨ ' + (n / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
@@ -14,7 +25,7 @@ function acFormatPKR(n) {
 
 function acListingThumbHTML(l) {
   if (l.photos && l.photos.length) {
-    return '<img src="' + l.photos[0] + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;">';
+    return '<img src="' + acSafeUrl(l.photos[0]) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;">';
   }
   return AC_HOUSE_ICON;
 }
@@ -26,9 +37,9 @@ function acListingCardHTML(l) {
   const verifiedBadge = l.verified ? '<span class="listing-badge verified">✓</span>' : '';
   const featuredBadge = l.featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '';
   const agencyLogoHTML = l.agencyLogo ?
-    '<img src="' + l.agencyLogo + '" alt="" class="listing-agency-logo" title="' + (l.agencyName || '') + '">' : '';
+    '<img src="' + acSafeUrl(l.agencyLogo) + '" alt="" class="listing-agency-logo" title="' + acEsc(l.agencyName) + '">' : '';
   return (
-    '<a href="listing.html?id=' + l.id + '" class="listing-card">' +
+    '<a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="listing-card">' +
       '<div class="listing-thumb">' +
         '<span class="listing-badge ' + l.type + '">' + (l.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
         verifiedBadge + featuredBadge + agencyLogoHTML +
@@ -36,12 +47,12 @@ function acListingCardHTML(l) {
       '</div>' +
       '<div class="listing-body">' +
         '<div class="listing-price">' + acFormatPKR(l.price) + priceSuffix + '</div>' +
-        '<div class="listing-title">' + l.title + '</div>' +
-        '<div class="listing-location">' + acPropertyTypeLabel(l.property_type) + ' · ' + l.area + ', ' + l.city + '</div>' +
+        '<div class="listing-title">' + acEsc(l.title) + '</div>' +
+        '<div class="listing-location">' + acEsc(acPropertyTypeLabel(l.property_type)) + ' · ' + acEsc(l.area) + ', ' + acEsc(l.city) + '</div>' +
         '<div class="listing-specs">' +
           (l.beds ? '<span>' + l.beds + ' ' + dict.listing_beds + '</span>' : '') +
           (l.baths ? '<span>' + l.baths + ' ' + dict.listing_baths + '</span>' : '') +
-          '<span>' + l.sizeMarla + ' ' + acSizeUnitLabel(l.sizeUnit || 'marla') + '</span>' +
+          '<span>' + acEsc(l.sizeMarla) + ' ' + acSizeUnitLabel(l.sizeUnit || 'marla') + '</span>' +
         '</div>' +
       '</div>' +
     '</a>'
@@ -107,4 +118,36 @@ function acInitListingPage(fixedType) {
     window.acOnLanguageChange = apply;
     apply();
   })();
+}
+
+// "My listings" table rows with View / Edit / Delete, shared by the
+// individual and agency dashboards.
+function acMyListingsRowsHTML(list) {
+  if (!list.length) return '<tr><td colspan="5" style="color:var(--text-tertiary);">You haven\'t listed a property yet. <a href="sell.html" style="color:var(--accent-gold-bright);">List one now →</a></td></tr>';
+  return list.map(function (l) {
+    return '<tr><td>' + acEsc(l.title) + '</td><td>' + (l.type === 'rent' ? 'Rent' : 'Sale') + '</td><td>' + acFormatPKR(l.price) + '</td>' +
+      '<td>' + (l.verified ? '<span class="badge badge-emerald">Verified</span>' : '<span class="badge badge-muted">Unverified</span>') + '</td>' +
+      '<td style="white-space:nowrap;"><a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">View</a> ' +
+      '<a href="sell.html?edit=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">Edit</a> ' +
+      '<button type="button" class="btn btn-secondary btn-sm" data-delete-listing="' + acEsc(l.id) + '" data-title="' + acEsc(l.title) + '">Delete</button></td></tr>';
+  }).join('');
+}
+
+function acWireMyListings(tbody, userId, onChange) {
+  tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-tertiary);">Loading…</td></tr>';
+  AcDB.getListingsByOwner(userId).then(function (list) {
+    tbody.innerHTML = acMyListingsRowsHTML(list);
+    if (onChange) onChange(list);
+  });
+  if (tbody.dataset.wired) return;
+  tbody.dataset.wired = '1';
+  tbody.addEventListener('click', async function (e) {
+    const btn = e.target.closest('[data-delete-listing]');
+    if (!btn) return;
+    if (!confirm('Delete "' + btn.getAttribute('data-title') + '"? This removes it from the site and cannot be undone.')) return;
+    btn.disabled = true;
+    const res = await AcDB.deleteListing(btn.getAttribute('data-delete-listing'), userId);
+    if (res.error) { alert(res.error); btn.disabled = false; return; }
+    acWireMyListings(tbody, userId, onChange);
+  });
 }

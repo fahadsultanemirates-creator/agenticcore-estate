@@ -93,6 +93,8 @@ if (loginForm) {
     }
 
     const user = result.user;
+    const next = new URLSearchParams(window.location.search).get('next') || '';
+    if (/^[a-z0-9-]+\.html(\?[A-Za-z0-9=&%_.-]*)?$/.test(next)) { window.location.href = next; return; }
     if (user.role === 'admin') window.location.href = 'admin-dashboard.html';
     else if (user.role === 'developer') {
       if (user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';

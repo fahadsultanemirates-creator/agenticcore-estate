@@ -65,15 +65,10 @@ if (agencyDashRoot) {
     document.getElementById('agencyPoints').textContent = user.points;
     document.getElementById('agencyReferralCode').textContent = user.referral_code;
 
-    const myListings = await AcDB.getListingsByOwner(user.id);
-    document.getElementById('agencyListingCount').textContent = myListings.length;
     const tbody = document.getElementById('agencyListingsBody');
-    if (tbody) {
-      tbody.innerHTML = myListings.map(function (l) {
-        return '<tr><td>' + l.title + '</td><td>' + l.type + '</td><td>' + acFormatPKR(l.price) + '</td>' +
-          '<td>' + (l.verified ? '<span class="badge badge-emerald">Verified</span>' : '<span class="badge badge-muted">Unverified</span>') + '</td></tr>';
-      }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">You haven\'t listed a property yet.</td></tr>';
-    }
+    if (tbody) acWireMyListings(tbody, user.id, function (list) {
+      document.getElementById('agencyListingCount').textContent = list.length;
+    });
 
     const referrals = await AcDB.getDirectReferrals();
     document.getElementById('agencyReferralCount').textContent = referrals.length;

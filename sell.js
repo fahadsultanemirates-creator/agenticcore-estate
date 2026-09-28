@@ -3,7 +3,7 @@
 const sellForm = document.getElementById('sellForm');
 if (sellForm) {
   (async function () {
-    const user = await requireAuth(['buyer', 'seller', 'developer', 'agency']);
+    const user = await requireAuth(['buyer', 'seller', 'developer', 'agency', 'admin']);
     if (!user) return;
 
     const cnicGroup = document.getElementById('sellCnicGroup');
@@ -42,6 +42,46 @@ if (sellForm) {
         toggleManualArea();
       });
       areaSelect.addEventListener('change', toggleManualArea);
+    }
+
+    // ---------- edit mode: sell.html?edit=<listing id> ----------
+    const editId = new URLSearchParams(window.location.search).get('edit');
+    let editing = null;
+    if (editId) {
+      editing = await AcDB.getListing(editId);
+      if (!editing || (editing.owner_id !== user.id && user.role !== 'admin')) {
+        const errorEl = document.getElementById('sellError');
+        errorEl.textContent = 'That listing was not found or is not yours to edit.';
+        errorEl.style.display = 'block';
+        editing = null;
+      } else {
+        document.querySelector('.inner-hero h1').textContent = 'Edit your listing';
+        document.title = 'Edit listing — AgenticCore Estate';
+        const radio = document.querySelector('input[name="sellType"][value="' + editing.type + '"]');
+        if (radio) {
+          radio.checked = true;
+          document.querySelectorAll('.role-option').forEach(function (o) { o.classList.toggle('checked', o.contains(radio)); });
+        }
+        typeSelect.value = editing.property_type;
+        sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(editing.size_unit || AC_DEFAULT_SIZE_UNIT[typeSelect.value]);
+        document.getElementById('sellTitle').value = editing.title;
+        document.getElementById('sellPrice').value = editing.price;
+        document.getElementById('sellSize').value = editing.size_marla;
+        document.getElementById('sellBeds').value = editing.beds || '';
+        document.getElementById('sellBaths').value = editing.baths || '';
+        document.getElementById('sellDescription').value = editing.description || '';
+        citySelect.value = editing.city;
+        const areas = await AcDB.getAreasForCity(editing.city);
+        areaSelect.innerHTML = '<option value="">Select an area</option>' +
+          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('') +
+          '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
+        if (areas.indexOf(editing.area) >= 0) areaSelect.value = editing.area;
+        else { areaSelect.value = MANUAL_AREA_VALUE; areaManual.value = editing.area; }
+        toggleManualArea();
+        const count = (editing.photos || []).length;
+        document.querySelector('label[for="sellPhotos"]').textContent = 'Add more photos (' + count + ' of 8 used)';
+        sellForm.querySelector('button[type="submit"]').textContent = 'Save changes';
+      }
     }
 
     // CNIC verification is switched off for the initial launch window so
@@ -84,7 +124,7 @@ if (sellForm) {
       submitBtn.disabled = true;
       submitBtn.textContent = photoFiles.length ? 'Uploading photos…' : 'Posting…';
 
-      const result = await AcDB.addListing({
+      const payload = {
         ownerId: user.id,
         title: document.getElementById('sellTitle').value.trim(),
         type: document.querySelector('input[name="sellType"]:checked').value,
@@ -98,17 +138,20 @@ if (sellForm) {
         sizeUnit: sizeUnitSelect.value,
         description: document.getElementById('sellDescription').value.trim(),
         photoFiles: photoFiles
-      });
+      };
+      const result = editing
+        ? await AcDB.updateListing(editing.id, editing.owner_id, payload)
+        : await AcDB.addListing(payload);
 
       if (result.error) {
         errorEl.textContent = result.error;
         errorEl.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Post listing';
+        submitBtn.textContent = editing ? 'Save changes' : 'Post listing';
         return;
       }
 
-      window.location.href = 'listing.html?id=' + result.listing.id + '&posted=1';
+      window.location.href = 'listing.html?id=' + encodeURIComponent(result.listing.id) + (editing ? '&saved=1' : '&posted=1');
     });
   })();
 }

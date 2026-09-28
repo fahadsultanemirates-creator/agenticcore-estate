@@ -313,3 +313,25 @@ html[dir="rtl"] .ai-chat-panel { right: auto; left: 1.5rem; }
 
 .cross-support-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin: var(--space-lg) 0; }
 @media (max-width: 760px) { .cross-support-grid { grid-template-columns: 1fr; } }
+.dash-main .panel { overflow-x: auto; }
+
+/* Phones: the dashboard column must be allowed to shrink (grid children
+   default to min-width:auto, so a wide table pushed the page sideways),
+   and the sidebar menu becomes a compact row of links. */
+.dash-main { min-width: 0; }
+@media (max-width: 900px) {
+  .dash-main { padding: var(--space-md) var(--space-sm); }
+  .dash-sidebar { padding: var(--space-sm); }
+  .dash-sidebar .nav-logo { margin-bottom: var(--space-sm); }
+  .dash-sidebar .dash-nav { flex-direction: row; flex-wrap: wrap; gap: 0.2rem 0.4rem; }
+  .dash-sidebar .dash-nav a { padding: 0.5rem 0.7rem; }
+}
+@media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; } }
+@media (max-width: 600px) {
+  .dash-main .data-table thead { display: none; }
+  .dash-main .data-table, .dash-main .data-table tbody, .dash-main .data-table tr, .dash-main .data-table td { display: block; width: 100%; }
+  .dash-main .data-table tr { padding: 0.7rem 0; border-bottom: 1px solid var(--border-subtle); }
+  .dash-main .data-table td { border: 0; padding: 0.15rem 0; }
+  .dash-main .data-table td:first-child { font-weight: 600; }
+  .dash-main .data-table td:last-child { padding-top: 0.5rem; white-space: normal !important; }
+}

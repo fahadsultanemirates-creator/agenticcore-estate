@@ -262,6 +262,55 @@ const AcDB = (function () {
     return data;
   }
 
+  // Edit an existing listing (RLS lets only the owner or an admin update it).
+  // New photos are appended to the existing ones, up to 8 in total.
+  async function updateListing(id, ownerId, payload) {
+    const patch = {
+      title: payload.title, type: payload.type, property_type: payload.propertyType,
+      city: payload.city, area: payload.area, price: payload.price,
+      beds: payload.beds || 0, baths: payload.baths || 0,
+      size_marla: payload.sizeMarla || 0, size_unit: payload.sizeUnit || 'marla',
+      description: payload.description
+    };
+    const { data: listing, error } = await supabaseClient.from('listings').update(patch).eq('id', id).select().single();
+    if (error || !listing) return { error: error ? error.message : 'Could not save this listing.' };
+
+    const existing = listing.photos || [];
+    const files = (payload.photoFiles || []).slice(0, Math.max(0, 8 - existing.length));
+    if (files.length) {
+      const urls = existing.slice();
+      for (let i = 0; i < files.length; i++) {
+        const ext = (files[i].name.split('.').pop() || 'jpg').toLowerCase();
+        const path = ownerId + '/' + id + '/' + Date.now() + '-' + i + '.' + ext;
+        const up = await supabaseClient.storage.from('listing-photos').upload(path, files[i]);
+        if (!up.error) urls.push(supabaseClient.storage.from('listing-photos').getPublicUrl(path).data.publicUrl);
+      }
+      await supabaseClient.from('listings').update({ photos: urls }).eq('id', id);
+      listing.photos = urls;
+    }
+    return { listing: listing };
+  }
+
+  // Delete a listing and its photos. The select() after delete tells us
+  // whether a row was really removed (RLS turns a refused delete into 0 rows).
+  async function deleteListing(id, ownerId) {
+    const { data: rows, error } = await supabaseClient.from('listings').delete().eq('id', id).select('id, photos');
+    if (error) return { error: error.message };
+    if (!rows || !rows.length) return { error: 'This listing could not be deleted. Please contact support.' };
+    const prefix = supabaseClient.storage.from('listing-photos').getPublicUrl('').data.publicUrl;
+    const paths = (rows[0].photos || []).map(function (u) { return u.indexOf(prefix) === 0 ? decodeURIComponent(u.slice(prefix.length)) : null; }).filter(Boolean);
+    if (paths.length) await supabaseClient.storage.from('listing-photos').remove(paths);
+    return {};
+  }
+
+  // Seller's name + phone for a listing, for signed-in visitors only
+  // (security-definer RPC, so profiles.phone never becomes publicly readable).
+  async function getListingContact(listingId) {
+    const { data, error } = await supabaseClient.rpc('get_listing_contact', { p_listing: listingId });
+    if (error) return { error: error.message };
+    return { contact: (data || [])[0] || null };
+  }
+
   async function getListingsByOwner(ownerId) {
     const { data } = await supabaseClient.from('listings').select('*').eq('owner_id', ownerId).order('created_at', { ascending: false });
     (data || []).forEach(function (l) { l.sizeMarla = l.size_marla; l.sizeUnit = l.size_unit; });
@@ -406,6 +455,7 @@ const AcDB = (function () {
     getApplication: getApplication, getApplicationForUser: getApplicationForUser,
     getSignedDocUrl: getSignedDocUrl, decideApplication: decideApplication,
     addListing: addListing, getListings: getListings, getListing: getListing, getListingsByOwner: getListingsByOwner,
+    updateListing: updateListing, deleteListing: deleteListing, getListingContact: getListingContact,
     getDirectReferrals: getDirectReferrals, joinReferralProgram: joinReferralProgram,
     updateAgencyProfile: updateAgencyProfile, updateBuilderProfile: updateBuilderProfile,
     addProject: addProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner
@@ -414,7 +464,11 @@ const AcDB = (function () {
 
 async function requireAuth(roles) {
   const user = await AcDB.currentUser();
-  if (!user) { window.location.href = 'login.html'; return null; }
+  if (!user) {
+    const here = location.pathname.split('/').pop() + location.search;
+    window.location.href = 'login.html' + (here ? '?next=' + encodeURIComponent(here) : '');
+    return null;
+  }
   if (roles && roles.indexOf(user.role) === -1) { window.location.href = 'index.html'; return null; }
   return user;
 }

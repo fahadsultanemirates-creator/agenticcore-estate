@@ -870,8 +870,11 @@ header.hero { padding-bottom: var(--space-lg); }
 #expansion-map { padding-bottom: var(--space-lg); }
 .final-cta { padding-top: var(--space-lg); }
 
-.hero-banner { width: 100%; padding-top: 4.5rem; background: var(--bg-primary); }
-.hero-banner img { width: 100%; height: auto; display: block; max-height: 480px; object-fit: cover; }
+/* The banner artwork carries the "Khwabon se ghar tak" line in its top-left
+   corner, so it is never cropped: on wide screens it is shown whole and
+   centred on a band that matches the artwork's own edge colour. */
+.hero-banner { width: 100%; padding-top: 4.5rem; background: #102A1D; }
+.hero-banner img { width: 100%; height: auto; display: block; max-width: 900px; margin: 0 auto; }
 
 .city-photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
 .city-photo-row figure { margin: 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle); }
@@ -879,4 +882,25 @@ header.hero { padding-bottom: var(--space-lg); }
 .city-photo-row figcaption { padding: 0.6rem 0.9rem; font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-panel); }
 @media (max-width: 700px) { .city-photo-row { grid-template-columns: 1fr; } }
 
-.family-logo-banner { display: block; max-width: 220px; margin: 0 auto var(--space-lg); border-radius: var(--radius-md); }
+
+/* ============================================
+   Landing page rhythm: consecutive sections each carried 6rem of
+   top AND bottom padding, leaving ~190px of empty space between
+   headings. One consistent gap between sections instead.
+   ============================================ */
+body[data-page="home"] section { padding: var(--space-xl) 0; }
+body[data-page="home"] section + section { padding-top: 0; }
+body[data-page="home"] .section-head { margin-bottom: var(--space-lg); }
+body[data-page="home"] .section-head:last-child { margin-bottom: 0; }
+body[data-page="home"] .section-head p:last-child { margin-bottom: 0; }
+body[data-page="home"] .hero-text-below { margin-top: 0; }
+body[data-page="home"] #hero-text-block { padding: 0 0 var(--space-lg); }
+body[data-page="home"] #hero-text-block .hero-sub { margin-bottom: 0; }
+body[data-page="home"] #core-actions,
+body[data-page="home"] #developer-packages-teaser { padding-bottom: var(--space-lg); }
+body[data-page="home"] .quick-links { padding-bottom: var(--space-xl); }
+body[data-page="home"] .final-cta { padding-top: var(--space-xl); }
+@media (max-width: 640px) {
+  body[data-page="home"] section { padding: var(--space-lg) 0; }
+  body[data-page="home"] section + section { padding-top: 0; }
+}
