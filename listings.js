@@ -59,9 +59,22 @@ function acListingCardHTML(l) {
   );
 }
 
+// The same property posted more than once (same owner, title, price and
+// area) is shown to buyers once. Owners still see every row in their dashboard.
+function acDedupeListings(list) {
+  const seen = {};
+  return (list || []).filter(function (l) {
+    const k = [l.owner_id, String(l.title).trim().toLowerCase(), Number(l.price), String(l.area).trim().toLowerCase()].join('|');
+    if (seen[k]) return false;
+    seen[k] = true;
+    return true;
+  });
+}
+
 function acRenderListings(containerId, list) {
   const el = document.getElementById(containerId);
   if (!el) return;
+  list = acDedupeListings(list);
   if (!list.length) {
     el.innerHTML = '<div class="empty-state">No listings match these filters yet.</div>';
     return;
@@ -106,7 +119,7 @@ function acInitListingPage(fixedType) {
       if (priceInput && priceInput.value) filters.maxPrice = priceInput.value;
       if (bedsSelect && bedsSelect.value) filters.beds = bedsSelect.value;
       if (qInput && qInput.value) filters.q = qInput.value;
-      const results = await AcDB.getListings(filters);
+      const results = acDedupeListings(await AcDB.getListings(filters));
       acRenderListings('listingGrid', results);
       if (countEl) countEl.textContent = results.length + (results.length === 1 ? ' listing' : ' listings');
     }

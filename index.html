@@ -3,294 +3,306 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgenticCore Estate — Buy, Rent & Sell Property in Pakistan</title>
-<meta name="description" content="Search buy and rent listings across Pakistan, list your own property, or join the Developer Corner — AI-assisted, built for Pakistan.">
+<title>AgenticCore Estate — Property in Islamabad & Rawalpindi, search normally or just ask</title>
+<meta name="description" content="Buy, rent or list property in Islamabad and Rawalpindi. Search with normal filters or tell AgenticCore what you need — it searches real listings and explains every match. Listing is free during launch.">
+<link rel="canonical" href="https://agenticcore.estate/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AgenticCore Estate">
+<meta property="og:title" content="Find property your way — AgenticCore Estate">
+<meta property="og:description" content="Search Islamabad & Rawalpindi normally, or tell AgenticCore exactly what you're looking for. List free during launch.">
+<meta property="og:url" content="https://agenticcore.estate/">
+<meta property="og:image" content="https://agenticcore.estate/images/pakistan-map-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#071F17">
+<link rel="icon" href="images/agenticcore-icon.png">
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet" href="home.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"AgenticCore Estate","url":"https://agenticcore.estate/","logo":"https://agenticcore.estate/images/agenticcore-icon.png","areaServed":["Islamabad","Rawalpindi"]},
+ {"@type":"WebSite","name":"AgenticCore Estate","url":"https://agenticcore.estate/","potentialAction":{"@type":"SearchAction","target":"https://agenticcore.estate/buy.html?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
 </head>
 <body data-page="home">
-
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="site-header"></div>
 
-<div class="hero-banner">
-  <img src="images/pakistan-map-hero.jpg" alt="AgenticCore Estate — Khwabon se ghar tak, across Pakistan" loading="eager">
-</div>
+<main id="main">
 
-<header class="hero">
-  <canvas class="hero-network" id="heroNetwork"></canvas>
-  <div class="container hero-inner">
-    <div class="hero-actions">
-      <a href="buy.html" class="btn btn-primary" data-i18n="hero_cta_browse"></a>
-      <a href="sell.html" class="btn btn-secondary" data-i18n="hero_cta_sell"></a>
+<!-- 1. Hero: AI + conventional search -->
+<header class="h2-hero">
+  <canvas class="hero-network" id="heroNetwork" aria-hidden="true"></canvas>
+  <div class="container h2-hero-inner">
+    <p class="h2-eyebrow"><span class="dot"></span> <span data-i18n="h2_eyebrow">Islamabad & Rawalpindi · Khwabon se ghar tak</span></p>
+    <h1 class="h2-title" data-i18n="h2_title">Find property your way.</h1>
+    <p class="h2-sub" data-i18n="h2_sub">Search Islamabad & Rawalpindi normally — or tell AgenticCore exactly what you're looking for.</p>
+
+    <div class="h2-ctas">
+      <a href="buy.html" class="btn btn-secondary" data-i18n="h2_cta_search">Search Properties</a>
+      <a href="#askBox" class="btn btn-primary" id="ctaAsk" data-i18n="h2_cta_ask">Ask AgenticCore</a>
+      <a href="sell.html" class="btn btn-secondary" data-i18n="h2_cta_list">List a Property</a>
     </div>
 
-    <div class="search-bar">
-      <div class="search-tabs">
-        <button type="button" class="search-tab active" id="tabBuy" data-i18n="search_buy"></button>
-        <button type="button" class="search-tab" id="tabRent" data-i18n="search_rent"></button>
-        <button type="button" class="search-tab" id="tabSell" data-i18n="search_sell"></button>
+    <div class="h2-search" id="askBox">
+      <div class="search-tabs h2-tabs" role="tablist" aria-label="Search mode">
+        <button type="button" class="search-tab active" role="tab" aria-selected="true" aria-controls="panelAsk" id="tabAsk">✦ <span data-i18n="h2_tab_ask">Ask AgenticCore</span></button>
+        <button type="button" class="search-tab" role="tab" aria-selected="false" aria-controls="panelNormal" id="tabBuy" data-i18n="search_buy">Buy</button>
+        <button type="button" class="search-tab" role="tab" aria-selected="false" aria-controls="panelNormal" id="tabRent" data-i18n="search_rent">Rent</button>
       </div>
-      <form class="search-fields" id="heroSearchForm">
-        <div class="search-field" style="grid-column: span 2;">
-          <label data-i18n="search_keyword_ph" for="hsKeyword" style="text-align:left;"></label>
+
+      <form class="h2-ask" id="panelAsk" role="tabpanel" aria-labelledby="tabAsk">
+        <label for="askInput" class="sr-only" data-i18n="h2_ask_label">Tell AgenticCore what you're looking for</label>
+        <textarea id="askInput" rows="2" maxlength="600" data-i18n-ph="h2_ask_ph" placeholder="Tell AgenticCore what you're looking for…"></textarea>
+        <button type="submit" class="btn btn-primary" data-i18n="h2_ask_btn">Find it</button>
+        <div class="h2-chips" aria-label="Examples">
+          <button type="button" class="h2-chip">10 marla house in DHA under Rs 5 crore</button>
+          <button type="button" class="h2-chip">2 bed apartment in Islamabad for rent</button>
+          <button type="button" class="h2-chip">Commercial property in Bahria for investment</button>
+          <button type="button" class="h2-chip">New construction house near schools</button>
+        </div>
+      </form>
+
+      <form class="search-fields h2-normal" id="panelNormal" role="tabpanel" hidden>
+        <div class="search-field h2-kw">
+          <label for="hsKeyword" data-i18n="search_keyword_ph">Search by area, society, or project name</label>
           <input type="text" id="hsKeyword" data-i18n-ph="search_keyword_ph">
         </div>
         <div class="search-field">
-          <label data-i18n="search_city" for="hsCity"></label>
+          <label for="hsCity" data-i18n="search_city">City</label>
           <select id="hsCity">
-            <option value="" data-i18n="search_any_city"></option>
+            <option value="" data-i18n="search_any_city">Any city</option>
             <option>Islamabad</option>
             <option>Rawalpindi</option>
           </select>
         </div>
         <div class="search-field">
-          <label data-i18n="search_price" for="hsPrice"></label>
-          <input type="number" id="hsPrice" placeholder="e.g. 30000000">
+          <label for="hsPrice" data-i18n="search_price">Max price (PKR)</label>
+          <input type="number" id="hsPrice" inputmode="numeric" placeholder="e.g. 30000000">
         </div>
         <div class="search-field">
-          <button type="submit" class="btn btn-primary btn-block" data-i18n="search_go"></button>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="search_go">Search</button>
         </div>
       </form>
     </div>
+    <div id="askResults" aria-live="polite"></div>
   </div>
 </header>
 
-<section id="featured">
+<!-- 2. Featured real properties -->
+<section id="featured" class="h2-section">
   <div class="container">
-    <div class="section-head">
-      <span class="section-eyebrow" data-i18n="section_featured_eyebrow"></span>
-      <h2 data-i18n="section_featured_title"></h2>
-      <p data-i18n="section_featured_sub"></p>
-    </div>
-
-    <div class="featured-block">
-      <div class="featured-block-head">
-        <h3 data-i18n="section_featured_buy_title"></h3>
-        <a href="buy.html" data-i18n="view_all"></a>
-      </div>
-      <div class="hscroll-row" id="featuredBuyRow"></div>
-    </div>
-
-    <div class="featured-block">
-      <div class="featured-block-head">
-        <h3 data-i18n="section_featured_rent_title"></h3>
-        <a href="rent.html" data-i18n="view_all"></a>
-      </div>
-      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
-    </div>
-
-    <div class="featured-block">
-      <div class="featured-block-head">
-        <h3 data-i18n="section_featured_projects_title"></h3>
-      </div>
-      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
-    </div>
-
-    <div class="featured-block">
-      <div class="featured-block-head">
-        <h3 data-i18n="section_featured_agencies_title"></h3>
-      </div>
-      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
-    </div>
-
-    <div class="featured-block">
-      <div class="featured-block-head">
-        <h3 data-i18n="section_featured_developers_title"></h3>
-      </div>
-      <div class="featured-coming-soon" data-i18n="section_coming_soon_note"></div>
-    </div>
-  </div>
-</section>
-
-<section id="packages-teaser">
-  <div class="container">
-    <div class="section-head">
-      <span class="section-eyebrow" data-i18n="section_packages_eyebrow"></span>
-      <h2 data-i18n="section_packages_title"></h2>
-      <p data-i18n="section_packages_sub"></p>
-    </div>
-  </div>
-</section>
-
-<section class="hero" id="hero-text-block">
-  <div class="container hero-inner">
-    <div class="hero-text-below">
-      <span class="hero-eyebrow"><span class="dot"></span> <span data-i18n="hero_eyebrow"></span></span>
-      <h1><span data-i18n="hero_title_pre"></span><span class="accent" data-i18n="hero_title_accent"></span></h1>
-      <p class="hero-sub" data-i18n="hero_sub"></p>
-    </div>
-  </div>
-</section>
-
-<section id="core-actions">
-  <div class="container">
-    <img class="promo-media promo-image-solo" src="images/rent-list-buy-sell.jpg" alt="Rent, list, buy, and sell property on AgenticCore Estate" loading="lazy">
-  </div>
-</section>
-
-<section id="developer-packages-teaser">
-  <div class="container">
-    <img class="promo-media promo-image-solo" src="images/list-agency-builder-project.jpg" alt="List your agency, builder company, or project on AgenticCore Estate" loading="lazy">
-  </div>
-</section>
-
-<section id="referral-teaser">
-  <div class="container">
-    <div class="promo-split">
+    <div class="h2-head-row">
       <div>
-        <span class="section-eyebrow" data-i18n="section_referral_eyebrow"></span>
-        <h2 data-i18n="section_referral_title"></h2>
-        <p data-i18n="section_referral_sub"></p>
-        <a href="referral.html" class="btn btn-primary" data-i18n="ref_dashboard_cta" style="margin-top:var(--space-sm);"></a>
+        <span class="section-eyebrow" data-i18n="section_featured_eyebrow">Fresh on the market</span>
+        <h2 data-i18n="h2_featured_title">Latest properties</h2>
       </div>
-      <img class="promo-media" src="images/referral-promo.jpg" alt="Join the AgenticCore Estate referral system" loading="lazy">
+      <a href="buy.html" class="h2-link" data-i18n="view_all">View all listings</a>
+    </div>
+    <div class="hscroll-row" id="featuredBuyRow"></div>
+    <div id="featuredRentWrap" hidden>
+      <div class="h2-head-row" style="margin-top:var(--space-lg)"><h3 data-i18n="h2_rent_title">For rent</h3><a href="rent.html" class="h2-link" data-i18n="view_all">View all listings</a></div>
+      <div class="hscroll-row" id="featuredRentRow"></div>
     </div>
   </div>
 </section>
 
-<section id="agenticcore-family">
+<!-- 3. Ask AgenticCore demonstration -->
+<section id="ask-demo" class="h2-section h2-alt">
+  <div class="container h2-split">
+    <div>
+      <span class="section-eyebrow" data-i18n="h2_ask_eyebrow">Ask AgenticCore</span>
+      <h2 data-i18n="h2_ask_title">Don't scroll through hundreds of irrelevant listings. Say what you need.</h2>
+      <p class="h2-lead" data-i18n="h2_ask_lead">Type it the way you'd tell a trusted dealer — budget, size, area, bedrooms, even Roman Urdu. AgenticCore turns it into a search and shows only real listings on this site, with the reasons each one fits.</p>
+      <ol class="h2-steps">
+        <li><strong data-i18n="h2_ask_s1t">You describe it</strong> <span data-i18n="h2_ask_s1">"4 crore, 10 marla, DHA or Bahria, at least 4 bedrooms."</span></li>
+        <li><strong data-i18n="h2_ask_s2t">AgenticCore understands it</strong> <span data-i18n="h2_ask_s2">Budget, size, location and must-haves become filters.</span></li>
+        <li><strong data-i18n="h2_ask_s3t">You see real matches — and why</strong> <span data-i18n="h2_ask_s3">If nothing fits exactly, you see the closest listings and exactly how they differ.</span></li>
+      </ol>
+      <p class="h2-fine" data-i18n="h2_ask_fine">AgenticCore never invents properties or details. It only recommends listings that exist on AgenticCore Estate.</p>
+    </div>
+    <div class="h2-demo" aria-label="Try an example">
+      <p class="h2-demo-label" data-i18n="h2_try">Try an example — it runs a real search:</p>
+      <button type="button" class="h2-demo-q" data-ask="I have 4 crore and want a recently built 10 marla house around DHA or Bahria Rawalpindi with at least 4 bedrooms">“I have 4 crore and want a recently built 10 marla house around DHA or Bahria Rawalpindi with at least 4 bedrooms.”</button>
+      <button type="button" class="h2-demo-q" data-ask="7 marla house Bahria Town Phase 8">“7 marla house Bahria Town Phase 8”</button>
+      <button type="button" class="h2-demo-q" data-ask="upper portion kiraye pe chahiye pindi 50 hazar">“upper portion kiraye pe chahiye pindi 50 hazar”</button>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Popular locations -->
+<section id="locations" class="h2-section">
+  <div class="container">
+    <span class="section-eyebrow" data-i18n="h2_loc_eyebrow">Where we're live</span>
+    <h2 data-i18n="h2_loc_title">Islamabad & Rawalpindi</h2>
+    <div class="h2-cities">
+      <a class="h2-city" href="buy.html?city=Islamabad">
+        <img src="images/islamabad-skyline.jpg" alt="Islamabad skyline with the Margalla Hills" loading="lazy" width="800" height="450">
+        <span class="h2-city-name">Islamabad</span><span class="h2-city-count" id="countIslamabad"></span>
+      </a>
+      <a class="h2-city" href="buy.html?city=Rawalpindi">
+        <img src="images/listing-abu-bakr-block-photo.jpg" alt="A house listed in Bahria Town, Rawalpindi" loading="lazy" width="800" height="450">
+        <span class="h2-city-name">Rawalpindi</span><span class="h2-city-count" id="countRawalpindi"></span>
+      </a>
+    </div>
+    <div class="h2-areas" id="popularAreas"></div>
+  </div>
+</section>
+
+<!-- 5. Why list -->
+<section id="why-list" class="h2-section h2-alt">
   <div class="container">
     <div class="section-head">
-      <span class="section-eyebrow" data-i18n="section_family_eyebrow"></span>
-      <h2 data-i18n="section_family_title"></h2>
-      <p data-i18n="section_family_sub"></p>
+      <span class="section-eyebrow" data-i18n="h2_why_eyebrow">For sellers, agents & agencies</span>
+      <h2 data-i18n="h2_why_title">Have a property to sell or rent? List it here.</h2>
+      <p data-i18n="h2_why_sub">AgenticCore helps turn your details into a better listing — and puts buyers in direct contact with you.</p>
     </div>
-    <div class="bento">
-      <div class="bento-card medium">
-        <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-        <div><h3>AgenticCore Agency</h3><p>Websites, marketing, and design — the team every AgenticCore Estate developer can tap for their own project.</p></div>
-      </div>
-      <div class="bento-card medium">
-        <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 20.8 8 13.6 2 9.2h7.6z"/></svg></div>
-        <div><h3>AgenticCore Biz</h3><p>Broader business operations support for developers and agencies scaling past real estate alone.</p></div>
-      </div>
-      <div class="bento-card medium">
-        <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-        <div><h3>AgenticCore Token</h3><p>The AC token connects the whole family — cross-family member benefits, including here on Estate.</p></div>
-      </div>
-    </div>
-    <p style="text-align:center;margin-top:var(--space-md);color:var(--text-secondary);font-size:0.9rem;">AgenticCore Estate is one company in this family — and the only place a real estate developer gets a listing platform and a marketing team under one roof.</p>
-  </div>
-</section>
-
-<section class="quick-links">
-  <div class="container">
-    <div class="quick-links-row">
-      <a href="business-pool.html" class="btn btn-primary" data-i18n="quick_links_pool"></a>
-      <a href="referral.html" class="btn btn-primary" data-i18n="quick_links_referral"></a>
-      <a href="pricing.html" class="btn btn-primary" data-i18n="quick_links_pricing"></a>
+    <div class="h2-benefits">
+      <div class="h2-benefit"><span class="h2-ico">₨0</span><h3 data-i18n="h2_b1t">Free during launch</h3><p data-i18n="h2_b1">No charge to list right now. Join before paid packages launch and get 50% off standard packages and 30% off higher tiers for your first 2 months.</p></div>
+      <div class="h2-benefit"><span class="h2-ico">✦</span><h3 data-i18n="h2_b2t">AI-assisted listing</h3><p data-i18n="h2_b2">Type rough notes; AgenticCore drafts the title and description and tells you what's missing. You check it before anything is published.</p></div>
+      <div class="h2-benefit"><span class="h2-ico">◎</span><h3 data-i18n="h2_b3t">Listing quality score</h3><p data-i18n="h2_b3">A clear 0–100 score with specific fixes — more photos, exact block, possession status — so your listing is complete.</p></div>
+      <div class="h2-benefit"><span class="h2-ico">▣</span><h3 data-i18n="h2_b4t">Ready-to-share cards</h3><p data-i18n="h2_b4">WhatsApp and social cards with a QR code back to your listing, plus English and Roman Urdu captions.</p></div>
+      <div class="h2-benefit"><span class="h2-ico">☎</span><h3 data-i18n="h2_b5t">Buyers reach you directly</h3><p data-i18n="h2_b5">Signed-in buyers can call or WhatsApp you from the listing page.</p></div>
+      <div class="h2-benefit"><span class="h2-ico">◆</span><h3 data-i18n="h2_b6t">Your agency on every listing</h3><p data-i18n="h2_b6">Agency accounts show their name and logo on each listing, with a dashboard to manage them.</p></div>
     </div>
   </div>
 </section>
 
-<section id="vip">
+<!-- 6. Free Listing Toolkit -->
+<section id="toolkit" class="h2-section">
+  <div class="container h2-split">
+    <div>
+      <span class="section-eyebrow" data-i18n="h2_tk_eyebrow">Free Listing Toolkit</span>
+      <h2 data-i18n="h2_tk_title">List free. Market smarter.</h2>
+      <p class="h2-lead" data-i18n="h2_tk_lead">Every genuine listing unlocks tools to market it — made from your listing's own details.</p>
+      <ul class="h2-tools">
+        <li><span class="badge badge-emerald" data-i18n="h2_tk_now">Included</span> <span data-i18n="h2_tk1">WhatsApp property card</span></li>
+        <li><span class="badge badge-emerald" data-i18n="h2_tk_now">Included</span> <span data-i18n="h2_tk2">Square social-media creative</span></li>
+        <li><span class="badge badge-emerald" data-i18n="h2_tk_now">Included</span> <span data-i18n="h2_tk3">QR share card linking to your listing</span></li>
+        <li><span class="badge badge-emerald" data-i18n="h2_tk_now">Included</span> <span data-i18n="h2_tk4">English + Roman Urdu captions</span></li>
+        <li><span class="badge badge-emerald" data-i18n="h2_tk_now">Included</span> <span data-i18n="h2_tk5">Listing quality report & photo-order tips</span></li>
+        <li><span class="badge badge-gold" data-i18n="h2_tk_daily">Daily allowance</span> <span data-i18n="h2_tk6">AI-improved title & description</span></li>
+      </ul>
+      <div class="h2-btn-row">
+        <a href="sell.html" class="btn btn-primary" data-i18n="h2_tk_cta">List a property free</a>
+        <a href="dashboard.html" class="btn btn-secondary" data-i18n="h2_tk_cta2">Open my listings' toolkit</a>
+      </div>
+    </div>
+    <div class="h2-card-preview" id="cardPreview" aria-label="Example share card"></div>
+  </div>
+</section>
+
+<!-- 7. Trust -->
+<section id="trust" class="h2-section h2-alt">
   <div class="container">
-    <div class="dual-panel" style="grid-template-columns:1fr;max-width:640px;margin:0 auto;">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="h2_trust_eyebrow">Trust, explained</span>
+      <h2 data-i18n="h2_trust_title">Every badge means exactly one thing.</h2>
+      <p data-i18n="h2_trust_sub">We only show what we have actually checked — and we say what we haven't.</p>
+    </div>
+    <div class="h2-badges">
+      <div class="h2-badge"><span class="listing-badge verified" data-i18n="h2_tr_checked_b">✓ Checked</span><p data-i18n="h2_tr1">AgenticCore reviewed the listing information. Not a title, ownership or legal verification.</p></div>
+      <div class="h2-badge"><span class="listing-badge buy" data-i18n="h2_tr_agency_b">Agency</span><p data-i18n="h2_tr2">Posted by a registered agency account with its own profile.</p></div>
+      <div class="h2-badge"><span class="listing-badge rent" data-i18n="h2_tr_photos_b">Photos</span><p data-i18n="h2_tr3">The owner uploaded real photos of the property.</p></div>
+      <div class="h2-badge"><span class="listing-badge fresh" data-i18n="h2_tr_fresh_b">Confirmed available</span><p data-i18n="h2_tr4">The owner confirmed in the last 30 days that it's still available.</p></div>
+    </div>
+    <p class="h2-fine" style="text-align:center" data-i18n="h2_trust_fine">We do not verify property titles, NOCs or government approvals. Always check documents with your own legal adviser before paying.</p>
+  </div>
+</section>
+
+<!-- 8–9. Agents / Developers -->
+<section id="partners" class="h2-section">
+  <div class="container">
+    <div class="dual-panel">
+      <div class="panel-card">
+        <span class="panel-tag" data-i18n="h2_ag_tag">Agents & agencies</span>
+        <h3 data-i18n="h2_ag_title">Bring your listings. Get a dashboard, a profile and marketing tools.</h3>
+        <ul class="panel-list">
+          <li data-i18n="h2_ag1">Free listings during launch</li>
+          <li data-i18n="h2_ag2">Your agency name & logo on every listing</li>
+          <li data-i18n="h2_ag3">AI-assisted listing and quality tips</li>
+          <li data-i18n="h2_ag4">Share cards for WhatsApp & social media</li>
+          <li data-i18n="h2_ag5">Earn 10% in AgenticCore Points on referrals' spend</li>
+        </ul>
+        <a href="signup.html" class="btn btn-primary btn-sm" data-i18n="h2_ag_cta">Create an agency account</a>
+      </div>
       <div class="panel-card vip">
-        <span class="panel-tag" data-i18n="nav_business_pool"></span>
-        <h3>A dedicated manager for high-volume partners</h3>
-        <p>Once you're listing regularly, get a direct line to a human manager on Telegram or WhatsApp — plus cross-support across AgenticCore Agency and AgenticCore Biz.</p>
-        <a href="business-pool.html" class="btn btn-secondary btn-sm">Learn more</a>
+        <span class="panel-tag" data-i18n="h2_dev_tag">Developers & builders</span>
+        <h3 data-i18n="h2_dev_title">List a whole project or society — plots, payment plan and brochure.</h3>
+        <ul class="panel-list">
+          <li data-i18n="h2_dev1">A project page with unit types, sizes and price ranges</li>
+          <li data-i18n="h2_dev2">Developer dashboard and project packages</li>
+          <li data-i18n="h2_dev3">Marketing support through AgenticCore Pakistan</li>
+        </ul>
+        <div class="h2-btn-row"><a href="developer-corner.html" class="btn btn-primary btn-sm" data-i18n="devcorner_cta">Explore Developer Corner</a><a href="developer-packages.html" class="btn btn-secondary btn-sm" data-i18n="h2_dev_pkgs">Project packages</a></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="expansion-map">
+<!-- 10. How listing works -->
+<section id="how-listing" class="h2-section h2-alt">
   <div class="container">
     <div class="section-head">
-      <span class="section-eyebrow">One network, growing city by city</span>
-      <h2>Live in Islamabad &amp; Rawalpindi — the rest of the cities are next</h2>
-      <p>We've started from Islamabad and Rawalpindi, and will gradually join the rest of the cities across Pakistan.</p>
+      <span class="section-eyebrow" data-i18n="h2_how_eyebrow">How listing works</span>
+      <h2 data-i18n="h2_how_title">From notes to a shareable listing in minutes</h2>
     </div>
-    <div class="pk-map-wrap">
-      <svg viewBox="0 0 420 520" class="pk-map" role="img" aria-label="AgenticCore Estate city network across Pakistan">
-        <defs>
-          <radialGradient id="pkActiveGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#F0CE63" stop-opacity="0.35"/>
-            <stop offset="100%" stop-color="#F0CE63" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <g stroke="#1D4835" stroke-width="1.4" fill="none" opacity="0.8">
-          <line x1="230" y1="95" x2="205" y2="150"/>
-          <line x1="230" y1="95" x2="150" y2="110"/>
-          <line x1="230" y1="95" x2="300" y2="150"/>
-          <line x1="300" y1="150" x2="280" y2="182"/>
-          <line x1="280" y1="182" x2="255" y2="220"/>
-          <line x1="230" y1="95" x2="255" y2="220"/>
-          <line x1="255" y1="220" x2="205" y2="235"/>
-          <line x1="205" y1="235" x2="190" y2="330"/>
-          <line x1="190" y1="330" x2="130" y2="430"/>
-          <line x1="190" y1="330" x2="165" y2="460"/>
-        </g>
-        <circle cx="230" cy="95" r="30" fill="url(#pkActiveGlow)"/>
-        <g>
-          <circle cx="230" cy="95" r="7" fill="#F0CE63"/>
-          <text x="244" y="92" fill="#F4EFE0" font-size="15" font-weight="700">Islamabad</text>
-          <text x="244" y="108" fill="#9BB9A9" font-size="10">Live now</text>
-        </g>
-        <g>
-          <circle cx="205" cy="150" r="7" fill="#F0CE63"/>
-          <text x="95" y="154" fill="#F4EFE0" font-size="15" font-weight="700">Rawalpindi</text>
-          <text x="120" y="169" fill="#9BB9A9" font-size="10">Live now</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="150" cy="110" r="5" fill="#3FAE7B"/>
-          <text x="30" y="107" fill="#9BB9A9" font-size="13">Peshawar</text>
-          <text x="30" y="121" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="300" cy="150" r="5" fill="#3FAE7B"/>
-          <text x="315" y="147" fill="#9BB9A9" font-size="13">Sialkot</text>
-          <text x="315" y="161" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="280" cy="182" r="5" fill="#3FAE7B"/>
-          <text x="295" y="179" fill="#9BB9A9" font-size="13">Gujranwala</text>
-          <text x="295" y="193" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="255" cy="220" r="5" fill="#3FAE7B"/>
-          <text x="270" y="226" fill="#9BB9A9" font-size="13">Lahore</text>
-          <text x="270" y="240" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="205" cy="235" r="5" fill="#3FAE7B"/>
-          <text x="100" y="232" fill="#9BB9A9" font-size="13">Faisalabad</text>
-          <text x="100" y="246" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="190" cy="330" r="5" fill="#3FAE7B"/>
-          <text x="205" y="327" fill="#9BB9A9" font-size="13">Multan</text>
-          <text x="205" y="341" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="130" cy="430" r="5" fill="#3FAE7B"/>
-          <text x="15" y="427" fill="#9BB9A9" font-size="13">Quetta</text>
-          <text x="15" y="441" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-        <g opacity="0.55">
-          <circle cx="165" cy="460" r="5" fill="#3FAE7B"/>
-          <text x="180" y="457" fill="#9BB9A9" font-size="13">Karachi</text>
-          <text x="180" y="471" fill="#62806E" font-size="9">Coming soon</text>
-        </g>
-      </svg>
+    <ol class="h2-flow">
+      <li><span>1</span><h3 data-i18n="h2_how1t">Create a free account</h3><p data-i18n="h2_how1">Phone number, email and a password. Agencies and developers get their own dashboards.</p></li>
+      <li><span>2</span><h3 data-i18n="h2_how2t">Fill the form — or let AgenticCore help</h3><p data-i18n="h2_how2">Type rough notes and review the draft, or fill the form yourself.</p></li>
+      <li><span>3</span><h3 data-i18n="h2_how3t">Add photos & check your score</h3><p data-i18n="h2_how3">Up to 8 photos. The quality score tells you exactly what to add.</p></li>
+      <li><span>4</span><h3 data-i18n="h2_how4t">Share it</h3><p data-i18n="h2_how4">Download your WhatsApp and social cards and send buyers straight to your listing.</p></li>
+    </ol>
+    <div style="text-align:center"><a href="sell.html" class="btn btn-primary" data-i18n="h2_cta_list">List a Property</a></div>
+  </div>
+</section>
+
+<!-- 11. Ecosystem -->
+<section id="ecosystem" class="h2-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="section_family_eyebrow">One family, several companies</span>
+      <h2 data-i18n="h2_eco_title">Need to promote a listing? That's AgenticCore Pakistan.</h2>
+      <p data-i18n="h2_eco_sub">AgenticCore Estate is where property is listed and found. Our sister company AgenticCore Pakistan makes the marketing: posts, flyers, reels, brochures and WhatsApp lead systems — with the same login.</p>
+    </div>
+    <div class="h2-eco">
+      <a class="h2-eco-card h2-eco-main" href="https://agenticcorepk.netlify.app/services.html" rel="noopener">
+        <strong>AgenticCore Pakistan</strong>
+        <span data-i18n="h2_eco_pk">Property marketing for dealers, agencies and developers — published PKR prices, most work delivered the same day.</span>
+        <span class="h2-link" data-i18n="h2_eco_pk_cta">See marketing services →</span>
+      </a>
+      <a class="h2-eco-card" href="business-pool.html"><strong data-i18n="nav_business_pool">Business Pool</strong><span data-i18n="h2_eco_bp">A dedicated manager for high-volume partners.</span></a>
+      <a class="h2-eco-card" href="referral.html"><strong data-i18n="nav_referrals">Referrals</strong><span data-i18n="h2_eco_ref">One link, flat 10% of your direct referrals' spend in AgenticCore Points (1 point = Rs 1).</span></a>
     </div>
   </div>
 </section>
 
-<section class="final-cta">
+<!-- 13. Expansion roadmap -->
+<section id="expansion-map" class="h2-section h2-alt">
+  <div class="container h2-split">
+    <div>
+      <span class="section-eyebrow" data-i18n="h2_map_eyebrow">Khwabon se ghar tak</span>
+      <h2 data-i18n="h2_map_title">Live in Islamabad & Rawalpindi — more cities next</h2>
+      <p class="h2-lead" data-i18n="h2_map_sub">We're starting where we can serve properly, then joining the rest of Pakistan city by city.</p>
+    </div>
+    <img class="h2-map-img" src="images/pakistan-map-hero.jpg" alt="Map of Pakistan with the words Khwabon se ghar tak" loading="lazy" width="1200" height="896">
+  </div>
+</section>
+
+<!-- 14. Final CTA -->
+<section class="final-cta h2-section">
   <div class="container">
-    <div class="promo-split">
-      <div>
-        <h2 data-i18n="final_cta_title"></h2>
-        <p data-i18n="final_cta_sub"></p>
-        <a href="signup.html" class="btn btn-primary" data-i18n="final_cta_btn"></a>
-      </div>
-      <img class="promo-media" src="images/cta-signup-dashboard.jpg" alt="Sign up today and get your dashboard" loading="lazy">
+    <h2 data-i18n="h2_final_title">Search normally — or ask AgenticCore.</h2>
+    <p data-i18n="h2_final_sub">Find a property, or list yours free in a few minutes.</p>
+    <div class="h2-ctas" style="justify-content:center">
+      <a href="buy.html" class="btn btn-secondary" data-i18n="h2_cta_search">Search Properties</a>
+      <a href="#askBox" class="btn btn-primary" data-i18n="h2_cta_ask">Ask AgenticCore</a>
+      <a href="sell.html" class="btn btn-secondary" data-i18n="h2_cta_list">List a Property</a>
     </div>
   </div>
 </section>
+</main>
 
 <div id="site-footer"></div>
 
@@ -303,40 +315,8 @@
 <script src="ai-placeholders.js"></script>
 <script src="partials.js"></script>
 <script src="network-animation.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    async function renderFeatured() {
-      const listings = await AcDB.getListings({ type: 'buy' });
-      acRenderListings('featuredBuyRow', listings);
-    }
-    const prevHook = window.acOnLanguageChange;
-    window.acOnLanguageChange = function () { renderFeatured(); if (prevHook) prevHook(); };
-    renderFeatured();
-    acMountPropertyAdvisor();
-
-    let mode = 'buy';
-    const tabBuy = document.getElementById('tabBuy'), tabRent = document.getElementById('tabRent'), tabSell = document.getElementById('tabSell');
-    function setMode(m) {
-      mode = m;
-      [tabBuy, tabRent, tabSell].forEach(function (t) { t.classList.remove('active'); });
-      (m === 'buy' ? tabBuy : m === 'rent' ? tabRent : tabSell).classList.add('active');
-    }
-    tabBuy.addEventListener('click', function () { setMode('buy'); });
-    tabRent.addEventListener('click', function () { setMode('rent'); });
-    tabSell.addEventListener('click', function () { window.location.href = 'sell.html'; });
-
-    document.getElementById('heroSearchForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const params = new URLSearchParams();
-      const kw = document.getElementById('hsKeyword').value.trim();
-      const city = document.getElementById('hsCity').value;
-      const price = document.getElementById('hsPrice').value;
-      if (kw) params.set('q', kw);
-      if (city) params.set('city', city);
-      if (price) params.set('maxPrice', price);
-      window.location.href = (mode === 'rent' ? 'rent.html' : 'buy.html') + '?' + params.toString();
-    });
-  });
-</script>
+<script src="copilot.js"></script>
+<script src="share-cards.js"></script>
+<script src="home.js"></script>
 </body>
 </html>
