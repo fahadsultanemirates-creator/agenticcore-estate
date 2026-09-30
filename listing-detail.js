@@ -29,7 +29,7 @@ if (detailRoot) {
       detailRoot.innerHTML =
         '<div class="listing-thumb" style="aspect-ratio:16/7;border-radius:var(--radius-lg);margin-bottom:var(--space-lg);">' +
           '<span class="listing-badge ' + listing.type + '">' + (listing.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
-          (listing.verified ? '<span class="listing-badge verified">✓ Verified</span>' : '') +
+          (listing.verified ? '<span class="listing-badge verified" title="' + acEsc(acT('badge_checked_tip')) + '">' + acEsc(acT('badge_checked')) + '</span>' : '') +
           (featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '') +
           thumb +
         '</div>' +
@@ -59,6 +59,7 @@ if (detailRoot) {
                 (owner && owner.role === 'developer' ? (featured ? 'Elite developer' : 'Developer account') :
                  owner && owner.role === 'agency' ? 'Agency listing' : 'Individual seller') +
               '</p>' +
+              trustHTML() +
               '<div id="contactSlot"><button type="button" class="btn btn-primary btn-block" id="contactBtn">Contact about this property</button></div>' +
             '</div>' +
             '<div id="detailAiSlot"></div>' +
@@ -67,6 +68,15 @@ if (detailRoot) {
 
       wireContact();
       renderOwnerTools();
+    }
+
+    // Every badge shown with what it means — and what it does not mean.
+    function trustHTML() {
+      const badges = acTrustBadges(listing, owner);
+      if (!badges.length) return '';
+      return '<h4 style="font-size:0.9rem;margin:0.4rem 0 0.2rem;">' + acEsc(acT('trust_h')) + '</h4><ul class="trust-list">' +
+        badges.map(function (b) { return '<li><span class="listing-badge ' + b.key + '">' + acEsc(b.label) + '</span><p>' + acEsc(b.tip) + '</p></li>'; }).join('') +
+        '</ul><p style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.8rem;">' + acEsc(acT('trust_disclaimer')) + '</p>';
     }
 
     // Owner-only: deterministic listing quality with fix-it tips.

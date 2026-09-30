@@ -44,7 +44,7 @@ const AcCopilot = (function () {
     const reasons = (m.reasons || []).map(function (r) { return '<li class="ok">' + acEsc(r) + '</li>'; }).join('');
     const diffs = (m.differences || []).map(function (r) { return '<li class="diff">' + acEsc(r) + '</li>'; }).join('');
     return '<a class="cp-card" href="' + acEsc(m.url) + '">' +
-      '<div class="cp-thumb">' + thumb + (m.verified ? '<span class="listing-badge verified">✓</span>' : '') + '</div>' +
+      '<div class="cp-thumb">' + thumb + (m.verified ? '<span class="listing-badge verified" title="' + acEsc(acT('badge_checked_tip')) + '">✓</span>' : '') + '</div>' +
       '<div class="cp-body">' +
         '<div class="listing-price">' + acEsc(m.price_text) + '</div>' +
         '<div class="listing-title">' + acEsc(m.title) + '</div>' +

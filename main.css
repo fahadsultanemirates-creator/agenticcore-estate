@@ -888,3 +888,11 @@ header.hero { padding-bottom: var(--space-lg); }
    block take its own direction so "7 Marla House" / "Rs 3.30 Cr" read correctly. */
 html[dir="rtl"] :is(.listing-title, .listing-price, .listing-location, .listing-specs span, .cp-why li, .cp-understood, .cp-msg, .lq-tips li, .lq-factors span, .assist-draft, .assist-out p, .assist-out li, td),
 html[dir="rtl"] #listingDetailRoot :is(h1, p) { unicode-bidi: plaintext; }
+
+.listing-badge.fresh { background: rgba(63,174,123,0.85); color: #04160F; }
+.listing-fresh { font-size: 0.75rem; color: var(--accent-emerald); margin-top: 0.2rem; }
+.trust-list { list-style: none; display: grid; gap: 0.6rem; margin: 0.4rem 0 0.8rem; }
+.trust-list li { display: grid; gap: 0.25rem; }
+.trust-list .listing-badge { position: static; display: inline-block; justify-self: start; }
+.trust-list p { font-size: 0.82rem; color: var(--text-secondary); }
+html[dir="rtl"] .trust-list .listing-badge { justify-self: end; }

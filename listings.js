@@ -30,11 +30,26 @@ function acListingThumbHTML(l) {
   return AC_HOUSE_ICON;
 }
 
+// Trust badges: each one states exactly one fact the system actually holds.
+// None of them is a title, ownership, NOC or legal verification.
+function acIsFresh(l) { return Boolean(l.last_confirmed_at) && (Date.now() - new Date(l.last_confirmed_at).getTime()) < 30 * 864e5; }
+function acTrustBadges(l, owner) {
+  const t = function (k) { return typeof acT === 'function' ? acT(k) : k; };
+  const out = [];
+  if (l.verified) out.push({ key: 'verified', label: t('badge_checked'), tip: t('badge_checked_tip') });
+  if (owner && owner.role === 'agency') out.push({ key: 'buy', label: t('badge_agency'), tip: t('badge_agency_tip') });
+  if (owner && owner.role === 'developer') out.push({ key: 'buy', label: t('badge_developer'), tip: t('badge_developer_tip') });
+  if (l.photos && l.photos.length) out.push({ key: 'rent', label: t('badge_photos') + ' (' + l.photos.length + ')', tip: t('badge_photos_tip') });
+  if (acIsFresh(l)) out.push({ key: 'fresh', label: t('badge_fresh'), tip: t('badge_fresh_tip') });
+  return out;
+}
+
 function acListingCardHTML(l) {
   const lang = localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en';
   const dict = AC_I18N[lang];
   const priceSuffix = l.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
-  const verifiedBadge = l.verified ? '<span class="listing-badge verified">✓</span>' : '';
+  const checkedTip = typeof acT === 'function' ? acT('badge_checked_tip') : '';
+  const verifiedBadge = l.verified ? '<span class="listing-badge verified" title="' + acEsc(checkedTip) + '" aria-label="' + acEsc(checkedTip) + '">✓</span>' : '';
   const featuredBadge = l.featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '';
   const agencyLogoHTML = l.agencyLogo ?
     '<img src="' + acSafeUrl(l.agencyLogo) + '" alt="" class="listing-agency-logo" title="' + acEsc(l.agencyName) + '">' : '';
@@ -49,6 +64,7 @@ function acListingCardHTML(l) {
         '<div class="listing-price">' + acFormatPKR(l.price) + priceSuffix + '</div>' +
         '<div class="listing-title">' + acEsc(l.title) + '</div>' +
         '<div class="listing-location">' + acEsc(acPropertyTypeLabel(l.property_type)) + ' · ' + acEsc(l.area) + ', ' + acEsc(l.city) + '</div>' +
+        (acIsFresh(l) ? '<div class="listing-fresh" title="' + acEsc(acT('badge_fresh_tip')) + '">● ' + acEsc(acT('badge_fresh')) + '</div>' : '') +
         '<div class="listing-specs">' +
           (l.beds ? '<span>' + l.beds + ' ' + dict.listing_beds + '</span>' : '') +
           (l.baths ? '<span>' + l.baths + ' ' + dict.listing_baths + '</span>' : '') +

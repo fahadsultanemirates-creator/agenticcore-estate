@@ -92,3 +92,25 @@ html[dir="rtl"] .cpp-panel { right: auto; left: 1rem; }
   body.cpp-typing .ai-chat-fab { opacity: 0; pointer-events: none; transform: scale(0.8); }
 }
 .ai-chat-fab { transition: opacity .15s, transform .15s; }
+
+/* ---------- Listing toolkit ---------- */
+.tk-head { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-md); }
+.tk-kicker { font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 0.2rem; }
+.tk-title { font-size: 1.3rem; margin-bottom: 0.3rem; }
+.tk-head-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tk-grid { display: grid; gap: var(--space-md); }
+@media (min-width: 900px) { .tk-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; } }
+.tk-main, .tk-side { display: grid; gap: var(--space-md); min-width: 0; }
+.tk-side .lq { margin-top: 0; }
+.tk-sec h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+.tk-note { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
+.tk-formats { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+.tk-formats button { min-height: 40px; padding: 0 0.8rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.tk-formats button.active { border-color: var(--accent-gold); color: var(--accent-gold-bright); background: rgba(212,175,55,0.08); }
+.tk-canvas { background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.6rem; display: flex; justify-content: center; }
+.tk-canvas canvas { width: 100%; max-width: 420px; height: auto; border-radius: 6px; }
+.tk-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin: 0.8rem 0 0.3rem; }
+.tk-cap { width: 100%; font: inherit; font-size: 0.9rem; padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-subtle); resize: vertical; }
+.tk-pk { border-color: rgba(212,175,55,0.35); }
+.tk-pk-list { padding-inline-start: 1.1rem; font-size: 0.88rem; display: grid; gap: 0.2rem; margin-bottom: 0.8rem; }
+html[dir="rtl"] .tk-cap, html[dir="rtl"] .tk-title { unicode-bidi: plaintext; }
