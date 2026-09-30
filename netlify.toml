@@ -1,2 +1,8 @@
 [build]
   publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # service modules + the shared listing-quality score live outside the functions dir
+  included_files = ["services/**", "listing-quality.js"]
