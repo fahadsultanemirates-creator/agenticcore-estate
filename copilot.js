@@ -88,10 +88,3 @@ const AcCopilot = (function () {
 
   return { call: call, bindFind: bindFind, renderFind: renderFind, normalSearchUrl: normalSearchUrl };
 })();
-
-// Translation helper usable before/after i18n.js loads.
-function acT(key) {
-  const lang = (function () { try { return localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en'; } catch (e) { return 'en'; } })();
-  const d = (typeof AC_I18N !== 'undefined') ? AC_I18N[lang] : null;
-  return (d && d[key]) || (typeof AC_I18N !== 'undefined' && AC_I18N.en[key]) || key;
-}

@@ -41,27 +41,6 @@ body[data-page="home"] .section-head { margin-bottom: var(--space-lg); }
 .h2-normal input, .h2-normal select { font-size: 16px; }
 
 /* ---------- Copilot results ---------- */
-.cp-result { margin-top: var(--space-md); text-align: start; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-md); }
-.cp-loading { color: var(--text-secondary); }
-.cp-understood { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
-.cp-understood span { color: var(--accent-gold-bright); font-weight: 600; }
-.cp-msg { font-weight: 600; margin-bottom: 0.6rem; }
-.cp-follow { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; font-size: 0.95rem; }
-.cp-grid { display: grid; gap: 0.8rem; }
-@media (min-width: 720px) { .cp-grid { grid-template-columns: repeat(2, 1fr); } }
-.cp-card { display: grid; grid-template-columns: 110px 1fr; gap: 0.8rem; padding: 0.7rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-primary); color: inherit; text-decoration: none; }
-.cp-card:hover { border-color: var(--accent-gold); }
-.cp-thumb { position: relative; border-radius: 8px; overflow: hidden; background: var(--bg-panel-hover); min-height: 96px; display: flex; align-items: center; justify-content: center; }
-.cp-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.cp-thumb svg { width: 36px; height: 36px; stroke: var(--accent-gold); }
-.cp-body .listing-title { font-size: 0.95rem; }
-.cp-why { list-style: none; margin-top: 0.4rem; display: grid; gap: 0.2rem; font-size: 0.82rem; }
-.cp-why .ok::before { content: '✓ '; color: var(--accent-emerald); font-weight: 700; }
-.cp-why .diff { color: var(--text-secondary); }
-.cp-why .diff::before { content: '≠ '; color: var(--accent-gold); font-weight: 700; }
-.cp-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 0.9rem; }
-.cp-note { font-size: 0.8rem; color: var(--text-tertiary); }
-@media (max-width: 400px) { .cp-card { grid-template-columns: 84px 1fr; } }
 
 /* ---------- Generic blocks ---------- */
 .h2-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: var(--space-md); flex-wrap: wrap; }

@@ -28,19 +28,22 @@ if (sellForm) {
       areaManual.required = isManual;
     }
 
+    async function loadAreas() {
+      if (!citySelect.value) { areaSelect.innerHTML = '<option value="">Select a city first</option>'; return []; }
+      areaSelect.innerHTML = '<option value="">Loading…</option>';
+      const areas = await AcDB.getAreasForCity(citySelect.value);
+      areaSelect.innerHTML = '<option value="">Select an area</option>' +
+        areas.map(function (a) { return '<option value="' + acEsc(a) + '">' + acEsc(a) + '</option>'; }).join('') +
+        '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
+      toggleManualArea();
+      return areas;
+    }
+
     if (citySelect) {
       const cities = await AcDB.getActiveCities();
       citySelect.innerHTML = '<option value="">Select a city</option>' +
-        cities.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
-      citySelect.addEventListener('change', async function () {
-        if (!citySelect.value) { areaSelect.innerHTML = '<option value="">Select a city first</option>'; return; }
-        areaSelect.innerHTML = '<option value="">Loading…</option>';
-        const areas = await AcDB.getAreasForCity(citySelect.value);
-        areaSelect.innerHTML = '<option value="">Select an area</option>' +
-          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('') +
-          '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
-        toggleManualArea();
-      });
+        cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc(c) + '</option>'; }).join('');
+      citySelect.addEventListener('change', function () { loadAreas(); });
       areaSelect.addEventListener('change', toggleManualArea);
     }
 
@@ -71,10 +74,7 @@ if (sellForm) {
         document.getElementById('sellBaths').value = editing.baths || '';
         document.getElementById('sellDescription').value = editing.description || '';
         citySelect.value = editing.city;
-        const areas = await AcDB.getAreasForCity(editing.city);
-        areaSelect.innerHTML = '<option value="">Select an area</option>' +
-          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('') +
-          '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
+        const areas = await loadAreas();
         if (areas.indexOf(editing.area) >= 0) areaSelect.value = editing.area;
         else { areaSelect.value = MANUAL_AREA_VALUE; areaManual.value = editing.area; }
         toggleManualArea();
@@ -82,6 +82,143 @@ if (sellForm) {
         document.querySelector('label[for="sellPhotos"]').textContent = 'Add more photos (' + count + ' of 8 used)';
         sellForm.querySelector('button[type="submit"]').textContent = 'Save changes';
       }
+    }
+
+    // ---------- live listing quality (deterministic, see listing-quality.js) ----------
+    const qualitySlot = document.getElementById('sellQuality');
+    const photoInputEl = document.getElementById('sellPhotos');
+    function formListing() {
+      const selected = photoInputEl && photoInputEl.files ? Math.min(photoInputEl.files.length, 8) : 0;
+      const existing = editing ? (editing.photos || []).length : 0;
+      return {
+        title: document.getElementById('sellTitle').value,
+        description: document.getElementById('sellDescription').value,
+        price: Number(document.getElementById('sellPrice').value) || 0,
+        area: areaSelect.value === MANUAL_AREA_VALUE ? areaManual.value : areaSelect.value,
+        city: citySelect.value,
+        property_type: typeSelect.value,
+        size_marla: Number(document.getElementById('sellSize').value) || 0,
+        beds: Number(document.getElementById('sellBeds').value) || 0,
+        baths: Number(document.getElementById('sellBaths').value) || 0,
+        photos: new Array(Math.min(existing + selected, 8)).fill('x'),
+        verified: editing ? editing.verified : false,
+        created_at: new Date().toISOString()
+      };
+    }
+    let qTimer = null;
+    function refreshQuality() {
+      clearTimeout(qTimer);
+      qTimer = setTimeout(function () {
+        if (qualitySlot && typeof acListingQualityWidget === 'function') qualitySlot.innerHTML = acListingQualityWidget(formListing(), { maxTips: 3 });
+      }, 150);
+    }
+    sellForm.addEventListener('input', refreshQuality);
+    sellForm.addEventListener('change', refreshQuality);
+    refreshQuality();
+
+    // ---------- "Let AgenticCore help me list" (never publishes) ----------
+    const modeForm = document.getElementById('modeForm');
+    const modeAssist = document.getElementById('modeAssist');
+    const assistBox = document.getElementById('assistBox');
+    const assistOut = document.getElementById('assistOut');
+    function setAssist(on) {
+      assistBox.hidden = !on;
+      modeAssist.classList.toggle('active', on); modeAssist.setAttribute('aria-pressed', on ? 'true' : 'false');
+      modeForm.classList.toggle('active', !on); modeForm.setAttribute('aria-pressed', on ? 'false' : 'true');
+      if (on) document.getElementById('assistText').focus();
+    }
+    modeForm.addEventListener('click', function () { setAssist(false); });
+    modeAssist.addEventListener('click', function () { setAssist(true); });
+    if (!editing && new URLSearchParams(window.location.search).get('assist')) setAssist(true);
+    if (editing) document.querySelector('.sell-modes').hidden = true;
+
+    let lastDraft = null;
+    document.getElementById('assistBtn').addEventListener('click', async function () {
+      const btn = this;
+      const text = document.getElementById('assistText').value.trim();
+      if (text.length < 8) { assistOut.innerHTML = '<p>' + acEsc(acT('sell_assist_short')) + '</p>'; return; }
+      btn.disabled = true;
+      assistOut.innerHTML = '<p role="status">' + acEsc(acT('sell_assist_working')) + '</p>';
+      const res = await AcCopilot.call({ action: 'draft', text: text }, true);
+      btn.disabled = false;
+      if (res.error) {
+        assistOut.innerHTML = '<p>' + acEsc(res.error) + '</p><p style="color:var(--text-tertiary);font-size:0.85rem;">' + acEsc(acT('sell_assist_fallback')) + '</p>';
+        return;
+      }
+      lastDraft = res;
+      const f = res.facts || {};
+      const known = [];
+      if (f.purpose) known.push(f.purpose === 'rent' ? 'For rent' : 'For sale');
+      if (f.property_type) known.push(acPropertyTypeLabel(f.property_type));
+      if (f.size_value) known.push(f.size_value + ' ' + acSizeUnitLabel(f.size_unit || 'marla'));
+      if (f.beds) known.push(f.beds + ' bed');
+      if (f.baths) known.push(f.baths + ' bath');
+      if (f.area || f.city) known.push([f.area, f.city].filter(Boolean).join(', '));
+      if (f.price) known.push(acFormatPKR(f.price));
+      (f.features || []).forEach(function (x) { known.push(x); });
+      const d = res.draft || {};
+      assistOut.innerHTML =
+        '<div><h5>' + acEsc(acT('sell_assist_known')) + '</h5><p>' + (known.length ? known.map(acEsc).join(' · ') : '—') + '</p></div>' +
+        '<div><h5>' + acEsc(acT('sell_assist_draft')) + (res.ai_used ? '' : ' <span class="badge badge-muted">' + acEsc(acT('sell_assist_template')) + '</span>') + '</h5>' +
+          '<div class="assist-draft"><strong>' + acEsc(d.title || '') + '</strong>' + acEsc(d.description || '') +
+          (res.ai_used && (d.bullets || []).length ? '\n\n' + d.bullets.map(function (b) { return '• ' + acEsc(b); }).join('\n') : '') + '</div></div>' +
+        ((res.missing || []).length ? '<div class="assist-missing"><h5>' + acEsc(acT('sell_assist_missing')) + '</h5><ul>' + res.missing.map(function (m) { return '<li>' + acEsc(m.label) + '</li>'; }).join('') + '</ul></div>' : '') +
+        ((d.photo_order || []).length ? '<div><h5>' + acEsc(acT('sell_assist_photos')) + '</h5><p>' + d.photo_order.map(acEsc).join(' → ') + '</p></div>' : '') +
+        ((d.keywords || []).length ? '<div><h5>' + acEsc(acT('sell_assist_keywords')) + '</h5><p>' + d.keywords.map(acEsc).join(', ') + '</p></div>' : '') +
+        '<div><button type="button" class="btn btn-primary btn-sm" id="assistApply">' + acEsc(acT('sell_assist_apply')) + '</button>' +
+        '<p style="font-size:0.8rem;color:var(--text-tertiary);margin-top:0.4rem;">' + acEsc(acT('sell_assist_review')) + '</p></div>';
+      document.getElementById('assistApply').addEventListener('click', applyDraft);
+    });
+
+    async function applyDraft() {
+      if (!lastDraft) return;
+      const f = lastDraft.facts || {}, d = lastDraft.draft || {};
+      const filled = [];
+      function set(id, v) { if (v === null || v === undefined || v === '') return; const el = document.getElementById(id); el.value = v; filled.push(el); }
+      if (f.purpose) {
+        const radio = document.querySelector('input[name="sellType"][value="' + f.purpose + '"]');
+        if (radio) { radio.checked = true; document.querySelectorAll('.role-option').forEach(function (o) { o.classList.toggle('checked', o.contains(radio)); }); }
+      }
+      if (f.property_type && typeSelect.querySelector('option[value="' + f.property_type + '"]')) {
+        typeSelect.value = f.property_type; filled.push(typeSelect);
+        sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(AC_DEFAULT_SIZE_UNIT[typeSelect.value]);
+      }
+      if (f.size_unit && sizeUnitSelect.querySelector('option[value="' + f.size_unit + '"]')) sizeUnitSelect.value = f.size_unit;
+      set('sellTitle', d.title);
+      // The basic (non-AI) draft already lists the key details in its description.
+      set('sellDescription', [d.description, lastDraft.ai_used ? (d.bullets || []).map(function (b) { return '• ' + b; }).join('\n') : ''].filter(Boolean).join('\n\n'));
+      set('sellPrice', f.price);
+      set('sellSize', f.size_value);
+      set('sellBeds', f.beds);
+      set('sellBaths', f.baths);
+      if (f.city && citySelect.querySelector('option[value="' + f.city + '"]')) {
+        citySelect.value = f.city; filled.push(citySelect);
+        const areas = await loadAreas();
+        if (f.area) {
+          // Exact name, else the one known area containing every word the owner used ("Bahria Phase 7" → "Bahria Town Phase 7").
+          const words = function (x) { return String(x).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' '); };
+          const want = words(f.area);
+          const close = areas.filter(function (a) { const have = words(a); return want.every(function (t) { return have.indexOf(t) >= 0; }); });
+          const match = areas.indexOf(f.area) >= 0 ? f.area : (close.length === 1 ? close[0] : null);
+          if (match) { areaSelect.value = match; toggleManualArea(); filled.push(areaSelect); }
+          else { areaSelect.value = MANUAL_AREA_VALUE; toggleManualArea(); areaManual.value = f.area; filled.push(areaManual); }
+        }
+      }
+      filled.forEach(function (el) { el.classList.add('field-filled'); el.addEventListener('input', function () { el.classList.remove('field-filled'); }, { once: true }); });
+      refreshQuality();
+      document.getElementById('sellTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ---------- duplicate-post guard ----------
+    let ownListings = null;
+    async function looksDuplicate(payload) {
+      if (editing) return null;
+      if (!ownListings) ownListings = await AcDB.getListingsByOwner(user.id).catch(function () { return []; });
+      const t = payload.title.toLowerCase().replace(/\s+/g, ' ').trim();
+      return ownListings.find(function (l) {
+        return Number(l.price) === payload.price && (String(l.title).toLowerCase().replace(/\s+/g, ' ').trim() === t ||
+          (l.area === payload.area && Number(l.size_marla) === payload.sizeMarla && l.property_type === payload.propertyType));
+      }) || null;
     }
 
     // CNIC verification is switched off for the initial launch window so
@@ -139,6 +276,16 @@ if (sellForm) {
         description: document.getElementById('sellDescription').value.trim(),
         photoFiles: photoFiles
       };
+      const dup = await looksDuplicate(payload);
+      if (dup && !confirm(acT('sell_dup_confirm').replace('{title}', dup.title))) {
+        const warn = document.getElementById('sellWarn');
+        warn.innerHTML = acEsc(acT('sell_dup_warn')) + ' <a href="listing.html?id=' + encodeURIComponent(dup.id) + '" style="color:var(--accent-gold-bright);">' + acEsc(dup.title) + '</a>';
+        warn.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Post listing';
+        return;
+      }
+
       const result = editing
         ? await AcDB.updateListing(editing.id, editing.owner_id, payload)
         : await AcDB.addListing(payload);

@@ -136,18 +136,20 @@ function acInitListingPage(fixedType) {
 // "My listings" table rows with View / Edit / Delete, shared by the
 // individual and agency dashboards.
 function acMyListingsRowsHTML(list) {
-  if (!list.length) return '<tr><td colspan="5" style="color:var(--text-tertiary);">You haven\'t listed a property yet. <a href="sell.html" style="color:var(--accent-gold-bright);">List one now →</a></td></tr>';
+  if (!list.length) return '<tr><td colspan="6" style="color:var(--text-tertiary);">You haven\'t listed a property yet. <a href="sell.html" style="color:var(--accent-gold-bright);">List one now →</a></td></tr>';
   return list.map(function (l) {
     return '<tr><td>' + acEsc(l.title) + '</td><td>' + (l.type === 'rent' ? 'Rent' : 'Sale') + '</td><td>' + acFormatPKR(l.price) + '</td>' +
-      '<td>' + (l.verified ? '<span class="badge badge-emerald">Verified</span>' : '<span class="badge badge-muted">Unverified</span>') + '</td>' +
+      '<td>' + (l.verified ? '<span class="badge badge-emerald">Checked</span>' : '<span class="badge badge-muted">Not checked yet</span>') + '</td>' +
+      '<td>' + (typeof acQualityPillHTML === 'function' ? acQualityPillHTML(l) : '—') + '</td>' +
       '<td style="white-space:nowrap;"><a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">View</a> ' +
       '<a href="sell.html?edit=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">Edit</a> ' +
+      '<a href="toolkit.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">Toolkit</a> ' +
       '<button type="button" class="btn btn-secondary btn-sm" data-delete-listing="' + acEsc(l.id) + '" data-title="' + acEsc(l.title) + '">Delete</button></td></tr>';
   }).join('');
 }
 
 function acWireMyListings(tbody, userId, onChange) {
-  tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-tertiary);">Loading…</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-tertiary);">Loading…</td></tr>';
   AcDB.getListingsByOwner(userId).then(function (list) {
     tbody.innerHTML = acMyListingsRowsHTML(list);
     if (onChange) onChange(list);

@@ -66,7 +66,20 @@ if (detailRoot) {
         '</div>';
 
       wireContact();
-      document.getElementById('detailAiSlot').innerHTML = acGrowthScoreWidget(null) + acDocCheckWidget(listing.verified ? 'pending model integration' : 'not_run');
+      renderOwnerTools();
+    }
+
+    // Owner-only: deterministic listing quality with fix-it tips.
+    let isOwner = false;
+    function renderOwnerTools() {
+      const slot = document.getElementById('detailAiSlot');
+      if (!slot) return;
+      if (!isOwner) { slot.innerHTML = ''; return; }
+      slot.innerHTML = acListingQualityWidget(listing, {
+        id: 'quality',
+        actions: '<div class="lq-actions"><a class="btn btn-primary btn-sm" href="sell.html?edit=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('lq_edit')) + '</a>' +
+          '<a class="btn btn-secondary btn-sm" href="toolkit.html?id=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('lq_toolkit')) + '</a></div>'
+      });
     }
 
     // Seller contact: signed-in visitors see the seller's number (via a
@@ -109,6 +122,9 @@ if (detailRoot) {
     render();
     viewer = await AcDB.currentUser();
     if (viewer && (viewer.id === listing.owner_id || viewer.role === 'admin')) {
+      isOwner = true;
+      renderOwnerTools();
+      if (window.location.hash === '#quality') { const q = document.getElementById('quality'); if (q) q.scrollIntoView({ block: 'start' }); }
       detailRoot.insertAdjacentHTML('beforebegin',
         '<div class="panel" style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);">' +
           '<span style="color:var(--text-secondary);">' + (flash ? '<strong style="color:var(--accent-gold-bright);">' + flash + '</strong> ' : '') + 'This is your listing.</span>' +

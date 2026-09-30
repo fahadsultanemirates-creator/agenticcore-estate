@@ -883,3 +883,8 @@ header.hero { padding-bottom: var(--space-lg); }
 @media (max-width: 700px) { .city-photo-row { grid-template-columns: 1fr; } }
 
 
+
+/* Urdu (RTL) pages still show English listing text typed by users: let each
+   block take its own direction so "7 Marla House" / "Rs 3.30 Cr" read correctly. */
+html[dir="rtl"] :is(.listing-title, .listing-price, .listing-location, .listing-specs span, .cp-why li, .cp-understood, .cp-msg, .lq-tips li, .lq-factors span, .assist-draft, .assist-out p, .assist-out li, td),
+html[dir="rtl"] #listingDetailRoot :is(h1, p) { unicode-bidi: plaintext; }

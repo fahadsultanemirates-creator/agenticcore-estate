@@ -50,8 +50,8 @@ const AC_I18N = {
     section_ai_eyebrow: 'Coming to your dashboard',
     section_ai_title: 'AI tools already reserved a spot',
     section_ai_sub: 'Three agent-powered features are wired into the UI now, and will connect to the AgenticCore agent backend as it ships.',
-    ai_growth_title: 'Growth Score', ai_growth_desc: 'A single score estimating how fast a listing or developer profile is likely to convert, based on pricing, completeness, and market demand.',
-    ai_doccheck_title: 'AI Document Check', ai_doccheck_desc: 'Automated first-pass review of CNIC and company documents before a human verifier signs off — flags mismatches and low-quality scans.',
+    ai_growth_title: 'Profile score (planned)', ai_growth_desc: 'A completeness score for your developer profile and projects, with specific fixes — like the listing quality score sellers already get.',
+    ai_doccheck_title: 'Document assistance (planned)', ai_doccheck_desc: 'Will help you check that uploaded documents are complete and readable before a person at AgenticCore reviews them. It flags problems only — it is not title, ownership or legal verification.',
     ai_advisor_title: 'Property Advisor', ai_advisor_desc: 'A conversational assistant that helps buyers narrow down listings and answers questions about a specific property.',
     coming_soon: 'Coming soon',
 
@@ -95,7 +95,7 @@ const AC_I18N = {
     auth_signup_btn: 'Create account', auth_login_btn: 'Log in',
     auth_has_account: 'Already have an account?', auth_no_account: "Don't have an account?",
     auth_create_one: 'Create one', auth_login_link: 'Log in',
-    auth_id_note: 'Required for every account — used to verify real listings and prevent fraud. Never shown publicly.',
+    auth_id_note: 'Kept private and never shown publicly. Used only to keep listings accountable to a real person.',
 
     pricing_eyebrow: 'For sellers & agencies', pricing_title: 'Listing packages',
     pricing_sub: 'Upgrade your listing capacity and search placement — no document verification required, cancel any time.',
@@ -165,8 +165,8 @@ const AC_I18N = {
     section_ai_eyebrow: 'آپ کے ڈیش بورڈ میں جلد آ رہا ہے',
     section_ai_title: 'AI ٹولز کے لیے جگہ پہلے سے موجود ہے',
     section_ai_sub: 'تین ایجنٹ سے چلنے والی خصوصیات ابھی UI میں شامل کر دی گئی ہیں، اور AgenticCore ایجنٹ بیک اینڈ کے تیار ہوتے ہی فعال ہو جائیں گی۔',
-    ai_growth_title: 'گروتھ اسکور', ai_growth_desc: 'قیمت، مکمل معلومات اور مارکیٹ ڈیمانڈ کی بنیاد پر ایک اسکور جو بتاتا ہے کہ فہرست یا ڈویلپر پروفائل کتنی جلدی نتیجہ دے سکتا ہے۔',
-    ai_doccheck_title: 'AI دستاویز چیک', ai_doccheck_desc: 'انسانی تصدیق سے پہلے CNIC اور کمپنی دستاویزات کا خودکار ابتدائی جائزہ — بے میل اور ناقص اسکینز کی نشاندہی کرتا ہے۔',
+    ai_growth_title: 'پروفائل اسکور (منصوبہ بند)', ai_growth_desc: 'آپ کے ڈویلپر پروفائل اور منصوبوں کی تکمیل کا اسکور، واضح تجاویز کے ساتھ — بالکل ویسا جیسا فروخت کنندگان کو فہرست کے معیار کا اسکور ملتا ہے۔',
+    ai_doccheck_title: 'دستاویزات میں مدد (منصوبہ بند)', ai_doccheck_desc: 'AgenticCore کی ٹیم کے جائزے سے پہلے یہ دیکھنے میں مدد کرے گا کہ اپ لوڈ کی گئی دستاویزات مکمل اور پڑھنے کے قابل ہیں۔ یہ صرف مسائل کی نشاندہی کرتا ہے — یہ ملکیت یا قانونی تصدیق نہیں۔',
     ai_advisor_title: 'پراپرٹی ایڈوائزر', ai_advisor_desc: 'ایک گفتگو کرنے والا معاون جو خریداروں کو فہرستیں منتخب کرنے اور کسی خاص جائیداد کے بارے میں سوالات کے جواب دینے میں مدد دیتا ہے۔',
     coming_soon: 'جلد آ رہا ہے',
 
@@ -210,7 +210,7 @@ const AC_I18N = {
     auth_signup_btn: 'اکاؤنٹ بنائیں', auth_login_btn: 'لاگ ان',
     auth_has_account: 'پہلے سے اکاؤنٹ ہے؟', auth_no_account: 'اکاؤنٹ نہیں ہے؟',
     auth_create_one: 'ایک بنائیں', auth_login_link: 'لاگ ان کریں',
-    auth_id_note: 'ہر اکاؤنٹ کے لیے لازمی — اصل فہرستوں کی تصدیق اور دھوکہ دہی روکنے کے لیے استعمال ہوتا ہے۔ کبھی عوامی طور پر ظاہر نہیں ہوتا۔',
+    auth_id_note: 'نجی رکھا جاتا ہے اور کبھی عوامی طور پر ظاہر نہیں ہوتا۔ صرف اس لیے کہ فہرستیں ایک حقیقی شخص سے منسلک رہیں۔',
 
     pricing_eyebrow: 'فروخت کنندگان اور ایجنسیوں کے لیے', pricing_title: 'لسٹنگ پیکجز',
     pricing_sub: 'اپنی لسٹنگ کی گنجائش اور تلاش میں جگہ بہتر بنائیں — کسی دستاویز کی تصدیق کی ضرورت نہیں، کسی بھی وقت منسوخ کریں۔',
@@ -464,6 +464,62 @@ Object.assign(AC_I18N.ur, {
  "h2_tk_preview": "مثالی کارڈ، اسی سائٹ کے ایک اصل اشتہار سے تیار کیا گیا۔"
 });
 
+// Product 2.0 — Copilot panel, listing quality, sell assistant
+Object.assign(AC_I18N.en, {
+  cpp_title: 'AgenticCore Copilot', cpp_find: 'Find', cpp_list: 'List', cpp_improve: 'Improve',
+  cpp_find_sub: 'Describe what you need. AgenticCore searches real listings on this site and tells you why each one fits.',
+  cpp_list_sub: 'Type rough notes about your property. AgenticCore drafts the title and description and tells you what is missing — you review everything before it goes live.',
+  cpp_list_go: 'Let AgenticCore help me list', cpp_list_form: 'Fill the form myself',
+  cpp_improve_sub: 'Every listing gets a quality score out of 100 with specific fixes — more photos, exact block, possession status.',
+  cpp_improve_go: 'See my listings\' scores',
+  lq_title: 'Listing quality', lq_band_strong: 'Strong', lq_band_good: 'Good', lq_band_weak: 'Needs work',
+  lq_next: 'Improve it next', lq_all_done: 'Nothing important is missing.',
+  lq_note: 'Scored from what the listing contains. A complete listing helps buyers decide; it does not guarantee enquiries or a sale.',
+  lq_edit: 'Edit listing', lq_toolkit: 'Open listing toolkit',
+  sell_mode_form: 'Fill the form myself', sell_mode_form_sub: 'The normal listing form.',
+  sell_mode_assist: '✦ Let AgenticCore help me list', sell_mode_assist_sub: 'Type rough notes — you review everything before posting.',
+  sell_assist_label: 'Describe the property in your own words',
+  sell_assist_ph: 'e.g. 10 marla house Bahria Phase 7, 5 bed, new construction, demand 5.2 crore',
+  sell_assist_privacy: 'Don\'t include your CNIC or phone number here — they aren\'t needed for the draft.',
+  sell_assist_btn: 'Draft my listing', sell_assist_short: 'Add a little more — type, size, area and price help most.',
+  sell_assist_working: 'AgenticCore is reading your notes…',
+  sell_assist_fallback: 'You can still fill the form yourself — nothing depends on the assistant.',
+  sell_assist_known: 'What AgenticCore understood', sell_assist_draft: 'Suggested title & description',
+  sell_assist_template: 'basic draft', sell_assist_missing: 'Still missing — add these for a stronger listing',
+  sell_assist_photos: 'Suggested photo order', sell_assist_keywords: 'Search keywords',
+  sell_assist_apply: 'Use this draft in the form',
+  sell_assist_review: 'This only fills the form below. Check every field — nothing is published until you press Post listing.',
+  sell_dup_confirm: 'You already have a listing that looks the same ("{title}"). Post another one anyway?',
+  sell_dup_warn: 'Not posted — this looks like a listing you already have:'
+});
+Object.assign(AC_I18N.ur, {
+  cpp_title: 'AgenticCore کوپائلٹ', cpp_find: 'تلاش', cpp_list: 'درج کریں', cpp_improve: 'بہتر بنائیں',
+  cpp_find_sub: 'بتائیں آپ کو کیا چاہیے۔ AgenticCore اسی سائٹ کی اصل فہرستیں تلاش کرتا ہے اور بتاتا ہے کہ ہر ایک کیوں موزوں ہے۔',
+  cpp_list_sub: 'اپنی جائیداد کے بارے میں مختصر نوٹس لکھیں۔ AgenticCore عنوان اور تفصیل کا مسودہ بناتا ہے اور بتاتا ہے کیا کمی ہے — شائع ہونے سے پہلے آپ سب کچھ دیکھتے ہیں۔',
+  cpp_list_go: 'AgenticCore سے فہرست بنوائیں', cpp_list_form: 'فارم خود بھریں',
+  cpp_improve_sub: 'ہر فہرست کو 100 میں سے معیار کا اسکور اور واضح تجاویز ملتی ہیں — مزید تصاویر، درست بلاک، قبضے کی صورتحال۔',
+  cpp_improve_go: 'میری فہرستوں کے اسکور دیکھیں',
+  lq_title: 'فہرست کا معیار', lq_band_strong: 'مضبوط', lq_band_good: 'اچھا', lq_band_weak: 'بہتری درکار',
+  lq_next: 'اگلی بہتری', lq_all_done: 'کوئی اہم چیز کم نہیں۔',
+  lq_note: 'اسکور فہرست میں موجود معلومات سے بنتا ہے۔ مکمل فہرست خریدار کی مدد کرتی ہے؛ یہ رابطوں یا فروخت کی ضمانت نہیں۔',
+  lq_edit: 'فہرست میں ترمیم', lq_toolkit: 'لسٹنگ ٹول کٹ کھولیں',
+  sell_mode_form: 'فارم خود بھریں', sell_mode_form_sub: 'عام لسٹنگ فارم۔',
+  sell_mode_assist: '✦ AgenticCore سے مدد لیں', sell_mode_assist_sub: 'مختصر نوٹس لکھیں — پوسٹ کرنے سے پہلے آپ سب کچھ دیکھتے ہیں۔',
+  sell_assist_label: 'جائیداد کو اپنے الفاظ میں بیان کریں',
+  sell_assist_ph: 'مثلاً 10 مرلہ گھر بحریہ فیز 7، 5 بیڈ، نئی تعمیر، ڈیمانڈ 5.2 کروڑ',
+  sell_assist_privacy: 'یہاں اپنا شناختی کارڈ یا فون نمبر نہ لکھیں — مسودے کے لیے ان کی ضرورت نہیں۔',
+  sell_assist_btn: 'مسودہ بنائیں', sell_assist_short: 'تھوڑا اور لکھیں — قسم، سائز، علاقہ اور قیمت سب سے زیادہ مدد کرتے ہیں۔',
+  sell_assist_working: 'AgenticCore آپ کے نوٹس پڑھ رہا ہے…',
+  sell_assist_fallback: 'آپ فارم خود بھی بھر سکتے ہیں — کچھ بھی معاون پر منحصر نہیں۔',
+  sell_assist_known: 'AgenticCore نے کیا سمجھا', sell_assist_draft: 'تجویز کردہ عنوان اور تفصیل',
+  sell_assist_template: 'بنیادی مسودہ', sell_assist_missing: 'ابھی کمی ہے — مضبوط فہرست کے لیے یہ شامل کریں',
+  sell_assist_photos: 'تصاویر کی تجویز کردہ ترتیب', sell_assist_keywords: 'تلاش کے الفاظ',
+  sell_assist_apply: 'یہ مسودہ فارم میں ڈالیں',
+  sell_assist_review: 'یہ صرف نیچے فارم بھرتا ہے۔ ہر خانہ چیک کریں — "Post listing" دبانے تک کچھ شائع نہیں ہوتا۔',
+  sell_dup_confirm: 'آپ کی ایک ملتی جلتی فہرست پہلے سے موجود ہے ("{title}")۔ پھر بھی نئی پوسٹ کریں؟',
+  sell_dup_warn: 'پوسٹ نہیں ہوئی — یہ آپ کی پہلے سے موجود فہرست جیسی لگتی ہے:'
+});
+
 function acApplyLanguage(lang) {
   lang = (lang === 'ur') ? 'ur' : 'en';
   document.documentElement.setAttribute('lang', lang);
@@ -497,3 +553,9 @@ function acInitLanguage() {
 }
 
 document.addEventListener('DOMContentLoaded', acInitLanguage);
+
+// Translation helper for script-built UI (falls back to English, then the key).
+function acT(key) {
+  const lang = (function () { try { return localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en'; } catch (e) { return 'en'; } })();
+  return (AC_I18N[lang] && AC_I18N[lang][key]) || AC_I18N.en[key] || key;
+}
