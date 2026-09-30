@@ -1,6 +1,6 @@
 # AgenticCore Estate — Product 2.0 / Phase 1 report
 
-Branch: `claude/estate-product2-phase1` (based on production commit `319d42c`). **Not merged**: production (`claude/agenticcore-estate-site-l51zm4`) is unchanged.
+Branch: `claude/estate-product2-phase1`. **Merged to production** (`claude/agenticcore-estate-site-l51zm4`) on 30 Sep 2026 with owner approval. Migration 0014 **applied** the same day.
 Plan and audit: `docs/PRODUCT2_PHASE1_PLAN.md`. Image audit: `docs/IMAGE_AUDIT.md`.
 
 ---
@@ -78,7 +78,7 @@ Plan and audit: `docs/PRODUCT2_PHASE1_PLAN.md`. Image audit: `docs/IMAGE_AUDIT.m
 
 ## 3. Database migrations added
 
-`0014_product2_listing_meta_and_ai_usage.sql` is additive only and **not applied yet**.
+`0014_product2_listing_meta_and_ai_usage.sql` is additive only. **Applied to the live project on 30 Sep 2026** after owner approval.
 - `listings.updated_at` (backfilled from `created_at`, maintained by a trigger) and `listings.last_confirmed_at`. Neither column is granted to clients, so the 0012 column-level grants stay exactly as they are.
 - `confirm_listing_available(uuid)`: security-definer RPC that works only for the listing's owner (or an admin).
 - `ai_usage` table with RLS: users can read and insert only their own rows, with no update or delete. `ai_usage_today()` counts the signed-in user's calls since midnight Pakistan time.
@@ -94,7 +94,7 @@ Plan and audit: `docs/PRODUCT2_PHASE1_PLAN.md`. Image audit: `docs/IMAGE_AUDIT.m
 
 Afterwards I confirmed that nothing remained in the database.
 
-**Until 0014 is applied:** the site works fully. The "Still available?" box stays hidden, and the daily AI cap falls back to the per-minute rate limits.
+After applying, I checked: both columns exist, no listing has a null `updated_at`, RLS is on for `ai_usage`, and anon cannot run `confirm_listing_available`.
 
 ## 4. Environment variables required (Netlify → Site configuration → Environment variables)
 
@@ -178,8 +178,8 @@ With no keys, all of these still work:
 
 ## 11. Anything requiring owner approval
 
-1. **Merge** `claude/estate-product2-phase1` into production.
-2. **Apply migration 0014** (additive; dry run passed).
+1. ~~Merge to production~~ — done.
+2. ~~Apply migration 0014~~ — done.
 3. **AI keys:** which provider(s) to enable, and the daily free allowance (default 15 per user).
 4. **Duplicate listings:** production has 10 copies of the same House 15-D listing. The homepage and search now collapse them visually, but I recommend deleting 9. I won't delete anything without your say-so.
 5. **Unused images:** OK to delete them from `images/`, or move them out of the deployed folder? (See IMAGE_AUDIT.)
