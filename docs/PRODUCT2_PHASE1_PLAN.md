@@ -20,8 +20,8 @@ Branch: `claude/estate-product2-phase1` (production branch `claude/agenticcore-e
 
 ## Decisions (Phase 1)
 
-1. **Service boundary: Netlify Functions** (`netlify/functions/copilot.mjs`). The browser calls `/api/copilot` only. Business logic lives in `netlify/functions/lib/` (plain ES modules, no dependencies) so Telegram/WhatsApp/MCP adapters can later import the same modules.
-2. **Provider abstraction** (`lib/ai.mjs`): OpenAI, Anthropic and xAI (Grok) behind one `completeJSON()` call, chosen by `AI_PROVIDER`; keys only in Netlify environment variables. Strict JSON schema validation of every model output; timeouts; token caps; PII stripping (no CNIC/phone/email is ever sent).
+1. **Service boundary: Netlify Functions** (`netlify/functions/copilot.mjs`). The browser calls `/api/copilot` only. Business logic lives in `services/` (plain ES modules, no dependencies, outside the functions folder) so Telegram/WhatsApp/MCP adapters can later import the same modules.
+2. **Provider abstraction** (`services/ai.mjs`): OpenAI, Anthropic and xAI (Grok) behind one `completeJSON()` call, chosen by `AI_PROVIDER`; keys only in Netlify environment variables. Strict JSON schema validation of every model output; timeouts; token caps; PII stripping (no CNIC/phone/email is ever sent).
 3. **Find Property never depends on the model to pick listings.** Criteria are extracted (deterministic parser always; the model refines it when configured), then real rows are fetched from Supabase with the public key and ranked with deterministic, explainable reasons. The model never sees or writes listing facts it can present as its own; "why it matches" is computed from the row. Works with no AI key at all.
 4. **Listing Quality score (0–100) is deterministic** (`listing-quality.js`, shared by browser and function) with listed factors and fix-it tips. The model may add wording suggestions, never the score.
 5. **AI listing assistant** fills the existing sell form for review; it never posts. Deterministic extraction works without a key; with a key the model drafts title/description/bullets strictly from the user's words and returns a "missing information" checklist.
@@ -31,8 +31,8 @@ Branch: `claude/estate-product2-phase1` (production branch `claude/agenticcore-e
 
 ## Files to change / add
 
-Changed: `index.html`, `main.css`, `i18n.js`, `listings.js`, `listing-detail.js`, `sell.html`, `sell.js`, `ai-placeholders.js`, `dashboard.js`, `agency.js`, `netlify.toml`, `partials.js` (copilot mount).
-Added: `copilot.js` (panel + hero client), `listing-quality.js`, `toolkit.html` + `toolkit.js`, `netlify/functions/copilot.mjs`, `netlify/functions/lib/{ai,criteria,search,listing-draft,quality,util}.mjs`, `supabase/migrations/0014_product2_listing_meta_and_ai_usage.sql`, `docs/IMAGE_AUDIT.md`, `docs/PRODUCT2_PHASE1_REPORT.md`, `tests/` (node tests for parser/search/quality).
+Changed: `index.html`, `main.css`, `i18n.js`, `listings.js`, `listing-detail.js`, `sell.html`, `sell.js`, `ai-placeholders.js`, `dashboard.html`, `agency-dashboard.html`, `listing.html`, `netlify.toml`.
+Added: `copilot.js` (panel + hero client), `listing-quality.js`, `toolkit.html` + `toolkit.js`, `netlify/functions/copilot.mjs`, `services/{ai,criteria,search,listing-draft,copilot-service,supabase,util}.mjs`, `share-cards.js`, `home.js`, `home.css`, `product2.css`, `supabase/migrations/0014_product2_listing_meta_and_ai_usage.sql`, `docs/IMAGE_AUDIT.md`, `docs/PRODUCT2_PHASE1_REPORT.md`, `tests/` (node tests for parser/search/quality).
 
 ## Needs owner approval before production
 - Merging this branch to production.

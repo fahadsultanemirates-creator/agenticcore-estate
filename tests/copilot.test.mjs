@@ -1,4 +1,4 @@
-// Run: node --test tests/
+// Run: node --test tests/*.test.mjs
 // Exercises the Copilot service with a mocked Supabase (and mocked AI
 // provider) so no network or keys are needed.
 import test from 'node:test';
