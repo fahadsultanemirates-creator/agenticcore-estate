@@ -120,3 +120,8 @@ body[data-page="home"] .final-cta h2 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); 
 body[data-page="home"] .final-cta p { margin-bottom: var(--space-md); }
 
 html[lang="ur"] .h2-title, html[lang="ur"] .h2-split h2 { line-height: 1.7; }
+/* Ecosystem artwork (Estate → Pakistan). Wide banner on desktop, a centred crop on phones; never cropped by CSS. */
+.h2-eco-art { margin: 0 0 var(--space-md); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); background: #050B1A; }
+.h2-eco-art img { display: block; width: 100%; height: auto; }
+@media (max-width: 699px) { .h2-eco-art { max-width: 480px; margin-inline: auto; } }
+.h2-eco-steps { margin-bottom: var(--space-md); }

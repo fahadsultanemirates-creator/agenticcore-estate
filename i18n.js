@@ -1,7 +1,8 @@
 /* ============================================
    AgenticCore Estate — one-click EN / UR toggle
    Elements opt in with data-i18n="key" (textContent)
-   or data-i18n-ph="key" (placeholder attribute).
+   or data-i18n-ph="key" (placeholder attribute)
+   or data-i18n-alt="key" (alt attribute, for meaningful images).
    Language + direction persist in localStorage.
    ============================================ */
 
@@ -335,6 +336,15 @@ Object.assign(AC_I18N.en, {
  "h2_eco_pk_cta": "See marketing services →",
  "h2_eco_bp": "A dedicated manager for high-volume partners.",
  "h2_eco_ref": "One link, flat 10% of your direct referrals' spend in AgenticCore Points (1 point = Rs 1).",
+ "h2_eco_art_alt": "AgenticCore ecosystem: list on AgenticCore.estate, then market with AgenticCore Pakistan — one ecosystem for Pakistan real estate: list, market, share, grow.",
+ "h2_eco_s1t": "List",
+ "h2_eco_s1": "List free on AgenticCore Estate with details, photos and location. Buyers contact you directly.",
+ "h2_eco_s2t": "Market",
+ "h2_eco_s2": "If you want, AgenticCore Pakistan makes posts, flyers, reels or brochures for that listing — a paid service with published prices.",
+ "h2_eco_s3t": "Share",
+ "h2_eco_s3": "Send your listing link, WhatsApp card and QR card wherever your buyers are.",
+ "h2_eco_s4t": "Grow",
+ "h2_eco_s4": "Keep listings complete and up to date — the quality score shows what to add next.",
  "h2_map_eyebrow": "Khwabon se ghar tak",
  "h2_map_title": "Live in Islamabad & Rawalpindi — more cities next",
  "h2_map_sub": "We're starting where we can serve properly, then joining the rest of Pakistan city by city.",
@@ -447,6 +457,15 @@ Object.assign(AC_I18N.ur, {
  "h2_eco_pk_cta": "مارکیٹنگ سروسز دیکھیں ←",
  "h2_eco_bp": "زیادہ کام کرنے والے پارٹنرز کے لیے مخصوص مینیجر۔",
  "h2_eco_ref": "ایک لنک، براہِ راست ریفرلز کے خرچ کا سیدھا 10٪ AgenticCore Points میں (1 پوائنٹ = 1 روپیہ)۔",
+ "h2_eco_art_alt": "AgenticCore ایکو سسٹم: AgenticCore.estate پر درج کریں، پھر AgenticCore Pakistan کے ساتھ مارکیٹ کریں — پاکستان رئیل اسٹیٹ کے لیے ایک ایکو سسٹم: درج کریں، مارکیٹ کریں، شیئر کریں، آگے بڑھیں۔",
+ "h2_eco_s1t": "درج کریں",
+ "h2_eco_s1": "AgenticCore Estate پر تفصیلات، تصاویر اور مقام کے ساتھ مفت درج کریں۔ خریدار براہِ راست آپ سے رابطہ کرتے ہیں۔",
+ "h2_eco_s2t": "مارکیٹ کریں",
+ "h2_eco_s2": "چاہیں تو AgenticCore Pakistan اسی اشتہار کے لیے پوسٹس، فلائرز، ریلز یا بروشر بناتا ہے — شائع شدہ قیمتوں والی ادا شدہ سروس۔",
+ "h2_eco_s3t": "شیئر کریں",
+ "h2_eco_s3": "اپنے اشتہار کا لنک، واٹس ایپ کارڈ اور QR کارڈ وہاں بھیجیں جہاں آپ کے خریدار ہیں۔",
+ "h2_eco_s4t": "آگے بڑھیں",
+ "h2_eco_s4": "اشتہارات مکمل اور تازہ رکھیں — کوالٹی اسکور بتاتا ہے کہ آگے کیا شامل کرنا ہے۔",
  "h2_map_eyebrow": "خوابوں سے گھر تک",
  "h2_map_title": "اسلام آباد اور راولپنڈی میں دستیاب — اگلے مزید شہر",
  "h2_map_sub": "ہم وہاں سے شروع کر رہے ہیں جہاں اچھی خدمت دے سکیں، پھر شہر بہ شہر پورے پاکستان تک۔",
@@ -592,6 +611,10 @@ function acApplyLanguage(lang) {
   document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
     const key = el.getAttribute('data-i18n-ph');
     if (dict[key]) el.setAttribute('placeholder', dict[key]);
+  });
+  document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n-alt');
+    if (dict[key]) el.setAttribute('alt', dict[key]);
   });
   document.querySelectorAll('.lang-toggle .lang-toggle-label').forEach(function (el) {
     el.textContent = lang === 'ur' ? 'EN' : 'اردو';
