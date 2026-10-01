@@ -620,6 +620,7 @@ function acApplyLanguage(lang) {
     el.textContent = lang === 'ur' ? 'EN' : 'اردو';
   });
 
+  document.documentElement.classList.remove('ac-ur-pending');
   if (typeof window.acOnLanguageChange === 'function') window.acOnLanguageChange();
 }
 
@@ -634,6 +635,10 @@ function acInitLanguage() {
 }
 
 document.addEventListener('DOMContentLoaded', acInitLanguage);
+// Apply a saved Urdu preference straight away for whatever is already parsed (the page
+// above this script), so it paints in Urdu instead of reflowing from English.
+// DOMContentLoaded above still covers everything rendered later (header, script-built UI).
+try { if (localStorage.getItem('acLang') === 'ur') acApplyLanguage('ur'); } catch (e) { /* storage blocked: stay in English */ }
 
 // Translation helper for script-built UI (falls back to English, then the key).
 function acT(key) {

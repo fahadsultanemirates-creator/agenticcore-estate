@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="inner.css">
 <link rel="stylesheet" href="product2.css">
 <link rel="stylesheet" href="home.css">
+<!-- Saved Urdu preference: hold the first paint until i18n.js has applied Urdu, so the page never
+     reflows from English (CLS). English visitors are unaffected. Failsafe reveal in home.css. -->
+<script>try { if (localStorage.getItem('acLang') === 'ur') document.documentElement.classList.add('ac-ur-pending'); } catch (e) {}</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
  {"@type":"Organization","name":"AgenticCore Estate","url":"https://agenticcore.estate/","logo":"https://agenticcore.estate/images/agenticcore-icon.png","areaServed":["Islamabad","Rawalpindi"]},
@@ -195,7 +198,7 @@
         <a href="dashboard.html" class="btn btn-secondary" data-i18n="h2_tk_cta2">Open my listings' toolkit</a>
       </div>
     </div>
-    <div class="h2-card-preview" id="cardPreview" aria-label="Example share card"></div>
+    <div class="h2-card-preview" id="cardPreview" aria-label="Example share card"><div class="h2-card-slot" id="cardPreviewSlot"></div><p class="h2-fine" data-i18n="h2_tk_preview">Example card, generated from a real listing on this site.</p></div>
   </div>
 </section>
 
@@ -324,11 +327,12 @@
 
 <div id="site-footer"></div>
 
+<!-- i18n before the CDN script so Urdu is applied (and the page revealed) without waiting for it. -->
+<script src="i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-client.js"></script>
 <script src="db-client.js"></script>
 <script src="property-taxonomy.js"></script>
-<script src="i18n.js"></script>
 <script src="listings.js"></script>
 <script src="ai-placeholders.js"></script>
 <script src="partials.js"></script>
