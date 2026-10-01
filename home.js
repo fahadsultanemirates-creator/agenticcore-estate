@@ -97,12 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setAttribute('role', 'img');
         canvas.setAttribute('aria-label', 'Example WhatsApp card generated from a real listing');
         await AcShareCards.draw(canvas, sample, 'whatsapp');
-        holder.innerHTML = '';
-        holder.appendChild(canvas);
-        const cap = document.createElement('p');
-        cap.className = 'h2-fine';
-        cap.textContent = acT('h2_tk_preview');
-        holder.appendChild(cap);
+        // The slot already reserves the card's 4:5 space and the caption is in the HTML,
+        // so drawing the card doesn't move the sections below it.
+        document.getElementById('cardPreviewSlot').appendChild(canvas);
       }, { rootMargin: '200px' });
       io.observe(holder);
     } else if (holder) {

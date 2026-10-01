@@ -125,3 +125,9 @@ html[lang="ur"] .h2-title, html[lang="ur"] .h2-split h2 { line-height: 1.7; }
 .h2-eco-art img { display: block; width: 100%; height: auto; }
 @media (max-width: 699px) { .h2-eco-art { max-width: 480px; margin-inline: auto; } }
 .h2-eco-steps { margin-bottom: var(--space-md); }
+/* Share-card preview: reserve the 1080×1350 card's space before it's drawn (no layout shift). */
+.h2-card-slot { aspect-ratio: 1080 / 1350; border-radius: var(--radius-md); background: var(--bg-panel); }
+.h2-card-preview { min-height: 0; }
+/* Saved-Urdu first paint: hidden until i18n.js applies Urdu (removes the class); failsafe reveal after 2.5s. */
+html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 2.5s forwards; }
+@keyframes ac-ur-reveal { to { visibility: visible; } }
