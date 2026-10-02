@@ -312,6 +312,10 @@ function acWireContactBox(type, item, returnUrl) {
       '<a class="btn btn-primary btn-block" href="tel:+' + digits + '">' + acEsc(acT('mk_call')) + '</a>' +
       '<a class="btn btn-secondary btn-block" target="_blank" rel="noopener" href="https://wa.me/' + digits + '?text=' + encodeURIComponent(msg) + '">WhatsApp</a>';
   });
+  if (form) form.addEventListener('focusin', function once() {
+    form.removeEventListener('focusin', once);
+    if (typeof acTrack === 'function') acTrack('enquiry_started', { entity: type });
+  });
   if (form) form.addEventListener('submit', async function (e) {
     e.preventDefault();
     const status = form.querySelector('.mk-enq-status');
@@ -322,7 +326,7 @@ function acWireContactBox(type, item, returnUrl) {
     const res = await AcMarket.enquire(type, item.id, msg, document.getElementById('mkEnqPhone').value.trim());
     form.querySelector('button').disabled = false;
     status.textContent = res.error ? res.error : acT('mk_enq_sent');
-    if (!res.error) form.reset();
+    if (!res.error) { form.reset(); if (typeof acTrack === 'function') acTrack('enquiry_sent', { entity: type }); }
   });
 }
 

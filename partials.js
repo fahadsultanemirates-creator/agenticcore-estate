@@ -159,6 +159,7 @@ function acRenderFooter() {
             '</ul>' +
           '</div>' +
         '</div>' +
+        (typeof acEcosystemHTML === 'function' ? '<div class="footer-eco">' + acEcosystemHTML('compact') + '</div>' : '') +
         '<div class="footer-bottom">' +
           '<span>© 2026 AgenticCore Estate. <span data-i18n="footer_rights"></span></span>' +
           '<span>An AgenticCore Company</span>' +

@@ -3,7 +3,6 @@
 // Genuine listings: attribution (agency / professional / project), the shared
 // contact + enquiry box, and owner tools including the AgenticCore Pakistan handoff.
 
-const AC_PK_HANDOFF = 'https://agenticcorepk.netlify.app/?from=estate&intent=promote&listing=';
 
 const detailRoot = document.getElementById('listingDetailRoot');
 if (detailRoot) {
@@ -17,7 +16,9 @@ if (detailRoot) {
     }
     const owner = listing.is_sample ? null : await AcDB.getUser(listing.owner_id);
     const settings = await AcMarket.settings();
-    document.title = listing.title + ' — AgenticCore Estate';
+    const canonical = acCanonicalUrl('listing.html', listing.id);
+    acSetPageMeta({ title: listing.title, url: canonical, description: listing.description, noindex: listing.is_sample,
+      image: acMediaUrl((listing.photos || [])[0] || '') });
 
     function attributionHTML() {
       const rows = [];
@@ -56,6 +57,7 @@ if (detailRoot) {
           '<span class="mk-purpose ' + (listing.type === 'rent' ? 'rent' : 'buy') + '">' + acEsc(acPurposeLabel(listing.type)) + '</span>' +
           (listing.is_sample ? acSampleBadge('listing') : acPromoBadge(listing, settings)) + '</div>' +
         (gallery ? '<div class="mk-gallery" style="margin-bottom:1rem">' + gallery + '</div>' : '') +
+        (listing.is_sample ? '' : acShareBarHTML('property')) +
         '<div class="mk-detail-grid"><div class="mk-detail-main">' +
           '<h1 class="mk-listing-title">' + acEsc(listing.title) + '</h1>' +
           '<p class="mk-sub">' + acEsc(acPropertyTypeLabel(listing.property_type)) + ' · ' + acEsc(listing.area) + ', ' + acEsc(listing.city) + '</p>' +
@@ -71,6 +73,7 @@ if (detailRoot) {
         '</div><aside>' + attributionHTML() + acContactBoxHTML('listing', listing) + trustHTML() + '</aside></div>' +
         '<p class="mk-back"><a href="properties.html">← ' + acEsc(acT('mk_dir_properties_h')) + '</a></p>';
       acWireContactBox('listing', listing, 'listing.html?id=' + listing.id);
+      if (!listing.is_sample) acWireShareBar(detailRoot, listing.title, canonical, 'share_property');
       renderOwnerTools();
     }
 
@@ -104,8 +107,13 @@ if (detailRoot) {
           '<span>' + (flash ? '<strong>' + acEsc(flash) + '</strong> ' : '') + acEsc(acT(isOwner ? 'mk_your_listing' : 'mk_admin_view')) + '</span>' +
           '<span class="mk-owner-actions"><a class="btn btn-secondary btn-sm" href="sell.html?edit=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('mk_edit_listing')) + '</a> ' +
           '<a class="btn btn-secondary btn-sm" href="my.html#properties">' + acEsc(acT('mk_my_listings')) + '</a>' +
-          (isOwner ? ' <a class="btn btn-primary btn-sm" href="' + AC_PK_HANDOFF + encodeURIComponent(listing.id) + '" rel="noopener">' + acEsc(acT('mk_promote_pk')) + '</a>' : '') +
-          '</span></div>');
+          (isOwner ? ' <a class="btn btn-secondary btn-sm" href="toolkit.html?id=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('lq_toolkit')) + '</a>' +
+            ' <a class="btn btn-primary btn-sm" href="' + acPkUrl('promote', 'property', listing.id, '') + '" rel="noopener" data-track="promote_property_click" data-intent="promote" data-entity="property">' + acEsc(acT('mk_promote_pk')) + '</a>' : '') +
+          '</span>' +
+          // No public number anywhere on this listing: tell the owner where to add one (the login phone is never shown).
+          (isOwner && !viewer.public_phone && !listing.agency && !listing.professional
+            ? '<p class="mk-fine">' + acEsc(acT('own_no_public_phone')) + ' <a href="my.html#account">' + acEsc(acT('own_add_phone')) + '</a></p>' : '') +
+          '</div>' + (isOwner ? acPkPathwaysHTML('property', listing.id, 'promote') : ''));
     }
   })();
 }

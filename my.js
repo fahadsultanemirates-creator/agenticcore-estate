@@ -6,7 +6,6 @@
    any account can add a professional, agency or builder profile.
    ============================================ */
 
-const AC_PK_HOME = 'https://agenticcorepk.netlify.app/';
 // same rule as public.mv2_valid_phone() in 0018
 const AC_PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
 const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agency', 'company', 'enquiries', 'promotion', 'referrals', 'account'];
@@ -192,15 +191,76 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     ].filter(function (x) { return v[x[0]]; });
     main.innerHTML = header(t('my_welcome').replace('{name}', user.full_name), t('my_overview_sub')) + (flash ? '<p class="my-flash">' + esc(flash) + '</p>' : '') +
       '<div class="stat-grid">' + tiles.map(function (x) { return '<a class="stat-card my-stat" href="#' + x[0] + '"><span class="stat-label">' + esc(t('my_nav_' + x[0])) + '</span><div class="stat-value">' + x[1] + '</div></a>'; }).join('') + '</div>' +
-      earlyHTML() +
+      '<div id="myNext"></div>' + earlyHTML() +
       '<div class="panel"><h3>' + esc(t('my_add_h')) + '</h3><p class="my-sub">' + esc(t('my_add_sub')) + '</p><div class="my-add">' +
         '<a class="btn btn-secondary btn-sm" href="sell.html">' + esc(t('mk_cta_properties')) + '</a>' +
         (ov.professionals.length ? '' : '<a class="btn btn-secondary btn-sm" href="#professional">' + esc(t('mk_cta_professionals')) + '</a>') +
         (ov.agencies.length ? '' : '<a class="btn btn-secondary btn-sm" href="#agency">' + esc(t('mk_cta_agencies')) + '</a>') +
         (ov.companies.length ? '' : '<a class="btn btn-secondary btn-sm" href="#company">' + esc(t('mk_cta_builders')) + '</a>') +
         '<a class="btn btn-secondary btn-sm" href="#projects">' + esc(t('mk_cta_projects')) + '</a>' +
-      '</div></div>';
+      '</div></div>' + '<div class="panel">' + acEcosystemHTML('compact') + '</div>';
+    renderNextActions();
   };
+
+  // ---------- next best actions (rule-based, at most 4) ----------
+  // Ordered by usefulness; each rule looks only at the account's own data.
+  function profileThin(text, services) { return String(text || '').trim().length < 20 && !(services || []).length; }
+  async function nextActions() {
+    const out = [];
+    const add = function (key, vars, href, btnKey, opts) {
+      let text = t(key);
+      Object.keys(vars || {}).forEach(function (k) { text = text.replace('{' + k + '}', vars[k]); });
+      out.push({ text: text, href: href, btn: t(btnKey), action: key, external: opts && opts.external });
+    };
+    if (ov.newEnquiries) add('na_enquiries', { n: ov.newEnquiries }, '#enquiries', 'na_btn_open');
+    const listings = ov.listingCount ? await AcDB.getListingsByOwner(user.id) : [];
+    const pro = ov.professionals[0], ag = ov.agencies[0], co = ov.companies[0];
+    const hasPresence = listings.length || pro || ag || co || ov.projects.length;
+    if (!hasPresence) {
+      const first = { professional: ['na_first_professional', '#professional'], agency: ['na_first_agency', '#agency'],
+        builder: ['na_first_builder', '#company'], developer: ['na_first_project', '#projects'] }[user.role] || ['na_first_property', 'sell.html'];
+      add(first[0], {}, first[1], 'na_btn_start');
+      return out;
+    }
+    if (listings.length && window.AcListingQuality) {
+      const weakest = listings.map(function (l) { return { l: l, q: AcListingQuality.score(l).score }; }).sort(function (a, b) { return a.q - b.q; })[0];
+      if (weakest.q < 80) add('na_improve_listing', { title: weakest.l.title, score: weakest.q }, 'listing.html?id=' + encodeURIComponent(weakest.l.id) + '#quality', 'na_btn_improve');
+      const newest = listings[0];
+      add('na_share_listing', { title: newest.title }, 'toolkit.html?id=' + encodeURIComponent(newest.id), 'na_btn_toolkit');
+      add('na_promote_listing', { title: newest.title }, acPkUrl('promote', 'property', newest.id, ''), 'na_btn_pk', { external: true });
+    }
+    if (pro) {
+      if (profileThin(pro.intro, pro.services)) add('na_complete_professional', {}, '#professional', 'na_btn_edit');
+      else if (!ov.phones['professional:' + pro.id]) add('na_phone', { name: pro.display_name }, '#professional', 'na_btn_edit');
+      else add('na_share_profile', { name: pro.display_name }, 'professional.html?id=' + encodeURIComponent(pro.id), 'na_btn_view');
+    }
+    if (ag) {
+      if (profileThin(ag.description, ag.services)) add('na_complete_agency', { name: ag.name }, '#agency', 'na_btn_edit');
+      else if (!ov.phones['agency:' + ag.id]) add('na_phone', { name: ag.name }, '#agency', 'na_btn_edit');
+      else add('na_team', { name: ag.name }, '#agency', 'na_btn_open');
+    }
+    if (co) {
+      const rates = await AcMine.rates(co.id);
+      if (!rates.length) add('na_rates', { name: co.name }, '#company', 'na_btn_edit');
+      else if (profileThin(co.description, co.services)) add('na_complete_company', { name: co.name }, '#company', 'na_btn_edit');
+      if (ov.capability === 'none' || ov.capability === 'rejected') add('na_apply_projects', {}, 'developer-apply.html', 'na_btn_apply');
+    }
+    if (ov.capability === 'approved') {
+      if (!ov.projects.length) add('na_add_project', {}, 'post-project.html', 'na_btn_start');
+      else add('na_promote_project', { title: ov.projects[0].title }, acPkPathwayUrl(AC_PK_PATHWAYS.project[0], 'project', ov.projects[0].id), 'na_btn_pk', { external: true });
+    }
+    return out.slice(0, 4);
+  }
+  async function renderNextActions() {
+    const slot = document.getElementById('myNext');
+    if (!slot) return;
+    const items = await nextActions();
+    if (!items.length || !document.body.contains(slot)) return;
+    slot.innerHTML = '<div class="panel my-next"><h3>' + esc(t('na_h')) + '</h3><ul class="my-next-list">' + items.map(function (a) {
+      return '<li><span>' + esc(a.text) + '</span><a class="btn btn-secondary btn-sm" href="' + esc(a.href) + '"' + (a.external ? ' rel="noopener"' : '') +
+        ' data-track="next_action_click" data-action="' + esc(a.action) + '">' + esc(a.btn) + '</a></li>';
+    }).join('') + '</ul></div>';
+  }
 
   R.properties = function () {
     main.innerHTML = header(t('my_nav_properties'), t('my_props_sub')) +
@@ -228,7 +288,7 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
         return '<div class="panel my-item"><div class="my-item-head"><h3>' + esc(p.title) + '</h3><span class="mk-chip">' + esc(acProjectStatusText(p.status)) + '</span>' + (p.moderation_status === 'hidden' ? '<span class="badge badge-pending">' + esc(t('my_hidden')) + '</span>' : '') + '</div>' +
           '<p class="my-sub">' + esc(p.area) + ', ' + esc(p.city) + '</p>' +
           '<p class="my-row-actions"><a class="btn btn-secondary btn-sm" href="project.html?id=' + encodeURIComponent(p.id) + '">' + esc(t('my_view_public')) + '</a> <a class="btn btn-secondary btn-sm" href="post-project.html?edit=' + encodeURIComponent(p.id) + '">' + esc(t('my_edit')) + '</a></p>' +
-          '<h4>' + esc(t('mk_represented_by')) + '</h4><ul class="my-list">' + (reps[i].map(function (r) { return '<li>' + esc(r.agency ? r.agency.name : '') + ' — ' + esc(t('my_st_' + r.status)) + '</li>'; }).join('') || '<li class="my-sub">' + esc(t('my_none')) + '</li>') + '</ul>' +
+          '<h4>' + esc(t('mk_represented_by')) + '</h4><p class="my-sub">' + esc(t('my_rep_explain')) + '</p><ul class="my-list">' + (reps[i].map(function (r) { return '<li>' + esc(r.agency ? r.agency.name : '') + ' — ' + esc(t('my_st_' + r.status)) + '</li>'; }).join('') || '<li class="my-sub">' + esc(t('my_none')) + '</li>') + '</ul>' +
           '<form class="my-inline" data-rep="' + esc(p.id) + '"><input type="search" placeholder="' + esc(t('my_search_agency')) + '" aria-label="' + esc(t('my_search_agency')) + '"><div class="my-results"></div></form></div>';
       }).join('') : '<div class="panel"><p class="my-sub">' + esc(t('mk_empty_projects')) + '</p></div>');
     main.querySelectorAll('form[data-rep]').forEach(function (f) {
@@ -360,20 +420,32 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
 
   R.promotion = async function () {
     const listings = await AcDB.getListingsByOwner(user.id);
+    const ent = [];
+    ov.projects.forEach(function (p) { ent.push(['project', p.id, p.title]); });
+    ov.professionals.forEach(function (p) { ent.push(['professional', p.id, p.display_name]); });
+    ov.agencies.forEach(function (a) { ent.push(['agency', a.id, a.name]); });
+    ov.companies.forEach(function (c) { ent.push(['builder', c.id, c.name]); });
     main.innerHTML = header(t('my_nav_promotion'), t('my_promo_sub')) +
       '<div class="panel"><h3>' + esc(t('my_promo_listings')) + '</h3><p class="my-sub">' + esc(t('my_promo_listings_sub')) + '</p><ul class="my-list">' +
         (listings.map(function (l) {
-          return '<li><span>' + esc(l.title) + '</span> <a class="btn btn-primary btn-sm" rel="noopener" href="' + AC_PK_HOME + '?from=estate&intent=promote&listing=' + encodeURIComponent(l.id) + '">' + esc(t('mk_promote_pk')) + '</a> <a class="btn btn-secondary btn-sm" href="toolkit.html?id=' + encodeURIComponent(l.id) + '">' + esc(t('lq_toolkit')) + '</a></li>';
+          return '<li><span>' + esc(l.title) + '</span> <a class="btn btn-primary btn-sm" rel="noopener" href="' + acPkUrl('promote', 'property', l.id, '') + '" data-track="promote_property_click" data-intent="promote" data-entity="property">' + esc(t('mk_promote_pk')) + '</a> <a class="btn btn-secondary btn-sm" href="toolkit.html?id=' + encodeURIComponent(l.id) + '">' + esc(t('lq_toolkit')) + '</a></li>';
         }).join('') || '<li class="my-sub">' + esc(t('mk_empty_properties')) + ' <a href="sell.html">' + esc(t('mk_cta_properties')) + '</a></li>') + '</ul></div>' +
-      '<div class="panel"><h3>' + esc(t('my_promo_profiles')) + '</h3><p class="my-sub">' + esc(t('my_promo_profiles_sub')) + '</p><a class="btn btn-secondary btn-sm" rel="noopener" href="' + AC_PK_HOME + 'services.html">' + esc(t('h2_eco_pk_cta')) + '</a></div>' +
+      ent.map(function (e) {
+        return '<div class="my-promo-entity"><h3 class="my-promo-name">' + esc(e[2]) + ' <small>' + esc(t('eco_type_' + e[0])) + '</small></h3>' + acPkPathwaysHTML(e[0], e[1]) + '</div>';
+      }).join('') +
+      (ent.length ? '' : '<div class="panel"><h3>' + esc(t('my_promo_profiles')) + '</h3><p class="my-sub">' + esc(t('my_promo_profiles_sub')) + '</p><a class="btn btn-secondary btn-sm" rel="noopener" href="' + acPkUrl('services', null, null, 'services.html') + '" data-track="estate_to_pk_click" data-intent="services">' + esc(t('h2_eco_pk_cta')) + '</a></div>') +
       '<p class="mk-fine">' + esc(t('mk_eco_fine')) + '</p>';
   };
 
   R.referrals = function () {
+    const link = location.origin + '/signup.html?ref=' + encodeURIComponent(user.referral_code || '');
     main.innerHTML = header(t('my_nav_referrals'), '') + '<div class="panel"><p>' + esc(t('my_ref_sub')) + '</p><p class="my-sub">' + esc(t('my_ref_code')) + ': <strong>' + esc(user.referral_code) + '</strong> · ' + esc(t('my_points')) + ': <strong>' + esc(user.points) + '</strong></p>' +
+      '<p class="my-inline"><input type="text" readonly value="' + esc(link) + '" aria-label="' + esc(t('my_ref_link')) + '" style="min-width:0;flex:1"> <button type="button" class="btn btn-secondary btn-sm" id="myRefCopy">' + esc(t('share_copy')) + '</button></p>' +
       '<a class="btn btn-primary btn-sm" href="referral-dashboard.html">' + esc(t('my_ref_open')) + '</a></div>';
+    document.getElementById('myRefCopy').addEventListener('click', async function (e) {
+      try { await navigator.clipboard.writeText(link); e.target.textContent = t('share_copied'); } catch (err) { /* select manually */ }
+    });
   };
-
   R.account = function () {
     main.innerHTML = header(t('my_nav_account'), '') + '<div class="panel"><dl class="mk-facts">' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_name')) + '</dt><dd>' + esc(user.full_name) + '</dd></div>' +

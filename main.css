@@ -935,3 +935,34 @@ html[dir="rtl"] .trust-list .listing-badge { justify-self: end; }
   .nav-cta .btn { padding-inline: 0.7rem; }
   .lang-toggle { padding: 0.35rem 0.55rem; }
 }
+
+/* ============================================
+   Ecosystem (Estate ↔ AgenticCore Pakistan), share bar, next actions
+   ============================================ */
+.footer-eco { border-top: 1px solid var(--border-subtle); margin-top: var(--space-lg); padding-top: var(--space-md); }
+.eco-compact { margin: 0; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; }
+.eco-compact a { color: var(--accent-gold-bright); }
+.eco-badge { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent-gold-bright); border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 999px; padding: 0.1rem 0.55rem; margin-inline-end: 0.35rem; }
+.eco-block .eco-kicker { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-gold-bright); margin: 0 0 0.6rem; }
+.eco-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-md); }
+.eco-col { border: 1px solid var(--border-subtle); border-radius: 12px; padding: var(--space-md); min-width: 0; }
+.eco-col h3 { margin: 0 0 0.2rem; }
+.eco-verbs { color: var(--accent-gold-bright); font-weight: 600; margin: 0 0 0.4rem; }
+.eco-pathways h3 { margin-top: 0; }
+.eco-pw-list { list-style: none; margin: 0.6rem 0; padding: 0; display: grid; gap: 0.35rem; }
+.eco-pw-list a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-gold-bright); }
+.eco-from-note { background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.88rem; }
+.ac-share { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0.6rem 0 1rem; }
+.ac-share .btn { min-height: 44px; }
+.ac-share-label { font-size: 0.85rem; color: var(--text-secondary); margin-inline-end: 0.2rem; }
+.ac-share-status { font-size: 0.8rem; color: var(--text-secondary); overflow-wrap: anywhere; min-width: 0; }
+.my-next-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.my-next-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle); }
+.my-next-list li:last-child { border-bottom: 0; }
+.my-next-list li span { flex: 1 1 220px; min-width: 0; overflow-wrap: anywhere; }
+.my-promo-entity { margin-top: var(--space-md); }
+.my-promo-name { font-size: 1rem; margin: 0 0 0.4rem; } .my-promo-name small { color: var(--text-secondary); font-weight: 400; }
+.tk-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0.4rem 0 0.8rem; }
+.tk-brand select { min-height: 44px; max-width: 100%; }

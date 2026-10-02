@@ -67,6 +67,7 @@
 <script src="supabase-client.js"></script>
 <script src="db-client.js"></script>
 <script src="i18n.js"></script>
+<script src="ecosystem.js"></script>
 <script src="auth.js"></script>
 <script>
   // Hints are translated (i18n.js: intent_*_hint); one account can add other profiles later.
@@ -86,6 +87,20 @@
         updateHint();
       });
     });
+    // Arriving from AgenticCore Pakistan (?from=pk&intent=…): preselect the matching
+    // intent and say where they came from. Only allow-listed values are used.
+    const ctx = typeof acIncomingContext === 'function' ? acIncomingContext() : null;
+    const preset = ctx && { profile: 'professional', agency: 'agency', builder: 'builder', project: 'developer', list: 'buyer' }[ctx.intent];
+    const wanted = preset || ({ professional: 1, agency: 1, builder: 1, developer: 1 }[new URLSearchParams(location.search).get('intent')] ? new URLSearchParams(location.search).get('intent') : null);
+    const input = wanted && document.querySelector('.role-option input[value="' + wanted + '"]');
+    if (input) { input.checked = true; input.dispatchEvent(new Event('change')); }
+    if (ctx && ctx.from === 'pk') {
+      const note = document.createElement('p');
+      note.className = 'eco-from-note';
+      note.setAttribute('data-i18n', 'eco_from_pk_signup');
+      note.textContent = acT('eco_from_pk_signup');
+      const form = document.getElementById('signupForm'); form.parentNode.insertBefore(note, form);
+    }
     updateHint();
   });
 </script>

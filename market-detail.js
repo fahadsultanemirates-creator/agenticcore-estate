@@ -12,7 +12,7 @@
   const valid = /^[0-9a-f-]{36}$/i.test(id);
   const loaders = { project: AcMarket.getProject, professional: AcMarket.getProfessional, agency: AcMarket.getAgency, company: AcMarket.getCompany };
   const back = { project: 'projects.html', professional: 'professionals.html', agency: 'agencies.html', company: 'builders.html' };
-  let item = null, settings = {};
+  let item = null, settings = {}, canonical = '';
 
   function fact(label, value) {
     return value ? '<div class="mk-fact"><dt>' + acEsc(acT(label)) + '</dt><dd>' + value + '</dd></div>' : '';
@@ -107,18 +107,50 @@
         ((o.portfolio || []).length ? '<section class="mk-section"><h2>' + acEsc(acT('mk_portfolio')) + '</h2><div class="mk-gallery">' + o.portfolio.map(function (u) { return acMediaUrl(u) ? '<img src="' + acMediaUrl(u) + '" alt="" loading="lazy">' : ''; }).join('') + '</div></section>' : '') +
         links(o) + row('mk_projects_by', 'projects', o.projects);
     }
-    root.innerHTML = (o.is_sample ? acSampleNoticeHTML() : '') + head +
+    root.innerHTML = (o.is_sample ? acSampleNoticeHTML() : '') + '<div id="mkOwnerSlot"></div>' + head +
+      (o.is_sample ? '' : acShareBarHTML(entity)) +
       '<div class="mk-detail-grid"><div class="mk-detail-main">' + main + '</div><aside>' + acContactBoxHTML(entity, o) + '</aside></div>' +
       '<p class="mk-back"><a href="' + back[entity] + '">← ' + acEsc(acT('mk_back_' + entity)) + '</a></p>';
     acWireContactBox(entity, o, location.pathname.split('/').pop() + location.search);
+    if (!o.is_sample) acWireShareBar(root, o.title || o.display_name || o.name, canonical, entity === 'project' ? 'share_project' : 'share_profile');
+    renderOwnerTools();
+  }
+
+  // Owner-only tools. Ownership comes from the signed-in session compared with
+  // the row's owner_id (RLS already scopes what the browser can read); nothing
+  // in the URL grants anything.
+  const ecoType = { project: 'project', professional: 'professional', agency: 'agency', company: 'builder' }[entity];
+  const editHref = { project: function (o) { return 'post-project.html?edit=' + encodeURIComponent(o.id); },
+    professional: function () { return 'my.html#professional'; },
+    agency: function (o) { return 'my.html#agency?id=' + encodeURIComponent(o.id); },
+    company: function (o) { return 'my.html#company?id=' + encodeURIComponent(o.id); } }[entity];
+  let viewer = null, ownPhone = null;
+  function renderOwnerTools() {
+    const slot = document.getElementById('mkOwnerSlot');
+    if (!slot || !item || item.is_sample || !viewer || viewer.id !== item.owner_id) { if (slot) slot.innerHTML = ''; return; }
+    const phoneHint = entity !== 'project' && !ownPhone
+      ? '<p class="mk-fine">' + acEsc(acT('own_no_public_phone')) + ' <a href="' + editHref(item) + '">' + acEsc(acT('own_add_phone')) + '</a></p>' : '';
+    slot.innerHTML = '<div class="panel mk-owner-bar"><span>' + acEsc(acT('own_this_is_yours_' + entity)) + '</span>' +
+      '<span class="mk-owner-actions"><a class="btn btn-secondary btn-sm" href="' + editHref(item) + '">' + acEsc(acT('own_edit')) + '</a> ' +
+      '<a class="btn btn-secondary btn-sm" href="my.html#promotion">' + acEsc(acT('my_nav_promotion')) + '</a></span>' + phoneHint + '</div>' +
+      acPkPathwaysHTML(ecoType, item.id);
   }
 
   (async function () {
     if (!valid) { root.innerHTML = '<div class="mk-empty">' + acEsc(acT('mk_not_found')) + ' <a href="' + back[entity] + '">' + acEsc(acT('mk_back_' + entity)) + '</a></div>'; return; }
     [item, settings] = await Promise.all([loaders[entity](id), AcMarket.settings()]);
     if (!item) { root.innerHTML = '<div class="mk-empty">' + acEsc(acT('mk_not_found')) + ' <a href="' + back[entity] + '">' + acEsc(acT('mk_back_' + entity)) + '</a></div>'; return; }
-    document.title = (item.title || item.display_name || item.name) + ' — AgenticCore Estate';
+    canonical = acCanonicalUrl(location.pathname.split('/').pop() || (entity + '.html'), item.id);
+    acSetPageMeta({ title: item.title || item.display_name || item.name, url: canonical,
+      description: item.description || item.intro || item.headline || '', noindex: item.is_sample,
+      image: acMediaUrl((item.photos || [])[0] || item.logo_url || item.avatar_url || '') });
     render();
     window.acOnLanguageChange = render;
+    viewer = await AcDB.currentUser();
+    if (viewer && viewer.id === item.owner_id && !item.is_sample && entity !== 'project') {
+      const ph = await supabaseClient.from('entity_public_phones').select('phone').eq('entity_type', entity).eq('entity_id', item.id).maybeSingle();
+      ownPhone = ph.data && ph.data.phone;
+    }
+    renderOwnerTools();
   })();
 })();

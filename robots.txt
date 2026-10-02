@@ -1,0 +1,15 @@
+# AgenticCore Estate
+User-agent: *
+Disallow: /my.html
+Disallow: /admin-dashboard.html
+Disallow: /admin-login.html
+Disallow: /toolkit.html
+Disallow: /sheet.html
+Disallow: /sell.html
+Disallow: /post-project.html
+Disallow: /developer-apply.html
+Disallow: /developer-pending.html
+Disallow: /referral-dashboard.html
+Disallow: /api/
+
+Sitemap: https://agenticcore.estate/sitemap.xml

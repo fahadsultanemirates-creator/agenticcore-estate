@@ -50,7 +50,7 @@ async function refineWithAI(text, c) {
 // Marketplace V2: questions about the other four categories get a link to the
 // real, filtered directory — Copilot does not claim to have searched them.
 const CATEGORY_WORDS = [
-  ['builders', /\b(builders?|construction|contractors?|grey structure|turnkey|thekedar)\b/],
+  ['builders', /\b(builders?|developers?|construction (compan(y|ies)|firms?)|construction|contractors?|grey structure|turnkey|thekedar)\b/],
   ['agencies', /\b(agenc(y|ies)|real estate (company|firm))\b/],
   ['professionals', /\b(agents?|property (dealer|consultant|adviser|advisor|professional)s?|dealers?|realtors?|brokers?)\b/],
   ['projects', /\b(projects?|new developments?|housing schemes?|launch(es|ing)?|off[- ]plan)\b/]
@@ -70,6 +70,13 @@ export async function findProperty(text) {
   if (text.length < 3) return { error: 'Tell AgenticCore what you are looking for.' };
   const areas = await getAreaNames().catch(() => []);
   let c = parseCriteria(text, areas);
+  // Directory questions ("show agencies", "find builders in Rawalpindi") are
+  // answered deterministically, before any AI call is spent.
+  const early = categoryIntent(text, c);
+  if (early && !c.property_types.length) {
+    return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: null, directory: early,
+      message: 'AgenticCore Copilot searches property listings. Browse the ' + early.category + ' directory for this — it shows only genuine profiles, with filters.' };
+  }
   const refined = await refineWithAI(text, c);
   c = refined.c;
 
