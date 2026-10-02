@@ -10,7 +10,7 @@ only changes wording and navigation. Ownership is decided by the database alone.
 ## 1. Estate → PK
 
 ```
-https://agenticcorepk.netlify.app/<page>?from=estate&intent=<intent>[&entity_type=<type>&entity_id=<uuid>][&listing=<uuid>]
+https://agenticcorepk.com/<page>?from=estate&intent=<intent>[&entity_type=<type>&entity_id=<uuid>][&listing=<uuid>]
 ```
 
 | Parameter | Allowed values | Notes |

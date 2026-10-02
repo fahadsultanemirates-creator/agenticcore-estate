@@ -15,7 +15,7 @@ function acEcoEsc(v) {
   return String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 const AC_SITE = 'https://agenticcore.estate/';
-const AC_PK_BASE = 'https://agenticcorepk.netlify.app/';
+const AC_PK_BASE = 'https://agenticcorepk.com/';
 
 // ---------- cross-site context contract (docs/ECOSYSTEM_CONTRACT.md) ----------
 // Only these values are ever sent or accepted. Anything else is dropped.
