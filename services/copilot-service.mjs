@@ -75,7 +75,7 @@ export async function findProperty(text) {
   const early = categoryIntent(text, c);
   if (early && !c.property_types.length) {
     return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: null, directory: early,
-      message: 'AgenticCore Copilot searches property listings. Browse the ' + early.category + ' directory for this — it shows only genuine profiles, with filters.' };
+      message: 'AgenticCore Copilot searches property listings. Browse the ' + early.category + ' directory for this — its results are genuine profiles only, with filters; any examples there are clearly labelled.' };
   }
   const refined = await refineWithAI(text, c);
   c = refined.c;
@@ -83,7 +83,7 @@ export async function findProperty(text) {
   const directory = categoryIntent(text, c);
   if (directory && !c.property_types.length) {
     return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: refined.used, directory: directory,
-      message: 'AgenticCore Copilot searches property listings. Browse the ' + directory.category + ' directory for this — it shows only genuine profiles, with filters.' };
+      message: 'AgenticCore Copilot searches property listings. Browse the ' + directory.category + ' directory for this — its results are genuine profiles only, with filters; any examples there are clearly labelled.' };
   }
   if (criteriaStrength(c) === 0) {
     // Nothing concrete to search on: ask, rather than dump every listing as a "match".

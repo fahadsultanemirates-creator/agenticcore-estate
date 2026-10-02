@@ -102,7 +102,9 @@ function acPkPathwaysHTML(entityType, entityId, skipIntent) {
   if (!list.length) return '';
   return '<div class="panel eco-pathways"><h3>' + acEcoEsc(acT('eco_pw_h')) + '</h3><p class="mk-fine">' + acEcoEsc(acT('eco_pw_sub')) + '</p><ul class="eco-pw-list">' +
     list.map(function (pw) {
-      return '<li><a href="' + acPkPathwayUrl(pw, entityType, entityId) + '" rel="noopener" data-track="estate_to_pk_click" data-intent="' + pw.intent + '" data-entity="' + entityType + '">' +
+      // promotion of a project / property is counted as its own event (a subset of Estate → PK clicks)
+      const ev = entityType === 'project' ? 'promote_project_click' : entityType === 'property' && pw.intent === 'promote' ? 'promote_property_click' : 'estate_to_pk_click';
+      return '<li><a href="' + acPkPathwayUrl(pw, entityType, entityId) + '" rel="noopener" data-track="' + ev + '" data-intent="' + pw.intent + '" data-entity="' + entityType + '">' +
         acEcoEsc(acT(pw.key)) + ' →</a></li>';
     }).join('') + '</ul><p class="mk-fine">' + acEcoEsc(acT('eco_pk_separate')) + '</p></div>';
 }
@@ -192,7 +194,9 @@ function acTrack(event, props) {
   if (AC_TRACK_EVENTS.indexOf(event) < 0) return;
   const clean = { page: (location.pathname.split('/').pop() || 'index.html') };
   Object.keys(props || {}).forEach(function (k) {
-    if (AC_TRACK_FIELDS.indexOf(k) >= 0 && /^[a-z0-9_:-]{1,40}$/i.test(String(props[k]))) clean[k] = String(props[k]);
+    const v = String(props[k]);
+    // short labels only — never an id (UUID) or anything phone-like
+    if (AC_TRACK_FIELDS.indexOf(k) >= 0 && /^[a-z0-9_:-]{1,40}$/i.test(v) && !AC_UUID_RE.test(v) && !/[0-9]{6,}/.test(v)) clean[k] = v;
   });
   try { window.dispatchEvent(new CustomEvent('ac:track', { detail: { event: event, props: clean } })); } catch (e) { /* old browser */ }
   if (Array.isArray(window.dataLayer)) window.dataLayer.push(Object.assign({ event: event }, clean));
