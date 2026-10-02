@@ -14,10 +14,10 @@
 --     constraints/RPCs in 0018, not just by this file);
 --   * uses generic demonstration labels ("Sample Agency — …", "Sample Builder —
 --     …", "Sample Professional · …"), illustrative prices and "Example location";
---     no real address, project, person, brand or company is described. Agency and
---     builder samples have NO logo (the uploaded logos carried brand-like names
---     and are not shipped) and sample professionals have NO portrait (initials
---     are shown); see docs/MARKETPLACE_V2_SAMPLE_ASSETS.md.
+--     no real address, project, person, brand or company is described. The
+--     logos, portraits and photos are TEMPORARY demonstration artwork (owner
+--     decision), to be replaced by genuine content; every card and page shows a
+--     SAMPLE badge. See docs/MARKETPLACE_V2_SAMPLE_ASSETS.md.
 -- Images: images/samples/** (see docs/MARKETPLACE_V2_SAMPLE_ASSETS.md).
 -- Idempotent: re-running it changes nothing that already exists.
 -- ============================================================
@@ -35,55 +35,55 @@ on conflict (id) do nothing;
 
 -- ---------- agencies ----------
 insert into public.agencies (id, owner_id, is_sample, name, logo_url, description, city, cities, services, segments, purposes) values
- ('5a3b1e00-0000-4000-8000-000000000401', public.mv2_sample_owner(), true, 'Sample Agency — Family Homes', null,
-  'Sample agency profile. It shows how an agency can present its services, team and active listings on AgenticCore Estate. The name is a fictional demonstration label; no logo is shown.',
+ ('5a3b1e00-0000-4000-8000-000000000401', public.mv2_sample_owner(), true, 'Sample Agency — Family Homes', 'images/samples/agencies/horizon-real-estate-960.webp',
+  'Sample agency profile. It shows how an agency can present its services, team and active listings on AgenticCore Estate. The name is a fictional demonstration label; the logo is temporary demonstration artwork.',
   'Islamabad', '{Islamabad}', '{"Residential sales","Rentals","Property consultation"}', '{residential}', '{sale,rent}'),
- ('5a3b1e00-0000-4000-8000-000000000402', public.mv2_sample_owner(), true, 'Sample Agency — Homes & Plots', null,
-  'Sample agency profile for demonstration. Example focus: family homes and plots. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000402', public.mv2_sample_owner(), true, 'Sample Agency — Homes & Plots', 'images/samples/agencies/greenland-real-estate-960.webp',
+  'Sample agency profile for demonstration. Example focus: family homes and plots. Fictional demonstration name; temporary demonstration logo.',
   'Rawalpindi', '{Rawalpindi}', '{"Houses and plots","Rentals"}', '{residential}', '{sale,rent}'),
- ('5a3b1e00-0000-4000-8000-000000000403', public.mv2_sample_owner(), true, 'Sample Agency — Buy, Sell & Rent', null,
-  'Sample agency profile for demonstration. Example focus: buying, selling, renting and investment advice. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000403', public.mv2_sample_owner(), true, 'Sample Agency — Buy, Sell & Rent', 'images/samples/agencies/nova-living-real-estate-960.webp',
+  'Sample agency profile for demonstration. Example focus: buying, selling, renting and investment advice. Fictional demonstration name; temporary demonstration logo.',
   'Islamabad', '{Islamabad,Rawalpindi}', '{"Buy","Sell","Rent","Investment advice"}', '{residential}', '{sale,rent}'),
- ('5a3b1e00-0000-4000-8000-000000000404', public.mv2_sample_owner(), true, 'Sample Agency — Commercial & Residential', null,
-  'Sample agency profile for demonstration. Example focus: commercial and residential property. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000404', public.mv2_sample_owner(), true, 'Sample Agency — Commercial & Residential', 'images/samples/agencies/skyline-properties-960.webp',
+  'Sample agency profile for demonstration. Example focus: commercial and residential property. Fictional demonstration name; temporary demonstration logo.',
   'Islamabad', '{Islamabad,Rawalpindi}', '{"Commercial property","Apartments","Rentals"}', '{residential,commercial}', '{sale,rent}'),
- ('5a3b1e00-0000-4000-8000-000000000405', public.mv2_sample_owner(), true, 'Sample Agency — Large Family Homes', null,
-  'Sample agency profile for demonstration. Example focus: larger family homes. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000405', public.mv2_sample_owner(), true, 'Sample Agency — Large Family Homes', 'images/samples/agencies/prestige-real-estate-960.webp',
+  'Sample agency profile for demonstration. Example focus: larger family homes. Fictional demonstration name; temporary demonstration logo.',
   'Rawalpindi', '{Rawalpindi}', '{"Residential sales","Property consultation"}', '{residential}', '{sale}')
 on conflict (id) do nothing;
 
 -- ---------- property professionals ----------
 insert into public.professionals (id, owner_id, is_sample, display_name, avatar_url, avatar_kind, headline, intro, why_contact, how_i_work,
                                   cities, segments, purposes, property_types, services, languages, overseas_clients, commission_info, special_offer) values
- ('5a3b1e00-0000-4000-8000-000000000301', public.mv2_sample_owner(), true, 'Sample Professional · Residential Sales', null, 'none',
+ ('5a3b1e00-0000-4000-8000-000000000301', public.mv2_sample_owner(), true, 'Sample Professional · Residential Sales', 'images/samples/professionals/professional-1-720.webp', 'photo',
   'Example specialisation: residential sales',
   'Sample profile. It shows how a property professional can explain what they do for clients — even with no active listings.',
   'Example: helps families shortlist houses that match their budget and school runs.',
   'Example: a first call to understand your needs, then a shortlist and accompanied visits.',
   '{Islamabad}', '{residential}', '{sale}', '{house,flat}', '{"Buying support","Property visits"}', '{Urdu,English}', false,
   'Example: commission terms explained before any visit.', null),
- ('5a3b1e00-0000-4000-8000-000000000302', public.mv2_sample_owner(), true, 'Sample Professional · Commercial Property', null, 'none',
+ ('5a3b1e00-0000-4000-8000-000000000302', public.mv2_sample_owner(), true, 'Sample Professional · Commercial Property', 'images/samples/professionals/professional-2-720.webp', 'photo',
   'Example specialisation: commercial property',
   'Sample profile for demonstration. Example work: offices and shops for businesses.',
   'Example: compares rent, maintenance and access for business tenants.',
   'Example: shares a written comparison of three options before visits.',
   '{Islamabad,Rawalpindi}', '{commercial}', '{sale,rent}', '{office,shop}', '{"Commercial leasing","Investment questions"}', '{Urdu,English}', true,
   null, 'Example: an offer a professional could choose to show here.'),
- ('5a3b1e00-0000-4000-8000-000000000303', public.mv2_sample_owner(), true, 'Sample Professional · Overseas Buyers', null, 'none',
+ ('5a3b1e00-0000-4000-8000-000000000303', public.mv2_sample_owner(), true, 'Sample Professional · Overseas Buyers', 'images/samples/professionals/professional-3-720.webp', 'photo',
   'Example specialisation: overseas Pakistani buyers',
   'Sample profile for demonstration. Example work: helping clients abroad with video visits and paperwork checklists.',
   'Example: video walkthroughs and regular updates for buyers outside Pakistan.',
   'Example: weekly updates by WhatsApp; documents checked with the client''s own lawyer.',
   '{Rawalpindi}', '{residential}', '{sale}', '{house,residential_plot}', '{"Overseas client support","Video visits"}', '{Urdu,English,Punjabi}', true,
   null, null),
- ('5a3b1e00-0000-4000-8000-000000000304', public.mv2_sample_owner(), true, 'Sample Professional · Family Rentals', null, 'none',
+ ('5a3b1e00-0000-4000-8000-000000000304', public.mv2_sample_owner(), true, 'Sample Professional · Family Rentals', 'images/samples/professionals/professional-4-720.webp', 'photo',
   'Example specialisation: rentals for families',
   'Sample profile for demonstration. Example work: finding rental homes and portions for families.',
   'Example: checks utilities, parking and lease terms before you visit.',
   'Example: sends a shortlist within a few days and arranges visits.',
   '{Islamabad}', '{residential}', '{rent}', '{house,upper_portion,lower_portion,flat}', '{"Rental search","Lease guidance"}', '{Urdu,English}', false,
   null, null),
- ('5a3b1e00-0000-4000-8000-000000000305', public.mv2_sample_owner(), true, 'Sample Professional · Apartments & Projects', null, 'none',
+ ('5a3b1e00-0000-4000-8000-000000000305', public.mv2_sample_owner(), true, 'Sample Professional · Apartments & Projects', 'images/samples/professionals/professional-5-720.webp', 'photo',
   'Example specialisation: apartments and new projects',
   'Sample profile for demonstration. Example work: apartments and project bookings, working independently.',
   'Example: explains payment plans and possession timelines in plain language.',
@@ -101,23 +101,23 @@ on conflict (agency_id, professional_id) do nothing;
 
 -- ---------- builder / developer companies ----------
 insert into public.companies (id, owner_id, is_sample, name, logo_url, description, cities, services, completed_projects, current_projects, payment_terms) values
- ('5a3b1e00-0000-4000-8000-000000000501', public.mv2_sample_owner(), true, 'Sample Developer — Commercial Projects', null,
-  'Sample company profile. It shows how a builder or developer can explain its services, rates and projects. The name is a fictional demonstration label; no logo is shown.',
+ ('5a3b1e00-0000-4000-8000-000000000501', public.mv2_sample_owner(), true, 'Sample Developer — Commercial Projects', 'images/samples/builders/al-haramain-developers-960.webp',
+  'Sample company profile. It shows how a builder or developer can explain its services, rates and projects. The name is a fictional demonstration label; the logo is temporary demonstration artwork.',
   '{Islamabad,Rawalpindi}', '{project_development,commercial_construction}', 'Example: a list of completed buildings would appear here.', 'Example: current projects would appear here.',
   'Example: payment in agreed construction stages.'),
- ('5a3b1e00-0000-4000-8000-000000000502', public.mv2_sample_owner(), true, 'Sample Builder — Grey Structure & Turnkey', null,
-  'Sample company profile for demonstration. Example services: grey structure and turnkey homes, plus commercial buildings. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000502', public.mv2_sample_owner(), true, 'Sample Builder — Grey Structure & Turnkey', 'images/samples/builders/capital-builders-developers-960.webp',
+  'Sample company profile for demonstration. Example services: grey structure and turnkey homes, plus commercial buildings. Fictional demonstration name; temporary demonstration logo.',
   '{Islamabad,Rawalpindi}', '{grey_structure,turnkey,commercial_construction}', 'Example: completed homes and buildings would be listed here.', null,
   'Example: foundation, structure and finishing stages, each paid on completion.'),
- ('5a3b1e00-0000-4000-8000-000000000503', public.mv2_sample_owner(), true, 'Sample Developer — Residential Towers', null,
-  'Sample company profile for demonstration. Example focus: residential towers. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000503', public.mv2_sample_owner(), true, 'Sample Developer — Residential Towers', 'images/samples/builders/nova-developments-960.webp',
+  'Sample company profile for demonstration. Example focus: residential towers. Fictional demonstration name; temporary demonstration logo.',
   '{Islamabad}', '{project_development}', null, 'Example: one residential tower project.', null),
- ('5a3b1e00-0000-4000-8000-000000000504', public.mv2_sample_owner(), true, 'Sample Builder — House Construction', null,
-  'Sample company profile for demonstration. Example services: house construction from grey structure to turnkey, and renovation. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000504', public.mv2_sample_owner(), true, 'Sample Builder — House Construction', 'images/samples/builders/pineview-builders-960.webp',
+  'Sample company profile for demonstration. Example services: house construction from grey structure to turnkey, and renovation. Fictional demonstration name; temporary demonstration logo.',
   '{Islamabad,Rawalpindi}', '{residential_construction,grey_structure,turnkey,renovation}', 'Example: completed houses would be listed here.', null,
   'Example: monthly payments against agreed milestones.'),
- ('5a3b1e00-0000-4000-8000-000000000505', public.mv2_sample_owner(), true, 'Sample Developer — Apartment Buildings', null,
-  'Sample company profile for demonstration. Example focus: apartment buildings. Fictional demonstration name; no logo.',
+ ('5a3b1e00-0000-4000-8000-000000000505', public.mv2_sample_owner(), true, 'Sample Developer — Apartment Buildings', 'images/samples/builders/riverdale-developers-960.webp',
+  'Sample company profile for demonstration. Example focus: apartment buildings. Fictional demonstration name; temporary demonstration logo.',
   '{Rawalpindi}', '{project_development,residential_construction}', null, 'Example: one apartment building under construction.', null)
 on conflict (id) do nothing;
 
@@ -183,10 +183,10 @@ insert into public.listings (id, owner_id, is_sample, title, type, property_type
   'Sample listing for demonstration. Illustrative price and details; not a real property for sale.',
   '{images/samples/properties/modern-villa-stone-facade-1280.webp}', '{images/samples/properties/modern-villa-stone-facade-card.webp}',
   '5a3b1e00-0000-4000-8000-000000000404', '5a3b1e00-0000-4000-8000-000000000302'),
- ('5a3b1e00-0000-4000-8000-000000000105', public.mv2_sample_owner(), true, 'Sample listing: 1 Kanal family residence', 'buy', 'house', 'Rawalpindi', 'Example location',
+ ('5a3b1e00-0000-4000-8000-000000000105', public.mv2_sample_owner(), true, 'Sample listing: Heritage-style 1 Kanal residence', 'buy', 'house', 'Rawalpindi', 'Example location',
   95000000, 6, 6, 1, 'kanal',
   'Sample listing for demonstration. Illustrative price and details; not a real property for sale.',
-  '{}', '{}',
+  '{images/samples/properties/heritage-style-residence-1280.webp}', '{images/samples/properties/heritage-style-residence-card.webp}',
   '5a3b1e00-0000-4000-8000-000000000403', '5a3b1e00-0000-4000-8000-000000000304')
 on conflict (id) do nothing;
 
