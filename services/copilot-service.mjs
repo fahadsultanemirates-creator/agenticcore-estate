@@ -47,6 +47,24 @@ async function refineWithAI(text, c) {
   return { c, used: ai.provider };
 }
 
+// Marketplace V2: questions about the other four categories get a link to the
+// real, filtered directory — Copilot does not claim to have searched them.
+const CATEGORY_WORDS = [
+  ['builders', /\b(builders?|construction|contractors?|grey structure|turnkey|thekedar)\b/],
+  ['agencies', /\b(agenc(y|ies)|real estate (company|firm))\b/],
+  ['professionals', /\b(agents?|property (dealer|consultant|adviser|advisor|professional)s?|dealers?|realtors?|brokers?)\b/],
+  ['projects', /\b(projects?|new developments?|housing schemes?|launch(es|ing)?|off[- ]plan)\b/]
+];
+export function categoryIntent(text, c) {
+  const t = String(text || '').toLowerCase();
+  const hit = CATEGORY_WORDS.find((x) => x[1].test(t));
+  if (!hit) return null;
+  const q = new URLSearchParams();
+  if (c && c.city) q.set('city', c.city);
+  const page = { builders: 'builders.html', agencies: 'agencies.html', professionals: 'professionals.html', projects: 'projects.html' }[hit[0]];
+  return { category: hit[0], url: page + (q.toString() ? '?' + q.toString() : '') };
+}
+
 export async function findProperty(text) {
   text = String(text || '').trim().slice(0, 600);
   if (text.length < 3) return { error: 'Tell AgenticCore what you are looking for.' };
@@ -55,6 +73,11 @@ export async function findProperty(text) {
   const refined = await refineWithAI(text, c);
   c = refined.c;
 
+  const directory = categoryIntent(text, c);
+  if (directory && !c.property_types.length) {
+    return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: refined.used, directory: directory,
+      message: 'AgenticCore Copilot searches property listings. Browse the ' + directory.category + ' directory for this — it shows only genuine profiles, with filters.' };
+  }
   if (criteriaStrength(c) === 0) {
     // Nothing concrete to search on: ask, rather than dump every listing as a "match".
     return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: refined.used,

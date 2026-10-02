@@ -77,7 +77,7 @@ function acPropertyCard(l, s) {
   const by = l.agency ? l.agency.name : l.professional ? l.professional.display_name : '';
   const byLogo = l.agency && acMediaUrl(l.agency.logo_url);
   return '<a class="mk-card mk-card-property' + (l.is_sample ? ' is-sample' : '') + '" href="listing.html?id=' + encodeURIComponent(l.id) + '">' +
-    '<div class="mk-media">' + (img ? '<img src="' + img + '" alt="" loading="lazy" decoding="async" width="640" height="480">' : '<span class="mk-media-icon">' + AC_ICONS.house + '</span>') +
+    '<div class="mk-media">' + (img ? '<img src="' + img + '" alt="" loading="lazy" decoding="async" width="480" height="360">' : '<span class="mk-media-icon">' + AC_ICONS.house + '</span>') +
       '<span class="mk-purpose ' + (l.type === 'rent' ? 'rent' : 'buy') + '">' + acEsc(acPurposeLabel(l.type)) + '</span>' +
       (l.is_sample ? acSampleBadge('listing') : acPromoBadge(l, s)) + '</div>' +
     '<div class="mk-body">' +
@@ -94,7 +94,7 @@ function acPropertyCard(l, s) {
 function acProjectCard(p, s) {
   const img = acMediaUrl(acCardImage(p.thumbs, p.photos));
   return '<a class="mk-card mk-card-project' + (p.is_sample ? ' is-sample' : '') + '" href="project.html?id=' + encodeURIComponent(p.id) + '">' +
-    '<div class="mk-media">' + (img ? '<img src="' + img + '" alt="" loading="lazy" decoding="async" width="640" height="480">' : '<span class="mk-media-icon">' + AC_ICONS.tower + '</span>') +
+    '<div class="mk-media">' + (img ? '<img src="' + img + '" alt="" loading="lazy" decoding="async" width="480" height="360">' : '<span class="mk-media-icon">' + AC_ICONS.tower + '</span>') +
       '<span class="mk-purpose status">' + acEsc(acProjectStatusText(p.status)) + '</span>' +
       (p.is_sample ? acSampleBadge('listing') : acPromoBadge(p, s)) + '</div>' +
     '<div class="mk-body">' +

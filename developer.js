@@ -20,7 +20,7 @@ if (devApplyForm) {
     const user = await requireAuth(['developer']);
     if (!user) return;
     if (user.developer_status === 'pending') { window.location.href = 'developer-pending.html'; return; }
-    if (user.developer_status === 'approved') { window.location.href = 'developer-dashboard.html'; return; }
+    if (user.developer_status === 'approved') { window.location.href = 'my.html#projects'; return; }
 
     devApplyForm.addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -58,14 +58,14 @@ if (pendingRoot) {
   (async function () {
     const user = await requireAuth(['developer']);
     if (!user) return;
-    if (user.developer_status === 'approved') { window.location.href = 'developer-dashboard.html'; return; }
+    if (user.developer_status === 'approved') { window.location.href = 'my.html#projects'; return; }
 
     const app = await AcDB.getApplicationForUser(user.id);
     if (!app) { window.location.href = 'developer-apply.html'; return; }
 
     document.getElementById('pendingCompany').textContent = app.company_name;
     document.getElementById('pendingSubmitted').textContent = new Date(app.submitted_at).toLocaleString();
-    document.getElementById('pendingTier').textContent = 'Tier ' + app.tier;
+    document.getElementById('pendingTier').textContent = acT('dev_scale_' + app.tier);
 
     function tick() {
       const due = new Date(app.due_by).getTime();

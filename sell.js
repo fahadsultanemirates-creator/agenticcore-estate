@@ -3,7 +3,8 @@
 const sellForm = document.getElementById('sellForm');
 if (sellForm) {
   (async function () {
-    const user = await requireAuth(['buyer', 'seller', 'developer', 'agency', 'admin']);
+    // Any account can list a property (owners, professionals, agencies, builders, projects).
+    const user = await requireAuth();
     if (!user) return;
 
     const cnicGroup = document.getElementById('sellCnicGroup');
@@ -47,6 +48,27 @@ if (sellForm) {
       areaSelect.addEventListener('change', toggleManualArea);
     }
 
+    // ---------- optional marketplace links (agency / professional / project) ----------
+    // The options are only what this account controls; the database checks again.
+    async function loadLinks(current) {
+      if (typeof AcMine === 'undefined') return;
+      const mine = await AcMine.overview(user.id);
+      const agencies = await AcMine.listingAgencies(user.id, mine.professionals);
+      function fill(wrapId, selId, rows, label, value) {
+        const wrap = document.getElementById(wrapId), sel = document.getElementById(selId);
+        if (!rows.length) { wrap.hidden = true; return false; }
+        sel.innerHTML = '<option value="">—</option>' + rows.map(function (r) { return '<option value="' + acEsc(r.id) + '">' + acEsc(label(r)) + '</option>'; }).join('');
+        if (value) sel.value = value;
+        wrap.hidden = false; return true;
+      }
+      const a = fill('sellAgencyWrap', 'sellAgency', agencies, function (r) { return r.name; }, current && current.agency_id);
+      const p = fill('sellProfWrap', 'sellProfessional', mine.professionals, function (r) { return r.display_name; }, current && current.professional_id);
+      const j = fill('sellProjWrap', 'sellProject', mine.projects, function (r) { return r.title; }, current && current.project_id);
+      document.getElementById('sellLinks').hidden = !(a || p || j);
+      if (!current && agencies.length === 1 && user.role === 'agency') document.getElementById('sellAgency').value = agencies[0].id;
+      if (!current && mine.professionals.length === 1) document.getElementById('sellProfessional').value = mine.professionals[0].id;
+    }
+
     // ---------- edit mode: sell.html?edit=<listing id> ----------
     const editId = new URLSearchParams(window.location.search).get('edit');
     let editing = null;
@@ -83,6 +105,8 @@ if (sellForm) {
         sellForm.querySelector('button[type="submit"]').textContent = 'Save changes';
       }
     }
+
+    loadLinks(editing).catch(function () {});
 
     // ---------- live listing quality (deterministic, see listing-quality.js) ----------
     const qualitySlot = document.getElementById('sellQuality');
@@ -274,7 +298,10 @@ if (sellForm) {
         sizeMarla: Number(document.getElementById('sellSize').value) || 0,
         sizeUnit: sizeUnitSelect.value,
         description: document.getElementById('sellDescription').value.trim(),
-        photoFiles: photoFiles
+        photoFiles: photoFiles,
+        agencyId: document.getElementById('sellAgency') ? document.getElementById('sellAgency').value : '',
+        professionalId: document.getElementById('sellProfessional') ? document.getElementById('sellProfessional').value : '',
+        projectId: document.getElementById('sellProject') ? document.getElementById('sellProject').value : ''
       };
       const dup = await looksDuplicate(payload);
       if (dup && !confirm(acT('sell_dup_confirm').replace('{title}', dup.title))) {

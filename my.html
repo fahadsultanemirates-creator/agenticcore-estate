@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My dashboard — AgenticCore Estate</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="images/agenticcore-icon.png">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+<link rel="stylesheet" href="product2.css">
+<link rel="stylesheet" href="market.css">
+<script>try { if (localStorage.getItem('acLang') === 'ur') document.documentElement.classList.add('ac-ur-pending'); } catch (e) {}</script>
+</head>
+<body data-page="dashboard">
+<a href="#myMain" class="skip-link" data-i18n="mk_skip">Skip to content</a>
+<div class="dash-shell" id="myRoot">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="nav-logo"><img src="images/agenticcore-icon.png" alt="AgenticCore" class="nav-logo-icon">AgenticCore<span class="brand-suffix">Estate</span></a>
+    <nav aria-label="Dashboard"><ul class="dash-nav" id="myNav"></ul></nav>
+    <button class="lang-toggle my-lang" id="acLangToggle" type="button" aria-label="Toggle language"><span class="lang-toggle-label">اردو</span></button>
+  </aside>
+  <main class="dash-main" id="myMain" tabindex="-1"><div class="mk-loading" data-i18n="mk_loading">Loading…</div></main>
+</div>
+<script src="i18n.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="property-taxonomy.js"></script>
+<script src="listings.js"></script>
+<script src="listing-quality.js"></script>
+<script src="market-data.js"></script>
+<script src="market-ui.js"></script>
+<script src="account-data.js"></script>
+<script src="my.js"></script>
+<script>document.getElementById('acLangToggle').addEventListener('click', acToggleLanguage);</script>
+</body>
+</html>

@@ -151,15 +151,18 @@ function acInitListingPage(fixedType) {
 // "My listings" table rows with View / Edit / Delete, shared by the
 // individual and agency dashboards.
 function acMyListingsRowsHTML(list) {
-  if (!list.length) return '<tr><td colspan="6" style="color:var(--text-tertiary);">You haven\'t listed a property yet. <a href="sell.html" style="color:var(--accent-gold-bright);">List one now →</a></td></tr>';
+  const t = typeof acT === 'function' ? acT : function (k) { return k; };
+  if (!list.length) return '<tr><td colspan="6" style="color:var(--text-tertiary);">' + acEsc(t('my_no_listings')) + ' <a href="sell.html" style="color:var(--accent-gold-bright);">' + acEsc(t('mk_cta_properties')) + ' →</a></td></tr>';
   return list.map(function (l) {
-    return '<tr><td>' + acEsc(l.title) + '</td><td>' + (l.type === 'rent' ? 'Rent' : 'Sale') + '</td><td>' + acFormatPKR(l.price) + '</td>' +
-      '<td>' + (l.verified ? '<span class="badge badge-emerald">Checked</span>' : '<span class="badge badge-muted">Not checked yet</span>') + '</td>' +
+    return '<tr><td>' + acEsc(l.title) + (l.moderation_status === 'hidden' ? ' <span class="badge badge-pending">' + acEsc(t('my_hidden')) + '</span>' : '') + '</td>' +
+      '<td>' + acEsc(t(l.type === 'rent' ? 'mk_purpose_rent' : 'mk_purpose_sale')) + '</td><td>' + acFormatPKR(l.price) + '</td>' +
+      '<td>' + (l.verified ? '<span class="badge badge-emerald">' + acEsc(t('badge_checked')) + '</span>' : '<span class="badge badge-muted">' + acEsc(t('my_not_checked')) + '</span>') + '</td>' +
       '<td>' + (typeof acQualityPillHTML === 'function' ? acQualityPillHTML(l) : '—') + '</td>' +
-      '<td style="white-space:nowrap;"><a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">View</a> ' +
-      '<a href="sell.html?edit=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">Edit</a> ' +
-      '<a href="toolkit.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">Toolkit</a> ' +
-      '<button type="button" class="btn btn-secondary btn-sm" data-delete-listing="' + acEsc(l.id) + '" data-title="' + acEsc(l.title) + '">Delete</button></td></tr>';
+      '<td style="white-space:nowrap;"><a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('my_view')) + '</a> ' +
+      '<a href="sell.html?edit=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('my_edit')) + '</a> ' +
+      '<a href="toolkit.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('lq_toolkit')) + '</a> ' +
+      '<a href="https://agenticcorepk.netlify.app/?from=estate&intent=promote&listing=' + encodeURIComponent(l.id) + '" rel="noopener" class="btn btn-secondary btn-sm">' + acEsc(t('my_promote_short')) + '</a> ' +
+      '<button type="button" class="btn btn-secondary btn-sm" data-delete-listing="' + acEsc(l.id) + '" data-title="' + acEsc(l.title) + '">' + acEsc(t('my_delete')) + '</button></td></tr>';
   }).join('');
 }
 
@@ -174,7 +177,7 @@ function acWireMyListings(tbody, userId, onChange) {
   tbody.addEventListener('click', async function (e) {
     const btn = e.target.closest('[data-delete-listing]');
     if (!btn) return;
-    if (!confirm('Delete "' + btn.getAttribute('data-title') + '"? This removes it from the site and cannot be undone.')) return;
+    if (!confirm((typeof acT === 'function' ? acT('my_delete_confirm') : 'Delete "{title}"? This cannot be undone.').replace('{title}', btn.getAttribute('data-title')))) return;
     btn.disabled = true;
     const res = await AcDB.deleteListing(btn.getAttribute('data-delete-listing'), userId);
     if (res.error) { alert(res.error); btn.disabled = false; return; }

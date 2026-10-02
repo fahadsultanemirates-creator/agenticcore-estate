@@ -89,6 +89,21 @@
           <label for="projDescription">Description</label>
           <textarea id="projDescription" placeholder="Location highlights, amenities, developer track record."></textarea>
         </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="projType" data-i18n="mk_f_project_type">Project type</label>
+            <select id="projType"><option value="">—</option><option value="residential" data-i18n="mk_ptype_residential">Residential</option><option value="commercial" data-i18n="mk_ptype_commercial">Commercial</option><option value="mixed" data-i18n="mk_ptype_mixed">Mixed use</option></select>
+          </div>
+          <div class="form-field" id="projCompanyWrap" hidden>
+            <label for="projCompany" data-i18n="proj_company">Developer company profile</label>
+            <select id="projCompany"></select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="projApprovals" data-i18n="mk_approvals">Approvals &amp; NOC (as stated by the developer)</label>
+          <textarea id="projApprovals" maxlength="1000" data-i18n-ph="proj_approvals_ph" placeholder="e.g. Layout plan approved by RDA, approval number …"></textarea>
+          <span class="hint" style="font-size:0.8rem;color:var(--text-tertiary);" data-i18n="mk_approvals_fine">Shown as provided by you. AgenticCore does not verify approvals or NOCs.</span>
+        </div>
         <div class="form-field">
           <label for="projPhotos">Photos (up to 8)</label>
           <input type="file" id="projPhotos" accept="image/*" multiple>
@@ -114,6 +129,7 @@
 <script src="property-taxonomy.js"></script>
 <script src="i18n.js"></script>
 <script src="listings.js"></script>
+<script src="account-data.js"></script>
 <script src="ai-placeholders.js"></script>
 <script src="partials.js"></script>
 <script src="auth.js"></script>

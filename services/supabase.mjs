@@ -34,7 +34,8 @@ export async function getAreaNames() {
 // Coarse pre-filter in the database (purpose / city / types); the fine
 // ranking and explanations happen in search.mjs.
 export async function fetchCandidateListings(c) {
-  const q = ['select=' + LISTING_COLS, 'order=created_at.desc', 'limit=300'];
+  // Genuine, visible listings only: sample (demonstration) and moderated rows are never Copilot results.
+  const q = ['select=' + LISTING_COLS, 'is_sample=eq.false', 'moderation_status=eq.active', 'order=created_at.desc', 'limit=300'];
   if (c.purpose) q.push('type=eq.' + encodeURIComponent(c.purpose));
   if (c.city) q.push('city=eq.' + encodeURIComponent(c.city));
   if (c.property_types && c.property_types.length) q.push('property_type=in.(' + c.property_types.map(encodeURIComponent).join(',') + ')');

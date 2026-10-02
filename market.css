@@ -95,17 +95,18 @@ html[lang="ur"] .mk-sample { letter-spacing: 0; text-transform: none; font-size:
 .mk-sample-notice { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.8rem 1rem; margin-bottom: 1rem; border-radius: var(--radius-md); background: rgba(244,239,224,0.07); border: 1px dashed #C9A227; }
 .mk-sample-notice p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
 .mk-sample-explain { color: var(--text-secondary); font-size: 0.88rem; }
-.mk-samples { margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--border-subtle); }
+.mk-samples { margin-top: 2rem; padding: 1.2rem 0 0; border-top: 1px dashed var(--border-subtle); }
 .mk-samples h2 { font-size: 1.15rem; }
 
 /* ---------- directories ---------- */
-.mk-dir-head { padding: 6.2rem 0 1.4rem; }
+.mk-dir-head { padding-top: 6.2rem; padding-bottom: 1.4rem; }
 .mk-dir-head h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.2rem 0 0.4rem; }
 .mk-lead { color: var(--text-secondary); max-width: 680px; margin-bottom: 0.9rem; }
 .mk-crumbs { font-size: 0.82rem; color: var(--text-tertiary); }
 .mk-crumbs a { color: var(--text-secondary); }
-.mk-dir { padding-bottom: 3rem; }
+.mk-dir { padding: 0 0 3rem; }
 .mk-dir-grid { display: grid; gap: 1.2rem; }
+.mk-dir-grid > *, .mk-detail-grid > *, .mk-samples { min-width: 0; }
 @media (min-width: 960px) { .mk-dir-grid { grid-template-columns: 260px 1fr; align-items: start; } .mk-filters { position: sticky; top: 84px; } }
 .mk-filters { display: grid; gap: 0.6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.9rem; align-content: start; }
 @media (min-width: 960px) { .mk-filters { grid-template-columns: 1fr; } }
@@ -120,7 +121,7 @@ html[lang="ur"] .mk-sample { letter-spacing: 0; text-transform: none; font-size:
 .mk-more-wrap .btn { min-height: 46px; min-width: 200px; }
 
 /* ---------- details ---------- */
-.mk-detail-wrap { padding: 5.8rem 0 3rem; }
+.mk-detail-wrap { padding-top: 5.8rem; padding-bottom: 3rem; }
 .mk-hero { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 8; background: #0A2A1E; margin-bottom: 1rem; }
 .mk-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mk-detail-head { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
@@ -138,7 +139,7 @@ html[lang="ur"] .mk-sample { letter-spacing: 0; text-transform: none; font-size:
 .mk-fact dd { margin: 0.15rem 0 0; font-size: 0.92rem; color: var(--text-primary); }
 .mk-fact a, .mk-links a, .mk-back a { color: var(--accent-gold-bright); }
 .mk-self { color: var(--text-tertiary); font-size: 0.78rem; }
-.mk-section { margin: 1.2rem 0; }
+.mk-section { margin: 1.2rem 0; padding: 0; }
 .mk-section h2 { font-size: 1.12rem; margin-bottom: 0.4rem; }
 .mk-pre { white-space: pre-line; color: var(--text-secondary); }
 .mk-fine { font-size: 0.8rem; color: var(--text-tertiary); margin: 0.4rem 0 0; }
@@ -199,3 +200,40 @@ html[lang="ur"] .mk-title, html[lang="ur"] .mk-dir-head h1, html[lang="ur"] .mk-
 .mk-trust summary { cursor: pointer; color: var(--accent-gold-bright); font-weight: 600; min-height: 44px; display: flex; align-items: center; }
 .mk-trust .h2-badges { margin-top: 0.6rem; }
 .mk-cats-wrap { padding: 0.2rem 0 0.4rem; }
+
+/* ---------- unified dashboard (my.html) ---------- */
+.my-lang { margin-top: 1rem; }
+.my-sub { color: var(--text-secondary); font-size: 0.9rem; margin: 0.2rem 0 0.6rem; }
+.my-flash { background: rgba(63,174,123,0.12); border: 1px solid rgba(63,174,123,0.4); color: var(--accent-emerald); border-radius: var(--radius-sm); padding: 0.5rem 0.8rem; }
+.my-count { display: inline-block; min-width: 1.4em; text-align: center; font-size: 0.72rem; background: var(--accent-gold); color: #16250D; border-radius: 999px; padding: 0 0.35rem; margin-inline-start: 0.3rem; }
+.my-stat { color: inherit; }
+.my-stat:hover { border-color: var(--accent-gold); }
+.my-early.ok { border-color: rgba(63,174,123,0.5); }
+.my-add, .my-row-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.my-form { display: grid; gap: 0.8rem; }
+.my-grid { display: grid; gap: 0.8rem; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .my-grid { grid-template-columns: 1fr 1fr; } .my-field.wide { grid-column: 1 / -1; } }
+.my-field { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.my-field label, .my-field legend { font-size: 0.82rem; color: var(--text-secondary); padding: 0; }
+.my-field input[type="text"], .my-field input[type="url"], .my-field input[type="number"], .my-field input[type="date"], .my-field input[type="search"], .my-field select, .my-field textarea,
+.my-inline input { width: 100%; min-height: 44px; font: inherit; font-size: 16px; padding: 0.5rem 0.65rem; border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+.my-hint { font-size: 0.75rem; color: var(--text-tertiary); }
+.my-checks { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; }
+.my-checks label, .my-bool { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: var(--text-primary); min-height: 36px; }
+.my-checks input, .my-bool input { width: 18px; height: 18px; }
+.my-thumb { width: 96px; height: 64px; object-fit: contain; background: #06170F; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 0.3rem; }
+.my-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.my-msg { min-height: 1.2em; font-size: 0.88rem; margin: 0; }
+.my-msg.err { color: var(--danger); }
+.my-msg.ok { color: var(--accent-emerald); }
+.my-list { list-style: none; display: grid; gap: 0.5rem; margin: 0.4rem 0 0.8rem; padding: 0; }
+.my-list li { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.45rem; }
+.my-enq { display: block !important; }
+.my-enq.new { border-inline-start: 3px solid var(--accent-gold); padding-inline-start: 0.6rem; }
+.my-inline { display: grid; gap: 0.4rem; }
+.my-results { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.my-item-head { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.my-item-head h3 { margin: 0; }
+.my-item h4 { font-size: 0.9rem; margin: 0.6rem 0 0.2rem; }
+.my-link { color: var(--accent-gold-bright); font-weight: 600; }
+.dash-nav a .my-count { vertical-align: middle; }

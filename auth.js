@@ -59,15 +59,9 @@ if (signupForm) {
       return;
     }
 
-    if (role === 'developer') {
-      window.location.href = 'developer-apply.html';
-    } else if (role === 'agency') {
-      window.location.href = 'agency-setup.html';
-    } else if (role === 'builder') {
-      window.location.href = 'builder-setup.html';
-    } else {
-      window.location.href = 'dashboard.html';
-    }
+    // Project accounts start the (admin-reviewed) developer application; everyone
+    // else lands in the one dashboard, on the module that matches their intent.
+    window.location.href = role === 'developer' ? 'developer-apply.html' : 'my.html?welcome=' + encodeURIComponent(role);
   });
 }
 
@@ -96,14 +90,8 @@ if (loginForm) {
     const next = new URLSearchParams(window.location.search).get('next') || '';
     if (/^[a-z0-9-]+\.html(\?[A-Za-z0-9=&%_.-]*)?$/.test(next)) { window.location.href = next; return; }
     if (user.role === 'admin') window.location.href = 'admin-dashboard.html';
-    else if (user.role === 'developer') {
-      if (user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';
-      else if (user.developer_status === 'pending' || user.developer_status === 'rejected') window.location.href = 'developer-pending.html';
-      else window.location.href = 'developer-dashboard.html';
-    } else if (user.role === 'agency') {
-      window.location.href = user.agency_name ? 'agency-dashboard.html' : 'agency-setup.html';
-    } else if (user.role === 'builder') {
-      window.location.href = user.builder_company_name ? 'builder-dashboard.html' : 'builder-setup.html';
-    } else window.location.href = 'dashboard.html';
+    else if (user.role === 'developer' && user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';
+    else if (user.role === 'developer' && (user.developer_status === 'pending' || user.developer_status === 'rejected')) window.location.href = 'developer-pending.html';
+    else window.location.href = 'my.html';
   });
 }

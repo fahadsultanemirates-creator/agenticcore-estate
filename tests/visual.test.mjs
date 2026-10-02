@@ -53,13 +53,15 @@ test('ecosystem artwork has EN + UR alt text and its steps exist as HTML text', 
   const D = i18n();
   assert.match(html, /data-i18n-alt="h2_eco_art_alt"/);
   assert.match(read('i18n.js'), /data-i18n-alt/);
-  for (const k of ['h2_eco_art_alt', 'h2_eco_s1t', 'h2_eco_s1', 'h2_eco_s2t', 'h2_eco_s2', 'h2_eco_s3t', 'h2_eco_s3', 'h2_eco_s4t', 'h2_eco_s4']) {
+  // Marketplace V2: LIST → CREATE → SHARE → PROMOTE → AUTOMATE
+  for (const k of ['h2_eco_art_alt', 'mk_j1', 'mk_j1s', 'mk_j2', 'mk_j2s', 'mk_j3', 'mk_j3s', 'mk_j4', 'mk_j4s', 'mk_j5', 'mk_j5s', 'mk_eco_fine']) {
     assert.ok(D.en[k] && D.ur[k], k + ' needs English and Urdu');
     assert.match(html, new RegExp('data-i18n(-alt)?="' + k + '"'), k + ' must be used on the page');
   }
   // no results promises in the new copy
-  const copy = ['h2_eco_s1', 'h2_eco_s2', 'h2_eco_s3', 'h2_eco_s4'].map((k) => D.en[k]).join(' ');
+  const copy = ['mk_j1s', 'mk_j2s', 'mk_j3s', 'mk_j4s', 'mk_j5s'].map((k) => D.en[k]).join(' ');
   assert.ok(!/guarantee|more leads|more inquiries|verified|roi/i.test(copy), 'step copy must not promise results');
+  assert.ok(/never guarantee/i.test(D.en.mk_eco_fine), 'the ecosystem section says results are not guaranteed');
 });
 
 test('share image is a real 1200x630 Estate card and the meta points to it', () => {

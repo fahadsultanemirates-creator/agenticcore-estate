@@ -86,15 +86,6 @@ function acMountPropertyAdvisor() {
     });
   });
 
-  // Agencies and developers manage listings from their own dashboards.
-  if (typeof AcDB !== 'undefined' && AcDB.currentUser) {
-    AcDB.currentUser().then(function (u) {
-      const link = document.getElementById('cppImproveLink');
-      if (u && u.role === 'agency') link.href = 'agency-dashboard.html';
-      else if (u && u.role === 'developer') link.href = 'developer-dashboard.html';
-    }).catch(function () {});
-  }
-
   ready.then(function () {
     const form = document.getElementById('cppFindForm');
     const input = document.getElementById('cppFindInput');

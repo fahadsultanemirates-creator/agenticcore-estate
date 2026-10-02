@@ -6,6 +6,7 @@
 <title>Developer Application — AgenticCore Estate</title>
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet" href="auth.css">
 </head>
 <body data-page="developer-apply">
 
@@ -15,7 +16,7 @@
   <div class="container">
     <span class="hero-eyebrow"><span class="dot"></span> Step 2 of 2</span>
     <h1>Set up your developer account</h1>
-    <p class="hero-sub">Add your company details and choose a project package. Our team reviews each application before your dashboard unlocks.</p>
+    <p class="hero-sub" data-i18n="dev_apply_sub">Add your company details. Our team reviews each application before project listing unlocks. Project listing is free during our launch period.</p>
   </div>
 </header>
 
@@ -35,40 +36,15 @@
           </div>
         </div>
         <div class="form-field">
-          <label>Choose a project package</label>
-          <span class="hint" style="display:block;margin:-0.2rem 0 0.6rem;">These are project packages, not single-unit listings — see <a href="developer-packages.html" style="color:var(--accent-gold-bright);">full package details</a>.</span>
-          <div class="tier-table tier-table-4" style="margin:0.6rem 0 0;">
-            <label class="tier-card" style="cursor:pointer;display:block;">
-              <input type="radio" name="tier" value="1" checked style="display:none;">
-              <div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#3FAE7B" stroke-width="6"/></svg></div>
-              <span class="tier-name">Launch</span>
-              <div class="tier-price">Rs 15,000<span class="period">/mo</span></div>
-              <p style="font-size:0.85rem;color:var(--text-secondary);">Up to 3 projects</p>
-            </label>
-            <label class="tier-card featured" style="cursor:pointer;display:block;">
-              <input type="radio" name="tier" value="2" style="display:none;">
-              <div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#D4AF37" stroke-width="6"/></svg></div>
-              <span class="tier-name">Growth</span>
-              <div class="tier-price">Rs 50,000<span class="period">/mo</span></div>
-              <p style="font-size:0.85rem;color:var(--text-secondary);">Up to 10 projects, social content &amp; brochures free</p>
-            </label>
-            <label class="tier-card tier-elite" style="cursor:pointer;display:block;">
-              <input type="radio" name="tier" value="3" style="display:none;">
-              <div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#F0CE63" stroke-width="6"/></svg></div>
-              <span class="tier-name">Scale</span>
-              <div class="tier-price">Rs 200,000<span class="period">/mo</span></div>
-              <p style="font-size:0.85rem;color:var(--text-secondary);">Up to 20 projects, top placement</p>
-            </label>
-            <label class="tier-card tier-custom" style="cursor:pointer;display:block;">
-              <input type="radio" name="tier" value="4" style="display:none;">
-              <div class="tier-card-brand"><span>AgenticCore Estate</span><svg viewBox="0 0 100 100" fill="none"><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" stroke="#F4EFE0" stroke-width="6"/></svg></div>
-              <span class="tier-name">Business Pool</span>
-              <div class="tier-price">Custom</div>
-              <p style="font-size:0.85rem;color:var(--text-secondary);">Unlimited, full marketing partnership</p>
-            </label>
+          <label data-i18n="dev_scale_label">How many projects do you plan to list?</label>
+          <span class="hint" style="display:block;margin:-0.2rem 0 0.6rem;" data-i18n="dev_scale_hint">This only helps our review. Listing is free during the launch period; marketplace packages are planned from 1 November 2026 and their prices will be announced later.</span>
+          <div class="role-choice role-choice-intents">
+            <label class="role-option checked"><input type="radio" name="tier" value="1" checked> <span data-i18n="dev_scale_1">1–3 projects</span></label>
+            <label class="role-option"><input type="radio" name="tier" value="2"> <span data-i18n="dev_scale_2">4–10 projects</span></label>
+            <label class="role-option"><input type="radio" name="tier" value="3"> <span data-i18n="dev_scale_3">11–20 projects</span></label>
+            <label class="role-option"><input type="radio" name="tier" value="4"> <span data-i18n="dev_scale_4">More, or a larger partnership</span></label>
           </div>
         </div>
-
         <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;">Create developer account</button>
       </form>
     </div>
@@ -85,5 +61,12 @@
 <script src="partials.js"></script>
 <script src="auth.js"></script>
 <script src="developer.js"></script>
+<script>
+  document.querySelectorAll('.role-choice input[name="tier"]').forEach(function (input) {
+    input.addEventListener('change', function () {
+      document.querySelectorAll('.role-choice .role-option').forEach(function (o) { o.classList.toggle('checked', o.contains(input)); });
+    });
+  });
+</script>
 </body>
 </html>
