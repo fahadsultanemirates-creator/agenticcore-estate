@@ -55,13 +55,13 @@ if (projectForm) {
     if (citySelect) {
       const cities = await AcDB.getActiveCities();
       citySelect.innerHTML = '<option value="">Select a city</option>' +
-        cities.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+        cities.map(function (c) { return '<option value="' + acEscHTML(c) + '">' + acEscHTML(c) + '</option>'; }).join('');
       citySelect.addEventListener('change', async function () {
         if (!citySelect.value) { areaSelect.innerHTML = '<option value="">Select a city first</option>'; return; }
         areaSelect.innerHTML = '<option value="">Loading…</option>';
         const areas = await AcDB.getAreasForCity(citySelect.value);
         areaSelect.innerHTML = '<option value="">Select an area</option>' +
-          areas.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('') +
+          areas.map(function (a) { return '<option value="' + acEscHTML(a) + '">' + acEscHTML(a) + '</option>'; }).join('') +
           '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
         toggleManualArea();
       });

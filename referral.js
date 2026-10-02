@@ -59,7 +59,7 @@ if (refRoot) {
 
       const body = document.getElementById('refDirectBody');
       body.innerHTML = referrals.map(function (r) {
-        return '<tr><td>' + r.fullName + '</td><td>' + new Date(r.joinedAt).toLocaleDateString() + '</td></tr>';
+        return '<tr><td>' + acEscHTML(r.fullName) + '</td><td>' + new Date(r.joinedAt).toLocaleDateString() + '</td></tr>';
       }).join('') || '<tr><td colspan="2" style="color:var(--text-tertiary);">No referrals yet — share your link above to start earning.</td></tr>';
     }
   })();

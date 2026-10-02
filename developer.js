@@ -46,7 +46,8 @@ if (devApplyForm) {
         return;
       }
 
-      window.location.href = 'developer-dashboard.html';
+      // Applications are reviewed by an admin before the dashboard unlocks.
+      window.location.href = 'developer-pending.html';
     });
   })();
 }
@@ -93,8 +94,9 @@ if (devDashRoot) {
   (async function () {
     const user = await requireAuth(['developer']);
     if (!user) return;
-    if (user.developer_status === 'pending' || user.developer_status === 'unsubmitted') {
-      window.location.href = user.developer_status === 'pending' ? 'developer-pending.html' : 'developer-apply.html';
+    if (user.developer_status !== 'approved') {
+      // pending and rejected applications see their status (and any rejection note) on the pending page
+      window.location.href = (user.developer_status === 'pending' || user.developer_status === 'rejected') ? 'developer-pending.html' : 'developer-apply.html';
       return;
     }
 
@@ -116,8 +118,8 @@ if (devDashRoot) {
     const tbody = document.getElementById('devListingsBody');
     if (tbody) {
       tbody.innerHTML = myProjects.map(function (p) {
-        return '<tr><td>' + p.title + '</td><td>' + p.city + '</td><td>' + acProjectUnitTypeLabel(p.unit_types) + '</td>' +
-          '<td>' + acProjectStatusLabel(p.status) + '</td></tr>';
+        return '<tr><td>' + acEscHTML(p.title) + '</td><td>' + acEscHTML(p.city) + '</td><td>' + acEscHTML(acProjectUnitTypeLabel(p.unit_types)) + '</td>' +
+          '<td>' + acEscHTML(acProjectStatusLabel(p.status)) + '</td></tr>';
       }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">No projects yet — post your first one.</td></tr>';
     }
 

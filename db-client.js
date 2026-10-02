@@ -7,6 +7,33 @@
    database — every caller must await it.
    ============================================ */
 
+// Escape database text before it goes into innerHTML (same rule as listings.js acEsc,
+// available on every page because db-client.js is loaded everywhere).
+function acEscHTML(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// Upload rules — mirror the storage bucket limits set in migration 0017, so a
+// rejected file gets a clear message instead of silently disappearing.
+const AC_UPLOAD_RULES = {
+  photo: { types: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxMB: 10, label: 'JPG, PNG, WebP or GIF image' },
+  logo: { types: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxMB: 5, label: 'JPG, PNG, WebP or GIF image' },
+  brochure: { types: ['application/pdf'], maxMB: 20, label: 'PDF' },
+  projectPhoto: { types: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxMB: 20, label: 'JPG, PNG, WebP or GIF image' },
+  document: { types: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'], maxMB: 10, label: 'JPG, PNG, WebP image or PDF' }
+};
+function acCheckUploads(files, kind) {
+  const rule = AC_UPLOAD_RULES[kind];
+  for (const f of (files || [])) {
+    if (!f) continue;
+    if (rule.types.indexOf(f.type) === -1) return '"' + f.name + '" is not a ' + rule.label + '.';
+    if (f.size > rule.maxMB * 1024 * 1024) return '"' + f.name + '" is larger than ' + rule.maxMB + ' MB.';
+  }
+  return null;
+}
+
 const AcDB = (function () {
   function nowIso() { return new Date().toISOString(); }
 
@@ -21,9 +48,8 @@ const AcDB = (function () {
   }
 
   async function signUp(payload) {
-    const { data: existingEmail } = await supabaseClient.rpc('email_for_phone', { phone_input: payload.phone });
-    if (existingEmail) return { error: 'An account with this phone number already exists.' };
-
+    // No public phone lookup any more: a duplicate phone is rejected by the
+    // unique phone constraint when the signup trigger creates the profile.
     const { data, error } = await supabaseClient.auth.signUp({
       email: payload.email,
       password: payload.password,
@@ -39,6 +65,7 @@ const AcDB = (function () {
 
     if (error) {
       if (/registered|exists/i.test(error.message)) return { error: 'An account with this email already exists.' };
+      if (/database error saving new user/i.test(error.message)) return { error: 'An account with this phone number may already exist. Try logging in instead.' };
       return { error: error.message };
     }
 
@@ -53,7 +80,9 @@ const AcDB = (function () {
   async function logIn(identifier, password) {
     let email = identifier;
     if (identifier.indexOf('@') === -1) {
-      const { data: resolvedEmail } = await supabaseClient.rpc('email_for_phone', { phone_input: identifier });
+      // The server returns the account email only if this password is correct.
+      const { data: resolvedEmail, error: lookupError } = await supabaseClient.rpc('login_email_for_phone', { p_phone: identifier, p_password: password });
+      if (lookupError && /too many/i.test(lookupError.message)) return { error: lookupError.message };
       if (!resolvedEmail) return { error: 'Incorrect phone/email or password.' };
       email = resolvedEmail;
     }
@@ -96,17 +125,17 @@ const AcDB = (function () {
   }
 
   // ---------- developer applications ----------
-  // Launch-phase: document verification is switched off, so applications are
-  // approved immediately instead of sitting in the admin review queue. The
-  // upload paths stay optional in the schema so this can flip back on later.
+  // Developer application. It is created as 'pending'; the database moves the
+  // account to developer_status = 'pending', and only an admin can approve it
+  // and grant the package tier (admin_decide_developer_application).
   async function submitDeveloperApplication(payload) {
+    const docError = acCheckUploads([payload.cnicFile, payload.companyDocFile], 'document');
+    if (docError) return { error: docError };
     const insertRow = {
       user_id: payload.userId,
       company_name: payload.companyName,
       phone: payload.phone,
-      tier: payload.tier,
-      status: 'approved',
-      decision_at: nowIso()
+      tier: payload.tier
     };
     if (payload.cnicFile) {
       const cnicExt = (payload.cnicFile.name.split('.').pop() || 'bin').toLowerCase();
@@ -126,11 +155,7 @@ const AcDB = (function () {
 
     const { data: app, error } = await supabaseClient.from('developer_applications').insert(insertRow).select().single();
     if (error) return { error: error.message };
-
-    const profileUpdate = { developer_status: 'approved', developer_tier: payload.tier };
-    if (payload.cnic) profileUpdate.cnic = payload.cnic;
-    await supabaseClient.from('profiles').update(profileUpdate).eq('id', payload.userId);
-
+    if (payload.cnic) await supabaseClient.from('profiles').update({ cnic: payload.cnic }).eq('id', payload.userId);
     return { application: app };
   }
 
@@ -157,21 +182,20 @@ const AcDB = (function () {
     return data ? data.signedUrl : null;
   }
 
+  // Admin decision: one server function updates the application, the profile
+  // (status + tier) and admin_log together.
   async function decideApplication(appId, decision, adminId, note) {
-    const { data, error } = await supabaseClient.from('developer_applications')
-      .update({ status: decision, decision_at: nowIso(), reviewer_id: adminId, reviewer_note: note || '' })
-      .eq('id', appId).select().single();
-    if (error || !data) return null;
-
-    await supabaseClient.from('profiles').update({ developer_status: decision }).eq('id', data.user_id);
-    await supabaseClient.from('admin_log').insert({
-      admin_id: adminId, action: decision, target_table: 'developer_applications', target_id: appId, note: note || ''
+    const { data, error } = await supabaseClient.rpc('admin_decide_developer_application', {
+      p_application: appId, p_decision: decision, p_note: note || ''
     });
+    if (error || !data) return null;
     return data;
   }
 
   // ---------- listings ----------
   async function addListing(payload) {
+    const photoError = acCheckUploads(payload.photoFiles, 'photo');
+    if (photoError) return { error: photoError };
     const { data: listing, error } = await supabaseClient.from('listings').insert({
       owner_id: payload.ownerId,
       title: payload.title,
@@ -265,6 +289,8 @@ const AcDB = (function () {
   // Edit an existing listing (RLS lets only the owner or an admin update it).
   // New photos are appended to the existing ones, up to 8 in total.
   async function updateListing(id, ownerId, payload) {
+    const photoError = acCheckUploads(payload.photoFiles, 'photo');
+    if (photoError) return { error: photoError };
     const patch = {
       title: payload.title, type: payload.type, property_type: payload.propertyType,
       city: payload.city, area: payload.area, price: payload.price,
@@ -331,6 +357,8 @@ const AcDB = (function () {
 
   // ---------- promotional logo uploads (agency / builder) ----------
   async function uploadProfileAsset(userId, file, prefix) {
+    const logoError = acCheckUploads([file], 'logo');
+    if (logoError) return { error: logoError };
     const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
     const path = userId + '/' + prefix + '-' + Date.now() + '.' + ext;
     const uploadResult = await supabaseClient.storage.from('profile-assets').upload(path, file);
@@ -375,6 +403,8 @@ const AcDB = (function () {
 
   // ---------- projects (whole-project / society listings) ----------
   async function addProject(payload) {
+    const fileError = acCheckUploads(payload.photoFiles, 'projectPhoto') || acCheckUploads([payload.brochureFile], 'brochure');
+    if (fileError) return { error: fileError };
     const { data: project, error } = await supabaseClient.from('projects').insert({
       owner_id: payload.ownerId,
       title: payload.title,

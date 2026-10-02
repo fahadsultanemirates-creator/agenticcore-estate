@@ -98,7 +98,7 @@ if (loginForm) {
     if (user.role === 'admin') window.location.href = 'admin-dashboard.html';
     else if (user.role === 'developer') {
       if (user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';
-      else if (user.developer_status === 'pending') window.location.href = 'developer-pending.html';
+      else if (user.developer_status === 'pending' || user.developer_status === 'rejected') window.location.href = 'developer-pending.html';
       else window.location.href = 'developer-dashboard.html';
     } else if (user.role === 'agency') {
       window.location.href = user.agency_name ? 'agency-dashboard.html' : 'agency-setup.html';

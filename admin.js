@@ -25,7 +25,7 @@ if (adminRoot) {
 
     async function docLinkHTML(path, label) {
       const url = await AcDB.getSignedDocUrl(path);
-      return url ? '<a href="' + url + '" target="_blank" rel="noopener">' + label + '</a>' : label + ' (unavailable)';
+      return url ? '<a href="' + acEscHTML(url) + '" target="_blank" rel="noopener">' + label + '</a>' : label + ' (unavailable)';
     }
 
     async function renderQueue() {
@@ -36,19 +36,19 @@ if (adminRoot) {
       const rows = await Promise.all(pending.map(async function (app) {
         const dueMs = new Date(app.due_by).getTime() - Date.now();
         const dueLabel = dueMs > 0 ? Math.round(dueMs / 3600000) + 'h left' : 'overdue';
-        const cnicLink = await docLinkHTML(app.cnic_document_path, 'CNIC');
-        const companyLink = await docLinkHTML(app.company_document_path, 'Company doc');
+        const cnicLink = app.cnic_document_path ? await docLinkHTML(app.cnic_document_path, 'CNIC') : 'CNIC (not provided)';
+        const companyLink = app.company_document_path ? await docLinkHTML(app.company_document_path, 'Company doc') : 'Company doc (not provided)';
         return (
           '<tr>' +
-            '<td>' + app.company_name + '<div style="font-size:0.75rem;color:var(--text-tertiary);">Tier ' + app.tier + '</div></td>' +
-            '<td>' + app.phone + '</td>' +
-            '<td>' + app.cnic + '</td>' +
+            '<td>' + acEscHTML(app.company_name) + '<div style="font-size:0.75rem;color:var(--text-tertiary);">Tier ' + acEscHTML(app.tier) + '</div></td>' +
+            '<td>' + acEscHTML(app.phone) + '</td>' +
+            '<td>' + acEscHTML(app.cnic || '—') + '</td>' +
             '<td>' + cnicLink + '<br>' + companyLink + '</td>' +
             '<td>' + new Date(app.submitted_at).toLocaleDateString() + '</td>' +
             '<td><span class="badge badge-pending">' + dueLabel + '</span></td>' +
             '<td class="table-actions">' +
-              '<button class="btn btn-primary btn-sm" data-approve="' + app.id + '">Approve</button>' +
-              '<button class="btn btn-danger btn-sm" data-reject="' + app.id + '">Reject</button>' +
+              '<button class="btn btn-primary btn-sm" data-approve="' + acEscHTML(app.id) + '">Approve</button>' +
+              '<button class="btn btn-danger btn-sm" data-reject="' + acEscHTML(app.id) + '">Reject</button>' +
             '</td>' +
           '</tr>'
         );
@@ -80,10 +80,10 @@ if (adminRoot) {
       const tbody = document.getElementById('adminHistoryBody');
       tbody.innerHTML = decided.map(function (app) {
         const cls = app.status === 'approved' ? 'badge-emerald' : 'badge-pending';
-        return '<tr><td>' + app.company_name + '</td><td>Tier ' + app.tier + '</td>' +
-          '<td><span class="badge ' + cls + '">' + app.status + '</span></td>' +
+        return '<tr><td>' + acEscHTML(app.company_name) + '</td><td>Tier ' + acEscHTML(app.tier) + '</td>' +
+          '<td><span class="badge ' + cls + '">' + acEscHTML(app.status) + '</span></td>' +
           '<td>' + (app.decision_at ? new Date(app.decision_at).toLocaleDateString() : '—') + '</td>' +
-          '<td>' + (app.reviewer_note || '—') + '</td></tr>';
+          '<td>' + acEscHTML(app.reviewer_note || '—') + '</td></tr>';
       }).join('') || '<tr><td colspan="5" style="color:var(--text-tertiary);">No decisions yet.</td></tr>';
     }
 
