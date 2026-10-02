@@ -65,7 +65,9 @@ export function categoryIntent(text, c) {
   return { category: hit[0], url: page + (q.toString() ? '?' + q.toString() : '') };
 }
 
-export async function findProperty(text) {
+// opts.ai === false: deterministic parsing only (Amaan makes its own single AI
+// call per turn, so it skips the parser's AI refinement to stay fast).
+export async function findProperty(text, opts) {
   text = String(text || '').trim().slice(0, 600);
   if (text.length < 3) return { error: 'Tell AgenticCore what you are looking for.' };
   const areas = await getAreaNames().catch(() => []);
@@ -77,7 +79,7 @@ export async function findProperty(text) {
     return { understood: '', criteria: c, matches: [], closest: [], considered: 0, ai_used: null, directory: early,
       message: 'AgenticCore Copilot searches property listings. Browse the ' + early.category + ' directory for this — its results are genuine profiles only, with filters; any examples there are clearly labelled.' };
   }
-  const refined = await refineWithAI(text, c);
+  const refined = opts && opts.ai === false ? { c, used: null } : await refineWithAI(text, c);
   c = refined.c;
 
   const directory = categoryIntent(text, c);

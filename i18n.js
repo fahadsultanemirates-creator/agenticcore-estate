@@ -1149,6 +1149,30 @@ Object.assign(AC_I18N.ur, {
   pc_areas: 'شہر یا علاقے', pc_intro: 'تعارف (چند جملے)', pc_about: 'تعارف (چند جملے)'
 });
 
+// Contact & official channels (footer, WhatsApp button).
+Object.assign(AC_I18N.en, {
+  footer_contact_h: 'Contact AgenticCore', footer_follow_h: 'Follow AgenticCore',
+  contact_wa_chat: 'Chat on WhatsApp', contact_wa_aria: 'Chat with the AgenticCore team on WhatsApp (opens in a new tab)',
+  contact_email_aria: 'Email the AgenticCore team',
+  social_whatsapp_channel: 'WhatsApp Channel', social_youtube: 'YouTube', social_tiktok: 'TikTok', social_facebook: 'Facebook', social_instagram: 'Instagram',
+  social_whatsapp_channel_aria: 'Follow AgenticCore updates on our WhatsApp Channel (opens in a new tab)',
+  social_youtube_aria: 'AgenticCore on YouTube (opens in a new tab)', social_tiktok_aria: 'AgenticCore on TikTok (opens in a new tab)',
+  social_facebook_aria: 'AgenticCore on Facebook (opens in a new tab)', social_instagram_aria: 'AgenticCore on Instagram (opens in a new tab)',
+  amaan_cta: 'Chat with Amaan — AI property assistant', amaan_list_cta: 'List a property with Amaan',
+  amaan_from_chat: 'Filled in from your chat with Amaan. Check every detail, add photos, then publish — nothing is published until you submit.'
+});
+Object.assign(AC_I18N.ur, {
+  footer_contact_h: 'AgenticCore سے رابطہ', footer_follow_h: 'AgenticCore کو فالو کریں',
+  contact_wa_chat: 'واٹس ایپ پر بات کریں', contact_wa_aria: 'واٹس ایپ پر AgenticCore ٹیم سے بات کریں (نئی ٹیب میں کھلے گا)',
+  contact_email_aria: 'AgenticCore ٹیم کو ای میل کریں',
+  social_whatsapp_channel: 'واٹس ایپ چینل', social_youtube: 'یوٹیوب', social_tiktok: 'ٹک ٹاک', social_facebook: 'فیس بک', social_instagram: 'انسٹاگرام',
+  social_whatsapp_channel_aria: 'ہمارے واٹس ایپ چینل پر AgenticCore کی اپ ڈیٹس فالو کریں (نئی ٹیب میں کھلے گا)',
+  social_youtube_aria: 'یوٹیوب پر AgenticCore (نئی ٹیب میں کھلے گا)', social_tiktok_aria: 'ٹک ٹاک پر AgenticCore (نئی ٹیب میں کھلے گا)',
+  social_facebook_aria: 'فیس بک پر AgenticCore (نئی ٹیب میں کھلے گا)', social_instagram_aria: 'انسٹاگرام پر AgenticCore (نئی ٹیب میں کھلے گا)',
+  amaan_cta: 'امان سے بات کریں — AI پراپرٹی اسسٹنٹ', amaan_list_cta: 'امان کے ساتھ پراپرٹی لسٹ کریں',
+  amaan_from_chat: 'یہ معلومات امان کے ساتھ آپ کی گفتگو سے بھری گئی ہیں۔ ہر تفصیل چیک کریں، تصاویر لگائیں، پھر شائع کریں — آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔'
+});
+
 function acApplyLanguage(lang) {
   lang = (lang === 'ur') ? 'ur' : 'en';
   document.documentElement.setAttribute('lang', lang);

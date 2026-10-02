@@ -159,6 +159,10 @@ function acRenderFooter() {
             '</ul>' +
           '</div>' +
         '</div>' +
+        (typeof acContactHTML === 'function' ? '<div class="footer-connect">' +
+          '<div><h5 data-i18n="footer_contact_h"></h5>' + acContactHTML() + '</div>' +
+          '<div><h5 data-i18n="footer_follow_h"></h5>' + acSocialHTML() + '</div>' +
+        '</div>' : '') +
         (typeof acEcosystemHTML === 'function' ? '<div class="footer-eco">' + acEcosystemHTML('compact') + '</div>' : '') +
         '<div class="footer-bottom">' +
           '<span>© 2026 AgenticCore Estate. <span data-i18n="footer_rights"></span></span>' +
@@ -168,8 +172,25 @@ function acRenderFooter() {
     '</footer>';
 }
 
+// Floating "Chat on WhatsApp" with the AgenticCore team (public pages only —
+// not on dashboards, forms or print pages, where it would sit over controls).
+function acRenderWhatsAppFloat() {
+  if (typeof AC_CONTACT === 'undefined' || document.body.hasAttribute('data-no-float')) return;
+  if (/(^|\/)(my|admin-[a-z-]+|sell|post-project|toolkit|sheet|login|signup|developer-apply)\.html$/.test(location.pathname)) return;
+  const a = document.createElement('a');
+  a.className = 'ac-wa-float';
+  a.href = acWhatsAppHref();
+  a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.setAttribute('data-i18n-aria', 'contact_wa_aria'); a.setAttribute('aria-label', 'WhatsApp');
+  a.setAttribute('data-track', 'contact_click'); a.setAttribute('data-channel', 'whatsapp_float');
+  a.innerHTML = AC_SOCIAL_ICONS.whatsapp;
+  document.body.appendChild(a);
+  document.body.classList.add('has-wa-float');
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
   await acRenderHeader();
   acRenderFooter();
+  acRenderWhatsAppFloat();
   if (typeof acInitLanguage === 'function') acInitLanguage();
 });
