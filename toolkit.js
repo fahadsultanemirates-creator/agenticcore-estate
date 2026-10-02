@@ -14,7 +14,6 @@ function acToolkitEligibility(listing, user) {
   };
 }
 
-const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
 
 (async function () {
   const root = document.getElementById('toolkitRoot');
@@ -30,7 +29,15 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
   }
   document.title = acT('tk_eyebrow') + ' — ' + listing.title;
   const url = AcShareCards.listingUrl(listing);
-  const caps = AcShareCards.captions(listing);
+  // Branding: the agency or professional profile this listing is linked to.
+  // listings.agency_id / professional_id can only point at the owner's own
+  // profiles or an agency they are an active member of (0018 triggers).
+  const safeImg = function (u) { u = String(u || ''); return /^https:\/\/[^\s"'<>]+$/i.test(u) || /^images\/samples\/[a-z0-9._/-]+$/.test(u) ? u : null; };
+  const brandOptions = [];
+  if (listing.agency) brandOptions.push({ name: listing.agency.name, logo: safeImg(listing.agency.logo_url) });
+  if (listing.professional) brandOptions.push({ name: listing.professional.display_name, logo: safeImg(listing.professional.avatar_url) });
+  let brand = brandOptions[0] || null;
+  let caps = AcShareCards.captions(listing, { brand: brand });
   const canConfirm = Object.prototype.hasOwnProperty.call(listing, 'last_confirmed_at'); // column from migration 0014
 
   function confirmedText() {
@@ -54,6 +61,9 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
           '<div class="tk-formats" role="tablist">' + Object.keys(AcShareCards.FORMATS).map(function (k, i) {
             return '<button type="button" role="tab" class="' + (i === 0 ? 'active' : '') + '" aria-selected="' + (i === 0) + '" data-format="' + k + '">' + acEsc(acT('tk_fmt_' + k)) + '</button>';
           }).join('') + '</div>' +
+          (brandOptions.length ? '<p class="tk-brand"><label for="tkBrand">' + acEsc(acT('tk_brand_label')) + '</label> <select id="tkBrand">' +
+            brandOptions.map(function (b, i) { return '<option value="' + i + '">' + acEsc(b.name) + '</option>'; }).join('') +
+            '<option value="-1">' + acEsc(acT('tk_brand_none')) + '</option></select></p>' : '<p class="tk-note">' + acEsc(acT('tk_brand_link_hint')) + '</p>') +
           '<div class="tk-canvas"><canvas id="tkCanvas" role="img" aria-label="Share card preview"></canvas></div>' +
           '<div class="lq-actions"><button type="button" class="btn btn-primary btn-sm" id="tkDownload">' + acEsc(acT('tk_download')) + '</button>' +
           (navigator.share ? '<button type="button" class="btn btn-secondary btn-sm" id="tkShareImg">' + acEsc(acT('tk_share')) + '</button>' : '') + '</div>' +
@@ -63,12 +73,17 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
         '<section class="panel tk-sec" aria-labelledby="tkCaps"><h3 id="tkCaps">' + acEsc(acT('tk_caps_h')) + '</h3>' +
           '<label class="tk-label" for="tkCapEn">English</label><textarea id="tkCapEn" class="tk-cap" readonly rows="6"></textarea>' +
           '<div class="lq-actions"><button type="button" class="btn btn-secondary btn-sm" data-copy="tkCapEn">' + acEsc(acT('tk_copy')) + '</button>' +
-          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(caps.en) + '">WhatsApp</a></div>' +
+          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" id="tkWaEn" href="https://wa.me/?text=' + encodeURIComponent(caps.en) + '">WhatsApp</a></div>' +
           '<label class="tk-label" for="tkCapRu">Roman Urdu</label><textarea id="tkCapRu" class="tk-cap" readonly rows="6"></textarea>' +
           '<div class="lq-actions"><button type="button" class="btn btn-secondary btn-sm" data-copy="tkCapRu">' + acEsc(acT('tk_copy')) + '</button>' +
-          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(caps.roman) + '">WhatsApp</a></div>' +
+          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" id="tkWaRu" href="https://wa.me/?text=' + encodeURIComponent(caps.roman) + '">WhatsApp</a></div>' +
           '<label class="tk-label" for="tkLink">' + acEsc(acT('tk_link')) + '</label><input id="tkLink" class="tk-cap" readonly value="' + acEsc(url) + '">' +
           '<div class="lq-actions"><button type="button" class="btn btn-secondary btn-sm" data-copy="tkLink">' + acEsc(acT('tk_copy')) + '</button></div>' +
+        '</section>' +
+
+        '<section class="panel tk-sec" aria-labelledby="tkSheet"><h3 id="tkSheet">' + acEsc(acT('tk_sheet_h')) + '</h3>' +
+          '<p class="tk-note">' + acEsc(acT('tk_sheet_sub')) + '</p>' +
+          '<a class="btn btn-secondary btn-sm" href="sheet.html?id=' + encodeURIComponent(listing.id) + '" target="_blank" rel="noopener" data-track="toolkit_export" data-action="sheet">' + acEsc(acT('tk_sheet_btn')) + '</a>' +
         '</section>' +
 
         '<section class="panel tk-sec" aria-labelledby="tkAi"><h3 id="tkAi">✦ ' + acEsc(acT('tk_ai_h')) + '</h3>' +
@@ -87,12 +102,27 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
           ['tk_ph1', 'tk_ph2', 'tk_ph3', 'tk_ph4', 'tk_ph5', 'tk_ph6'].map(function (k) { return '<li>' + acEsc(acT(k)) + '</li>'; }).join('') + '</ol></section>' +
         '<section class="panel tk-sec tk-pk"><h3>' + acEsc(acT('tk_pk_h')) + '</h3><p class="tk-note">' + acEsc(acT('tk_pk_sub')) + '</p>' +
           '<ul class="tk-pk-list">' + ['tk_pk1', 'tk_pk2', 'tk_pk3', 'tk_pk4'].map(function (k) { return '<li>' + acEsc(acT(k)) + '</li>'; }).join('') + '</ul>' +
-          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" href="' + AC_PK_SERVICES + '">' + acEsc(acT('tk_pk_btn')) + ' ↗</a></section>' +
+          '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" href="' + acPkUrl('promote', 'property', listing.id, '') + '" data-track="promote_property_click" data-intent="promote" data-entity="property">' + acEsc(acT('tk_pk_btn')) + ' ↗</a></section>' +
       '</aside>' +
     '</div>';
 
-  document.getElementById('tkCapEn').value = caps.en;
-  document.getElementById('tkCapRu').value = caps.roman;
+  function setCaptions() {
+    caps = AcShareCards.captions(listing, { brand: brand });
+    document.getElementById('tkCapEn').value = caps.en;
+    document.getElementById('tkCapRu').value = caps.roman;
+    document.getElementById('tkWaEn').href = 'https://wa.me/?text=' + encodeURIComponent(caps.en);
+    document.getElementById('tkWaRu').href = 'https://wa.me/?text=' + encodeURIComponent(caps.roman);
+  }
+  setCaptions();
+  ['tkWaEn', 'tkWaRu'].forEach(function (idx) {
+    document.getElementById(idx).addEventListener('click', function () { acTrack('toolkit_export', { format: idx === 'tkWaEn' ? 'caption_en' : 'caption_roman', channel: 'whatsapp' }); });
+  });
+  const brandSel = document.getElementById('tkBrand');
+  if (brandSel) brandSel.addEventListener('change', function () {
+    brand = brandSel.value === '-1' ? null : brandOptions[Number(brandSel.value)];
+    setCaptions();
+    drawCard();
+  });
 
   // ---- share cards ----
   const canvas = document.getElementById('tkCanvas');
@@ -100,7 +130,7 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
   let format = 'whatsapp';
   async function drawCard() {
     msg.textContent = '';
-    await AcShareCards.draw(canvas, listing, format);
+    await AcShareCards.draw(canvas, listing, format, { brand: brand });
   }
   root.querySelectorAll('[data-format]').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -121,6 +151,7 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = fileName();
     document.body.appendChild(a); a.click(); a.remove();
+    acTrack('toolkit_export', { format: format, channel: 'download' });
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
   });
   const shareBtn = document.getElementById('tkShareImg');
@@ -130,6 +161,7 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
     try {
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: caps.en });
       else await navigator.share({ title: listing.title, text: caps.en, url: url });
+      acTrack('toolkit_export', { format: format, channel: 'native' });
     } catch (e) { /* user cancelled */ }
   });
   drawCard();

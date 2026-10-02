@@ -161,7 +161,7 @@ function acMyListingsRowsHTML(list) {
       '<td style="white-space:nowrap;"><a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('my_view')) + '</a> ' +
       '<a href="sell.html?edit=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('my_edit')) + '</a> ' +
       '<a href="toolkit.html?id=' + encodeURIComponent(l.id) + '" class="btn btn-secondary btn-sm">' + acEsc(t('lq_toolkit')) + '</a> ' +
-      '<a href="https://agenticcorepk.netlify.app/?from=estate&intent=promote&listing=' + encodeURIComponent(l.id) + '" rel="noopener" class="btn btn-secondary btn-sm">' + acEsc(t('my_promote_short')) + '</a> ' +
+      '<a href="' + acPkUrl('promote', 'property', l.id, '') + '" rel="noopener" class="btn btn-secondary btn-sm" data-track="promote_property_click" data-intent="promote" data-entity="property">' + acEsc(t('my_promote_short')) + '</a> ' +
       '<button type="button" class="btn btn-secondary btn-sm" data-delete-listing="' + acEsc(l.id) + '" data-title="' + acEsc(l.title) + '">' + acEsc(t('my_delete')) + '</button></td></tr>';
   }).join('');
 }

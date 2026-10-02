@@ -117,3 +117,21 @@ test('find: questions about builders / agents / agencies / projects point to the
   const h = await svc.findProperty('Find houses in DHA Rawalpindi');
   assert.equal(h.directory, undefined);
 });
+
+// ---------- Ecosystem patch ----------
+test('find: directory questions are routed deterministically, without an AI call', async () => {
+  const calls = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => { calls.push(String(url)); return realFetch(url, opts); };
+  try {
+    for (const q of ['Show agencies', 'Find builders in Rawalpindi', 'Find property professionals', 'Show projects', 'property developers in Islamabad']) {
+      const r = await svc.findProperty(q);
+      assert.ok(r.directory, q + ' → directory');
+      assert.equal(r.ai_used, null, q + ' must not use AI');
+      assert.equal(r.matches.length, 0, q + ' must not fabricate entities');
+    }
+    assert.equal(calls.filter((u) => u.includes('api.openai.com') || u.includes('anthropic')).length, 0);
+    assert.equal(calls.filter((u) => u.includes('/rest/v1/listings')).length, 0, 'no listing search for a directory question');
+    assert.equal((await svc.findProperty('Find builders in Rawalpindi')).directory.url, 'builders.html?city=Rawalpindi');
+  } finally { globalThis.fetch = realFetch; }
+});
