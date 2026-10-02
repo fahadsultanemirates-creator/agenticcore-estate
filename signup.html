@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#071f17">
 <title>Create your account — AgenticCore Estate</title>
+<meta name="description" content="Property, projects, professionals, agencies and builders in Islamabad and Rawalpindi. Listing is free during our launch period.">
+<!-- default share preview; detail pages update these in the browser -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AgenticCore Estate">
+<meta property="og:title" content="Create your account — AgenticCore Estate">
+<meta property="og:description" content="Property, projects, professionals, agencies and builders in Islamabad and Rawalpindi. Listing is free during our launch period.">
+<meta property="og:image" content="https://agenticcore.estate/images/og-estate.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="auth.css">
 </head>
@@ -72,6 +82,12 @@
 <script>
   // Hints are translated (i18n.js: intent_*_hint); one account can add other profiles later.
   const ROLE_HINTS = { buyer: 'intent_buyer_hint', professional: 'intent_professional_hint', agency: 'intent_agency_hint', developer: 'intent_project_hint', builder: 'intent_builder_hint' };
+  // Already signed in: a join link goes straight to the right place.
+  AcDB.currentUser().then(function (u) {
+    if (!u) return;
+    const join = acJoinIntent();
+    location.replace(acSafeNext() || (join ? AC_JOIN[join].dest : 'my.html'));
+  });
   document.addEventListener('DOMContentLoaded', function () {
     const refCode = new URLSearchParams(window.location.search).get('ref');
     if (refCode) document.getElementById('referralCode').value = refCode;
@@ -91,7 +107,9 @@
     // intent and say where they came from. Only allow-listed values are used.
     const ctx = typeof acIncomingContext === 'function' ? acIncomingContext() : null;
     const preset = ctx && { profile: 'professional', agency: 'agency', builder: 'builder', project: 'developer', list: 'buyer' }[ctx.intent];
-    const wanted = preset || ({ professional: 1, agency: 1, builder: 1, developer: 1 }[new URLSearchParams(location.search).get('intent')] ? new URLSearchParams(location.search).get('intent') : null);
+    // Join links (signup.html?intent=agency…) and sign-ins that were heading to a module.
+    const join = acJoinIntent();
+    const wanted = preset || (join ? AC_JOIN[join].role : null);
     const input = wanted && document.querySelector('.role-option input[value="' + wanted + '"]');
     if (input) { input.checked = true; input.dispatchEvent(new Event('change')); }
     if (ctx && ctx.from === 'pk') {

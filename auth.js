@@ -19,6 +19,32 @@ function setLoading(btn, loading, defaultText) {
 }
 
 // -------- SIGN UP --------
+
+// ---------- return destinations + join intents ----------
+// A return destination is a same-site page with an optional simple query and an
+// optional dashboard-module hash (my.html#agency). Nothing else is followed.
+const AC_NEXT_RE = /^[a-z0-9-]+\.html(\?[A-Za-z0-9=&%_.-]*)?(#[a-z]+)?$/;
+function acSafeNext() {
+  const n = new URLSearchParams(window.location.search).get('next') || '';
+  return AC_NEXT_RE.test(n) ? n : '';
+}
+// One stable address per participant: signup.html?intent=<key>. The intent only
+// preselects the account type and where to go next — it grants nothing
+// (project publishing still needs the admin-approved capability).
+const AC_JOIN = {
+  list: { role: 'buyer', dest: 'sell.html' },
+  professional: { role: 'professional', dest: 'my.html#professional' },
+  agency: { role: 'agency', dest: 'my.html#agency' },
+  builder: { role: 'builder', dest: 'my.html#company' },
+  developer: { role: 'developer', dest: 'my.html#projects' }
+};
+function acJoinIntent() {
+  const q = new URLSearchParams(window.location.search).get('intent');
+  if (q && Object.prototype.hasOwnProperty.call(AC_JOIN, q)) return q;
+  const next = acSafeNext();
+  return Object.keys(AC_JOIN).filter(function (k) { return AC_JOIN[k].dest === next; })[0] || null;
+}
+
 const signupForm = document.getElementById('signupForm');
 if (signupForm) {
   signupForm.addEventListener('submit', async function (e) {
@@ -61,7 +87,9 @@ if (signupForm) {
 
     // Project accounts start the (admin-reviewed) developer application; everyone
     // else lands in the one dashboard, on the module that matches their intent.
-    window.location.href = role === 'developer' ? 'developer-apply.html' : 'my.html?welcome=' + encodeURIComponent(role);
+    // Project accounts always start the admin-reviewed application.
+    const next = acSafeNext() || (acJoinIntent() ? AC_JOIN[acJoinIntent()].dest : '');
+    window.location.href = role === 'developer' ? 'developer-apply.html' : next || 'my.html?welcome=' + encodeURIComponent(role);
   });
 }
 
@@ -87,10 +115,18 @@ if (loginForm) {
     }
 
     const user = result.user;
-    const next = new URLSearchParams(window.location.search).get('next') || '';
-    if (/^[a-z0-9-]+\.html(\?[A-Za-z0-9=&%_.-]*)?$/.test(next)) { window.location.href = next; return; }
+    const next = acSafeNext();
+    if (next) { window.location.href = next; return; }
     if (user.role === 'admin') window.location.href = 'admin-dashboard.html';
     else if (user.role === 'developer' && user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';   // signup intent: finish the application
     else window.location.href = 'my.html';
   });
 }
+
+// Login → "Create one": keep where the person was going (and so what they want to create).
+(function () {
+  const a = document.getElementById('loginToSignup');
+  if (!a) return;
+  const next = acSafeNext();
+  if (next) a.href = 'signup.html?next=' + encodeURIComponent(next);
+})();

@@ -529,7 +529,8 @@ async function acCapabilityStatus() {
 async function requireAuth(roles) {
   const user = await AcDB.currentUser();
   if (!user) {
-    const here = location.pathname.split('/').pop() + location.search;
+    // keep a dashboard module (#agency, #professional…) so sign-in returns to it
+    const here = location.pathname.split('/').pop() + location.search + (/^#[a-z]+$/.test(location.hash) ? location.hash : '');
     window.location.href = 'login.html' + (here ? '?next=' + encodeURIComponent(here) : '');
     return null;
   }

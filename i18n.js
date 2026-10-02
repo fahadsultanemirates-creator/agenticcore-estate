@@ -254,7 +254,7 @@ Object.assign(AC_I18N.en, {
  "h2_featured_title": "Latest properties",
  "h2_rent_title": "For rent",
  "h2_ask_eyebrow": "Ask AgenticCore",
- "h2_ask_title": "Don't scroll through hundreds of irrelevant listings. Say what you need.",
+ "h2_ask_title": "Don't scroll through irrelevant listings. Say what you need.",
  "h2_ask_lead": "Type it the way you'd tell a trusted dealer — budget, size, area, bedrooms, even Roman Urdu. AgenticCore turns it into a search and shows only real listings on this site, with the reasons each one fits.",
  "h2_ask_s1t": "You describe it",
  "h2_ask_s1": "\"4 crore, 10 marla, DHA or Bahria, at least 4 bedrooms.\"",
@@ -375,7 +375,7 @@ Object.assign(AC_I18N.ur, {
  "h2_featured_title": "تازہ ترین جائیدادیں",
  "h2_rent_title": "کرایے کے لیے",
  "h2_ask_eyebrow": "AgenticCore سے پوچھیں",
- "h2_ask_title": "سینکڑوں غیر متعلقہ اشتہارات میں وقت ضائع نہ کریں۔ بس بتائیں آپ کو کیا چاہیے۔",
+ "h2_ask_title": "غیر متعلقہ اشتہارات میں وقت ضائع نہ کریں۔ بس بتائیں آپ کو کیا چاہیے۔",
  "h2_ask_lead": "ویسے ہی لکھیں جیسے کسی بھروسے مند ڈیلر کو بتاتے ہیں — بجٹ، سائز، علاقہ، کمرے، رومن اردو میں بھی۔ AgenticCore اسے تلاش میں بدلتا ہے اور صرف اسی سائٹ کی اصل جائیدادیں دکھاتا ہے، ساتھ میں یہ بھی کہ ہر ایک کیوں موزوں ہے۔",
  "h2_ask_s1t": "آپ بتاتے ہیں",
  "h2_ask_s1": "\"4 کروڑ، 10 مرلہ، DHA یا بحریہ، کم از کم 4 بیڈروم۔\"",
@@ -563,7 +563,7 @@ Object.assign(AC_I18N.en, {
   tk_pk_btn: 'See AgenticCore Pakistan services',
   badge_checked: '✓ Checked', badge_checked_tip: 'AgenticCore reviewed the listing information. Not a title, ownership or legal verification.',
   badge_agency: 'Agency', badge_agency_tip: 'Posted by an agency account with its own profile.',
-  badge_developer: 'Developer', badge_developer_tip: 'Posted by a developer account approved by AgenticCore.',
+  badge_developer: 'Developer', badge_developer_tip: 'Posted by an account that passed AgenticCore\'s basic review to publish projects. This is not an endorsement of the developer or the project.',
   badge_photos: 'Photos', badge_photos_tip: 'The listing includes photos uploaded by the owner.',
   badge_fresh: 'Confirmed available', badge_fresh_tip: 'The owner confirmed in the last 30 days that it is still available.',
   trust_h: 'What these badges mean', trust_disclaimer: 'AgenticCore does not verify property titles, NOCs or government approvals. Always check documents with your own legal adviser before paying.'
@@ -591,7 +591,7 @@ Object.assign(AC_I18N.ur, {
   tk_pk_btn: 'AgenticCore Pakistan کی خدمات دیکھیں',
   badge_checked: '✓ جانچ شدہ', badge_checked_tip: 'AgenticCore نے فہرست کی معلومات کا جائزہ لیا۔ یہ ملکیت یا قانونی تصدیق نہیں۔',
   badge_agency: 'ایجنسی', badge_agency_tip: 'اپنی پروفائل والے ایجنسی اکاؤنٹ سے پوسٹ کی گئی۔',
-  badge_developer: 'ڈویلپر', badge_developer_tip: 'AgenticCore سے منظور شدہ ڈویلپر اکاؤنٹ سے پوسٹ کی گئی۔',
+  badge_developer: 'ڈویلپر', badge_developer_tip: 'ایسے اکاؤنٹ سے پوسٹ کی گئی جسے پروجیکٹس شائع کرنے کے لیے AgenticCore کے بنیادی جائزے کے بعد اجازت ملی۔ یہ ڈویلپر یا پروجیکٹ کی توثیق نہیں۔',
   badge_photos: 'تصاویر', badge_photos_tip: 'فہرست میں مالک کی اپ لوڈ کردہ تصاویر شامل ہیں۔',
   badge_fresh: 'دستیابی کی تصدیق', badge_fresh_tip: 'مالک نے پچھلے 30 دن میں تصدیق کی کہ یہ ابھی دستیاب ہے۔',
   trust_h: 'ان بیجز کا مطلب', trust_disclaimer: 'AgenticCore ملکیت کے کاغذات، NOC یا سرکاری منظوری کی تصدیق نہیں کرتا۔ ادائیگی سے پہلے ہمیشہ اپنے قانونی مشیر سے دستاویزات چیک کروائیں۔'
@@ -1119,6 +1119,34 @@ Object.assign(AC_I18N.ur, {
   my_team_sub: 'آپ کی ایجنسی سے وابستہ پروفیشنلز۔ شامل ہونے کی درخواستیں یہاں آتی ہیں؛ کسی کو مدعو کرنے کے لیے تلاش کریں۔ وابستگی دونوں فریقوں کے متفق ہونے کے بعد ہی عوامی ہوتی ہے۔',
   my_rep_explain: 'کسی ایجنسی سے اس پروجیکٹ کی نمائندگی کی درخواست کریں۔ یہ ایجنسی کے قبول کرنے کے بعد ہی عوامی ہوتی ہے؛ اس کا مطلب خصوصی حق نہیں۔',
   my_promo_profiles_sub: 'پروجیکٹس، ایجنسیوں اور کمپنیوں کے بروشرز، ڈیزائنز، ویب سائٹس اور ریلز AgenticCore Pakistan پر آرڈر ہوتے ہیں۔'
+});
+
+// Activation phase: thin-directory invitations, next actions, enquiry status, profile completeness.
+Object.assign(AC_I18N.en, {
+  mk_join_properties: 'Have a property? List it free during our launch period.',
+  mk_join_projects: 'Representing a project? Apply to publish it — projects go live after a short review.',
+  mk_join_professionals: 'Are you a property professional? Create your profile.',
+  mk_join_agencies: 'Run an agency? Add your agency.',
+  mk_join_builders: 'Builder or developer? Create your company profile.',
+  na_hidden: '“{name}” is hidden by our moderation team. Open it to see the note.',
+  na_phone_account: 'Buyers cannot call you yet. Add a public contact number — your login number is never shown.',
+  na_confirm: 'Confirm that “{title}” is still available.', na_btn_confirm: 'Confirm',
+  my_enq_s_new: 'New', my_enq_s_read: 'Read', my_enq_s_archived: 'Archived',
+  pc_score: 'Profile {done} of {total} complete.', pc_missing: 'Still missing:', pc_all_done: 'All the essentials are in place.',
+  pc_areas: 'Cities or areas', pc_intro: 'Introduction (a few sentences)', pc_about: 'About (a few sentences)'
+});
+Object.assign(AC_I18N.ur, {
+  mk_join_properties: 'آپ کے پاس پراپرٹی ہے؟ لانچ کے دوران مفت لسٹ کریں۔',
+  mk_join_projects: 'کسی پروجیکٹ کی نمائندگی کرتے ہیں؟ اسے شائع کرنے کی درخواست دیں — مختصر جائزے کے بعد پروجیکٹ لائیو ہوتا ہے۔',
+  mk_join_professionals: 'کیا آپ پراپرٹی پروفیشنل ہیں؟ اپنی پروفائل بنائیں۔',
+  mk_join_agencies: 'ایجنسی چلاتے ہیں؟ اپنی ایجنسی شامل کریں۔',
+  mk_join_builders: 'بلڈر یا ڈویلپر ہیں؟ اپنی کمپنی کی پروفائل بنائیں۔',
+  na_hidden: '“{name}” ہماری موڈریشن ٹیم نے چھپا دیا ہے۔ نوٹ دیکھنے کے لیے کھولیں۔',
+  na_phone_account: 'خریدار ابھی آپ کو کال نہیں کر سکتے۔ عوامی رابطہ نمبر شامل کریں — آپ کا لاگ اِن نمبر کبھی نہیں دکھایا جاتا۔',
+  na_confirm: 'تصدیق کریں کہ “{title}” ابھی دستیاب ہے۔', na_btn_confirm: 'تصدیق کریں',
+  my_enq_s_new: 'نیا', my_enq_s_read: 'پڑھ لیا', my_enq_s_archived: 'محفوظ شدہ',
+  pc_score: 'پروفائل {total} میں سے {done} مکمل۔', pc_missing: 'ابھی باقی:', pc_all_done: 'تمام ضروری معلومات موجود ہیں۔',
+  pc_areas: 'شہر یا علاقے', pc_intro: 'تعارف (چند جملے)', pc_about: 'تعارف (چند جملے)'
 });
 
 function acApplyLanguage(lang) {

@@ -204,52 +204,100 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
 
   // ---------- next best actions (rule-based, at most 4) ----------
   // Ordered by usefulness; each rule looks only at the account's own data.
-  function profileThin(text, services) { return String(text || '').trim().length < 20 && !(services || []).length; }
+  // Profile completeness: the essentials a visitor needs to decide whether to get
+  // in touch. Only reports what is missing — never fills anything in.
+  const has = function (v) { return Array.isArray(v) ? v.length > 0 : String(v == null ? '' : v).trim().length > 0; };
+  const COMPLETE = {
+    professional: [['my_f_display_name', function (e) { return has(e.display_name); }], ['my_f_avatar_url', function (e) { return has(e.avatar_url); }],
+      ['my_f_headline', function (e) { return has(e.headline); }], ['pc_areas', function (e) { return has(e.cities) || has(e.areas_served); }],
+      ['my_f_services', function (e) { return has(e.services); }], ['my_f_languages', function (e) { return has(e.languages); }],
+      ['pc_intro', function (e) { return String(e.intro || '').trim().length >= 40; }], ['my_f_public_phone', function (e, ph) { return has(ph); }]],
+    agency: [['my_f_name', function (e) { return has(e.name); }], ['my_f_logo_url', function (e) { return has(e.logo_url); }],
+      ['pc_about', function (e) { return String(e.description || '').trim().length >= 40; }], ['pc_areas', function (e) { return has(e.city) || has(e.cities) || has(e.areas_served); }],
+      ['my_f_services', function (e) { return has(e.services); }], ['my_f_public_phone', function (e, ph) { return has(ph); }]],
+    company: [['my_f_name', function (e) { return has(e.name); }], ['my_f_logo_url', function (e) { return has(e.logo_url); }],
+      ['pc_about', function (e) { return String(e.description || '').trim().length >= 40; }], ['my_f_services', function (e) { return has(e.services); }],
+      ['pc_areas', function (e) { return has(e.cities) || has(e.areas_served); }], ['my_f_public_phone', function (e, ph) { return has(ph); }]]
+  };
+  function completenessHTML(kind, entity) {
+    if (!entity || !COMPLETE[kind]) return '';
+    const ph = ov.phones[kind + ':' + entity.id];
+    const missing = COMPLETE[kind].filter(function (c) { return !c[1](entity, ph); }).map(function (c) { return t(c[0]); });
+    const total = COMPLETE[kind].length, done = total - missing.length;
+    return '<div class="my-complete' + (missing.length ? '' : ' done') + '"><p><strong>' + esc(t('pc_score').replace('{done}', done).replace('{total}', total)) + '</strong> ' +
+      (missing.length ? esc(t('pc_missing')) + ' ' + esc(missing.join(', ')) : esc(t('pc_all_done'))) + '</p>' +
+      '<progress max="' + total + '" value="' + done + '" aria-label="' + esc(t('pc_score').replace('{done}', done).replace('{total}', total)) + '"></progress></div>';
+  }
+  // incomplete = an essential other than the public number is missing (that has its own action)
+  function incomplete(kind, e) { return COMPLETE[kind].some(function (c) { return c[0] !== 'my_f_public_phone' && !c[1](e); }); }
+  // Rule-based, owner-only. Every rule that applies is collected with a priority,
+  // then the four most important are shown:
+  // 1 safety/moderation · 2 unanswered enquiries · 3 missing public contact ·
+  // 4 incomplete profile · 5 weak listing · 6 confirm availability · 7 share ·
+  // 8 related marketplace profile · 9 promote with AgenticCore Pakistan · 10 more content
   async function nextActions() {
     const out = [];
-    const add = function (key, vars, href, btnKey, opts) {
+    const add = function (prio, key, vars, href, btnKey, opts) {
       let text = t(key);
       Object.keys(vars || {}).forEach(function (k) { text = text.replace('{' + k + '}', vars[k]); });
-      out.push({ text: text, href: href, btn: t(btnKey), action: key, external: opts && opts.external });
+      out.push({ prio: prio, text: text, href: href, btn: t(btnKey), action: key, external: opts && opts.external });
     };
-    if (ov.newEnquiries) add('na_enquiries', { n: ov.newEnquiries }, '#enquiries', 'na_btn_open');
     const listings = ov.listingCount ? await AcDB.getListingsByOwner(user.id) : [];
     const pro = ov.professionals[0], ag = ov.agencies[0], co = ov.companies[0];
     const hasPresence = listings.length || pro || ag || co || ov.projects.length;
+    if (ov.newEnquiries) add(2, 'na_enquiries', { n: ov.newEnquiries }, '#enquiries', 'na_btn_open');
     if (!hasPresence) {
       const first = { professional: ['na_first_professional', '#professional'], agency: ['na_first_agency', '#agency'],
         builder: ['na_first_builder', '#company'], developer: ['na_first_project', '#projects'] }[user.role] || ['na_first_property', 'sell.html'];
-      add(first[0], {}, first[1], 'na_btn_start');
-      return out;
+      add(4, first[0], {}, first[1], 'na_btn_start');
+      return out.sort(function (a, b) { return a.prio - b.prio; }).slice(0, 4);
     }
-    if (listings.length && window.AcListingQuality) {
-      const weakest = listings.map(function (l) { return { l: l, q: AcListingQuality.score(l).score }; }).sort(function (a, b) { return a.q - b.q; })[0];
-      if (weakest.q < 80) add('na_improve_listing', { title: weakest.l.title, score: weakest.q }, 'listing.html?id=' + encodeURIComponent(weakest.l.id) + '#quality', 'na_btn_improve');
+    // 1 — something of yours is hidden by moderation
+    const hidden = [[pro, '#professional'], [ag, '#agency'], [co, '#company']]
+      .concat(ov.projects.map(function (p) { return [p, '#projects']; }), listings.map(function (l) { return [l, '#properties']; }))
+      .filter(function (h) { return h[0] && h[0].moderation_status === 'hidden'; })[0];
+    if (hidden) add(1, 'na_hidden', { name: hidden[0].title || hidden[0].name || hidden[0].display_name || '' }, hidden[1], 'na_btn_open');
+    if (listings.length) {
+      // 3 — buyers cannot call: no account number and no linked profile number
+      const callable = listings.some(function (l) { return (l.professional_id && ov.phones['professional:' + l.professional_id]) || (l.agency_id && ov.phones['agency:' + l.agency_id]); });
+      if (!user.public_phone && !callable) add(3, 'na_phone_account', {}, '#account', 'na_btn_edit');
+      if (window.AcListingQuality) {
+        const weakest = listings.map(function (l) { return { l: l, q: AcListingQuality.score(l).score }; }).sort(function (a, b) { return a.q - b.q; })[0];
+        if (weakest.q < 80) add(5, 'na_improve_listing', { title: weakest.l.title, score: weakest.q }, 'listing.html?id=' + encodeURIComponent(weakest.l.id) + '#quality', 'na_btn_improve');
+      }
+      const stale = typeof acIsFresh === 'function' ? listings.filter(function (l) { return Object.prototype.hasOwnProperty.call(l, 'last_confirmed_at') && !acIsFresh(l); })[0] : null;
+      if (stale) add(6, 'na_confirm', { title: stale.title }, 'toolkit.html?id=' + encodeURIComponent(stale.id), 'na_btn_confirm');
       const newest = listings[0];
-      add('na_share_listing', { title: newest.title }, 'toolkit.html?id=' + encodeURIComponent(newest.id), 'na_btn_toolkit');
-      add('na_promote_listing', { title: newest.title }, acPkUrl('promote', 'property', newest.id, ''), 'na_btn_pk', { external: true });
+      add(7, 'na_share_listing', { title: newest.title }, 'toolkit.html?id=' + encodeURIComponent(newest.id), 'na_btn_toolkit');
+      add(9, 'na_promote_listing', { title: newest.title }, acPkUrl('promote', 'property', newest.id, ''), 'na_btn_pk', { external: true });
     }
     if (pro) {
-      if (profileThin(pro.intro, pro.services)) add('na_complete_professional', {}, '#professional', 'na_btn_edit');
-      else if (!ov.phones['professional:' + pro.id]) add('na_phone', { name: pro.display_name }, '#professional', 'na_btn_edit');
-      else add('na_share_profile', { name: pro.display_name }, 'professional.html?id=' + encodeURIComponent(pro.id), 'na_btn_view');
+      if (!ov.phones['professional:' + pro.id]) add(3, 'na_phone', { name: pro.display_name }, '#professional', 'na_btn_edit');
+      if (incomplete('professional', pro)) add(4, 'na_complete_professional', {}, '#professional', 'na_btn_edit');
+      else add(7, 'na_share_profile', { name: pro.display_name }, 'professional.html?id=' + encodeURIComponent(pro.id), 'na_btn_view');
     }
     if (ag) {
-      if (profileThin(ag.description, ag.services)) add('na_complete_agency', { name: ag.name }, '#agency', 'na_btn_edit');
-      else if (!ov.phones['agency:' + ag.id]) add('na_phone', { name: ag.name }, '#agency', 'na_btn_edit');
-      else add('na_team', { name: ag.name }, '#agency', 'na_btn_open');
+      if (!ov.phones['agency:' + ag.id]) add(3, 'na_phone', { name: ag.name }, '#agency', 'na_btn_edit');
+      if (incomplete('agency', ag)) add(4, 'na_complete_agency', { name: ag.name }, '#agency', 'na_btn_edit');
+      else add(8, 'na_team', { name: ag.name }, '#agency', 'na_btn_open');
     }
     if (co) {
+      if (!ov.phones['company:' + co.id]) add(3, 'na_phone', { name: co.name }, '#company', 'na_btn_edit');
+      if (incomplete('company', co)) add(4, 'na_complete_company', { name: co.name }, '#company', 'na_btn_edit');
       const rates = await AcMine.rates(co.id);
-      if (!rates.length) add('na_rates', { name: co.name }, '#company', 'na_btn_edit');
-      else if (profileThin(co.description, co.services)) add('na_complete_company', { name: co.name }, '#company', 'na_btn_edit');
-      if (ov.capability === 'none' || ov.capability === 'rejected') add('na_apply_projects', {}, 'developer-apply.html', 'na_btn_apply');
+      if (!rates.length) add(4, 'na_rates', { name: co.name }, '#company', 'na_btn_edit');
+      if (ov.capability === 'none' || ov.capability === 'rejected') add(10, 'na_apply_projects', {}, 'developer-apply.html', 'na_btn_apply');
     }
+    // 8 — the profile that matches the account type, if it is still missing
+    const related = { professional: [!pro, 'na_first_professional', '#professional'], agency: [!ag, 'na_first_agency', '#agency'],
+      builder: [!co, 'na_first_builder', '#company'] }[user.role];
+    if (related && related[0]) add(8, related[1], {}, related[2], 'na_btn_start');
     if (ov.capability === 'approved') {
-      if (!ov.projects.length) add('na_add_project', {}, 'post-project.html', 'na_btn_start');
-      else add('na_promote_project', { title: ov.projects[0].title }, acPkPathwayUrl(AC_PK_PATHWAYS.project[0], 'project', ov.projects[0].id), 'na_btn_pk', { external: true });
+      if (!ov.projects.length) add(10, 'na_add_project', {}, 'post-project.html', 'na_btn_start');
+      else add(9, 'na_promote_project', { title: ov.projects[0].title }, acPkPathwayUrl(AC_PK_PATHWAYS.project[0], 'project', ov.projects[0].id), 'na_btn_pk', { external: true });
     }
-    return out.slice(0, 4);
+    // stable sort: equal priorities keep the order above
+    return out.map(function (a, i) { a.i = i; return a; }).sort(function (a, b) { return a.prio - b.prio || a.i - b.i; }).slice(0, 4);
   }
   async function renderNextActions() {
     const slot = document.getElementById('myNext');
@@ -366,6 +414,7 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     const others = list.length > 1 ? '<p class="my-sub">' + list.map(function (e) { return '<a href="#' + kind + '?id=' + encodeURIComponent(e.id) + '">' + esc(e.display_name || e.name) + '</a>'; }).join(' · ') + '</p>' : '';
     main.innerHTML = header(t('my_nav_' + kind), t('my_' + kind + '_sub')) + (flash ? '<p class="my-flash">' + esc(flash) + '</p>' : '') + others +
       (entity && entity.moderation_status === 'hidden' ? '<p class="badge badge-pending">' + esc(t('my_hidden_note')) + '</p>' : '') +
+      completenessHTML(kind, entity) +
       '<div class="panel">' + profileForm(kind, entity) + '</div>' + extra +
       (entity && list.length < ov.limits[kind] ? '<p><a class="my-link" href="#' + kind + '?new=1">+ ' + esc(t('my_add_another')) + '</a></p>'
         : entity ? '<p class="my-sub">' + esc(t(kind === 'professional' ? 'my_limit_professional' : 'my_limit_business').replace('{n}', ov.limits[kind])) + '</p>' : '');
@@ -404,8 +453,12 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
 
   R.enquiries = async function () {
     const [inbox, sent] = await Promise.all([AcMine.enquiries(user.id, 'received'), AcMine.enquiries(user.id, 'sent')]);
+    const PAGE = { listing: 'listing.html', project: 'project.html', professional: 'professional.html', agency: 'agency.html', company: 'builder.html' };
     function item(e, mine) {
-      return '<li class="my-enq' + (e.status === 'new' && !mine ? ' new' : '') + '"><div><strong>' + esc(e.target_title || '') + '</strong> <span class="my-sub">· ' + esc(t('my_cat_' + e.target_type)) + ' · ' + new Date(e.created_at).toLocaleString() + '</span></div>' +
+      const title = esc(e.target_title || '');
+      const link = PAGE[e.target_type] && e.target_id ? '<a href="' + PAGE[e.target_type] + '?id=' + encodeURIComponent(e.target_id) + '">' + title + '</a>' : title;
+      const status = mine ? '' : ' <span class="my-enq-status s-' + esc(e.status) + '">' + esc(t('my_enq_s_' + e.status)) + '</span>';
+      return '<li class="my-enq' + (e.status === 'new' && !mine ? ' new' : '') + '"><div><strong>' + link + '</strong>' + status + ' <span class="my-sub">· ' + esc(t('my_cat_' + e.target_type)) + ' · ' + new Date(e.created_at).toLocaleString() + '</span></div>' +
         (mine ? '' : '<div class="my-sub">' + esc(e.sender_name || '') + (e.sender_phone ? ' · <a href="tel:' + esc(e.sender_phone) + '">' + esc(e.sender_phone) + '</a>' : '') + '</div>') +
         '<p class="mk-pre">' + esc(e.message) + '</p>' +
         (mine ? '' : '<p>' + (e.status === 'new' ? '<button class="btn btn-secondary btn-sm" data-enq="' + esc(e.id) + '" data-s="read">' + esc(t('my_mark_read')) + '</button> ' : '') + '<button class="btn btn-secondary btn-sm" data-enq="' + esc(e.id) + '" data-s="archived">' + esc(t('my_archive')) + '</button></p>') + '</li>';

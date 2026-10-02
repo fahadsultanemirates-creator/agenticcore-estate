@@ -164,10 +164,12 @@ const AC_MARKET_CARD = {
 };
 const AC_MARKET_PAGES = {
   properties: { dir: 'properties.html', create: 'sell.html' },
-  projects: { dir: 'projects.html', create: 'my.html#projects' },
-  professionals: { dir: 'professionals.html', create: 'my.html#professional' },
-  agencies: { dir: 'agencies.html', create: 'my.html#agency' },
-  builders: { dir: 'builders.html', create: 'my.html#company' }
+  // join links: new visitors sign up with the right account type; signed-in
+  // accounts are sent straight on to the matching dashboard module
+  projects: { dir: 'projects.html', create: 'signup.html?intent=developer' },
+  professionals: { dir: 'professionals.html', create: 'signup.html?intent=professional' },
+  agencies: { dir: 'agencies.html', create: 'signup.html?intent=agency' },
+  builders: { dir: 'builders.html', create: 'signup.html?intent=builder' }
 };
 
 // ---------- homepage rows ----------
@@ -245,6 +247,17 @@ function acInitMarketDirectory(cat, fixed) {
     if (!loaded) grid.innerHTML = '<div class="mk-empty">' + acEsc(acT(filtered ? 'mk_no_match' : 'mk_empty_' + cat)) +
       ' <a href="' + AC_MARKET_PAGES[cat].create + '">' + acEsc(acT('mk_cta_' + cat)) + ' →</a></div>';
     if (countEl) countEl.textContent = total ? acT('mk_count').replace('{n}', total) : '';
+    // A thin (but not empty) category invites the next genuine participant.
+    // Honest wording only: it never claims a size the directory doesn't have.
+    if (reset) {
+      let join = document.getElementById('mkJoin');
+      const thin = !filtered && total > 0 && total < (Number(s.sample_fill_min) || 0);
+      if (thin && !join) { join = document.createElement('p'); join.id = 'mkJoin'; join.className = 'mk-join'; grid.insertAdjacentElement('afterend', join); }
+      if (join) {
+        join.hidden = !thin;
+        if (thin) join.innerHTML = acEsc(acT('mk_join_' + cat)) + ' <a href="' + AC_MARKET_PAGES[cat].create + '">' + acEsc(acT('mk_cta_' + cat)) + ' →</a>';
+      }
+    }
     if (moreBtn) moreBtn.hidden = loaded >= total;
     // Sample examples sit in their own labelled strip, only while the
     // category is thin and nothing is filtered — never mixed into results.
