@@ -73,12 +73,13 @@
 
   async function renderEarly() {
     const box = document.getElementById('admEarly');
-    const { data } = await supabaseClient.from('early_participants').select('*').order('qualified_at', { ascending: true }).limit(500);
+    // evaluated by the database before it is returned, so the list is never stale
+    const { data } = await supabaseClient.rpc('admin_list_early_participants');
     const rows = data || [];
     const names = await accountNames(rows.map(function (r) { return r.user_id; }));
     const eligible = rows.filter(function (r) { return !r.revoked_at && r.qualifying_type !== 'none'; }).length;
     box.innerHTML = '<p class="my-sub">' + eligible + ' eligible. The database records an account when one genuine item, created before 1 Nov 2026, has stayed published for 7 days (samples, hidden and early-deleted content never count). ' +
-      'Run the evaluation once on or after <strong>8 Nov 2026</strong> to settle content created in the last week before the cutoff.</p>' +
+      'Evaluation is automatic whenever eligibility is read (this list, the owner\'s dashboard, discount checks). The button below is a logged reconciliation run — use it once on or after <strong>8 Nov 2026</strong> for the record.</p>' +
       '<p><button class="btn btn-secondary btn-sm" id="admEarlyEval">Run evaluation now</button> <span class="my-msg" id="admEarlyMsg" role="status"></span></p>' +
       '<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Account</th><th>Qualified</th><th>Qualifying item</th><th>Source</th><th>Status</th><th></th></tr></thead><tbody>' +
       (rows.map(function (r) {

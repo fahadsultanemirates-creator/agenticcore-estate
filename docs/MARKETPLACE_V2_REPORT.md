@@ -101,8 +101,11 @@ Notes:
 
 ## 8. Sample asset manifest
 See `docs/MARKETPLACE_V2_SAMPLE_ASSETS.md`. After the owner's brand-safety review:
-- 14 images are used: 4 property photos, 5 project photos and 5 AI portraits.
-- 12 are not shipped. These are the 10 agency/builder logos, which carried brand-like names, plus 2 photos with real or named places on them.
+- 9 images are used: 4 property photos and 5 project photos.
+- 17 are not shipped:
+  - 10 agency/builder logos with brand-like names;
+  - 5 AI portraits (sample professionals show initials);
+  - 2 photos with real or named places.
 - Every sample now uses a generic label: "Sample Agency — …", "Sample Builder/Developer — …", "Sample Professional · …".
 
 ## 9. Sample lifecycle
@@ -197,6 +200,12 @@ One account can add any other profile later. Only the project category still dep
   - Created and deleted within 7 days: never counts.
   - Deleted after 7 days: eligibility is recorded first and stays.
   - Hidden by moderation before evaluation: never counts.
+- **Automatic evaluation:** eligibility is never read from the table directly. Every reader evaluates first, so an item that quietly passed its 7 days is counted the moment eligibility is needed. The readers are:
+  - `my_early_status()` (dashboard);
+  - `is_early_participant(user)`, the check that package/discount code must use (own account or admin only);
+  - `admin_list_early_participants()` (admin panel, not logged);
+  - a daily pg_cron job, scheduled only if pg_cron is already installed. The migration does not enable extensions.
+- `admin_evaluate_early_participants()` remains as a logged reconciliation run.
 - No browser write grants. Users read only their own row.
 - Admin revoke works even before qualifying (it blocks). Restore re-applies the rule. Admin grant covers a genuine case the rule missed. All of these are logged.
 

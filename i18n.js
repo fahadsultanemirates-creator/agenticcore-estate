@@ -36,7 +36,7 @@ const AC_I18N = {
     section_featured_developers_title: 'AgenticCore Featured Developers',
     section_packages_eyebrow: 'Packages coming soon',
     section_packages_title: 'Packages',
-    section_packages_sub: 'We’re building 4 packages across each of our 5 categories — Featured Listings for Sale, Featured Listings for Rent, Agencies, Builders & Developers, and Projects. For now, there’s no charge to list. Join before packages launch and get 50% off standard packages and 30% off higher-tier packages, for your first 2 months.',
+    section_packages_sub: 'Listing is free during our launch period. Marketplace packages are planned from 1 November 2026; prices will be announced later.',
     section_coming_soon_note: 'Coming soon — check back shortly.',
     view_all: 'View all listings',
     listing_view: 'View details',
@@ -58,7 +58,7 @@ const AC_I18N = {
 
     section_membership_eyebrow: 'Listing Packages',
     section_membership_title: 'Pick a package, list at your pace',
-    section_membership_sub: 'Starter, Growth, Elite, and more — priced monthly, no document verification required.',
+    section_membership_sub: 'Listing is free during our launch period.',
 
     section_why_eyebrow: 'Built differently',
     section_why_title: "What sets AgenticCore Estate apart",
@@ -151,7 +151,7 @@ const AC_I18N = {
     section_featured_developers_title: 'AgenticCore نمایاں ڈویلپرز',
     section_packages_eyebrow: 'پیکجز جلد آ رہے ہیں',
     section_packages_title: 'پیکجز',
-    section_packages_sub: 'ہم اپنے 5 زمروں — فروخت کے لیے نمایاں فہرستیں، کرایہ کے لیے نمایاں فہرستیں، ایجنسیاں، بلڈرز اور ڈویلپرز، اور پراجیکٹس — ہر ایک کے لیے 4 پیکجز تیار کر رہے ہیں۔ فی الحال فہرست کرنے کا کوئی معاوضہ نہیں۔ پیکجز شروع ہونے سے پہلے شامل ہوں اور اپنے پہلے 2 مہینوں کے لیے اسٹینڈرڈ پیکجز پر 50% اور اعلیٰ درجے کے پیکجز پر 30% رعایت حاصل کریں۔',
+    section_packages_sub: 'لانچ کے دوران لسٹنگ مفت ہے۔ مارکیٹ پلیس پیکجز 1 نومبر 2026 سے متوقع ہیں؛ قیمتوں کا اعلان بعد میں ہوگا۔',
     section_coming_soon_note: 'جلد آ رہا ہے — کچھ دیر بعد دوبارہ دیکھیں۔',
     view_all: 'تمام فہرستیں دیکھیں',
     listing_view: 'تفصیل دیکھیں',
@@ -173,7 +173,7 @@ const AC_I18N = {
 
     section_membership_eyebrow: 'لسٹنگ پیکجز',
     section_membership_title: 'ایک پیکج منتخب کریں، اپنی رفتار سے لسٹ کریں',
-    section_membership_sub: 'اسٹارٹر، گروتھ، ایلیٹ، اور مزید — ماہانہ قیمت، کسی دستاویز کی تصدیق درکار نہیں۔',
+    section_membership_sub: 'لانچ کے دوران لسٹنگ مفت ہے۔',
 
     section_why_eyebrow: 'مختلف انداز میں بنایا گیا',
     section_why_title: 'AgenticCore Estate کو دوسروں سے کیا ممتاز کرتا ہے',
@@ -270,7 +270,7 @@ Object.assign(AC_I18N.en, {
  "h2_why_title": "Have a property to sell or rent? List it here.",
  "h2_why_sub": "AgenticCore helps turn your details into a better listing — and puts buyers in direct contact with you.",
  "h2_b1t": "Free during launch",
- "h2_b1": "No charge to list right now. Join before paid packages launch and get 50% off standard packages and 30% off higher tiers for your first 2 months.",
+ "h2_b1": "No charge to list during our launch period. Marketplace packages are planned from 1 November 2026; early participants can qualify for 30% off their first two months.",
  "h2_b2t": "AI-assisted listing",
  "h2_b2": "Type rough notes; AgenticCore drafts the title and description and tells you what's missing. You check it before anything is published.",
  "h2_b3t": "Listing quality score",
@@ -391,7 +391,7 @@ Object.assign(AC_I18N.ur, {
  "h2_why_title": "جائیداد بیچنی یا کرایے پر دینی ہے؟ یہاں درج کریں۔",
  "h2_why_sub": "AgenticCore آپ کی تفصیلات کو بہتر اشتہار میں بدلنے میں مدد کرتا ہے — اور خریداروں کو براہِ راست آپ سے رابطے کا موقع دیتا ہے۔",
  "h2_b1t": "لانچ کے دوران مفت",
- "h2_b1": "فی الحال اشتہار درج کرنا مفت ہے۔ پیڈ پیکجز شروع ہونے سے پہلے شامل ہوں اور پہلے 2 ماہ معیاری پیکجز پر 50٪ اور اعلیٰ پیکجز پر 30٪ رعایت پائیں۔",
+ "h2_b1": "لانچ کے دوران لسٹنگ مفت ہے۔ مارکیٹ پلیس پیکجز 1 نومبر 2026 سے متوقع ہیں؛ ابتدائی شرکاء پہلے دو مہینوں پر 30% رعایت کے اہل ہو سکتے ہیں۔",
  "h2_b2t": "AI کی مدد سے اشتہار",
  "h2_b2": "مختصر نوٹس لکھیں؛ AgenticCore عنوان اور تفصیل تیار کرتا ہے اور بتاتا ہے کیا کمی ہے۔ شائع ہونے سے پہلے آپ خود دیکھتے ہیں۔",
  "h2_b3t": "اشتہار کا معیاری اسکور",

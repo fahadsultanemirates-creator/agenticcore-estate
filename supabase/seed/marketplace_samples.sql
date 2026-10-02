@@ -16,7 +16,8 @@
 --     …", "Sample Professional · …"), illustrative prices and "Example location";
 --     no real address, project, person, brand or company is described. Agency and
 --     builder samples have NO logo (the uploaded logos carried brand-like names
---     and are not shipped); see docs/MARKETPLACE_V2_SAMPLE_ASSETS.md.
+--     and are not shipped) and sample professionals have NO portrait (initials
+--     are shown); see docs/MARKETPLACE_V2_SAMPLE_ASSETS.md.
 -- Images: images/samples/** (see docs/MARKETPLACE_V2_SAMPLE_ASSETS.md).
 -- Idempotent: re-running it changes nothing that already exists.
 -- ============================================================
@@ -54,35 +55,35 @@ on conflict (id) do nothing;
 -- ---------- property professionals ----------
 insert into public.professionals (id, owner_id, is_sample, display_name, avatar_url, avatar_kind, headline, intro, why_contact, how_i_work,
                                   cities, segments, purposes, property_types, services, languages, overseas_clients, commission_info, special_offer) values
- ('5a3b1e00-0000-4000-8000-000000000301', public.mv2_sample_owner(), true, 'Sample Professional · Residential Sales', 'images/samples/professionals/professional-1-720.webp', 'photo',
+ ('5a3b1e00-0000-4000-8000-000000000301', public.mv2_sample_owner(), true, 'Sample Professional · Residential Sales', null, 'none',
   'Example specialisation: residential sales',
   'Sample profile. It shows how a property professional can explain what they do for clients — even with no active listings.',
   'Example: helps families shortlist houses that match their budget and school runs.',
   'Example: a first call to understand your needs, then a shortlist and accompanied visits.',
   '{Islamabad}', '{residential}', '{sale}', '{house,flat}', '{"Buying support","Property visits"}', '{Urdu,English}', false,
   'Example: commission terms explained before any visit.', null),
- ('5a3b1e00-0000-4000-8000-000000000302', public.mv2_sample_owner(), true, 'Sample Professional · Commercial Property', 'images/samples/professionals/professional-2-720.webp', 'photo',
+ ('5a3b1e00-0000-4000-8000-000000000302', public.mv2_sample_owner(), true, 'Sample Professional · Commercial Property', null, 'none',
   'Example specialisation: commercial property',
   'Sample profile for demonstration. Example work: offices and shops for businesses.',
   'Example: compares rent, maintenance and access for business tenants.',
   'Example: shares a written comparison of three options before visits.',
   '{Islamabad,Rawalpindi}', '{commercial}', '{sale,rent}', '{office,shop}', '{"Commercial leasing","Investment questions"}', '{Urdu,English}', true,
   null, 'Example: an offer a professional could choose to show here.'),
- ('5a3b1e00-0000-4000-8000-000000000303', public.mv2_sample_owner(), true, 'Sample Professional · Overseas Buyers', 'images/samples/professionals/professional-3-720.webp', 'photo',
+ ('5a3b1e00-0000-4000-8000-000000000303', public.mv2_sample_owner(), true, 'Sample Professional · Overseas Buyers', null, 'none',
   'Example specialisation: overseas Pakistani buyers',
   'Sample profile for demonstration. Example work: helping clients abroad with video visits and paperwork checklists.',
   'Example: video walkthroughs and regular updates for buyers outside Pakistan.',
   'Example: weekly updates by WhatsApp; documents checked with the client''s own lawyer.',
   '{Rawalpindi}', '{residential}', '{sale}', '{house,residential_plot}', '{"Overseas client support","Video visits"}', '{Urdu,English,Punjabi}', true,
   null, null),
- ('5a3b1e00-0000-4000-8000-000000000304', public.mv2_sample_owner(), true, 'Sample Professional · Family Rentals', 'images/samples/professionals/professional-4-720.webp', 'photo',
+ ('5a3b1e00-0000-4000-8000-000000000304', public.mv2_sample_owner(), true, 'Sample Professional · Family Rentals', null, 'none',
   'Example specialisation: rentals for families',
   'Sample profile for demonstration. Example work: finding rental homes and portions for families.',
   'Example: checks utilities, parking and lease terms before you visit.',
   'Example: sends a shortlist within a few days and arranges visits.',
   '{Islamabad}', '{residential}', '{rent}', '{house,upper_portion,lower_portion,flat}', '{"Rental search","Lease guidance"}', '{Urdu,English}', false,
   null, null),
- ('5a3b1e00-0000-4000-8000-000000000305', public.mv2_sample_owner(), true, 'Sample Professional · Apartments & Projects', 'images/samples/professionals/professional-5-720.webp', 'photo',
+ ('5a3b1e00-0000-4000-8000-000000000305', public.mv2_sample_owner(), true, 'Sample Professional · Apartments & Projects', null, 'none',
   'Example specialisation: apartments and new projects',
   'Sample profile for demonstration. Example work: apartments and project bookings, working independently.',
   'Example: explains payment plans and possession timelines in plain language.',

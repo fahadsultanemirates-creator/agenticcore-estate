@@ -1194,20 +1194,76 @@ $$;
 revoke all on function public.my_early_status() from public, anon;
 grant execute on function public.my_early_status() to authenticated;
 
--- Settle everyone (run on/after 8 Nov 2026; safe to run any time). Logged.
-create or replace function public.admin_evaluate_early_participants()
+-- Automatic evaluation. Eligibility is never read from early_participants
+-- directly; every reader goes through a function that evaluates first, so an
+-- item that quietly passed its 7 days (no edits, owner never logged in) is
+-- still counted the moment eligibility is needed:
+--   * my_early_status()                — the owner's dashboard;
+--   * is_early_participant(user)       — THE check for package/discount code;
+--   * admin_list_early_participants()  — the admin panel;
+--   * a daily pg_cron job, only if pg_cron is already installed (not enabled here).
+-- admin_evaluate_early_participants() remains as a logged reconciliation run.
+create or replace function public.mv2_evaluate_all()
 returns int language plpgsql security definer set search_path = public
 as $$
-declare n int := 0; o uuid;
+declare n int := 0; o uuid; v_days int := coalesce((public.mv2_setting('early_min_days') #>> '{}')::int, 7);
 begin
-  if not public.is_admin() then raise exception 'Admins only' using errcode = '42501'; end if;
-  for o in select distinct owner_id from (
-      select owner_id from public.listings union select owner_id from public.projects union select owner_id from public.agencies
-      union select owner_id from public.professionals union select owner_id from public.companies) x
-    where owner_id <> public.mv2_sample_owner() and not exists (select 1 from public.early_participants e where e.user_id = x.owner_id)
+  -- only owners that could qualify right now: no row yet, and a genuine item old enough
+  for o in select distinct x.owner_id from (
+      select owner_id, created_at from public.listings where not is_sample and moderation_status = 'active'
+      union all select owner_id, created_at from public.projects where not is_sample and moderation_status = 'active'
+      union all select owner_id, created_at from public.agencies where not is_sample and moderation_status = 'active'
+      union all select owner_id, created_at from public.professionals where not is_sample and moderation_status = 'active'
+      union all select owner_id, created_at from public.companies where not is_sample and moderation_status = 'active') x
+    where x.created_at <= now() - make_interval(days => v_days)
+      and x.owner_id <> public.mv2_sample_owner()
+      and not exists (select 1 from public.early_participants e where e.user_id = x.owner_id)
   loop
     if public.mv2_try_qualify(o) then n := n + 1; end if;
   end loop;
+  return n;
+end;
+$$;
+revoke execute on function public.mv2_evaluate_all() from public, anon, authenticated;
+
+-- Authoritative yes/no for one account (own account or admin). Future package /
+-- discount code must call this rather than reading the table.
+create or replace function public.is_early_participant(p_user uuid)
+returns boolean language plpgsql volatile security definer set search_path = public
+as $$
+begin
+  if auth.uid() is null or (auth.uid() <> p_user and not public.is_admin()) then
+    raise exception 'Not allowed.' using errcode = '42501';
+  end if;
+  perform public.mv2_try_qualify(p_user);
+  return exists (select 1 from public.early_participants
+                  where user_id = p_user and revoked_at is null and qualifying_type <> 'none');
+end;
+$$;
+revoke all on function public.is_early_participant(uuid) from public, anon;
+grant execute on function public.is_early_participant(uuid) to authenticated;
+
+-- Admin panel list: evaluated first, so it is never stale. Read-only (not logged).
+create or replace function public.admin_list_early_participants()
+returns setof public.early_participants language plpgsql volatile security definer set search_path = public
+as $$
+begin
+  if not public.is_admin() then raise exception 'Admins only' using errcode = '42501'; end if;
+  perform public.mv2_evaluate_all();
+  return query select * from public.early_participants order by qualified_at;
+end;
+$$;
+revoke all on function public.admin_list_early_participants() from public, anon;
+grant execute on function public.admin_list_early_participants() to authenticated;
+
+-- Reconciliation run (on/after 8 Nov 2026 to settle the final week; safe any time). Logged.
+create or replace function public.admin_evaluate_early_participants()
+returns int language plpgsql security definer set search_path = public
+as $$
+declare n int;
+begin
+  if not public.is_admin() then raise exception 'Admins only' using errcode = '42501'; end if;
+  n := public.mv2_evaluate_all();
   insert into public.admin_log (admin_id, action, target_table, target_id, note)
   values (auth.uid(), 'early:evaluated', 'early_participants', md5('early_participants')::uuid, n || ' newly qualified');
   return n;
@@ -1215,6 +1271,16 @@ end;
 $$;
 revoke all on function public.admin_evaluate_early_participants() from public, anon;
 grant execute on function public.admin_evaluate_early_participants() to authenticated;
+
+-- Daily safety net, only where pg_cron is already installed (this migration does
+-- not enable extensions). Without it, the functions above still evaluate on demand.
+do $$
+begin
+  if exists (select 1 from pg_extension where extname = 'pg_cron') then
+    perform cron.unschedule(jobid) from cron.job where jobname = 'mv2-early-participants-daily';
+    perform cron.schedule('mv2-early-participants-daily', '10 19 * * *', 'select public.mv2_evaluate_all()');  -- 00:10 PKT
+  end if;
+end $$;
 
 -- ---------- 9. public counts (genuine, visible content only) ----------
 create or replace function public.marketplace_stats()

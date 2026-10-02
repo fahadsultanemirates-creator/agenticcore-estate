@@ -532,3 +532,46 @@ do $t$ begin
      then raise exception 'FAIL a function orders by a legacy column'; end if;
   raise notice 'ok  22 limits configurable by admin within bounds (enquiries/day, agency/company per account + per-account override); 7-day rule and 1-professional rule fixed; developer_tier/seller_package deprecated, not self-assignable, not used for ordering';
 end $t$;
+
+-- ---------- 23. automatic evaluation when eligibility is needed ----------
+-- Items that quietly pass 7 days (no edits, owner never opens the dashboard) are
+-- counted the moment anything reads eligibility; nothing depends on the admin run.
+insert into auth.users (id, email, encrypted_password, raw_user_meta_data) values
+ ('b0000000-0000-0000-0000-00000000000d','ed@x.pk', extensions.crypt('Pass-dddd', extensions.gen_salt('bf')), '{"full_name":"Silent One","phone":"03101414141","role":"buyer"}'),
+ ('b0000000-0000-0000-0000-00000000000e','ee@x.pk', extensions.crypt('Pass-eeee', extensions.gen_salt('bf')), '{"full_name":"Silent Two","phone":"03101515151","role":"buyer"}');
+alter table public.listings disable trigger listings_early_change;
+insert into public.listings (owner_id,title,type,property_type,city,area,price, created_at) values
+ ('b0000000-0000-0000-0000-00000000000d','Quiet A','buy','house','Islamabad','G-13',1, now() - interval '8 days'),
+ ('b0000000-0000-0000-0000-00000000000e','Quiet B','buy','house','Islamabad','G-13',1, now() - interval '9 days');
+alter table public.listings enable trigger listings_early_change;
+do $t$ begin
+  if exists (select 1 from public.early_participants where user_id in ('b0000000-0000-0000-0000-00000000000d','b0000000-0000-0000-0000-00000000000e')) then raise exception 'FAIL fixture already evaluated'; end if;
+end $t$;
+select pg_temp.as_user('b0000000-0000-0000-0000-00000000000d');
+set role authenticated;
+do $t$ begin
+  if not public.is_early_participant(auth.uid()) then raise exception 'FAIL is_early_participant evaluates on demand'; end if;
+  perform pg_temp.expect_denied($$select public.is_early_participant('b0000000-0000-0000-0000-00000000000e')$$, 'check someone else''s eligibility');
+  perform pg_temp.expect_denied($$select * from public.admin_list_early_participants()$$, 'non-admin list');
+  perform pg_temp.expect_denied($$select public.mv2_evaluate_all()$$, 'call internal evaluate-all');
+end $t$;
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+set role anon;
+do $t$ begin
+  perform pg_temp.expect_denied($$select public.is_early_participant('b0000000-0000-0000-0000-00000000000d')$$, 'anon eligibility check');
+end $t$;
+reset role;
+select pg_temp.as_user('b0000000-0000-0000-0000-000000000005');
+set role authenticated;
+do $t$ declare n0 int; begin
+  select count(*) into n0 from public.admin_log;
+  if not exists (select 1 from public.admin_list_early_participants() where user_id = 'b0000000-0000-0000-0000-00000000000e' and qualifying_type = 'listings') then raise exception 'FAIL admin list evaluates first'; end if;
+  if (select count(*) from public.admin_log) <> n0 then raise exception 'FAIL reading the list must not write the admin log'; end if;
+  if exists (select 1 from public.admin_list_early_participants() where user_id = public.mv2_sample_owner()) then raise exception 'FAIL sample account listed'; end if;
+  perform public.admin_set_early_participant('b0000000-0000-0000-0000-00000000000d', false, 'test');
+  if public.is_early_participant('b0000000-0000-0000-0000-00000000000d') then raise exception 'FAIL revoked account reported eligible'; end if;
+  if public.admin_evaluate_early_participants() <> 0 then raise exception 'FAIL reconciliation finds nothing left'; end if;
+  raise notice 'ok  23 automatic evaluation: own check, admin list (unlogged) and dashboard evaluate on demand; others/anon refused; revoked stays false; reconciliation run still logged';
+end $t$;
+reset role;
