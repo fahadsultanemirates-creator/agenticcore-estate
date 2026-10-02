@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real estate agencies — AgenticCore Estate</title>
+<meta name="description" content="Real estate agencies in Islamabad and Rawalpindi: services, team and active listings.">
+<link rel="canonical" href="https://agenticcore.estate/agencies.html">
+<meta name="theme-color" content="#071F17">
+<link rel="icon" href="images/agenticcore-icon.png">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="inner.css">
+<link rel="stylesheet" href="market.css">
+<script>try { if (localStorage.getItem('acLang') === 'ur') document.documentElement.classList.add('ac-ur-pending'); } catch (e) {}</script>
+</head>
+<body data-page="agencies" data-category="agencies">
+<a href="#main" class="skip-link" data-i18n="mk_skip">Skip to content</a>
+<div id="site-header"></div>
+<main id="main">
+<header class="mk-dir-head">
+  <div class="container">
+    <nav class="mk-crumbs" aria-label="Breadcrumb"><a href="index.html" data-i18n="mk_home">Home</a> › <span data-i18n="mk_cat_agencies"></span></nav>
+    <h1 data-i18n="mk_dir_agencies_h"></h1>
+    <p class="mk-lead" data-i18n="mk_dir_agencies_sub"></p>
+    <a class="btn btn-primary btn-sm" href="my.html#agency" data-i18n="mk_cta_agencies"></a>
+  </div>
+</header>
+<section class="mk-dir">
+  <div class="container mk-dir-grid">
+    <form class="mk-filters" id="mkFilters" role="search" aria-label="Filters">
+      <h2 class="mk-filters-h" data-i18n="mk_filters">Filters</h2>
+      <div class="mk-field"><label for="f_q" data-i18n="mk_f_keyword"></label><input id="f_q" name="q" type="search" data-i18n-ph="mk_kw_orgs"></div>
+      <div class="mk-field"><label for="f_city" data-i18n="mk_f_city"></label><select id="f_city" name="city"><option value="" data-i18n="search_any_city"></option></select></div>
+      <div class="mk-field"><label for="f_segment" data-i18n="mk_f_segment"></label><select id="f_segment" name="segment"><option value="" data-i18n="mk_any"></option><option value="residential" data-i18n="mk_seg_residential"></option><option value="commercial" data-i18n="mk_seg_commercial"></option></select></div>
+      <div class="mk-field"><label for="f_purpose" data-i18n="mk_f_purpose"></label><select id="f_purpose" name="purpose"><option value="" data-i18n="mk_any"></option><option value="sale" data-i18n="mk_purpose_sale"></option><option value="rent" data-i18n="mk_purpose_rent"></option></select></div>
+      <button type="reset" class="btn btn-secondary btn-sm" data-i18n="mk_clear">Clear</button>
+    </form>
+    <div>
+      <p class="mk-count" id="mkCount" aria-live="polite"></p>
+      <div class="mk-grid" id="mkResults"></div>
+      <div class="mk-more-wrap"><button type="button" class="btn btn-secondary" id="mkMore" hidden data-i18n="mk_load_more">Load more</button></div>
+      <section class="mk-samples" id="mkSamples" hidden aria-labelledby="mkSamplesH">
+        <h2 id="mkSamplesH" data-i18n="mk_examples_h"></h2>
+        <p class="mk-fine" data-i18n="mk_sample_note"></p>
+        <div class="hscroll-row mk-row mk-sample-row"></div>
+      </section>
+    </div>
+  </div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script src="i18n.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="db-client.js"></script>
+<script src="property-taxonomy.js"></script>
+<script src="listings.js"></script>
+<script src="market-data.js"></script>
+<script src="market-ui.js"></script>
+<script src="partials.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function () { acInitMarketDirectory('agencies'); });</script>
+</body>
+</html>

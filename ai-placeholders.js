@@ -55,7 +55,7 @@ function acMountPropertyAdvisor() {
       '</div>' +
       '<div data-cpp-pane="improve" hidden>' +
         '<p data-i18n="cpp_improve_sub"></p>' +
-        '<a class="btn btn-primary btn-sm btn-block" href="dashboard.html" id="cppImproveLink" data-i18n="cpp_improve_go"></a>' +
+        '<a class="btn btn-primary btn-sm btn-block" href="my.html#properties" id="cppImproveLink" data-i18n="cpp_improve_go"></a>' +
       '</div>' +
     '</div>';
   document.body.appendChild(wrap);

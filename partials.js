@@ -22,9 +22,8 @@ async function acRenderHeader() {
 
   let ctaHtml;
   if (user) {
-    const dashHref = user.role === 'admin' ? 'admin-dashboard.html'
-      : user.role === 'developer' ? 'developer-dashboard.html'
-      : 'dashboard.html';
+    // One dashboard for every account type (modules depend on what the account manages).
+    const dashHref = user.role === 'admin' ? 'admin-dashboard.html' : 'my.html';
     ctaHtml =
       '<a href="' + dashHref + '" class="btn btn-secondary btn-sm" data-i18n="nav_dashboard"></a>' +
       '<button class="btn btn-primary btn-sm" id="acLogoutBtn" data-i18n="nav_logout"></button>';
@@ -40,13 +39,12 @@ async function acRenderHeader() {
         '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
         '<div class="nav-right" id="navRight">' +
           '<div class="nav-links">' +
-            acNavLink('buy.html', 'buy', 'nav_buy') +
-            acNavLink('rent.html', 'rent', 'nav_rent') +
-            acNavLink('sell.html', 'sell', 'nav_sell') +
-            acNavLink('developer-corner.html', 'developer', 'nav_developer') +
-            acNavLink('business-pool.html', 'business-pool', 'nav_business_pool') +
-            acNavLink('referral.html', 'referral', 'nav_referrals') +
-            acNavLink('pricing.html', 'pricing', 'nav_pricing') +
+            acNavLink('properties.html', 'properties', 'nav_properties') +
+            acNavLink('projects.html', 'projects', 'nav_projects') +
+            acNavLink('professionals.html', 'professionals', 'nav_professionals') +
+            acNavLink('agencies.html', 'agencies', 'nav_agencies') +
+            acNavLink('builders.html', 'builders', 'nav_builders') +
+            acNavLink('sell.html', 'sell', 'nav_list_free') +
           '</div>' +
           '<div class="nav-cta">' +
             '<button class="lang-toggle" id="acLangToggle" type="button" aria-label="Toggle language">' +
@@ -108,18 +106,20 @@ function acRenderFooter() {
           '<div class="footer-col">' +
             '<h5 data-i18n="footer_explore"></h5>' +
             '<ul>' +
-              '<li><a href="buy.html" data-i18n="nav_buy"></a></li>' +
-              '<li><a href="rent.html" data-i18n="nav_rent"></a></li>' +
-              '<li><a href="sell.html" data-i18n="nav_sell"></a></li>' +
-              '<li><a href="pricing.html" data-i18n="nav_pricing"></a></li>' +
+              '<li><a href="properties.html" data-i18n="nav_properties"></a></li>' +
+              '<li><a href="projects.html" data-i18n="nav_projects"></a></li>' +
+              '<li><a href="professionals.html" data-i18n="nav_professionals"></a></li>' +
+              '<li><a href="agencies.html" data-i18n="nav_agencies"></a></li>' +
+              '<li><a href="builders.html" data-i18n="nav_builders"></a></li>' +
+              '<li><a href="pricing.html" data-i18n="nav_launch"></a></li>' +
             '</ul>' +
           '</div>' +
           '<div class="footer-col">' +
             '<h5 data-i18n="footer_developers"></h5>' +
             '<ul>' +
               '<li><a href="developer-corner.html" data-i18n="nav_developer"></a></li>' +
-              '<li><a href="developer-packages.html">Project Packages</a></li>' +
-              '<li><a href="developer-apply.html">Apply as developer</a></li>' +
+              '<li><a href="sell.html" data-i18n="nav_list_free"></a></li>' +
+              '<li><a href="developer-apply.html" data-i18n="mk_apply_projects"></a></li>' +
               '<li><a href="admin-login.html" data-i18n="nav_admin"></a></li>' +
             '</ul>' +
           '</div>' +

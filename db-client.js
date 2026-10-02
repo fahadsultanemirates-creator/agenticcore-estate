@@ -236,7 +236,9 @@ const AcDB = (function () {
 
   async function getListings(filters) {
     filters = filters || {};
-    let q = supabaseClient.from('listings').select('*').order('created_at', { ascending: false });
+    // Genuine listings only (samples are rendered by market-ui.js with a SAMPLE badge).
+    let q = supabaseClient.from('listings').select('*,agency:agencies(id,name,logo_url)')
+      .eq('is_sample', false).eq('moderation_status', 'active').order('created_at', { ascending: false }).limit(filters.limit || 200);
     if (filters.type) q = q.eq('type', filters.type);
     if (filters.city) q = q.eq('city', filters.city);
     if (filters.propertyType) q = q.eq('property_type', filters.propertyType);
@@ -251,38 +253,23 @@ const AcDB = (function () {
     const { data: listings, error } = await q;
     if (error || !listings) return [];
 
-    const ownerIds = Array.from(new Set(listings.map(function (l) { return l.owner_id; })));
-    let ownersById = {};
-    if (ownerIds.length) {
-      const { data: owners } = await supabaseClient.from('public_profiles')
-        .select('id, developer_tier, role, agency_name, agency_logo_path').in('id', ownerIds);
-      (owners || []).forEach(function (o) { ownersById[o.id] = o; });
-    }
-
     listings.forEach(function (l) {
-      const owner = ownersById[l.owner_id];
       l.sizeMarla = l.size_marla;
       l.sizeUnit = l.size_unit;
-      l.ownerDeveloperTier = owner ? owner.developer_tier : null;
-      l.featured = l.ownerDeveloperTier === 3;
-      l.agencyName = owner && owner.role === 'agency' ? owner.agency_name : null;
-      l.agencyLogo = owner && owner.role === 'agency' ? owner.agency_logo_path : null;
+      l.agencyName = l.agency ? l.agency.name : null;
+      l.agencyLogo = l.agency ? l.agency.logo_url : null;
     });
-
-    listings.sort(function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0); });
     return listings;
   }
 
   async function getListing(id) {
-    const { data, error } = await supabaseClient.from('listings').select('*').eq('id', id).single();
+    const { data, error } = await supabaseClient.from('listings')
+      .select('*,agency:agencies(id,name,logo_url),professional:professionals(id,display_name,avatar_url),project:projects(id,title)')
+      .eq('id', id).single();
     if (error || !data) return null;
     data.sizeMarla = data.size_marla;
     data.sizeUnit = data.size_unit;
-    const owner = await getUser(data.owner_id);
-    if (owner && owner.role === 'agency') {
-      data.agencyName = owner.agency_name;
-      data.agencyLogo = owner.agency_logo_path;
-    }
+    if (data.agency) { data.agencyName = data.agency.name; data.agencyLogo = data.agency.logo_url; }
     return data;
   }
 

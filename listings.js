@@ -13,8 +13,8 @@ function acEsc(s) {
   });
 }
 
-// Only http(s) URLs (our own storage) are allowed into src attributes.
-function acSafeUrl(u) { return /^https?:\/\//i.test(String(u || '')) ? acEsc(u) : ''; }
+// Only http(s) URLs (our own storage) or bundled sample images are allowed into src attributes.
+function acSafeUrl(u) { return /^https?:\/\//i.test(String(u || '')) || /^images\/samples\/[a-z0-9._/-]+$/.test(String(u || '')) ? acEsc(u) : ''; }
 
 function acFormatPKR(n) {
   n = Number(n) || 0;
@@ -50,14 +50,13 @@ function acListingCardHTML(l) {
   const priceSuffix = l.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
   const checkedTip = typeof acT === 'function' ? acT('badge_checked_tip') : '';
   const verifiedBadge = l.verified ? '<span class="listing-badge verified" title="' + acEsc(checkedTip) + '" aria-label="' + acEsc(checkedTip) + '">✓</span>' : '';
-  const featuredBadge = l.featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '';
   const agencyLogoHTML = l.agencyLogo ?
     '<img src="' + acSafeUrl(l.agencyLogo) + '" alt="" class="listing-agency-logo" title="' + acEsc(l.agencyName) + '">' : '';
   return (
     '<a href="listing.html?id=' + encodeURIComponent(l.id) + '" class="listing-card">' +
       '<div class="listing-thumb">' +
         '<span class="listing-badge ' + l.type + '">' + (l.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
-        verifiedBadge + featuredBadge + agencyLogoHTML +
+        verifiedBadge + agencyLogoHTML +
         acListingThumbHTML(l) +
       '</div>' +
       '<div class="listing-body">' +
