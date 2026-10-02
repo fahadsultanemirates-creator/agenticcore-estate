@@ -1,82 +1,77 @@
-// AgenticCore Estate — individual listing detail page
+// AgenticCore Estate — property detail page (Marketplace V2)
+// Sample listings: SAMPLE notice, no trust badges, no contact, no owner tools.
+// Genuine listings: attribution (agency / professional / project), the shared
+// contact + enquiry box, and owner tools including the AgenticCore Pakistan handoff.
+
+const AC_PK_HANDOFF = 'https://agenticcorepk.netlify.app/?from=estate&intent=promote&listing=';
 
 const detailRoot = document.getElementById('listingDetailRoot');
 if (detailRoot) {
   (async function () {
     const id = new URLSearchParams(window.location.search).get('id');
-    const listing = id ? await AcDB.getListing(id) : null;
+    const listing = id && /^[0-9a-f-]{36}$/i.test(id) ? await AcDB.getListing(id) : null;
 
     if (!listing) {
-      detailRoot.innerHTML = '<div class="empty-state">This listing could not be found. <a href="buy.html" style="color:var(--accent-gold-bright);">Browse listings →</a></div>';
+      detailRoot.innerHTML = '<div class="mk-empty">' + acEsc(acT('mk_not_found')) + ' <a href="properties.html">' + acEsc(acT('mk_dir_properties_h')) + ' →</a></div>';
       return;
     }
-
-    const owner = await AcDB.getUser(listing.owner_id);
+    const owner = listing.is_sample ? null : await AcDB.getUser(listing.owner_id);
+    const settings = await AcMarket.settings();
     document.title = listing.title + ' — AgenticCore Estate';
-    const featured = owner && owner.developer_tier === 3;
 
-    function render() {
-      const lang = localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en';
-      const dict = AC_I18N[lang];
-      const priceSuffix = listing.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
-      const thumb = listing.photos && listing.photos.length
-        ? '<img src="' + acSafeUrl(listing.photos[0]) + '" alt="' + acEsc(listing.title) + '" style="width:100%;height:100%;object-fit:cover;">'
-        : AC_HOUSE_ICON;
-      const gallery = (listing.photos || []).slice(1).map(function (url) {
-        return '<a href="' + acSafeUrl(url) + '" target="_blank" rel="noopener"><img src="' + acSafeUrl(url) + '" alt="" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius-md);"></a>';
-      }).join('');
-
-      detailRoot.innerHTML =
-        '<div class="listing-thumb" style="aspect-ratio:16/7;border-radius:var(--radius-lg);margin-bottom:var(--space-lg);">' +
-          '<span class="listing-badge ' + listing.type + '">' + (listing.type === 'buy' ? dict.search_buy : dict.search_rent) + '</span>' +
-          (listing.verified ? '<span class="listing-badge verified" title="' + acEsc(acT('badge_checked_tip')) + '">' + acEsc(acT('badge_checked')) + '</span>' : '') +
-          (featured ? '<span class="listing-badge featured">★ Featured Agency</span>' : '') +
-          thumb +
-        '</div>' +
-        (gallery ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem;margin-bottom:var(--space-lg);">' + gallery + '</div>' : '') +
-        '<div class="form-grid" style="align-items:start;">' +
-          '<div>' +
-            '<h1 style="font-size:1.8rem;margin-bottom:0.4rem;">' + acEsc(listing.title) + '</h1>' +
-            '<p style="color:var(--text-secondary);margin-bottom:1rem;">' + acEsc(acPropertyTypeLabel(listing.property_type)) + ' · ' + acEsc(listing.area) + ', ' + acEsc(listing.city) + '</p>' +
-            '<div class="listing-price" style="font-size:1.6rem;margin-bottom:1rem;">' + acFormatPKR(listing.price) + priceSuffix + '</div>' +
-            '<div class="listing-specs" style="border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1rem;margin-bottom:1.5rem;">' +
-              (listing.beds ? '<span>' + listing.beds + ' ' + dict.listing_beds + '</span>' : '') +
-              (listing.baths ? '<span>' + listing.baths + ' ' + dict.listing_baths + '</span>' : '') +
-              '<span>' + acEsc(listing.sizeMarla) + ' ' + acSizeUnitLabel(listing.sizeUnit || 'marla') + '</span>' +
-            '</div>' +
-            '<h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Description</h3>' +
-            '<p style="color:var(--text-secondary);white-space:pre-line;">' + acEsc(listing.description) + '</p>' +
-          '</div>' +
-          '<div>' +
-            '<div class="panel">' +
-              '<h3>Listed by</h3>' +
-              (owner && owner.role === 'agency' && owner.agency_logo_path ?
-                '<img src="' + acSafeUrl(owner.agency_logo_path) + '" alt="" style="width:48px;height:48px;border-radius:10px;object-fit:cover;margin-bottom:0.5rem;">' : '') +
-              '<p style="color:var(--text-primary);font-weight:600;">' +
-                acEsc(owner && owner.role === 'agency' ? (owner.agency_name || owner.full_name) : (owner ? owner.full_name : 'AgenticCore Estate user')) +
-              '</p>' +
-              '<p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.8rem;">' +
-                (owner && owner.role === 'developer' ? (featured ? 'Elite developer' : 'Developer account') :
-                 owner && owner.role === 'agency' ? 'Agency listing' : 'Individual seller') +
-              '</p>' +
-              trustHTML() +
-              '<div id="contactSlot"><button type="button" class="btn btn-primary btn-block" id="contactBtn">Contact about this property</button></div>' +
-            '</div>' +
-            '<div id="detailAiSlot"></div>' +
-          '</div>' +
-        '</div>';
-
-      wireContact();
-      renderOwnerTools();
+    function attributionHTML() {
+      const rows = [];
+      if (listing.agency) rows.push('<a class="mk-attr" href="agency.html?id=' + encodeURIComponent(listing.agency.id) + '">' +
+        (acMediaUrl(listing.agency.logo_url) ? '<img src="' + acMediaUrl(listing.agency.logo_url) + '" alt="" width="40" height="40">' : '') +
+        '<span><small>' + acEsc(acT('mk_cat_agencies')) + '</small>' + acEsc(listing.agency.name) + '</span></a>');
+      if (listing.professional) rows.push('<a class="mk-attr" href="professional.html?id=' + encodeURIComponent(listing.professional.id) + '">' +
+        acAvatarHTML(listing.professional.avatar_url, listing.professional.display_name, 40) +
+        '<span><small>' + acEsc(acT('mk_cat_professionals')) + '</small>' + acEsc(listing.professional.display_name) + '</span></a>');
+      if (listing.project) rows.push('<a class="mk-attr" href="project.html?id=' + encodeURIComponent(listing.project.id) + '"><span><small>' +
+        acEsc(acT('mk_cat_projects')) + '</small>' + acEsc(listing.project.title) + '</span></a>');
+      if (!rows.length && !listing.is_sample) rows.push('<p class="mk-attr-plain">' + acEsc(owner ? owner.full_name : '') + ' · ' + acEsc(acT('mk_individual')) + '</p>');
+      return rows.length ? '<div class="panel mk-listed-by"><h3>' + acEsc(acT('mk_listed_by')) + '</h3>' + rows.join('') + '</div>' : '';
     }
 
-    // Every badge shown with what it means — and what it does not mean.
+    // Every badge shown with what it means — and what it does not mean. Never on samples.
     function trustHTML() {
+      if (listing.is_sample) return '';
       const badges = acTrustBadges(listing, owner);
       if (!badges.length) return '';
-      return '<h4 style="font-size:0.9rem;margin:0.4rem 0 0.2rem;">' + acEsc(acT('trust_h')) + '</h4><ul class="trust-list">' +
+      return '<div class="panel"><h3>' + acEsc(acT('trust_h')) + '</h3><ul class="trust-list">' +
         badges.map(function (b) { return '<li><span class="listing-badge ' + b.key + '">' + acEsc(b.label) + '</span><p>' + acEsc(b.tip) + '</p></li>'; }).join('') +
-        '</ul><p style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.8rem;">' + acEsc(acT('trust_disclaimer')) + '</p>';
+        '</ul><p class="mk-fine">' + acEsc(acT('trust_disclaimer')) + '</p></div>';
+    }
+
+    function render() {
+      const photos = listing.photos || [];
+      const hero = acMediaUrl(photos[0]);
+      const gallery = photos.slice(1).map(function (url) {
+        return acMediaUrl(url) ? '<a href="' + acMediaUrl(url) + '" target="_blank" rel="noopener"><img src="' + acMediaUrl(url) + '" alt="" loading="lazy"></a>' : '';
+      }).join('');
+      const unit = acSizeUnitLabel(listing.sizeUnit || 'marla');
+      detailRoot.innerHTML =
+        (listing.is_sample ? acSampleNoticeHTML() : '') +
+        '<div class="mk-hero mk-hero-listing">' + (hero ? '<img src="' + hero + '" alt="' + acEsc(listing.title) + '" decoding="async">' : '<span class="mk-media-icon">' + AC_ICONS.house + '</span>') +
+          '<span class="mk-purpose ' + (listing.type === 'rent' ? 'rent' : 'buy') + '">' + acEsc(acPurposeLabel(listing.type)) + '</span>' +
+          (listing.is_sample ? acSampleBadge('listing') : acPromoBadge(listing, settings)) + '</div>' +
+        (gallery ? '<div class="mk-gallery" style="margin-bottom:1rem">' + gallery + '</div>' : '') +
+        '<div class="mk-detail-grid"><div class="mk-detail-main">' +
+          '<h1 class="mk-listing-title">' + acEsc(listing.title) + '</h1>' +
+          '<p class="mk-sub">' + acEsc(acPropertyTypeLabel(listing.property_type)) + ' · ' + acEsc(listing.area) + ', ' + acEsc(listing.city) + '</p>' +
+          '<div class="mk-price mk-price-big">' + acFormatPKR(listing.price) + (listing.type === 'rent' ? '<span class="period">' + acEsc(acT('listing_month')) + '</span>' : '') +
+            (listing.is_sample ? ' <span class="mk-self">(' + acEsc(acT('mk_illustrative')) + ')</span>' : '') + '</div>' +
+          '<dl class="mk-facts">' +
+            (listing.beds ? '<div class="mk-fact"><dt>' + acEsc(acT('mk_beds')) + '</dt><dd>' + listing.beds + '</dd></div>' : '') +
+            (listing.baths ? '<div class="mk-fact"><dt>' + acEsc(acT('mk_baths')) + '</dt><dd>' + listing.baths + '</dd></div>' : '') +
+            '<div class="mk-fact"><dt>' + acEsc(acT('mk_f_size')) + '</dt><dd>' + acEsc(listing.sizeMarla) + ' ' + acEsc(unit) + '</dd></div>' +
+          '</dl>' +
+          '<section class="mk-section"><h2>' + acEsc(acT('mk_description')) + '</h2><p class="mk-pre">' + acEsc(listing.description) + '</p></section>' +
+          '<div id="detailAiSlot"></div>' +
+        '</div><aside>' + attributionHTML() + acContactBoxHTML('listing', listing) + trustHTML() + '</aside></div>' +
+        '<p class="mk-back"><a href="properties.html">← ' + acEsc(acT('mk_dir_properties_h')) + '</a></p>';
+      acWireContactBox('listing', listing, 'listing.html?id=' + listing.id);
+      renderOwnerTools();
     }
 
     // Owner-only: deterministic listing quality with fix-it tips.
@@ -84,7 +79,7 @@ if (detailRoot) {
     function renderOwnerTools() {
       const slot = document.getElementById('detailAiSlot');
       if (!slot) return;
-      if (!isOwner) { slot.innerHTML = ''; return; }
+      if (!isOwner || listing.is_sample) { slot.innerHTML = ''; return; }
       slot.innerHTML = acListingQualityWidget(listing, {
         id: 'quality',
         actions: '<div class="lq-actions"><a class="btn btn-primary btn-sm" href="sell.html?edit=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('lq_edit')) + '</a>' +
@@ -92,54 +87,25 @@ if (detailRoot) {
       });
     }
 
-    // Seller contact: signed-in visitors see the seller's number (via a
-    // security-definer RPC, so phone numbers are never publicly readable);
-    // everyone else logs in first and is brought straight back here.
-    let viewer = null;
-    let contact = null;
-    function showContact(slot) {
-      const digits = String(contact.phone).replace(/[^0-9]/g, '').replace(/^0/, '92');
-      const msg = 'Assalam-o-Alaikum, I saw your listing "' + listing.title + '" on AgenticCore Estate: ' + window.location.href;
-      slot.innerHTML =
-        '<p style="font-size:1.1rem;font-weight:600;margin-bottom:0.6rem;">' + acEsc(contact.phone) + '</p>' +
-        '<a class="btn btn-primary btn-block" href="tel:+' + digits + '" style="margin-bottom:0.5rem;">Call</a>' +
-        '<a class="btn btn-secondary btn-block" target="_blank" rel="noopener" href="https://wa.me/' + digits + '?text=' + encodeURIComponent(msg) + '">WhatsApp</a>';
-    }
-    function wireContact() {
-      const btn = document.getElementById('contactBtn');
-      const slot = document.getElementById('contactSlot');
-      if (!btn || !slot) return;
-      if (contact) { showContact(slot); return; }
-      btn.addEventListener('click', async function () {
-        viewer = viewer || await AcDB.currentUser();
-        if (!viewer) { window.location.href = 'login.html?next=' + encodeURIComponent('listing.html?id=' + listing.id); return; }
-        btn.disabled = true; btn.textContent = 'Loading…';
-        const res = await AcDB.getListingContact(listing.id);
-        if (res.error || !res.contact || !res.contact.phone) {
-          btn.disabled = false; btn.textContent = 'Contact about this property';
-          slot.insertAdjacentHTML('beforeend', '<p style="color:var(--text-tertiary);font-size:0.85rem;margin-top:0.5rem;">Contact details are not available right now. Please try again later.</p>');
-          return;
-        }
-        contact = res.contact;
-        showContact(slot);
-      });
-    }
-
     const params = new URLSearchParams(window.location.search);
-    const flash = params.get('posted') ? 'Your listing is live.' : params.get('saved') ? 'Your changes are saved.' : '';
+    const flash = params.get('posted') ? acT('mk_flash_posted') : params.get('saved') ? acT('mk_flash_saved') : '';
 
     window.acOnLanguageChange = render;
     render();
-    viewer = await AcDB.currentUser();
-    if (viewer && (viewer.id === listing.owner_id || viewer.role === 'admin')) {
-      isOwner = true;
+    const viewer = await AcDB.currentUser();
+    if (viewer && !listing.is_sample && (viewer.id === listing.owner_id || viewer.role === 'admin')) {
+      isOwner = viewer.id === listing.owner_id;
       renderOwnerTools();
       if (window.location.hash === '#quality') { const q = document.getElementById('quality'); if (q) q.scrollIntoView({ block: 'start' }); }
+      // The PK handoff carries only the listing id; AgenticCore Pakistan checks
+      // ownership again after login (pk_0003) — the link itself proves nothing.
       detailRoot.insertAdjacentHTML('beforebegin',
-        '<div class="panel" style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);">' +
-          '<span style="color:var(--text-secondary);">' + (flash ? '<strong style="color:var(--accent-gold-bright);">' + flash + '</strong> ' : '') + 'This is your listing.</span>' +
-          '<span><a class="btn btn-secondary btn-sm" href="sell.html?edit=' + encodeURIComponent(listing.id) + '">Edit listing</a> ' +
-          '<a class="btn btn-secondary btn-sm" href="' + (viewer.role === 'agency' ? 'agency-dashboard.html' : 'dashboard.html') + '">My listings</a></span></div>');
+        '<div class="panel mk-owner-bar">' +
+          '<span>' + (flash ? '<strong>' + acEsc(flash) + '</strong> ' : '') + acEsc(acT(isOwner ? 'mk_your_listing' : 'mk_admin_view')) + '</span>' +
+          '<span class="mk-owner-actions"><a class="btn btn-secondary btn-sm" href="sell.html?edit=' + encodeURIComponent(listing.id) + '">' + acEsc(acT('mk_edit_listing')) + '</a> ' +
+          '<a class="btn btn-secondary btn-sm" href="my.html#properties">' + acEsc(acT('mk_my_listings')) + '</a>' +
+          (isOwner ? ' <a class="btn btn-primary btn-sm" href="' + AC_PK_HANDOFF + encodeURIComponent(listing.id) + '" rel="noopener">' + acEsc(acT('mk_promote_pk')) + '</a>' : '') +
+          '</span></div>');
     }
   })();
 }

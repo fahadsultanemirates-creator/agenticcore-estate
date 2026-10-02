@@ -71,7 +71,10 @@ do $t$ declare n int; lid uuid; begin
   perform pg_temp.expect_denied($$insert into public.profiles (id, full_name, phone, role, referral_code) values (gen_random_uuid(),'x','0300','admin','ZZZ1')$$, 'insert profile');
   perform pg_temp.expect_denied($$update public.profiles set role='admin' where id=auth.uid()$$, 'self role change');
   perform pg_temp.expect_denied($$select public.email_for_phone('03002222222')$$, 'authenticated email_for_phone');
-  perform pg_temp.expect_denied($$insert into public.developer_applications (user_id, company_name, phone, tier) values (auth.uid(),'Buyer Co','0300',1)$$, 'non-developer application');
+  -- Marketplace V2 (0018): any account may APPLY for the project-publisher capability
+  -- (approval stays admin-only, tested below and in marketplace_v2.test.sql), so the
+  -- 0017-era "non-developer cannot apply" check became "cannot apply for someone else".
+  perform pg_temp.expect_denied($$insert into public.developer_applications (user_id, company_name, phone, tier) values ('a0000000-0000-0000-0000-000000000002','Buyer Co','0300',1)$$, 'application for another account');
   perform pg_temp.expect_denied($$insert into public.admin_log (admin_id, action, target_table, target_id) values (auth.uid(),'approved','x',gen_random_uuid())$$, 'forge admin_log');
   perform pg_temp.expect_denied($$truncate public.projects$$, 'authenticated truncate projects');
   perform pg_temp.expect_denied($$truncate public.admin_log$$, 'authenticated truncate admin_log');

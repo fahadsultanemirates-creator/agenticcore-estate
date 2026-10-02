@@ -14,8 +14,14 @@ function acProjectStatusLabel(status) {
 const projectForm = document.getElementById('projectForm');
 if (projectForm) {
   (async function () {
-    const user = await requireAuth(['developer']);
+    const user = await requireAuth();
     if (!user) return;
+    // Posting projects needs the approved project-publisher capability (the projects
+    // insert policy in 0018 enforces it); any account can apply for it.
+    if (user.role !== 'admin') {
+      const cap = await acCapabilityStatus();
+      if (cap !== 'approved') { window.location.href = cap === 'pending' ? 'developer-pending.html' : 'my.html#projects'; return; }
+    }
 
     const citySelect = document.getElementById('projCity');
     const areaSelect = document.getElementById('projArea');
@@ -68,6 +74,43 @@ if (projectForm) {
       areaSelect.addEventListener('change', toggleManualArea);
     }
 
+    // Developer company profiles this account owns (Marketplace V2 link).
+    const companySel = document.getElementById('projCompany');
+    if (companySel && typeof AcMine !== 'undefined') {
+      const mine = await AcMine.overview(user.id);
+      if (mine.companies.length) {
+        companySel.innerHTML = '<option value="">—</option>' + mine.companies.map(function (c) { return '<option value="' + acEscHTML(c.id) + '">' + acEscHTML(c.name) + '</option>'; }).join('');
+        document.getElementById('projCompanyWrap').hidden = false;
+        if (mine.companies.length === 1) companySel.value = mine.companies[0].id;
+      }
+    }
+
+    // ---------- edit mode: post-project.html?edit=<project id> ----------
+    const editId = new URLSearchParams(location.search).get('edit');
+    let editing = null;
+    if (editId) {
+      editing = await AcDB.getProject(editId);
+      if (!editing || editing.owner_id !== user.id) { editing = null; }
+      else {
+        document.getElementById('projTitle').value = editing.title;
+        citySelect.value = editing.city;
+        citySelect.dispatchEvent(new Event('change'));
+        await new Promise(function (r) { setTimeout(r, 400); });
+        if (Array.from(areaSelect.options).some(function (o) { return o.value === editing.area; })) areaSelect.value = editing.area;
+        else { areaSelect.value = MANUAL_AREA_VALUE; areaManual.value = editing.area; }
+        toggleManualArea();
+        const st = projectForm.querySelector('input[name="projStatus"][value="' + editing.status + '"]');
+        if (st) { st.checked = true; projectForm.querySelectorAll('.role-option').forEach(function (o) { o.classList.toggle('checked', o.contains(st)); }); }
+        (editing.unit_types || []).forEach(function (u) { const c = projectForm.querySelector('input[name="unitType"][value="' + u + '"]'); if (c) c.checked = true; });
+        [['projTotalUnits', 'total_units'], ['projTotalPlots', 'total_plots'], ['projSizeFrom', 'size_from'], ['projSizeTo', 'size_to'], ['projPriceFrom', 'price_from'],
+         ['projPriceTo', 'price_to'], ['projPaymentPlan', 'payment_plan'], ['projPossession', 'possession_date'], ['projDescription', 'description'], ['projApprovals', 'approvals_info'], ['projType', 'project_type']]
+          .forEach(function (m) { const el = document.getElementById(m[0]); if (el && editing[m[1]] != null) el.value = editing[m[1]]; });
+        sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(editing.size_unit || 'sqft');
+        if (companySel && editing.company_id) companySel.value = editing.company_id;
+        projectForm.querySelector('button[type="submit"]').textContent = acT('my_save');
+      }
+    }
+
     projectForm.addEventListener('submit', async function (e) {
       e.preventDefault();
       const errorEl = document.getElementById('projectError');
@@ -96,7 +139,7 @@ if (projectForm) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Posting…';
 
-      const result = await AcDB.addProject({
+      const payload = {
         ownerId: user.id,
         title: document.getElementById('projTitle').value.trim(),
         city: city,
@@ -114,8 +157,12 @@ if (projectForm) {
         possessionDate: document.getElementById('projPossession').value.trim(),
         description: document.getElementById('projDescription').value.trim(),
         photoFiles: photoFiles,
-        brochureFile: brochureFile
-      });
+        brochureFile: brochureFile,
+        projectType: document.getElementById('projType').value,
+        approvalsInfo: document.getElementById('projApprovals').value.trim(),
+        companyId: companySel ? companySel.value : ''
+      };
+      const result = editing ? await AcDB.updateProject(editing.id, payload) : await AcDB.addProject(payload);
 
       if (result.error) {
         errorEl.textContent = result.error;
@@ -125,7 +172,7 @@ if (projectForm) {
         return;
       }
 
-      window.location.href = 'developer-dashboard.html?posted=1';
+      window.location.href = 'my.html#projects';
     });
   })();
 }

@@ -3,78 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buy Property — AgenticCore Estate</title>
-<meta name="description" content="Browse buy listings across Islamabad and Rawalpindi — filter by property type, city, and price.">
+<title>Property for sale in Islamabad & Rawalpindi — AgenticCore Estate</title>
+<meta name="description" content="Houses, flats, plots and commercial property for sale and rent in Islamabad and Rawalpindi on AgenticCore Estate.">
+<link rel="canonical" href="https://agenticcore.estate/buy.html">
+<meta name="theme-color" content="#071F17">
+<link rel="icon" href="images/agenticcore-icon.png">
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet" href="market.css">
+<script>try { if (localStorage.getItem('acLang') === 'ur') document.documentElement.classList.add('ac-ur-pending'); } catch (e) {}</script>
 </head>
-<body data-page="buy">
-
+<body data-page="buy" data-category="properties">
+<a href="#main" class="skip-link" data-i18n="mk_skip">Skip to content</a>
 <div id="site-header"></div>
-
-<header class="inner-hero">
+<main id="main">
+<header class="mk-dir-head">
   <div class="container">
-    <span class="hero-eyebrow"><span class="dot"></span> <span data-i18n="search_buy"></span></span>
-    <h1>Buy property in Islamabad &amp; Rawalpindi</h1>
-    <p class="hero-sub">Developer listings alongside individual sellers — filter to find the right fit.</p>
+    <nav class="mk-crumbs" aria-label="Breadcrumb"><a href="index.html" data-i18n="mk_home">Home</a> › <span data-i18n="mk_cat_properties"></span></nav>
+    <h1 data-i18n="mk_dir_buy_h"></h1>
+    <p class="mk-lead" data-i18n="mk_dir_buy_sub"></p>
+    <a class="btn btn-primary btn-sm" href="sell.html" data-i18n="mk_cta_properties"></a>
   </div>
 </header>
-
-<section style="padding-top:var(--space-lg);">
-  <div class="container">
-    <div class="listing-toolbar">
-      <span class="listing-count" id="listingCount"></span>
-    </div>
-    <div class="listing-layout">
-      <aside class="filter-panel">
-        <h4>Filters</h4>
-        <div class="filter-group">
-          <label data-i18n="search_keyword_ph" style="font-size:0.85rem;color:var(--text-secondary);"></label>
-          <input type="text" id="filterQuery" data-i18n-ph="search_keyword_ph">
-        </div>
-        <div class="filter-group">
-          <label style="font-size:0.85rem;color:var(--text-secondary);">Property type</label>
-          <select id="filterPropertyType"><option value="">Any property type</option></select>
-        </div>
-        <div class="filter-group">
-          <label data-i18n="search_city" style="font-size:0.85rem;color:var(--text-secondary);"></label>
-          <select id="filterCity"><option value="" data-i18n="search_any_city"></option></select>
-        </div>
-        <div class="filter-group">
-          <label data-i18n="search_price" style="font-size:0.85rem;color:var(--text-secondary);"></label>
-          <input type="number" id="filterMaxPrice" placeholder="e.g. 40000000">
-        </div>
-        <div class="filter-group">
-          <label style="font-size:0.85rem;color:var(--text-secondary);">Minimum bedrooms</label>
-          <select id="filterBeds">
-            <option value="">Any</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
-            <option value="4">4+</option>
-          </select>
-        </div>
-      </aside>
-      <div class="listing-grid" id="listingGrid"></div>
+<section class="mk-dir">
+  <div class="container mk-dir-grid">
+    <form class="mk-filters" id="mkFilters" role="search" aria-label="Filters">
+      <h2 class="mk-filters-h" data-i18n="mk_filters">Filters</h2>
+      <div class="mk-field"><label for="f_q" data-i18n="mk_f_keyword"></label><input id="f_q" name="q" type="search" data-i18n-ph="mk_kw_properties"></div>
+      <div class="mk-field"><label for="f_city" data-i18n="mk_f_city"></label><select id="f_city" name="city"><option value="" data-i18n="search_any_city"></option></select></div>
+      <div class="mk-field"><label for="f_area" data-i18n="mk_f_area"></label><select id="f_area" name="area"><option value="" data-i18n="mk_any_area"></option></select></div>
+      <div class="mk-field"><label for="f_propertyType" data-i18n="mk_f_ptype"></label><select id="f_propertyType" name="propertyType"><option value="" data-i18n="search_any_type"></option></select></div>
+      <div class="mk-field"><label for="f_minPrice" data-i18n="mk_f_min_price"></label><input id="f_minPrice" name="minPrice" type="number" inputmode="numeric" min="0"></div>
+      <div class="mk-field"><label for="f_maxPrice" data-i18n="mk_f_max_price"></label><input id="f_maxPrice" name="maxPrice" type="number" inputmode="numeric" min="0"></div>
+      <div class="mk-field"><label for="f_beds" data-i18n="mk_f_beds"></label><select id="f_beds" name="beds"><option value="" data-i18n="mk_any"></option><option value="1" data-i18n="mk_beds_1"></option><option value="2" data-i18n="mk_beds_2"></option><option value="3" data-i18n="mk_beds_3"></option><option value="4" data-i18n="mk_beds_4"></option><option value="5" data-i18n="mk_beds_5"></option></select></div>
+      <div class="mk-field"><label for="f_sort" data-i18n="mk_f_sort"></label><select id="f_sort" name="sort"><option value="" data-i18n="mk_sort_newest"></option><option value="price_asc" data-i18n="mk_sort_price_asc"></option><option value="price_desc" data-i18n="mk_sort_price_desc"></option></select></div>
+      <button type="reset" class="btn btn-secondary btn-sm" data-i18n="mk_clear">Clear</button>
+    </form>
+    <div>
+      <p class="mk-count" id="mkCount" aria-live="polite"></p>
+      <div class="mk-grid" id="mkResults"></div>
+      <div class="mk-more-wrap"><button type="button" class="btn btn-secondary" id="mkMore" hidden data-i18n="mk_load_more">Load more</button></div>
+      <section class="mk-samples" id="mkSamples" hidden aria-labelledby="mkSamplesH">
+        <h2 id="mkSamplesH" data-i18n="mk_examples_h"></h2>
+        <p class="mk-fine" data-i18n="mk_sample_note"></p>
+        <div class="hscroll-row mk-row mk-sample-row"></div>
+      </section>
     </div>
   </div>
 </section>
-
+</main>
 <div id="site-footer"></div>
-
+<script src="i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-client.js"></script>
 <script src="db-client.js"></script>
 <script src="property-taxonomy.js"></script>
-<script src="i18n.js"></script>
 <script src="listings.js"></script>
+<script src="market-data.js"></script>
+<script src="market-ui.js"></script>
 <script src="ai-placeholders.js"></script>
 <script src="partials.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    acInitListingPage('buy');
-    acMountPropertyAdvisor();
-  });
-</script>
+<script>document.addEventListener('DOMContentLoaded', function () { acInitMarketDirectory('properties', { purpose: 'buy' }); if (typeof acMountPropertyAdvisor === 'function') acMountPropertyAdvisor(); });</script>
 </body>
 </html>

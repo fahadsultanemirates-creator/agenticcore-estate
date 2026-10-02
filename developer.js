@@ -17,10 +17,12 @@ function acWireFileDrop(inputId, dropId) {
 const devApplyForm = document.getElementById('devApplyForm');
 if (devApplyForm) {
   (async function () {
-    const user = await requireAuth(['developer']);
+    // Any account can apply for the project-publisher capability (no second account, no role change).
+    const user = await requireAuth();
     if (!user) return;
-    if (user.developer_status === 'pending') { window.location.href = 'developer-pending.html'; return; }
-    if (user.developer_status === 'approved') { window.location.href = 'developer-dashboard.html'; return; }
+    const cap = await acCapabilityStatus();
+    if (cap === 'pending') { window.location.href = 'developer-pending.html'; return; }
+    if (cap === 'approved' || cap === 'revoked') { window.location.href = 'my.html#projects'; return; }
 
     devApplyForm.addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -42,7 +44,7 @@ if (devApplyForm) {
         errorEl.textContent = result.error;
         errorEl.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Create developer account';
+        submitBtn.textContent = acT('dev_apply_submit') || 'Submit application';
         return;
       }
 
@@ -56,16 +58,17 @@ if (devApplyForm) {
 const pendingRoot = document.getElementById('pendingRoot');
 if (pendingRoot) {
   (async function () {
-    const user = await requireAuth(['developer']);
+    const user = await requireAuth();
     if (!user) return;
-    if (user.developer_status === 'approved') { window.location.href = 'developer-dashboard.html'; return; }
+    const cap = await acCapabilityStatus();
+    if (cap === 'approved' || cap === 'revoked') { window.location.href = 'my.html#projects'; return; }
 
     const app = await AcDB.getApplicationForUser(user.id);
     if (!app) { window.location.href = 'developer-apply.html'; return; }
 
     document.getElementById('pendingCompany').textContent = app.company_name;
     document.getElementById('pendingSubmitted').textContent = new Date(app.submitted_at).toLocaleString();
-    document.getElementById('pendingTier').textContent = 'Tier ' + app.tier;
+    document.getElementById('pendingTier').textContent = acT('dev_scale_' + app.tier);
 
     function tick() {
       const due = new Date(app.due_by).getTime();
@@ -92,39 +95,8 @@ if (pendingRoot) {
 const devDashRoot = document.getElementById('devDashRoot');
 if (devDashRoot) {
   (async function () {
-    const user = await requireAuth(['developer']);
+    const user = await requireAuth();
     if (!user) return;
-    if (user.developer_status !== 'approved') {
-      // pending and rejected applications see their status (and any rejection note) on the pending page
-      window.location.href = (user.developer_status === 'pending' || user.developer_status === 'rejected') ? 'developer-pending.html' : 'developer-apply.html';
-      return;
-    }
-
-    document.getElementById('devName').textContent = user.full_name;
-    document.getElementById('devTierBadge').textContent = AC_DEV_PACKAGE_NAMES[user.developer_tier] + ' package';
-    document.getElementById('devTierPrice').textContent = AC_DEV_PACKAGE_PRICES[user.developer_tier];
-
-    const myProjects = await AcDB.getProjectsByOwner(user.id);
-    const cap = AC_DEV_PACKAGE_CAPS[user.developer_tier];
-    document.getElementById('devListingCount').textContent = myProjects.length;
-    document.getElementById('devListingCap').textContent = cap === null ? 'unlimited' : cap;
-    document.getElementById('devVerifiedNote').textContent = '';
-    const barPct = cap === null ? Math.min(100, myProjects.length * 4) : Math.min(100, Math.round((myProjects.length / cap) * 100));
-    document.getElementById('devQuotaBar').style.width = barPct + '%';
-
-    const devPackageGrid = document.getElementById('devPackageGrid');
-    if (devPackageGrid) devPackageGrid.innerHTML = acPackageGridHTML(AC_DEV_PACKAGES, user.developer_tier, 'developer-packages.html');
-
-    const tbody = document.getElementById('devListingsBody');
-    if (tbody) {
-      tbody.innerHTML = myProjects.map(function (p) {
-        return '<tr><td>' + acEscHTML(p.title) + '</td><td>' + acEscHTML(p.city) + '</td><td>' + acEscHTML(acProjectUnitTypeLabel(p.unit_types)) + '</td>' +
-          '<td>' + acEscHTML(acProjectStatusLabel(p.status)) + '</td></tr>';
-      }).join('') || '<tr><td colspan="4" style="color:var(--text-tertiary);">No projects yet — post your first one.</td></tr>';
-    }
-
-    document.getElementById('devAiSlot').innerHTML = acGrowthScoreWidget(null) + acDocCheckWidget('not_run');
-
-    if (typeof acMountReferralCta === 'function') acMountReferralCta(user);
+    window.location.replace('my.html#projects');   // one dashboard for every account (Marketplace V2)
   })();
 }

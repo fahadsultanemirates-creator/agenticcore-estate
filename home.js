@@ -54,58 +54,47 @@ document.addEventListener('DOMContentLoaded', function () {
     if (kw) p.set('q', kw);
     if (city) p.set('city', city);
     if (price) p.set('maxPrice', price);
-    window.location.href = (mode === 'rent' ? 'rent.html' : 'buy.html') + (p.toString() ? '?' + p.toString() : '');
+    p.set('purpose', mode === 'rent' ? 'rent' : 'buy');
+    window.location.href = 'properties.html?' + p.toString();
   });
 
-  // ---- featured, locations and card preview, all from real listings ----
-  async function loadData() {
-    let all = [];
-    try { all = acDedupeListings(await AcDB.getListings({})); } catch (e) { all = []; }
-    const buy = all.filter(function (l) { return l.type === 'buy'; });
-    const rent = all.filter(function (l) { return l.type === 'rent'; });
+  // ---- marketplace rows, category counts and city discovery ----
+  // Rows show genuine items first; labelled samples only top up thin rows.
+  // Counts, city totals and popular areas come from marketplace_stats(),
+  // which counts genuine, visible content only (never samples).
+  const CATS = ['properties', 'projects', 'professionals', 'agencies', 'builders'];
+  const ICON = { house: AC_ICONS.house, tower: AC_ICONS.tower, person: AC_ICONS.person, agency: AC_ICONS.agency, crane: AC_ICONS.crane };
+  document.querySelectorAll('.mk-cat-ico[data-icon]').forEach(function (el) { el.innerHTML = ICON[el.getAttribute('data-icon')] || ''; });
 
-    if (buy.length) acRenderListings('featuredBuyRow', buy.slice(0, 10));
-    else document.getElementById('featuredBuyRow').innerHTML = '<div class="h2-empty">' + acEsc(acT('h2_empty_buy')) + ' <a href="sell.html">' + acEsc(acT('h2_cta_list')) + ' →</a></div>';
-    const rentWrap = document.getElementById('featuredRentWrap');
-    rentWrap.hidden = !rent.length;
-    if (rent.length) acRenderListings('featuredRentRow', rent.slice(0, 10));
+  async function loadRows() {
+    await Promise.all(CATS.map(async function (cat) {
+      const res = await acRenderMarketRow(cat, document.getElementById('mkRow_' + cat), 10);
+      const note = document.getElementById('mkSampleLine_' + cat);
+      if (note) note.hidden = !(res && res.sampleCount);
+    }));
+  }
 
+  async function loadStats() {
+    let st;
+    try { st = await AcMarket.stats(); } catch (e) { return; }
+    const key = { properties: 'properties', projects: 'projects', professionals: 'professionals', agencies: 'agencies', builders: 'companies' };
+    CATS.forEach(function (cat) {
+      const el = document.getElementById('mkCount_' + cat);
+      const n = Number(st[key[cat]]) || 0;
+      if (el) el.textContent = n ? acT('mk_count_short').replace('{n}', n) : acT('mk_explore');
+    });
     ['Islamabad', 'Rawalpindi'].forEach(function (city) {
-      const n = all.filter(function (l) { return l.city === city; }).length;
+      const n = Number((st.by_city || {})[city]) || 0;
       const el = document.getElementById('count' + city);
       if (el) el.textContent = n ? n + ' ' + (n === 1 ? acT('h2_listing_one') : acT('h2_listing_many')) : acT('h2_be_first');
     });
-
-    // Popular areas = areas that actually have listings, most first.
-    const byArea = {};
-    all.forEach(function (l) { const k = l.area + '|' + l.city; byArea[k] = (byArea[k] || 0) + 1; });
-    const top = Object.keys(byArea).sort(function (a, b) { return byArea[b] - byArea[a]; }).slice(0, 8);
-    document.getElementById('popularAreas').innerHTML = top.map(function (k) {
-      const parts = k.split('|');
-      return '<a class="h2-area" href="buy.html?city=' + encodeURIComponent(parts[1]) + '&q=' + encodeURIComponent(parts[0]) + '">' +
-        acEsc(parts[0]) + ' <span>' + byArea[k] + '</span></a>';
+    document.getElementById('popularAreas').innerHTML = (st.popular_areas || []).map(function (a) {
+      return '<a class="h2-area" href="properties.html?city=' + encodeURIComponent(a.city) + '&area=' + encodeURIComponent(a.area) + '">' +
+        acEsc(a.area) + ' <span>' + Number(a.n) + '</span></a>';
     }).join('');
-
-    // Toolkit preview: a real card drawn from the newest listing with a photo.
-    const sample = all.find(function (l) { return l.photos && l.photos.length; }) || all[0];
-    const holder = document.getElementById('cardPreview');
-    if (sample && holder && typeof AcShareCards !== 'undefined') {
-      const io = new IntersectionObserver(async function (entries) {
-        if (!entries[0].isIntersecting) return;
-        io.disconnect();
-        const canvas = document.createElement('canvas');
-        canvas.setAttribute('role', 'img');
-        canvas.setAttribute('aria-label', 'Example WhatsApp card generated from a real listing');
-        await AcShareCards.draw(canvas, sample, 'whatsapp');
-        // The slot already reserves the card's 4:5 space and the caption is in the HTML,
-        // so drawing the card doesn't move the sections below it.
-        document.getElementById('cardPreviewSlot').appendChild(canvas);
-      }, { rootMargin: '200px' });
-      io.observe(holder);
-    } else if (holder) {
-      holder.hidden = true;
-    }
   }
+
+  function loadData() { loadRows(); loadStats(); }
   loadData();
 
   const prevHook = window.acOnLanguageChange;

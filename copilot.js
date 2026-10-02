@@ -63,6 +63,9 @@ const AcCopilot = (function () {
     if (data.understood) html += '<p class="cp-understood"><span>' + acEsc(acT('cp_understood')) + '</span> ' + acEsc(data.understood) + '</p>';
     html += '<p class="cp-msg">' + acEsc(data.message || '') + '</p>';
     if (data.follow_up) html += '<p class="cp-follow">💬 ' + acEsc(data.follow_up) + '</p>';
+    if (data.directory && /^[a-z]+\.html(\?[A-Za-z0-9=&%+_.-]*)?$/.test(data.directory.url)) {
+      html += '<p><a class="btn btn-primary btn-sm" href="' + acEsc(data.directory.url) + '">' + acEsc(acT('cp_open_directory').replace('{cat}', acT('mk_cat_' + data.directory.category))) + ' →</a></p>';
+    }
     if (data.matches && data.matches.length) html += '<div class="cp-grid">' + data.matches.map(function (m) { return cardHTML(m, 'match'); }).join('') + '</div>';
     else if (data.closest && data.closest.length) html += '<div class="cp-grid">' + data.closest.map(function (m) { return cardHTML(m, 'closest'); }).join('') + '</div>';
     html += '<div class="cp-actions"><a class="btn btn-secondary btn-sm" href="' + acEsc(normalSearchUrl(data.criteria, text)) + '">' + acEsc(acT('cp_open_normal')) + '</a>' +

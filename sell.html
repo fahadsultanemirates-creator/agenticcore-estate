@@ -101,6 +101,15 @@
           <input type="text" id="sellCnic" placeholder="XXXXX-XXXXXXX-X">
           <span class="hint" style="display:block;margin-top:0.3rem;font-size:0.8rem;color:var(--text-tertiary);">Required once, the first time you post — kept private, never shown publicly. This is how we keep listings accountable to a real person.</span>
         </div>
+        <fieldset class="form-field sell-links" id="sellLinks" hidden>
+          <legend data-i18n="sell_links_h">Show this listing under (optional)</legend>
+          <div class="form-grid">
+            <div class="form-field" id="sellAgencyWrap" hidden><label for="sellAgency" data-i18n="mk_cat_agencies">Agency</label><select id="sellAgency"></select></div>
+            <div class="form-field" id="sellProfWrap" hidden><label for="sellProfessional" data-i18n="sell_link_prof">My professional profile</label><select id="sellProfessional"></select></div>
+            <div class="form-field" id="sellProjWrap" hidden><label for="sellProject" data-i18n="sell_link_project">Part of my project</label><select id="sellProject"></select></div>
+          </div>
+          <span class="hint" style="font-size:0.8rem;color:var(--text-tertiary);" data-i18n="sell_links_hint">Only agencies you own or have joined, and your own profiles and projects, appear here.</span>
+        </fieldset>
         <div id="sellQuality"></div>
         <button type="submit" class="btn btn-primary btn-block" style="margin-top:var(--space-md);">Post listing</button>
         <p class="hint" style="font-size:0.8rem;color:var(--text-tertiary);margin-top:0.6rem;">You need an account to post — <a href="signup.html" style="color:var(--accent-gold-bright);">sign up</a> or <a href="login.html" style="color:var(--accent-gold-bright);">log in</a> first.</p>
@@ -117,6 +126,7 @@
 <script src="property-taxonomy.js"></script>
 <script src="i18n.js"></script>
 <script src="listings.js"></script>
+<script src="account-data.js"></script>
 <script src="listing-quality.js"></script>
 <script src="copilot.js"></script>
 <script src="ai-placeholders.js"></script>

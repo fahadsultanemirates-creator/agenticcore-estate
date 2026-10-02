@@ -25,7 +25,7 @@ const AC_PK_SERVICES = 'https://agenticcorepk.netlify.app/services.html';
   const listing = id ? await AcDB.getListing(id) : null;
   const can = acToolkitEligibility(listing, user);
   if (!listing || !can.owner) {
-    root.innerHTML = '<div class="panel">' + acEsc(acT('tk_not_yours')) + ' <a href="' + (user.role === 'agency' ? 'agency-dashboard.html' : 'dashboard.html') + '" style="color:var(--accent-gold-bright);">' + acEsc(acT('tk_my_listings')) + ' →</a></div>';
+    root.innerHTML = '<div class="panel">' + acEsc(acT('tk_not_yours')) + ' <a href="my.html#properties" style="color:var(--accent-gold-bright);">' + acEsc(acT('tk_my_listings')) + ' →</a></div>';
     return;
   }
   document.title = acT('tk_eyebrow') + ' — ' + listing.title;

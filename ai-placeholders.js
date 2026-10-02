@@ -55,7 +55,7 @@ function acMountPropertyAdvisor() {
       '</div>' +
       '<div data-cpp-pane="improve" hidden>' +
         '<p data-i18n="cpp_improve_sub"></p>' +
-        '<a class="btn btn-primary btn-sm btn-block" href="dashboard.html" id="cppImproveLink" data-i18n="cpp_improve_go"></a>' +
+        '<a class="btn btn-primary btn-sm btn-block" href="my.html#properties" id="cppImproveLink" data-i18n="cpp_improve_go"></a>' +
       '</div>' +
     '</div>';
   document.body.appendChild(wrap);
@@ -85,15 +85,6 @@ function acMountPropertyAdvisor() {
       panel.querySelectorAll('[data-cpp-pane]').forEach(function (p) { p.hidden = p.getAttribute('data-cpp-pane') !== k; });
     });
   });
-
-  // Agencies and developers manage listings from their own dashboards.
-  if (typeof AcDB !== 'undefined' && AcDB.currentUser) {
-    AcDB.currentUser().then(function (u) {
-      const link = document.getElementById('cppImproveLink');
-      if (u && u.role === 'agency') link.href = 'agency-dashboard.html';
-      else if (u && u.role === 'developer') link.href = 'developer-dashboard.html';
-    }).catch(function () {});
-  }
 
   ready.then(function () {
     const form = document.getElementById('cppFindForm');

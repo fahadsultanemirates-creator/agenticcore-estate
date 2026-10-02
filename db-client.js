@@ -34,6 +34,37 @@ function acCheckUploads(files, kind) {
   return null;
 }
 
+// Card thumbnails: a 640px-wide WebP made in the browser from each uploaded photo,
+// so marketplace cards never download a full-size original. Falls back to the
+// photo itself when the browser can't decode it (the upload rules still apply).
+async function acMakeThumb(file, maxW) {
+  try {
+    if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type) || typeof createImageBitmap !== 'function') return null;
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, (maxW || 640) / bmp.width);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bmp.width * scale); canvas.height = Math.round(bmp.height * scale);
+    canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise(function (res) { canvas.toBlob(res, 'image/webp', 0.8); });
+    return blob && blob.type === 'image/webp' ? blob : null;
+  } catch (e) { return null; }
+}
+
+// Upload one photo (+ its thumbnail) to a public bucket; returns { url, thumb } or null.
+async function acUploadPhoto(bucket, basePath, file) {
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  const up = await supabaseClient.storage.from(bucket).upload(basePath + '.' + ext, file);
+  if (up.error) return null;
+  const url = supabaseClient.storage.from(bucket).getPublicUrl(basePath + '.' + ext).data.publicUrl;
+  let thumb = url;
+  const t = await acMakeThumb(file, 640);
+  if (t) {
+    const tu = await supabaseClient.storage.from(bucket).upload(basePath + '-thumb.webp', t, { contentType: 'image/webp' });
+    if (!tu.error) thumb = supabaseClient.storage.from(bucket).getPublicUrl(basePath + '-thumb.webp').data.publicUrl;
+  }
+  return { url: url, thumb: thumb };
+}
+
 const AcDB = (function () {
   function nowIso() { return new Date().toISOString(); }
 
@@ -208,25 +239,23 @@ const AcDB = (function () {
       baths: payload.baths || 0,
       size_marla: payload.sizeMarla || 0,
       size_unit: payload.sizeUnit || 'marla',
-      description: payload.description
+      description: payload.description,
+      // optional marketplace links (the database checks each one belongs to this account)
+      agency_id: payload.agencyId || null,
+      professional_id: payload.professionalId || null,
+      project_id: payload.projectId || null
     }).select().single();
     if (error) return { error: error.message };
 
     if (payload.photoFiles && payload.photoFiles.length) {
-      const urls = [];
+      const urls = [], thumbs = [];
       for (let i = 0; i < payload.photoFiles.length; i++) {
-        const file = payload.photoFiles[i];
-        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-        const path = payload.ownerId + '/' + listing.id + '/' + i + '.' + ext;
-        const uploadResult = await supabaseClient.storage.from('listing-photos').upload(path, file);
-        if (!uploadResult.error) {
-          const { data: pub } = supabaseClient.storage.from('listing-photos').getPublicUrl(path);
-          urls.push(pub.publicUrl);
-        }
+        const up = await acUploadPhoto('listing-photos', payload.ownerId + '/' + listing.id + '/' + i, payload.photoFiles[i]);
+        if (up) { urls.push(up.url); thumbs.push(up.thumb); }
       }
       if (urls.length) {
-        await supabaseClient.from('listings').update({ photos: urls }).eq('id', listing.id);
-        listing.photos = urls;
+        await supabaseClient.from('listings').update({ photos: urls, thumbs: thumbs }).eq('id', listing.id);
+        listing.photos = urls; listing.thumbs = thumbs;
       }
     }
     listing.sizeMarla = listing.size_marla;
@@ -236,7 +265,9 @@ const AcDB = (function () {
 
   async function getListings(filters) {
     filters = filters || {};
-    let q = supabaseClient.from('listings').select('*').order('created_at', { ascending: false });
+    // Genuine listings only (samples are rendered by market-ui.js with a SAMPLE badge).
+    let q = supabaseClient.from('listings').select('*,agency:agencies(id,name,logo_url)')
+      .eq('is_sample', false).eq('moderation_status', 'active').order('created_at', { ascending: false }).limit(filters.limit || 200);
     if (filters.type) q = q.eq('type', filters.type);
     if (filters.city) q = q.eq('city', filters.city);
     if (filters.propertyType) q = q.eq('property_type', filters.propertyType);
@@ -251,38 +282,23 @@ const AcDB = (function () {
     const { data: listings, error } = await q;
     if (error || !listings) return [];
 
-    const ownerIds = Array.from(new Set(listings.map(function (l) { return l.owner_id; })));
-    let ownersById = {};
-    if (ownerIds.length) {
-      const { data: owners } = await supabaseClient.from('public_profiles')
-        .select('id, developer_tier, role, agency_name, agency_logo_path').in('id', ownerIds);
-      (owners || []).forEach(function (o) { ownersById[o.id] = o; });
-    }
-
     listings.forEach(function (l) {
-      const owner = ownersById[l.owner_id];
       l.sizeMarla = l.size_marla;
       l.sizeUnit = l.size_unit;
-      l.ownerDeveloperTier = owner ? owner.developer_tier : null;
-      l.featured = l.ownerDeveloperTier === 3;
-      l.agencyName = owner && owner.role === 'agency' ? owner.agency_name : null;
-      l.agencyLogo = owner && owner.role === 'agency' ? owner.agency_logo_path : null;
+      l.agencyName = l.agency ? l.agency.name : null;
+      l.agencyLogo = l.agency ? l.agency.logo_url : null;
     });
-
-    listings.sort(function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0); });
     return listings;
   }
 
   async function getListing(id) {
-    const { data, error } = await supabaseClient.from('listings').select('*').eq('id', id).single();
+    const { data, error } = await supabaseClient.from('listings')
+      .select('*,agency:agencies(id,name,logo_url),professional:professionals(id,display_name,avatar_url),project:projects(id,title)')
+      .eq('id', id).single();
     if (error || !data) return null;
     data.sizeMarla = data.size_marla;
     data.sizeUnit = data.size_unit;
-    const owner = await getUser(data.owner_id);
-    if (owner && owner.role === 'agency') {
-      data.agencyName = owner.agency_name;
-      data.agencyLogo = owner.agency_logo_path;
-    }
+    if (data.agency) { data.agencyName = data.agency.name; data.agencyLogo = data.agency.logo_url; }
     return data;
   }
 
@@ -296,23 +312,24 @@ const AcDB = (function () {
       city: payload.city, area: payload.area, price: payload.price,
       beds: payload.beds || 0, baths: payload.baths || 0,
       size_marla: payload.sizeMarla || 0, size_unit: payload.sizeUnit || 'marla',
-      description: payload.description
+      description: payload.description,
+      agency_id: payload.agencyId || null, professional_id: payload.professionalId || null, project_id: payload.projectId || null
     };
     const { data: listing, error } = await supabaseClient.from('listings').update(patch).eq('id', id).select().single();
     if (error || !listing) return { error: error ? error.message : 'Could not save this listing.' };
 
     const existing = listing.photos || [];
+    // older listings have no thumbnails: reuse the photo itself for those slots
+    const existingThumbs = existing.map(function (u, i) { return (listing.thumbs || [])[i] || u; });
     const files = (payload.photoFiles || []).slice(0, Math.max(0, 8 - existing.length));
     if (files.length) {
-      const urls = existing.slice();
+      const urls = existing.slice(), thumbs = existingThumbs.slice();
       for (let i = 0; i < files.length; i++) {
-        const ext = (files[i].name.split('.').pop() || 'jpg').toLowerCase();
-        const path = ownerId + '/' + id + '/' + Date.now() + '-' + i + '.' + ext;
-        const up = await supabaseClient.storage.from('listing-photos').upload(path, files[i]);
-        if (!up.error) urls.push(supabaseClient.storage.from('listing-photos').getPublicUrl(path).data.publicUrl);
+        const up = await acUploadPhoto('listing-photos', ownerId + '/' + id + '/' + Date.now() + '-' + i, files[i]);
+        if (up) { urls.push(up.url); thumbs.push(up.thumb); }
       }
-      await supabaseClient.from('listings').update({ photos: urls }).eq('id', id);
-      listing.photos = urls;
+      await supabaseClient.from('listings').update({ photos: urls, thumbs: thumbs }).eq('id', id);
+      listing.photos = urls; listing.thumbs = thumbs;
     }
     return { listing: listing };
   }
@@ -402,11 +419,8 @@ const AcDB = (function () {
   }
 
   // ---------- projects (whole-project / society listings) ----------
-  async function addProject(payload) {
-    const fileError = acCheckUploads(payload.photoFiles, 'projectPhoto') || acCheckUploads([payload.brochureFile], 'brochure');
-    if (fileError) return { error: fileError };
-    const { data: project, error } = await supabaseClient.from('projects').insert({
-      owner_id: payload.ownerId,
+  function projectRow(payload) {
+    return {
       title: payload.title,
       city: payload.city,
       area: payload.area,
@@ -421,39 +435,52 @@ const AcDB = (function () {
       price_to: payload.priceTo || null,
       payment_plan: payload.paymentPlan || null,
       possession_date: payload.possessionDate || null,
-      description: payload.description || null
-    }).select().single();
-    if (error) return { error: error.message };
+      description: payload.description || null,
+      project_type: payload.projectType || null,
+      approvals_info: payload.approvalsInfo || null,
+      company_id: payload.companyId || null
+    };
+  }
 
+  async function uploadProjectFiles(ownerId, project, payload, existingPhotos, existingThumbs) {
+    const patch = {};
     if (payload.photoFiles && payload.photoFiles.length) {
-      const urls = [];
-      for (let i = 0; i < payload.photoFiles.length; i++) {
-        const file = payload.photoFiles[i];
-        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-        const path = payload.ownerId + '/' + project.id + '/photo-' + i + '.' + ext;
-        const uploadResult = await supabaseClient.storage.from('project-assets').upload(path, file);
-        if (!uploadResult.error) {
-          const { data: pub } = supabaseClient.storage.from('project-assets').getPublicUrl(path);
-          urls.push(pub.publicUrl);
-        }
+      const urls = (existingPhotos || []).slice(), thumbs = (existingThumbs || []).slice();
+      const room = Math.max(0, 8 - urls.length);
+      for (let i = 0; i < Math.min(room, payload.photoFiles.length); i++) {
+        const up = await acUploadPhoto('project-assets', ownerId + '/' + project.id + '/photo-' + Date.now() + '-' + i, payload.photoFiles[i]);
+        if (up) { urls.push(up.url); thumbs.push(up.thumb); }
       }
-      if (urls.length) {
-        await supabaseClient.from('projects').update({ photos: urls }).eq('id', project.id);
-        project.photos = urls;
-      }
+      patch.photos = urls; patch.thumbs = thumbs;
     }
-
     if (payload.brochureFile) {
-      const ext = (payload.brochureFile.name.split('.').pop() || 'pdf').toLowerCase();
-      const path = payload.ownerId + '/' + project.id + '/brochure.' + ext;
+      const path = ownerId + '/' + project.id + '/brochure.pdf';
       const uploadResult = await supabaseClient.storage.from('project-assets').upload(path, payload.brochureFile, { upsert: true });
-      if (!uploadResult.error) {
-        const { data: pub } = supabaseClient.storage.from('project-assets').getPublicUrl(path);
-        await supabaseClient.from('projects').update({ brochure_path: pub.publicUrl }).eq('id', project.id);
-        project.brochure_path = pub.publicUrl;
-      }
+      if (!uploadResult.error) patch.brochure_path = supabaseClient.storage.from('project-assets').getPublicUrl(path).data.publicUrl;
     }
+    if (Object.keys(patch).length) {
+      await supabaseClient.from('projects').update(patch).eq('id', project.id);
+      Object.assign(project, patch);
+    }
+  }
 
+  async function addProject(payload) {
+    const fileError = acCheckUploads(payload.photoFiles, 'projectPhoto') || acCheckUploads([payload.brochureFile], 'brochure');
+    if (fileError) return { error: fileError };
+    const row = projectRow(payload); row.owner_id = payload.ownerId;
+    const { data: project, error } = await supabaseClient.from('projects').insert(row).select().single();
+    if (error) return { error: error.message };
+    await uploadProjectFiles(payload.ownerId, project, payload, [], []);
+    return { project: project };
+  }
+
+  async function updateProject(id, payload) {
+    const fileError = acCheckUploads(payload.photoFiles, 'projectPhoto') || acCheckUploads([payload.brochureFile], 'brochure');
+    if (fileError) return { error: fileError };
+    const { data: project, error } = await supabaseClient.from('projects').update(projectRow(payload)).eq('id', id).select().single();
+    if (error || !project) return { error: error ? error.message : 'Could not save this project.' };
+    const photos = project.photos || [];
+    await uploadProjectFiles(payload.ownerId, project, payload, photos, photos.map(function (u, i) { return (project.thumbs || [])[i] || u; }));
     return { project: project };
   }
 
@@ -488,9 +515,16 @@ const AcDB = (function () {
     updateListing: updateListing, deleteListing: deleteListing, getListingContact: getListingContact,
     getDirectReferrals: getDirectReferrals, joinReferralProgram: joinReferralProgram,
     updateAgencyProfile: updateAgencyProfile, updateBuilderProfile: updateBuilderProfile,
-    addProject: addProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner
+    addProject: addProject, updateProject: updateProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner
   };
 })();
+
+// The caller's project-publisher capability: none / pending / approved / rejected / revoked.
+// Any account may apply; only an admin approves (account_capabilities, 0018).
+async function acCapabilityStatus() {
+  const { data, error } = await supabaseClient.rpc('my_capability_status', { p_cap: 'project_publisher' });
+  return error ? 'none' : (data || 'none');
+}
 
 async function requireAuth(roles) {
   const user = await AcDB.currentUser();

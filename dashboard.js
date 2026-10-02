@@ -19,9 +19,6 @@ if (dashRoot) {
     const referrals = await AcDB.getDirectReferrals();
     document.getElementById('dashReferralCount').textContent = referrals.length;
 
-    const dashPackageGrid = document.getElementById('dashPackageGrid');
-    if (dashPackageGrid) dashPackageGrid.innerHTML = acPackageGridHTML(AC_SELLER_PACKAGES, user.seller_package, 'pricing.html');
-
     if (typeof acMountReferralCta === 'function') acMountReferralCta(user);
   })();
 }

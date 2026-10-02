@@ -12,12 +12,14 @@ const LISTINGS = [
 ];
 
 let aiReply = null;
+let lastListingQuery = null;
 globalThis.fetch = async (url, opts) => {
   url = String(url);
   const ok = (data) => ({ ok: true, status: 200, text: async () => JSON.stringify(data), json: async () => data });
   if (url.includes('/rest/v1/areas')) return ok([{ name: 'DHA Phase 2' }, { name: 'G-13' }, { name: 'Bahria Town Phase 8 - Abu Bakar Block' }]);
   if (url.includes('/rest/v1/listings')) {
     const q = new URL(url).searchParams;
+    lastListingQuery = q;
     let rows = LISTINGS.slice();
     if (q.get('type')) rows = rows.filter((r) => 'eq.' + r.type === q.get('type'));
     if (q.get('city')) rows = rows.filter((r) => 'eq.' + r.city === q.get('city'));
@@ -93,4 +95,25 @@ test('PII never reaches the model', async () => {
   const { redactPII } = await import('../services/util.mjs');
   const out = redactPII('call 0300-1234567 or +92 300 1234567, cnic 37405-1234567-1, a@b.com');
   assert.ok(!/1234567|a@b\.com/.test(out));
+});
+
+// ---------- Marketplace V2 ----------
+test('find: Copilot only ever asks the database for genuine, visible listings (never samples)', async () => {
+  await svc.findProperty('10 marla house in DHA Phase 2 Islamabad');
+  assert.equal(lastListingQuery.get('is_sample'), 'eq.false');
+  assert.equal(lastListingQuery.get('moderation_status'), 'eq.active');
+});
+
+test('find: questions about builders / agents / agencies / projects point to the real directory, without fake results', async () => {
+  const b = await svc.findProperty('Show builders working in Rawalpindi');
+  assert.equal(b.directory.category, 'builders');
+  assert.equal(b.directory.url, 'builders.html?city=Rawalpindi');
+  assert.equal(b.matches.length, 0);
+  assert.ok(/searches property listings/.test(b.message));
+  assert.equal((await svc.findProperty('Find property professionals working in Bahria Town')).directory.category, 'professionals');
+  assert.equal((await svc.findProperty('Show projects in Islamabad')).directory.url, 'projects.html?city=Islamabad');
+  assert.equal((await svc.findProperty('real estate agencies in Islamabad')).directory.category, 'agencies');
+  // ordinary property searches are unchanged
+  const h = await svc.findProperty('Find houses in DHA Rawalpindi');
+  assert.equal(h.directory, undefined);
 });
