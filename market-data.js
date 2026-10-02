@@ -137,10 +137,21 @@ const AcMarket = (function () {
   async function row(cat, limit) {
     const s = await settings();
     const genuine = await browse(cat, {}, 0, limit || 10);
+    // The same item posted several times shows once on the homepage row
+    // (the directory still lists every record).
+    const seen = {};
+    const rows = genuine.rows.filter(function (it) {
+      const k = cat === 'properties'
+        ? [it.title, it.type, it.price, it.city, it.area, it.size_marla].join('|').toLowerCase()
+        : String(it.id);
+      if (seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
     const min = Number(s.sample_fill_min) || 0;
     let filler = [];
-    if (genuine.rows.length < min) filler = (await samples(cat, min - genuine.rows.length));
-    return { items: genuine.rows.concat(filler), genuineTotal: genuine.total, sampleCount: filler.length };
+    if (rows.length < min) filler = (await samples(cat, min - rows.length));
+    return { items: rows.concat(filler), genuineTotal: genuine.total, sampleCount: filler.length };
   }
 
   async function stats() {
