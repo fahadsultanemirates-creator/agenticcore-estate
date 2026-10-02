@@ -6,6 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap');
 
 :root {
+  color-scheme: dark;   /* the site is dark: stops browser "auto dark" from re-colouring it (e.g. the hero canvas) */
   /* Color tokens */
   --bg-primary: #071F17;
   --bg-panel: #0C3324;
