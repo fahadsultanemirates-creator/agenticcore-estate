@@ -7,6 +7,8 @@
    ============================================ */
 
 const AC_PK_HOME = 'https://agenticcorepk.netlify.app/';
+// same rule as public.mv2_valid_phone() in 0018
+const AC_PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
 const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agency', 'company', 'enquiries', 'promotion', 'referrals', 'account'];
 
 (function () {
@@ -24,7 +26,9 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     const role = user.role;
     return {
       overview: true, properties: true, enquiries: true, promotion: true, referrals: true, account: true,
-      projects: role === 'developer' || ov.projects.length > 0,
+      // capabilities, not the signup role, decide what an account can do; the role only
+      // pre-opens the module the person signed up for
+      projects: role === 'developer' || ov.capability !== 'none' || ov.projects.length > 0,
       professional: role === 'professional' || ov.professionals.length > 0,
       agency: role === 'agency' || ov.agencies.length > 0,
       company: role === 'builder' || ov.companies.length > 0
@@ -59,6 +63,7 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     else if (f.type === 'select') input = '<select id="' + id + '" name="' + f.k + '">' + f.opts().map(function (o) { return '<option value="' + esc(o[0]) + '"' + (val === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select>';
     else if (f.type === 'image') input = (acMediaUrl(val) ? '<img class="my-thumb" src="' + acMediaUrl(val) + '" alt="">' : '') + '<input id="' + id + '" type="file" accept="image/jpeg,image/png,image/webp" data-image="' + f.k + '">';
     else input = '<input id="' + id + '" name="' + f.k + '" type="' + (f.type || 'text') + '"' + (f.type === 'number' ? ' min="0" inputmode="numeric"' : '') +
+      (f.type === 'tel' ? ' inputmode="tel" autocomplete="off" placeholder="+92 51 1234567"' : '') +
       (f.type === 'url' ? ' placeholder="https://"' : '') + ' maxlength="' + (f.max || 300) + '" value="' + esc(val == null ? '' : val) + '"' + (f.req ? ' required' : '') + '>';
     return '<div class="my-field' + (f.wide ? ' wide' : '') + '">' + label + input + hint + '</div>';
   }
@@ -101,6 +106,9 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     ].concat(LINKS)
   };
 
+  const PHONE = { k: 'public_phone', type: 'tel', l: 'my_f_public_phone', h: 'my_h_public_phone', max: 24 };
+  Object.keys(FIELDS).forEach(function (k) { FIELDS[k].splice(1, 0, PHONE); });
+
   function readForm(form, kind) {
     const v = {};
     FIELDS[kind].forEach(function (f) {
@@ -117,7 +125,8 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
   }
 
   function profileForm(kind, entity) {
-    return '<form class="my-form" id="myForm" novalidate><div class="my-grid">' + FIELDS[kind].map(function (f) { return field(f, entity || {}); }).join('') + '</div>' +
+    const values = Object.assign({}, entity || {}, { public_phone: entity ? (ov.phones[kind + ':' + entity.id] || '') : '' });
+    return '<form class="my-form" id="myForm" novalidate><div class="my-grid">' + FIELDS[kind].map(function (f) { return field(f, values); }).join('') + '</div>' +
       '<div class="my-actions"><button type="submit" class="btn btn-primary">' + esc(t(entity ? 'my_save' : 'my_create')) + '</button>' +
       (entity ? '<a class="btn btn-secondary" href="' + ({ professional: 'professional.html', agency: 'agency.html', company: 'builder.html' }[kind]) + '?id=' + encodeURIComponent(entity.id) + '">' + esc(t('my_view_public')) + '</a>' : '') +
       '</div><p class="my-msg" role="status"></p></form>';
@@ -134,6 +143,8 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
       if (!v[nameKey] || v[nameKey].length < 2) { msg(status, t('my_err_name')); return; }
       const badUrl = ['website_url', 'facebook_url', 'instagram_url', 'youtube_url'].find(function (k) { return v[k] && !/^https:\/\/\S+$/.test(v[k]); });
       if (badUrl) { msg(status, t('my_err_url')); return; }
+      const phone = v.public_phone; delete v.public_phone;
+      if (phone && !AC_PHONE_RE.test(phone)) { msg(status, t('my_err_phone')); return; }
       form.querySelector('button[type="submit"]').disabled = true;
       msg(status, t('my_saving'), true);
       for (const inp of form.querySelectorAll('input[data-image]')) {
@@ -144,6 +155,10 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
         }
       }
       const res = await AcMine.saveEntity(kind, entity && entity.id, user.id, v);
+      if (!res.error && (phone || '') !== ((entity && ov.phones[kind + ':' + entity.id]) || '')) {
+        const ph = await AcMine.setEntityPhone(kind, res.entity.id, phone);
+        if (ph.error) res.error = ph.error;
+      }
       form.querySelector('button[type="submit"]').disabled = false;
       if (res.error) { msg(status, res.error); return; }
       ov = await AcMine.overview(user.id);
@@ -156,9 +171,16 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
   function header(title, sub) {
     return '<div class="dash-header"><div><h1>' + esc(title) + '</h1>' + (sub ? '<p class="my-sub">' + esc(sub) + '</p>' : '') + '</div></div>';
   }
+  // 30% early benefit: the database decides (my_early_status); this only explains it.
   function earlyHTML() {
-    if (ov.early && !ov.early.revoked_at) return '<div class="panel my-early ok"><h3>' + esc(t('my_early_yes_h')) + '</h3><p>' + esc(t('my_early_yes').replace('{date}', new Date(ov.early.qualified_at).toLocaleDateString())) + '</p><p class="mk-fine">' + esc(t('mk_launch3_fine')) + '</p></div>';
-    return '<div class="panel my-early"><h3>' + esc(t('mk_launch3t')) + '</h3><p>' + esc(t('my_early_no')) + '</p><p class="mk-fine">' + esc(t('mk_launch3_fine')) + '</p></div>';
+    const e = ov.early || { status: 'none' };
+    const d = function (x) { return x ? new Date(x).toLocaleDateString() : ''; };
+    const fine = '<p class="mk-fine">' + esc(t('my_early_rule')) + '</p><p class="mk-fine">' + esc(t('mk_launch3_fine')) + '</p>';
+    if (e.status === 'qualified') return '<div class="panel my-early ok"><h3>' + esc(t('my_early_yes_h')) + '</h3><p>' + esc(t('my_early_yes').replace('{date}', d(e.qualified_at))) + '</p>' + fine + '</div>';
+    if (e.status === 'pending') return '<div class="panel my-early"><h3>' + esc(t('mk_launch3t')) + '</h3><p>' + esc(t('my_early_pending').replace('{date}', d(e.qualifies_on))) + '</p>' + fine + '</div>';
+    if (e.status === 'revoked') return '<div class="panel my-early"><h3>' + esc(t('mk_launch3t')) + '</h3><p>' + esc(t('my_early_revoked')) + '</p></div>';
+    if (e.status === 'closed') return '<div class="panel my-early"><h3>' + esc(t('mk_launch3t')) + '</h3><p>' + esc(t('my_early_closed')) + '</p></div>';
+    return '<div class="panel my-early"><h3>' + esc(t('mk_launch3t')) + '</h3><p>' + esc(t('my_early_no')) + '</p>' + fine + '</div>';
   }
 
   const R = {};
@@ -188,14 +210,15 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
   };
 
   R.projects = async function () {
-    if (user.role !== 'developer') {
-      main.innerHTML = header(t('my_nav_projects'), '') + '<div class="panel"><p>' + esc(t('my_proj_need_account')) + '</p></div>';
-      return;
-    }
-    if (user.developer_status !== 'approved') {
-      const pending = user.developer_status === 'pending' || user.developer_status === 'rejected';
-      main.innerHTML = header(t('my_nav_projects'), '') + '<div class="panel"><p>' + esc(t(pending ? 'my_proj_pending' : 'my_proj_apply')) + '</p>' +
-        '<a class="btn btn-primary btn-sm" href="' + (pending ? 'developer-pending.html' : 'developer-apply.html') + '">' + esc(t(pending ? 'my_proj_status' : 'mk_apply_projects')) + '</a></div>';
+    // Any account can apply; only an approved project-publisher capability can add projects.
+    if (ov.capability !== 'approved') {
+      const st = ov.capability;   // none / pending / rejected / revoked
+      const canApply = st === 'none' || st === 'rejected';
+      main.innerHTML = header(t('my_nav_projects'), '') + '<div class="panel"><p>' + esc(t('my_proj_cap_' + st)) + '</p>' +
+        (canApply ? '<a class="btn btn-primary btn-sm" href="developer-apply.html">' + esc(t('mk_apply_projects')) + '</a>' : '') +
+        (st === 'pending' ? '<a class="btn btn-secondary btn-sm" href="developer-pending.html">' + esc(t('my_proj_status')) + '</a>' : '') +
+        '</div>' + (ov.projects.length ? '<div class="panel"><h3>' + esc(t('my_proj_existing')) + '</h3><ul class="my-list">' + ov.projects.map(function (p) {
+          return '<li><a href="project.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.title) + '</a></li>'; }).join('') + '</ul></div>' : '');
       return;
     }
     const reps = await Promise.all(ov.projects.map(function (p) { return AcMine.representationsForProject(p.id); }));
@@ -234,7 +257,8 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
   async function entityModule(kind, flash) {
     const list = { professional: ov.professionals, agency: ov.agencies, company: ov.companies }[kind];
     const params = new URLSearchParams(location.hash.split('?')[1] || '');
-    const entity = params.get('new') ? null : (list.find(function (e) { return e.id === params.get('id'); }) || list[0] || null);
+    const wantsNew = params.get('new') && list.length < ov.limits[kind];
+    const entity = wantsNew ? null : (list.find(function (e) { return e.id === params.get('id'); }) || list[0] || null);
     let extra = '';
     if (entity && kind === 'professional') {
       const mem = await AcMine.membershipsForProfessional(entity.id);
@@ -283,7 +307,8 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     main.innerHTML = header(t('my_nav_' + kind), t('my_' + kind + '_sub')) + (flash ? '<p class="my-flash">' + esc(flash) + '</p>' : '') + others +
       (entity && entity.moderation_status === 'hidden' ? '<p class="badge badge-pending">' + esc(t('my_hidden_note')) + '</p>' : '') +
       '<div class="panel">' + profileForm(kind, entity) + '</div>' + extra +
-      (entity && list.length < 3 ? '<p><a class="my-link" href="#' + kind + '?new=1">+ ' + esc(t('my_add_another')) + '</a></p>' : '');
+      (entity && list.length < ov.limits[kind] ? '<p><a class="my-link" href="#' + kind + '?new=1">+ ' + esc(t('my_add_another')) + '</a></p>'
+        : entity ? '<p class="my-sub">' + esc(t(kind === 'professional' ? 'my_limit_professional' : 'my_limit_business').replace('{n}', ov.limits[kind])) + '</p>' : '');
     wireProfileForm(kind, entity);
     main.querySelectorAll('[data-mem]').forEach(function (b) {
       b.addEventListener('click', async function () { b.disabled = true; const r = await AcMine.decideMembership(b.getAttribute('data-mem'), b.getAttribute('data-d')); if (r.error) alert(r.error); route(kind); });
@@ -353,9 +378,23 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     main.innerHTML = header(t('my_nav_account'), '') + '<div class="panel"><dl class="mk-facts">' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_name')) + '</dt><dd>' + esc(user.full_name) + '</dd></div>' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_email')) + '</dt><dd>' + esc(user.email || '') + '</dd></div>' +
-      '<div class="mk-fact"><dt>' + esc(t('my_f_phone')) + '</dt><dd>' + esc(/^[0-9a-f-]{36}$/.test(user.phone) ? '—' : user.phone) + '</dd></div>' +
+      '<div class="mk-fact"><dt>' + esc(t('my_f_phone')) + '</dt><dd>' + esc(/^[0-9a-f-]{36}$/.test(user.phone) ? '—' : user.phone) + ' <span class="my-hint">' + esc(t('my_h_login_phone')) + '</span></dd></div>' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_intent')) + '</dt><dd>' + esc(t('my_role_' + user.role)) + '</dd></div>' +
-      '</dl><p class="my-sub">' + esc(t('my_account_note')) + '</p></div>' + earlyHTML();
+      '</dl><p class="my-sub">' + esc(t('my_account_note')) + '</p></div>' +
+      '<div class="panel"><h3>' + esc(t('my_pub_phone_h')) + '</h3><p class="my-sub">' + esc(t('my_pub_phone_sub')) + '</p>' +
+        '<form class="my-inline" id="myPubPhone" novalidate><label for="myPubPhoneIn" class="sr-only">' + esc(t('my_f_public_phone')) + '</label>' +
+        '<input id="myPubPhoneIn" type="tel" inputmode="tel" autocomplete="off" maxlength="24" placeholder="+92 3XX XXXXXXX" value="' + esc(user.public_phone || '') + '">' +
+        '<button type="submit" class="btn btn-secondary btn-sm">' + esc(t('my_save')) + '</button><p class="my-msg" role="status"></p></form></div>' + earlyHTML();
+    document.getElementById('myPubPhone').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const status = e.target.querySelector('.my-msg');
+      const v = document.getElementById('myPubPhoneIn').value.trim();
+      if (v && !AC_PHONE_RE.test(v)) { msg(status, t('my_err_phone')); return; }
+      const r = await AcMine.setProfilePhone(user.id, v);
+      if (r.error) { msg(status, r.error); return; }
+      user.public_phone = v || null;
+      msg(status, t('my_saved'), true);
+    });
   };
 
   async function route(forced, flash) {

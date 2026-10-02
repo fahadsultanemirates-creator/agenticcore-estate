@@ -39,12 +39,22 @@ async function acRenderHeader() {
         '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
         '<div class="nav-right" id="navRight">' +
           '<div class="nav-links">' +
-            acNavLink('properties.html', 'properties', 'nav_properties') +
+            // Properties carries Buy / Rent / List free as a submenu (dropdown on
+            // desktop, indented under Properties in the mobile menu).
+            '<div class="nav-group' + (['properties', 'buy', 'rent', 'sell'].indexOf(document.body.getAttribute('data-page')) >= 0 ? ' active' : '') + '">' +
+              acNavLink('properties.html', 'properties', 'nav_properties') +
+              '<button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls="acNavSubProps" data-i18n-aria="nav_properties_menu" aria-label="Properties menu">' +
+                '<svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>' +
+              '<div class="nav-sub" id="acNavSubProps">' +
+                acNavLink('buy.html', 'buy', 'nav_buy') +
+                acNavLink('rent.html', 'rent', 'nav_rent') +
+                acNavLink('sell.html', 'sell', 'nav_list_free') +
+              '</div>' +
+            '</div>' +
             acNavLink('projects.html', 'projects', 'nav_projects') +
             acNavLink('professionals.html', 'professionals', 'nav_professionals') +
             acNavLink('agencies.html', 'agencies', 'nav_agencies') +
             acNavLink('builders.html', 'builders', 'nav_builders') +
-            acNavLink('sell.html', 'sell', 'nav_list_free') +
           '</div>' +
           '<div class="nav-cta">' +
             '<button class="lang-toggle" id="acLangToggle" type="button" aria-label="Toggle language">' +
@@ -74,6 +84,22 @@ async function acRenderHeader() {
         navRight.classList.remove('open');
         menuBtn.setAttribute('aria-expanded', 'false');
       }
+    });
+  }
+
+  const subBtn = el.querySelector('.nav-sub-toggle');
+  if (subBtn) {
+    const group = subBtn.parentNode;
+    subBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const open = group.classList.toggle('open');
+      subBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (!group.contains(e.target)) { group.classList.remove('open'); subBtn.setAttribute('aria-expanded', 'false'); }
+    });
+    group.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { group.classList.remove('open'); subBtn.setAttribute('aria-expanded', 'false'); subBtn.focus(); }
     });
   }
 
@@ -126,6 +152,8 @@ function acRenderFooter() {
           '<div class="footer-col">' +
             '<h5 data-i18n="footer_company"></h5>' +
             '<ul>' +
+              '<li><a href="buy.html" data-i18n="nav_buy"></a></li>' +
+              '<li><a href="rent.html" data-i18n="nav_rent"></a></li>' +
               '<li><a href="business-pool.html" data-i18n="nav_business_pool"></a></li>' +
               '<li><a href="referral.html" data-i18n="nav_referrals"></a></li>' +
             '</ul>' +

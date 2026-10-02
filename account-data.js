@@ -22,16 +22,39 @@ const AC_ENTITY_COLUMNS = {
 const AcMine = (function () {
   async function overview(uid) {
     const q = function (t) { return supabaseClient.from(t).select('*').eq('owner_id', uid).order('created_at', { ascending: true }); };
-    const [prof, ag, co, pr, li, early, enq] = await Promise.all([
+    const [prof, ag, co, pr, li, early, enq, cap, phones, limits, settings] = await Promise.all([
       q('professionals'), q('agencies'), q('companies'), q('projects'),
       supabaseClient.from('listings').select('id', { count: 'exact', head: true }).eq('owner_id', uid),
-      supabaseClient.from('early_participants').select('*').eq('user_id', uid).maybeSingle(),
-      supabaseClient.from('enquiries').select('id', { count: 'exact', head: true }).eq('recipient_id', uid).eq('status', 'new')
+      supabaseClient.rpc('my_early_status'),
+      supabaseClient.from('enquiries').select('id', { count: 'exact', head: true }).eq('recipient_id', uid).eq('status', 'new'),
+      supabaseClient.rpc('my_capability_status', { p_cap: 'project_publisher' }),
+      supabaseClient.from('entity_public_phones').select('entity_type,entity_id,phone').eq('owner_id', uid),
+      supabaseClient.from('account_entity_limits').select('entity,max_count').eq('user_id', uid),
+      supabaseClient.from('marketplace_settings').select('key,value').in('key', ['max_agencies_per_account', 'max_companies_per_account'])
     ]);
+    const phoneMap = {};
+    (phones.data || []).forEach(function (r) { phoneMap[r.entity_type + ':' + r.entity_id] = r.phone; });
+    // How many profiles of each kind this account may manage (the database enforces it too).
+    const lim = { professional: 1, agency: 2, company: 2 };
+    (settings.data || []).forEach(function (r) { const k = r.key === 'max_agencies_per_account' ? 'agency' : 'company'; lim[k] = Number(r.value) || lim[k]; });
+    (limits.data || []).forEach(function (r) { lim[{ professionals: 'professional', agencies: 'agency', companies: 'company' }[r.entity]] = r.max_count; });
+    lim.professional = 1;
     return {
       professionals: prof.data || [], agencies: ag.data || [], companies: co.data || [], projects: pr.data || [],
-      listingCount: li.count || 0, early: early.data || null, newEnquiries: enq.count || 0
+      listingCount: li.count || 0, early: early.data || { status: 'none' }, newEnquiries: enq.count || 0,
+      capability: cap.data || 'none', phones: phoneMap, limits: lim
     };
+  }
+
+  // Public business number for a profile (owner-only table, set through an RPC).
+  async function setEntityPhone(kind, id, phone) {
+    const { error } = await supabaseClient.rpc('set_entity_public_phone', { p_type: kind, p_id: id, p_phone: phone || null });
+    return error ? { error: error.message } : {};
+  }
+  // The account's own public number (used for listings/projects with no profile number).
+  async function setProfilePhone(uid, phone) {
+    const { error } = await supabaseClient.from('profiles').update({ public_phone: phone || null }).eq('id', uid);
+    return error ? { error: error.message } : {};
   }
 
   function pick(kind, values) {
@@ -157,7 +180,7 @@ const AcMine = (function () {
   }
 
   return {
-    overview: overview, saveEntity: saveEntity, deleteEntity: deleteEntity, uploadImage: uploadImage,
+    overview: overview, setEntityPhone: setEntityPhone, setProfilePhone: setProfilePhone, saveEntity: saveEntity, deleteEntity: deleteEntity, uploadImage: uploadImage,
     rates: rates, addRate: addRate, deleteRate: deleteRate,
     membershipsForProfessional: membershipsForProfessional, membershipsForAgency: membershipsForAgency,
     requestMembership: requestMembership, decideMembership: decideMembership,

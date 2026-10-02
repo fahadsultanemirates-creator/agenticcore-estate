@@ -100,10 +100,10 @@ Notes:
 - Desktop height went from about 7,750px to 6,597px, and the upper half is now inventory.
 
 ## 8. Sample asset manifest
-See `docs/MARKETPLACE_V2_SAMPLE_ASSETS.md`. In summary:
-- 26 images were uploaded; 25 are used, 5 per category.
-- 1 is excluded: it shows a "Bahria Enclave" name board, a real society.
-- Builder names are as printed on the logos: Al-Haramain, Capital Builders & Developers, Nova Developments, Pineview, Riverdale.
+See `docs/MARKETPLACE_V2_SAMPLE_ASSETS.md`. After the owner's brand-safety review:
+- 14 images are used: 4 property photos, 5 project photos and 5 AI portraits.
+- 12 are not shipped. These are the 10 agency/builder logos, which carried brand-like names, plus 2 photos with real or named places on them.
+- Every sample now uses a generic label: "Sample Agency — …", "Sample Builder/Developer — …", "Sample Professional · …".
 
 ## 9. Sample lifecycle
 - **Insert:** run `supabase/seed/marketplace_samples.sql` in the SQL editor *after* the new frontend is live. It is idempotent.
@@ -178,14 +178,27 @@ One account can add any other profile later. Only the project category still dep
 - UR: "ہمارے لانچ کے دوران لسٹنگ مفت ہے۔" / "مارکیٹ پلیس پیکجز 1 نومبر 2026 سے متوقع ہیں۔ یہ ابھی دستیاب نہیں — قیمتوں کا اعلان بعد میں کیا جائے گا۔"
 
 ## 20. 30% wording
-- EN: "Join during the free launch period and create genuine marketplace content before packages launch, and you'll be eligible for 30% off your first two months of qualifying Estate marketplace packages once they launch." + "Sample or demonstration content does not qualify. Detailed package terms will apply when packages launch."
-- UR: "مفت لانچ کے دوران شامل ہوں اور پیکجز شروع ہونے سے پہلے حقیقی مارکیٹ پلیس مواد بنائیں، تو پیکجز آنے پر اہل Estate مارکیٹ پلیس پیکجز کے پہلے دو مہینوں پر 30% رعایت کے حقدار ہوں گے۔" + "نمونہ یا مثال کا مواد اس کے لیے اہل نہیں۔ پیکجز کے آغاز پر ان کی تفصیلی شرائط لاگو ہوں گی۔"
+- EN: "Join during the free launch period and publish genuine marketplace content before packages launch on 1 November 2026. Once that content has stayed published for 7 days, you'll be eligible for 30% off your first two months of qualifying Estate marketplace packages once they launch." + "Sample, hidden or removed content does not qualify. Detailed package terms will apply when packages launch."
+- UR: see `i18n.js` (owner-review block). Flagged for native-speaker review.
 
-## 21. How eligibility is recorded
-- An `after insert` trigger on all five entity tables writes `early_participants(user_id, qualified_at, qualifying_type, qualifying_id, source='auto')`. It fires for the first genuine item created before `packages_launch_at` (2026-11-01 00:00 PKT).
-- The table has no browser write grants. Users can read only their own row.
-- Admins grant or revoke it with `admin_set_early_participant` (logged, with a reason). The sample account can never qualify.
-- 0018 backfills existing accounts (source `backfill`, dated by their first content).
+## 21. How eligibility is recorded (7-day rule)
+- `mv2_early_items(owner)` lists the owner's items that count. Each must be:
+  - genuine (not a sample);
+  - `moderation_status = 'active'`;
+  - created before `packages_launch_at` (2026-11-01 00:00 PKT).
+- Profiles also need real content: at least 20 characters of introduction/description, or listed services.
+- `mv2_try_qualify(owner)` records eligibility once one of those items is at least `early_min_days` (7) old. `qualified_at` = item creation + 7 days. It never re-qualifies an account that an admin revoked.
+- It runs:
+  - after every insert or update on the five tables;
+  - **before** every delete (time already earned is kept);
+  - whenever the owner opens the dashboard (`my_early_status()`);
+  - when an admin runs `admin_evaluate_early_participants()`.
+- Results:
+  - Created and deleted within 7 days: never counts.
+  - Deleted after 7 days: eligibility is recorded first and stays.
+  - Hidden by moderation before evaluation: never counts.
+- No browser write grants. Users read only their own row.
+- Admin revoke works even before qualifying (it blocks). Restore re-applies the rule. Admin grant covers a genuine case the rule missed. All of these are logged.
 
 ## 22. Geography
 - "Currently serving Islamabad & Rawalpindi" / "More cities are coming." (UR: "فی الحال اسلام آباد اور راولپنڈی میں" / "مزید شہر جلد آ رہے ہیں۔")
@@ -205,14 +218,23 @@ One account can add any other profile later. Only the project category still dep
   - usage rows written only by server RPCs, like PK's existing `pk_package_allowances` / `pk_usage`.
 
 ## 25. Contact and enquiry security
-- **Phone numbers:** only for signed-in visitors, via security-definer RPCs (`get_listing_contact`, `get_marketplace_contact`). These return nothing for samples or hidden content.
-- **Enquiries:** stored rows with no direct insert grant; the only way in is `send_enquiry`. It:
-  - requires login;
-  - refuses samples, hidden items and your own items;
-  - limits each account to 20 enquiries per 24 hours;
-  - sets the recipient on the server.
-- Only the sender and recipient can read an enquiry (plus admins), and only the recipient can change its status.
-- No contact numbers were invented for samples. Their contact box is disabled with an explanation.
+- **Login phone (`profiles.phone`) is never returned to anyone else.**
+- Public numbers are opt-in:
+  - `profiles.public_phone`, for the account's own listings and projects;
+  - `entity_public_phones`, for professional, agency and builder profiles. This table is owner/admin read only. It is written only through `set_entity_public_phone`, which refuses samples and other people's profiles.
+- Resolution order:
+  - listing: professional's number → agency's number → owner's public number;
+  - project: company's number → owner's public number;
+  - profile: its own number;
+  - there is never a fallback to the login phone.
+- Numbers are returned only to signed-in visitors through `get_listing_contact` / `get_marketplace_contact`. Nothing is returned for samples or hidden items.
+- **Behaviour change:** existing listings show "No public number has been published — send an enquiry" until the owner sets a number. The old frontend already handles a missing number.
+- **Enquiries:**
+  - only through `send_enquiry`;
+  - login required;
+  - samples, hidden items and your own items refused;
+  - limit `enquiry_daily_limit` (default 20 per 24 h, admin-configurable 1–200);
+  - the sender's number is only what they type or their public number, never the login phone.
 
 ## 26. Media
 - On upload, the browser makes a 640px WebP thumbnail next to each listing or project photo (`thumbs[]`). Cards use the thumbnail; detail pages use the photo.
@@ -244,61 +266,53 @@ Admin panel → Marketplace (all actions go through logged RPCs):
 - Some older pages (sell form labels, referral dashboard, login messages) were already partly English and are unchanged.
 
 ## 29. Security and RLS changes (0018)
-- New tables: browser rights are revoked, then granted per column; the browser never gets is_sample/verified/placement/moderation.
-- Owner insert/update/delete policies (`owner_id = auth.uid() and not is_sample`).
-- Public read hides moderated rows (owners and admins still see their own).
-- `projects` moved from table-wide to column grants.
-- Triggers check that relationship links point at the owner's own or joined entities.
-- Up to 3 profiles of each type per account.
-- Safe-URL checks (https only, or bundled sample paths) on every media and link column.
-- Every new function's EXECUTE grant was reviewed; anonymous users cannot call any write RPC.
+- **New tables:** browser rights are revoked, then granted per column. The browser never gets is_sample, verified, placement, moderation, eligibility, capability, limit-override or entity-phone writes.
+- **Owner policies:** insert/update/delete require `owner_id = auth.uid() and not is_sample`. Public read hides moderated rows; owners and admins still see their own.
+- **Projects:**
+  - moved from table-wide to column grants;
+  - **insert now requires `has_capability(auth.uid(),'project_publisher')`** instead of a role check.
+- **Links:** triggers check that relationship links point at the owner's own or joined entities. Media and link columns accept https URLs or bundled sample paths only.
+- **Limits:**
+  - one professional profile per account (trigger plus a unique partial index);
+  - agencies and builders up to `max_*_per_account` (2), with a per-account admin override up to 50.
+- **Phase 2 (0015/0016/0017):** controls are unchanged, and pk_0003 is untouched. One Phase 2 test changed by design: "non-developer cannot submit an application" is now "cannot submit an application for another account", because any account may apply. Approval stays admin-only.
 
 ## 30. Test results
-- **DB, `tests/db/marketplace_v2.test.sql`:** **18/18 groups pass**, covering all 16 required points. These include: sample cannot be created or marked; samples not counted, not contactable, no enquiries; others' entities untouchable; agent↔agency and project↔company rules; no self-granted featured, verified, moderation or early benefit; secure phone login; approval still admin-only; listing workflow; PK handoff; `public_profiles` read-only; admin logging (6 actions); hidden content; privileges.
-- **Phase 2 regression, `tests/db/security_phase2.test.sql`:** **11/11** on a 0018 build.
-- **`public_profiles_readonly.sql`:** passes.
-- **Node:** **27/27**. Includes 2 new Copilot tests (only genuine visible listings are queried; category questions open the right directory) and the homepage image/ecosystem tests.
-- **Browser sweep** (Playwright, mock data exported from the local DB): 18 pages × {360, 390, 430, 768, 1280 EN; 390 and 1280 UR}. Result: **0 horizontal overflow, 0 untranslated keys, 0 script errors, 0 injected-markup executions**.
-- **Browser flows:** all passed —
-  - modules per intent, header routing;
-  - profile creation sends only granted columns and rejects `javascript:` links;
-  - sample listing has a notice, disabled contact and no trust badges;
-  - owner bar and PK link;
-  - genuine enquiry sent and phone shown;
-  - logged-out contact goes to login and back;
-  - signup intents;
-  - admin panel (sample rows have no verify/placement);
-  - sell form shows only own agencies.
-- **Not testable here:** real Supabase Storage uploads, the live PostgREST embed syntax against production, and real keyboard/screen-reader passes (focus styles and 44px targets were checked by script and CSS).
+See the final pre-release report. Summary:
+- DB: Marketplace V2 suite 23/23 groups, Phase 2 suite 11/11, public_profiles read-only.
+- Node: 27/27.
+- Browser: sweep of 18 pages × 7 viewport/language combinations clean; flows (old 7 + new 8 groups) as expected.
+- Not run, and listed as untested: real Storage uploads; anything against production.
 
 ## 31. Contradictions remaining
-- `profiles.developer_tier` / `seller_package` still exist and are still exposed in `public_profiles` (no longer used for ranking or labels).
-- Older English-only strings on some legacy pages.
-- The referral program copy (10% in points) is unchanged.
-- A non-project account that wants to post projects needs a role change by an admin in SQL.
+See the final report, section H.
 
-## 32. Owner decisions needed before release
-1. Sample brand names may match real businesses (Skyline Properties, Prestige Real Estate, Capital Builders, Al-Haramain Developers). Keep or rename? "Al-Haramain" also has a religious connotation.
-2. Seed samples in production? Keep "top up to 5"?
-3. Early benefit:
-   - Confirm "any genuine listing, project or profile created before 1 Nov 2026 00:00 PKT" qualifies.
-   - Policy for content deleted soon after creation (admin can revoke).
-4. Up to 3 profiles of each type per account; 20 enquiries per day per account.
-5. Navigation: Buy/Rent live inside Properties; Developer Corner, Business Pool and Referrals moved to the footer.
-6. Signed-in visitors see the owner's login phone on profiles, as they already do on listings. Alternatively, a separate public business phone could be added.
-7. Release timing relative to 1 November 2026.
+## 32. Owner decisions (resolved in the owner-review pass)
+1. **Sample names:** renamed to generic demonstration labels. The logos and the named-place photo are removed; owner replacements are listed in the asset manifest.
+2. **Samples:** they stay reversible with "top up to 5", and are not seeded yet.
+3. **Early benefit:** 7-day rule (section 21). Final evaluation run on or after 8 Nov 2026.
+4. **Limits:** 1 professional profile per account; 2 agencies and 2 builders/developers per account (configurable); unlimited properties and projects; 20 enquiries per day (configurable).
+5. **Navigation:** five primary items; Buy/Rent/List free under Properties; Developer Corner, Business Pool and Referrals in the footer.
+6. **Phone:** opt-in public business phone, never the login phone (section 25).
+7. **Release:** before 1 November 2026, with "free during launch" and "packages planned from 1 November 2026"; no prices, paid placement OFF.
 
-## 33. Proposed production order
-1. Apply **0018** in the Supabase SQL editor. It is additive, and the current site keeps working.
-2. Verify with the rollback-wrapped checks used for Phase 2.
-3. Merge `claude/estate-marketplace-v2` into `claude/agenticcore-estate-site-l51zm4` and push. Netlify builds automatically.
-4. Verify the live pages.
-5. Only then run `supabase/seed/marketplace_samples.sql`. **Do not seed before the new frontend is live:** the old frontend would show samples without badges.
-6. Owner spot-checks: one profile of each type, one enquiry, one upload.
+## 33. Account model: one account + optional capabilities
+- **Account identity:** `auth.users` + `profiles` (one per person, phone/email login).
+- **Signup intent:** `profiles.role` (buyer, professional, agency, builder, developer). It only pre-opens dashboard modules and is never used for marketplace authorization. `admin` is the one exception: it remains the admin flag (`is_admin()`).
+- **Entities owned:** `professionals` (≤ 1), `agencies` (≤ 2 by default), `companies` (≤ 2 by default), `listings` (unlimited) and `projects` (unlimited, with capability). Ownership is `owner_id`.
+- **Capabilities:** `account_capabilities(user_id, capability, status)`, where capability = `project_publisher` and status = pending/approved/rejected/revoked. It is written only by the application trigger and admin RPCs.
+- **Approval state:** `developer_applications` holds the evidence. The capability row holds the decision. `profiles.developer_status` is a legacy mirror.
+- **Authorization checks:**
+  - projects insert → approved capability;
+  - entity edits → `owner_id = auth.uid()`;
+  - relationships → both sides' RPCs;
+  - admin actions → `is_admin()` + `admin_log`;
+  - PK handoff → pk_0003 ownership trigger.
+- **Legacy columns:**
+  - `developer_tier` and `seller_package` are DEPRECATED (column comments). They are not client-writable (0017 grants) and are not used for ranking (tested).
+  - `developer_status` is a mirror only.
 
-## 34. Rollback
-- **Frontend:** in Netlify, republish the previous production deploy (`6abfb3cb35c41b000862766f`, commit 3465ae0), or revert the merge. 0018 is compatible with the old frontend.
-- **Samples:** run `remove_marketplace_samples.sql` first if rolling back the frontend.
-- **Database:** 0018 can stay in place. Undoing it would mean dropping the new tables, which deletes any profiles created since, so it is not recommended without a separate decision.
+## 34. Production order and rollback
+See the final pre-release report, sections I and J, and `docs/MARKETPLACE_V2_PRE_RELEASE_CHECKLIST.md`.
 
 **NOT MERGED · NOT DEPLOYED · PRODUCTION DATABASE NOT TOUCHED · SAMPLE DATA NOT INSERTED INTO PRODUCTION**

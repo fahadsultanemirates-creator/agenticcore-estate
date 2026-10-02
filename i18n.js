@@ -599,8 +599,8 @@ Object.assign(AC_I18N.ur, {
 
 // ---------- Marketplace V2 (five categories, samples, launch period) ----------
 Object.assign(AC_I18N.en, {
-  nav_properties: 'Properties', nav_projects: 'Projects', nav_professionals: 'Professionals', nav_agencies: 'Agencies',
-  nav_builders: 'Builders', nav_list_free: 'List free', nav_launch: 'Launch offer',
+  nav_properties: 'Properties', nav_projects: 'Projects', nav_professionals: 'Property Professionals', nav_agencies: 'Agencies',
+  nav_builders: 'Builders & Developers', nav_properties_menu: 'Properties menu: Buy, Rent, List free', nav_list_free: 'List free', nav_launch: 'Launch offer',
   mk_apply_projects: 'Apply to list projects', mk_skip: 'Skip to content', mk_home: 'Home', mk_five_ways: 'Five ways to explore',
   mk_cat_properties: 'Properties', mk_cat_projects: 'Projects', mk_cat_professionals: 'Property Professionals',
   mk_cat_agencies: 'Agencies', mk_cat_builders: 'Builders & Developers',
@@ -688,8 +688,8 @@ Object.assign(AC_I18N.en, {
 });
 
 Object.assign(AC_I18N.ur, {
-  nav_properties: 'پراپرٹیز', nav_projects: 'پروجیکٹس', nav_professionals: 'پروفیشنلز', nav_agencies: 'ایجنسیاں',
-  nav_builders: 'بلڈرز', nav_list_free: 'مفت لسٹ کریں', nav_launch: 'لانچ آفر',
+  nav_properties: 'پراپرٹیز', nav_projects: 'پروجیکٹس', nav_professionals: 'پراپرٹی پروفیشنلز', nav_agencies: 'ایجنسیاں',
+  nav_builders: 'بلڈرز اور ڈویلپرز', nav_properties_menu: 'پراپرٹیز مینو: خریدیں، کرایہ، مفت لسٹ کریں', nav_list_free: 'مفت لسٹ کریں', nav_launch: 'لانچ آفر',
   mk_apply_projects: 'پروجیکٹس لسٹ کرنے کی درخواست', mk_skip: 'مواد پر جائیں', mk_home: 'ہوم', mk_five_ways: 'تلاش کے پانچ راستے',
   mk_cat_properties: 'پراپرٹیز', mk_cat_projects: 'پروجیکٹس', mk_cat_professionals: 'پراپرٹی پروفیشنلز',
   mk_cat_agencies: 'ایجنسیاں', mk_cat_builders: 'بلڈرز و ڈویلپرز',
@@ -974,6 +974,67 @@ Object.assign(AC_I18N.ur, {
   section_membership_sub: 'لانچ کے دوران لسٹنگ مفت ہے۔', pricing_title: 'لانچ آفر'
 });
 
+// ---------- Marketplace V2 owner review (7-day rule, capabilities, public phone, limits) ----------
+// Later Object.assign calls override earlier keys, so updated wording lives here.
+Object.assign(AC_I18N.en, {
+  mk_launch3: 'Join during the free launch period and publish genuine marketplace content before packages launch on 1 November 2026. Once that content has stayed published for 7 days, you\'ll be eligible for 30% off your first two months of qualifying Estate marketplace packages once they launch.',
+  mk_launch3_fine: 'Sample, hidden or removed content does not qualify. Detailed package terms will apply when packages launch.',
+  my_early_no: 'Publish a genuine property, project or profile before 1 November 2026 and keep it live for 7 days to qualify. It is recorded automatically.',
+  my_early_pending: 'Your content is live. If it stays published, you qualify on {date}.',
+  my_early_revoked: 'The early-participant benefit is not active on this account. Contact us if you think this is a mistake.',
+  my_early_closed: 'The early-participant period ended when packages launched on 1 November 2026.',
+  my_early_rule: 'Qualifying content: a property, an approved project, or a professional, agency or builder profile with a real description, created before 1 November 2026 and still published 7 days later. Content created in the last week before 1 November still counts once its 7 days are complete.',
+  my_contact_none_public: 'No public number has been published. Send an enquiry below — the owner receives it in their dashboard.',
+  mk_contact_none: 'No public number has been published. Please send an enquiry instead.',
+  my_f_public_phone: 'Public business phone (optional)',
+  my_h_public_phone: 'Shown to signed-in visitors who ask for contact details. Leave empty to receive enquiries only. Your login phone is never shown.',
+  my_err_phone: 'Please enter a valid phone number (digits, spaces, + and - only), or leave it empty.',
+  my_h_login_phone: '(login only — never shown publicly)',
+  my_pub_phone_h: 'Public contact number',
+  my_pub_phone_sub: 'Used for your properties and projects when they are not linked to a profile with its own number. Leave empty to receive enquiries only.',
+  my_proj_cap_none: 'Any account can apply to publish projects — no second account needed. Our team reviews the application; listing is free during launch.',
+  my_proj_cap_pending: 'Your application to publish projects is with our team.',
+  my_proj_cap_rejected: 'Your last application was not approved. You can update your details and apply again.',
+  my_proj_cap_revoked: 'Project publishing is paused on this account. Contact us for details. Your existing projects stay listed unless our team hides them.',
+  my_proj_existing: 'Your projects',
+  my_limit_professional: 'One account has one professional profile. Edit the profile above.',
+  my_limit_business: 'This account can manage up to {n} profiles of this type. Contact us if you manage more businesses.',
+  dev_apply_eyebrow: 'Projects', dev_apply_h: 'Apply to publish projects',
+  dev_apply_sub: 'Use your current account — no second account is needed. Our team reviews each application before project listing unlocks for this account. Project listing is free during our launch period.',
+  lo_early_h: 'How the 30% early-participant benefit is recorded',
+  lo_early_body: 'Publish a genuine property, an approved project, or a professional, agency or builder profile with a real description before 1 November 2026 (00:00 Pakistan time). When that item has stayed published for 7 days, the database records your eligibility automatically. Content deleted, hidden or marked as spam before its 7 days does not count; once recorded, eligibility stays even if you later remove the content normally. Content created in the last week before 1 November counts once its 7 days are complete (by 8 November at the latest). You can see your status in your dashboard. It cannot be set from the browser, and sample content never qualifies.\n\nThe benefit is 30% off your first two months of qualifying Estate marketplace packages once they launch. Packages and prices are not available yet, and detailed package terms will apply at launch.',
+  dev_apply_company: 'Company name', dev_apply_phone: 'Phone for our review team (not shown publicly)', dev_apply_submit: 'Submit application'
+});
+Object.assign(AC_I18N.ur, {
+  mk_launch3: 'مفت لانچ کے دوران شامل ہوں اور یکم نومبر 2026 کو پیکجز شروع ہونے سے پہلے حقیقی مارکیٹ پلیس مواد شائع کریں۔ جب وہ مواد 7 دن تک شائع رہے، تو پیکجز آنے پر اہل Estate مارکیٹ پلیس پیکجز کے پہلے دو مہینوں پر 30% رعایت کے حقدار ہوں گے۔',
+  mk_launch3_fine: 'نمونہ، چھپایا گیا یا ہٹایا گیا مواد اہل نہیں۔ پیکجز کے آغاز پر ان کی تفصیلی شرائط لاگو ہوں گی۔',
+  my_early_no: 'اہل ہونے کے لیے یکم نومبر 2026 سے پہلے حقیقی پراپرٹی، پروجیکٹ یا پروفائل شائع کریں اور اسے 7 دن تک برقرار رکھیں۔ یہ خود بخود ریکارڈ ہوتا ہے۔',
+  my_early_pending: 'آپ کا مواد شائع ہے۔ اگر یہ شائع رہا تو آپ {date} کو اہل ہو جائیں گے۔',
+  my_early_revoked: 'اس اکاؤنٹ پر ابتدائی شرکاء کا فائدہ فعال نہیں۔ اگر آپ کے خیال میں یہ غلطی ہے تو ہم سے رابطہ کریں۔',
+  my_early_closed: 'ابتدائی شرکاء کی مدت یکم نومبر 2026 کو پیکجز شروع ہونے پر ختم ہو گئی۔',
+  my_early_rule: 'اہل مواد: پراپرٹی، منظور شدہ پروجیکٹ، یا حقیقی تعارف والی پروفیشنل، ایجنسی یا بلڈر پروفائل، جو یکم نومبر 2026 سے پہلے بنائی گئی ہو اور 7 دن بعد بھی شائع ہو۔ یکم نومبر سے پہلے کے آخری ہفتے میں بنایا گیا مواد بھی 7 دن مکمل ہونے پر شمار ہوگا۔',
+  my_contact_none_public: 'کوئی عوامی نمبر شائع نہیں کیا گیا۔ نیچے پیغام بھیجیں — مالک اسے اپنے ڈیش بورڈ میں دیکھے گا۔',
+  mk_contact_none: 'کوئی عوامی نمبر شائع نہیں کیا گیا۔ براہ کرم پیغام بھیجیں۔',
+  my_f_public_phone: 'عوامی کاروباری فون (اختیاری)',
+  my_h_public_phone: 'صرف لاگ اِن وزیٹرز کو دکھایا جاتا ہے جو رابطہ مانگیں۔ صرف پیغامات کے لیے خالی چھوڑ دیں۔ آپ کا لاگ اِن فون کبھی نہیں دکھایا جاتا۔',
+  my_err_phone: 'درست فون نمبر لکھیں (صرف ہندسے، اسپیس، + اور -)، یا خالی چھوڑ دیں۔',
+  my_h_login_phone: '(صرف لاگ اِن کے لیے — عوام کو کبھی نہیں دکھایا جاتا)',
+  my_pub_phone_h: 'عوامی رابطہ نمبر',
+  my_pub_phone_sub: 'آپ کی پراپرٹیز اور پروجیکٹس کے لیے استعمال ہوتا ہے جب وہ کسی ایسی پروفائل سے منسلک نہ ہوں جس کا اپنا نمبر ہو۔ صرف پیغامات کے لیے خالی چھوڑ دیں۔',
+  my_proj_cap_none: 'کوئی بھی اکاؤنٹ پروجیکٹس شائع کرنے کی درخواست دے سکتا ہے — دوسرا اکاؤنٹ ضروری نہیں۔ ہماری ٹیم درخواست کا جائزہ لیتی ہے؛ لانچ کے دوران لسٹنگ مفت ہے۔',
+  my_proj_cap_pending: 'پروجیکٹس شائع کرنے کی آپ کی درخواست ہماری ٹیم کے پاس ہے۔',
+  my_proj_cap_rejected: 'آپ کی پچھلی درخواست منظور نہیں ہوئی۔ تفصیل اپ ڈیٹ کر کے دوبارہ درخواست دے سکتے ہیں۔',
+  my_proj_cap_revoked: 'اس اکاؤنٹ پر پروجیکٹ شائع کرنا روک دیا گیا ہے۔ تفصیل کے لیے رابطہ کریں۔ آپ کے موجودہ پروجیکٹس لسٹ رہیں گے جب تک ہماری ٹیم انہیں نہ چھپائے۔',
+  my_proj_existing: 'آپ کے پروجیکٹس',
+  my_limit_professional: 'ایک اکاؤنٹ کی ایک پروفیشنل پروفائل ہوتی ہے۔ اوپر والی پروفائل میں ترمیم کریں۔',
+  my_limit_business: 'یہ اکاؤنٹ اس قسم کی زیادہ سے زیادہ {n} پروفائلز سنبھال سکتا ہے۔ اگر آپ مزید کاروبار چلاتے ہیں تو رابطہ کریں۔',
+  dev_apply_eyebrow: 'پروجیکٹس', dev_apply_h: 'پروجیکٹس شائع کرنے کی درخواست',
+  dev_apply_sub: 'اپنا موجودہ اکاؤنٹ استعمال کریں — دوسرا اکاؤنٹ ضروری نہیں۔ اس اکاؤنٹ پر پروجیکٹ لسٹنگ کھلنے سے پہلے ہماری ٹیم ہر درخواست کا جائزہ لیتی ہے۔ لانچ کے دوران پروجیکٹ لسٹنگ مفت ہے۔',
+  lo_early_h: '30% ابتدائی فائدہ کیسے ریکارڈ ہوتا ہے',
+  lo_early_body: 'یکم نومبر 2026 (پاکستانی وقت رات 12 بجے) سے پہلے حقیقی پراپرٹی، منظور شدہ پروجیکٹ، یا حقیقی تعارف والی پروفیشنل، ایجنسی یا بلڈر پروفائل شائع کریں۔ جب وہ 7 دن تک شائع رہے تو ڈیٹا بیس آپ کی اہلیت خود بخود ریکارڈ کر لیتا ہے۔ 7 دن سے پہلے حذف، چھپایا گیا یا اسپام قرار دیا گیا مواد شمار نہیں ہوتا؛ ریکارڈ ہونے کے بعد اہلیت برقرار رہتی ہے چاہے آپ بعد میں مواد عام طریقے سے ہٹا دیں۔ یکم نومبر سے پہلے کے آخری ہفتے میں بنایا گیا مواد 7 دن مکمل ہونے پر شمار ہوگا (زیادہ سے زیادہ 8 نومبر تک)۔ آپ اپنا اسٹیٹس ڈیش بورڈ میں دیکھ سکتے ہیں۔ اسے براؤزر سے تبدیل نہیں کیا جا سکتا، اور نمونہ مواد کبھی اہل نہیں ہوتا۔\n\nیہ فائدہ پیکجز آنے پر اہل Estate مارکیٹ پلیس پیکجز کے پہلے دو مہینوں پر 30% رعایت ہے۔ پیکجز اور قیمتیں ابھی دستیاب نہیں، اور آغاز پر تفصیلی شرائط لاگو ہوں گی۔',
+  dev_apply_company: 'کمپنی کا نام', dev_apply_phone: 'ہماری جائزہ ٹیم کے لیے فون (عوام کو نہیں دکھایا جاتا)', dev_apply_submit: 'درخواست جمع کریں'
+});
+
 function acApplyLanguage(lang) {
   lang = (lang === 'ur') ? 'ur' : 'en';
   document.documentElement.setAttribute('lang', lang);
@@ -988,6 +1049,10 @@ function acApplyLanguage(lang) {
   document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
     const key = el.getAttribute('data-i18n-ph');
     if (dict[key]) el.setAttribute('placeholder', dict[key]);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n-aria');
+    if (dict[key]) el.setAttribute('aria-label', dict[key]);
   });
   document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
     const key = el.getAttribute('data-i18n-alt');

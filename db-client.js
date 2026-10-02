@@ -519,6 +519,13 @@ const AcDB = (function () {
   };
 })();
 
+// The caller's project-publisher capability: none / pending / approved / rejected / revoked.
+// Any account may apply; only an admin approves (account_capabilities, 0018).
+async function acCapabilityStatus() {
+  const { data, error } = await supabaseClient.rpc('my_capability_status', { p_cap: 'project_publisher' });
+  return error ? 'none' : (data || 'none');
+}
+
 async function requireAuth(roles) {
   const user = await AcDB.currentUser();
   if (!user) {

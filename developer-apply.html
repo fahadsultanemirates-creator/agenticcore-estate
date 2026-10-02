@@ -14,9 +14,9 @@
 
 <header class="inner-hero">
   <div class="container">
-    <span class="hero-eyebrow"><span class="dot"></span> Step 2 of 2</span>
-    <h1>Set up your developer account</h1>
-    <p class="hero-sub" data-i18n="dev_apply_sub">Add your company details. Our team reviews each application before project listing unlocks. Project listing is free during our launch period.</p>
+    <span class="hero-eyebrow"><span class="dot"></span> <span data-i18n="dev_apply_eyebrow">Projects</span></span>
+    <h1 data-i18n="dev_apply_h">Apply to publish projects</h1>
+    <p class="hero-sub" data-i18n="dev_apply_sub">Use your current account — no second account is needed. Our team reviews each application before project listing unlocks for this account. Project listing is free during our launch period.</p>
   </div>
 </header>
 
@@ -27,11 +27,11 @@
       <form id="devApplyForm">
         <div class="form-grid">
           <div class="form-field">
-            <label for="companyName">Company / agency name</label>
-            <input type="text" id="companyName" required placeholder="e.g. Bilal Developments">
+            <label for="companyName" data-i18n="dev_apply_company">Company name</label>
+            <input type="text" id="companyName" required placeholder="Your company name">
           </div>
           <div class="form-field">
-            <label for="devPhone">Business phone number</label>
+            <label for="devPhone" data-i18n="dev_apply_phone">Phone for our review team (not shown publicly)</label>
             <input type="tel" id="devPhone" required placeholder="+92 3XX XXXXXXX">
           </div>
         </div>
@@ -45,7 +45,7 @@
             <label class="role-option"><input type="radio" name="tier" value="4"> <span data-i18n="dev_scale_4">More, or a larger partnership</span></label>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;">Create developer account</button>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;" data-i18n="dev_apply_submit">Submit application</button>
       </form>
     </div>
   </div>

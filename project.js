@@ -14,12 +14,13 @@ function acProjectStatusLabel(status) {
 const projectForm = document.getElementById('projectForm');
 if (projectForm) {
   (async function () {
-    const user = await requireAuth(['developer', 'admin']);
+    const user = await requireAuth();
     if (!user) return;
-    // Posting projects is what an approved developer application grants (0017 enforces it too).
-    if (user.role === 'developer' && user.developer_status !== 'approved') {
-      window.location.href = (user.developer_status === 'pending' || user.developer_status === 'rejected') ? 'developer-pending.html' : 'developer-apply.html';
-      return;
+    // Posting projects needs the approved project-publisher capability (the projects
+    // insert policy in 0018 enforces it); any account can apply for it.
+    if (user.role !== 'admin') {
+      const cap = await acCapabilityStatus();
+      if (cap !== 'approved') { window.location.href = cap === 'pending' ? 'developer-pending.html' : 'my.html#projects'; return; }
     }
 
     const citySelect = document.getElementById('projCity');
