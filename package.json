@@ -1,0 +1,11 @@
+{
+  "name": "agenticcore-estate",
+  "private": true,
+  "description": "AgenticCore Estate — static site + Netlify functions (Copilot, assistants)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0"
+  }
+}

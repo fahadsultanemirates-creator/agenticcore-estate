@@ -194,6 +194,24 @@ if (sellForm) {
       document.getElementById('assistApply').addEventListener('click', applyDraft);
     });
 
+    // Arriving from Amaan (sell.html?assist=1&amaan=1): the owner's own chat notes
+    // were kept in this browser (never in the URL). Use them once, then delete them.
+    // The normal draft → review → publish flow applies; nothing is auto-published.
+    if (!editing && new URLSearchParams(window.location.search).get('amaan')) {
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem('ac_amaan_listing') || 'null'); localStorage.removeItem('ac_amaan_listing'); } catch (e) { saved = null; }
+      const fresh = saved && Array.isArray(saved.notes) && saved.notes.length && Date.now() - Number(saved.at || 0) < 2 * 3600 * 1000;
+      if (fresh) {
+        setAssist(true);
+        document.getElementById('assistText').value = saved.notes.filter(function (n) { return typeof n === 'string'; }).join('. ').slice(0, 1500);
+        const note = document.createElement('p');
+        note.className = 'assist-from-amaan'; note.setAttribute('role', 'note');
+        note.textContent = acT('amaan_from_chat');
+        document.getElementById('assistText').insertAdjacentElement('beforebegin', note);
+        document.getElementById('assistBtn').click();
+      }
+    }
+
     async function applyDraft() {
       if (!lastDraft) return;
       const f = lastDraft.facts || {}, d = lastDraft.draft || {};

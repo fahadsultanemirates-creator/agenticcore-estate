@@ -131,3 +131,7 @@ html[lang="ur"] .h2-title, html[lang="ur"] .h2-split h2 { line-height: 1.7; }
 /* Saved-Urdu first paint: hidden until i18n.js applies Urdu (removes the class); failsafe reveal after 2.5s. */
 html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 2.5s forwards; }
 @keyframes ac-ur-reveal { to { visibility: visible; } }
+
+/* Amaan entry points under the homepage search */
+.h2-amaan { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 0; }
+.h2-amaan .btn { min-height: 44px; }

@@ -17,6 +17,54 @@ function acEcoEsc(v) {
 const AC_SITE = 'https://agenticcore.estate/';
 const AC_PK_BASE = 'https://agenticcorepk.com/';
 
+// ---------- AgenticCore contact & official channels (one place for both uses) ----------
+// The same seven links are wired into AgenticCore Pakistan (js/config.js there).
+// WhatsApp CHAT = talk to the AgenticCore team. WhatsApp CHANNEL = follow updates.
+// Neither is ever used for marketplace listing/profile contact, which stays owner-to-visitor.
+const AC_CONTACT = {
+  whatsapp: '18089985226',                 // wa.me number, digits only
+  whatsappDisplay: '+1 808 998 5226',
+  whatsappMessage: 'Hello AgenticCore Estate, I need help with property.',
+  email: 'hello@agenticcore.agency',
+  social: [
+    { key: 'whatsapp_channel', url: 'https://whatsapp.com/channel/0029Vb8on5ZGpLHWOTLXUT45' },
+    { key: 'youtube', url: 'https://www.youtube.com/@AgenticcoreEstate' },
+    { key: 'tiktok', url: 'https://www.tiktok.com/@agenticcore.estate' },
+    { key: 'facebook', url: 'https://www.facebook.com/profile.php?id=61594880046065' },
+    { key: 'instagram', url: 'https://www.instagram.com/agenticcore.estate' }
+  ]
+};
+const AC_SOCIAL_ICONS = {
+  whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.8 14.03c-.25.69-1.43 1.33-1.97 1.38-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.57-.36.76-.36h.55c.17 0 .41-.06.64.49.25.59.83 2.02.9 2.17.08.14.12.31.03.5-.1.19-.14.31-.29.48l-.43.5c-.14.14-.29.3-.13.59.17.29.74 1.22 1.59 1.97 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.62-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.67.79 1.96.93.29.14.48.22.55.34.07.12.07.69-.18 1.38z"/></svg>',
+  whatsapp_channel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  youtube: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 2h-3.4v13.4a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.4 6.3V8.6a8.1 8.1 0 0 0 4.7 1.5V6.7A4.7 4.7 0 0 1 16.6 2z"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V6.6c0-.9.6-1.1 1-1.1h2.6V1.6L14 1.6c-4 0-4.9 3-4.9 4.9v2H6.4v4h2.7V22H14v-9.5h3.3l.4-4H14z"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>',
+  email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>'
+};
+function acWhatsAppHref(message) {
+  return 'https://wa.me/' + AC_CONTACT.whatsapp + '?text=' + encodeURIComponent(message || AC_CONTACT.whatsappMessage);
+}
+function acMailHref(subject) {
+  return 'mailto:' + AC_CONTACT.email + (subject ? '?subject=' + encodeURIComponent(subject) : '');
+}
+// Footer "Follow AgenticCore" — the five official channels. Labels translate
+// with the page (data-i18n / data-i18n-aria).
+function acSocialHTML() {
+  return '<ul class="ac-social" role="list">' + AC_CONTACT.social.map(function (s) {
+    return '<li><a href="' + acEcoEsc(s.url) + '" target="_blank" rel="noopener noreferrer" data-i18n-aria="social_' + s.key + '_aria" aria-label="' + s.key + '" data-track="social_click" data-channel="' + s.key + '">' +
+      AC_SOCIAL_ICONS[s.key] + '<span class="ac-social-label" data-i18n="social_' + s.key + '"></span></a></li>';
+  }).join('') + '</ul>';
+}
+// Footer "Contact AgenticCore" — WhatsApp chat with the team + business email.
+function acContactHTML() {
+  return '<ul class="ac-contact" role="list">' +
+    '<li><a href="' + acEcoEsc(acWhatsAppHref()) + '" target="_blank" rel="noopener noreferrer" data-i18n-aria="contact_wa_aria" aria-label="WhatsApp" data-track="contact_click" data-channel="whatsapp">' + AC_SOCIAL_ICONS.whatsapp + '<span data-i18n="contact_wa_chat"></span></a></li>' +
+    '<li><a href="' + acEcoEsc(acMailHref('AgenticCore Estate enquiry')) + '" data-i18n-aria="contact_email_aria" aria-label="Email" data-track="contact_click" data-channel="email">' + AC_SOCIAL_ICONS.email + '<span dir="ltr">' + acEcoEsc(AC_CONTACT.email) + '</span></a></li>' +
+    '</ul>';
+}
+
 // ---------- cross-site context contract (docs/ECOSYSTEM_CONTRACT.md) ----------
 // Only these values are ever sent or accepted. Anything else is dropped.
 const AC_XSITE = {
@@ -188,8 +236,11 @@ function acSetPageMeta(o) {
 // No tracking library. Emits a DOM event (and pushes to window.dataLayer only if
 // a tag manager is ever added). Only allow-listed, non-personal fields pass.
 const AC_TRACK_EVENTS = ['estate_to_pk_click', 'pk_to_estate_click', 'promote_property_click', 'promote_project_click',
-  'share_property', 'share_profile', 'share_project', 'toolkit_export', 'enquiry_started', 'enquiry_sent', 'next_action_click'];
-const AC_TRACK_FIELDS = ['intent', 'entity', 'channel', 'format', 'action', 'page'];
+  'share_property', 'share_profile', 'share_project', 'toolkit_export', 'enquiry_started', 'enquiry_sent', 'next_action_click',
+  'social_click', 'contact_click',
+  'assistant_opened', 'assistant_question', 'assistant_action', 'amaan_find_started', 'amaan_find_result', 'amaan_list_started', 'amaan_list_review',
+  'assistant_handoff_whatsapp', 'assistant_handoff_email'];
+const AC_TRACK_FIELDS = ['intent', 'entity', 'channel', 'format', 'action', 'page', 'bot', 'lang', 'result'];
 function acTrack(event, props) {
   if (AC_TRACK_EVENTS.indexOf(event) < 0) return;
   const clean = { page: (location.pathname.split('/').pop() || 'index.html') };
@@ -204,7 +255,7 @@ function acTrack(event, props) {
 // Links can declare data-track="<event>" data-intent/data-entity — one listener for the whole page.
 document.addEventListener('click', function (e) {
   const a = e.target && e.target.closest && e.target.closest('[data-track]');
-  if (a) acTrack(a.getAttribute('data-track'), { intent: a.getAttribute('data-intent'), entity: a.getAttribute('data-entity'), action: a.getAttribute('data-action') });
+  if (a) acTrack(a.getAttribute('data-track'), { intent: a.getAttribute('data-intent'), entity: a.getAttribute('data-entity'), action: a.getAttribute('data-action'), channel: a.getAttribute('data-channel') });
 });
 
 // Arrivals from AgenticCore Pakistan are counted once per page view (no personal data).

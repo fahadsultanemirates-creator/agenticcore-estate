@@ -1,0 +1,63 @@
+/* AgenticCore assistants — panel (shared by both sites). The floating button's
+   styles are injected by ac-assistant-boot.js so it renders before this file loads. */
+.aca-panel {
+  position: fixed; right: 16px; bottom: 16px; z-index: 100;
+  width: min(410px, calc(100vw - 32px)); max-height: min(660px, calc(100vh - 32px));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #071F17; color: #F4EFE0; border: 1px solid #1D4835; border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  font-size: .95rem; line-height: 1.5;
+}
+.aca-panel[hidden] { display: none; }
+html[dir="rtl"] .aca-panel { right: auto; left: 16px; }
+.aca-head { display: flex; align-items: center; gap: .5rem; padding: .7rem .8rem .4rem 1rem; }
+.aca-title { flex: 1; margin: 0; font-size: 1.02rem; font-weight: 700; color: #F4EFE0; }
+.aca-reset, .aca-close { min-height: 40px; min-width: 40px; border: 1px solid #1D4835; border-radius: 10px; background: transparent; color: #9BB9A9; cursor: pointer; font: inherit; font-size: .8rem; padding: 0 .55rem; }
+.aca-close { font-size: 1.4rem; line-height: 1; }
+.aca-reset:hover, .aca-close:hover { color: #F4EFE0; border-color: #3FAE7B; }
+.aca-tabs { display: flex; gap: .35rem; padding: 0 1rem; }
+.aca-tabs [role="tab"] { flex: 1; min-height: 44px; border: 1px solid #1D4835; border-radius: 10px; background: #0C3324; color: #9BB9A9; font: inherit; font-weight: 600; cursor: pointer; }
+.aca-tabs [role="tab"][aria-selected="true"] { background: #D4AF37; border-color: #D4AF37; color: #071F17; }
+.aca-sub { margin: .45rem 1rem .25rem; font-size: .78rem; color: #9BB9A9; }
+.aca-log { flex: 1 1 auto; min-height: 120px; overflow-y: auto; padding: .4rem 1rem; display: flex; flex-direction: column; gap: .6rem; overscroll-behavior: contain; }
+.aca-msg { display: flex; flex-direction: column; gap: .4rem; max-width: 92%; }
+.aca-user { align-self: flex-end; }
+.aca-assistant { align-self: flex-start; }
+html[dir="rtl"] .aca-user { align-self: flex-start; }
+html[dir="rtl"] .aca-assistant { align-self: flex-end; }
+.aca-bubble { padding: .55rem .8rem; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.aca-user .aca-bubble { background: #1D4835; }
+.aca-assistant .aca-bubble { background: #0C3324; border: 1px solid #1D4835; }
+.aca-bubble[dir="rtl"] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; line-height: 2; }
+.aca-wait .aca-bubble { color: #9BB9A9; font-style: italic; }
+.aca-actions { display: flex; flex-wrap: wrap; gap: .35rem; }
+.aca-act { display: inline-flex; align-items: center; min-height: 40px; padding: .3rem .75rem; border: 1px solid #D4AF37; border-radius: 999px; background: transparent; color: #F0CE63; font: inherit; font-size: .85rem; text-decoration: none; cursor: pointer; }
+.aca-act:hover, .aca-act:focus-visible { background: rgba(212,175,55,.12); }
+.aca-cards { display: flex; flex-direction: column; gap: .4rem; }
+.aca-card { display: flex; flex-direction: column; gap: .15rem; padding: .55rem .7rem; border: 1px solid #1D4835; border-radius: 12px; background: #0C3324; color: #F4EFE0; text-decoration: none; }
+.aca-card:hover, .aca-card:focus-visible { border-color: #D4AF37; }
+.aca-card strong { font-size: .9rem; }
+.aca-card-price { color: #F0CE63; font-size: .85rem; }
+.aca-card-where, .aca-card-diff { color: #9BB9A9; font-size: .8rem; }
+.aca-quick { display: flex; flex-wrap: wrap; gap: .35rem; padding: .2rem 1rem .4rem; }
+.aca-quick:empty { display: none; }
+.aca-chip { min-height: 40px; padding: .3rem .7rem; border: 1px solid #1D4835; border-radius: 999px; background: #0C3324; color: #F4EFE0; font: inherit; font-size: .82rem; cursor: pointer; }
+.aca-chip:hover, .aca-chip:focus-visible { border-color: #D4AF37; }
+.aca-form { display: flex; gap: .45rem; padding: .5rem 1rem; border-top: 1px solid #1D4835; }
+.aca-form textarea { flex: 1; min-height: 44px; max-height: 120px; resize: none; padding: .6rem .7rem; border: 1px solid #1D4835; border-radius: 12px; background: #0C3324; color: #F4EFE0; font: inherit; }
+.aca-form textarea:focus-visible { outline: none; border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212,175,55,.45); }
+.aca-send { min-height: 44px; padding: 0 1rem; border: 0; border-radius: 12px; background: #D4AF37; color: #071F17; font: inherit; font-weight: 700; cursor: pointer; }
+.aca-send:disabled { opacity: .55; cursor: default; }
+.aca-foot { padding: .2rem 1rem .7rem; font-size: .8rem; color: #9BB9A9; }
+.aca-foot a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 .35rem; color: #F0CE63; font-weight: 600; }
+.aca-note { margin: .2rem 0 0; font-size: .72rem; color: #62806E; }
+.aca-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.aca-panel button:focus-visible, .aca-panel a:focus-visible, .aca-log:focus-visible { outline: 3px solid #F0CE63; outline-offset: 2px; }
+
+/* phones: a bottom sheet, never a full-screen takeover */
+@media (max-width: 600px) {
+  .aca-panel { left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 80vh; border-radius: 16px; }
+  html[dir="rtl"] .aca-panel { left: 8px; right: 8px; }
+  body.has-mobile-bar .aca-panel { bottom: calc(var(--mobile-bar-h, 56px) + 8px); max-height: calc(80vh - var(--mobile-bar-h, 56px)); }
+}
+@media (prefers-reduced-motion: no-preference) { .aca-act, .aca-chip { transition: border-color .15s, background-color .15s; } }
+@media print { .aca-panel { display: none !important; } }
