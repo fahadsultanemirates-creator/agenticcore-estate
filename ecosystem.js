@@ -111,32 +111,34 @@ function acIncomingContext(search) {
 // from PK's data/services.json; PK owns the list and its prices, Estate shows
 // no prices.
 const AC_PK_PATHWAYS = {
+  // Service numbers follow the AgenticCore Pakistan Catalogue V2 (data/services.json there);
+  // section anchors: property-marketing, project-marketing, ai-automation, specialist.
   // property promotion uses PK's existing pack builder (?listing=, guarded by pk_0003)
   property: [
     { intent: 'promote', key: 'eco_pw_promote_property', page: '' },
-    { intent: 'creative', key: 'eco_pw_presentation', page: 'services.html', hash: 'service-28' },   // listing photo enhancement
-    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'social-media' }
+    { intent: 'creative', key: 'eco_pw_presentation', page: 'services.html', hash: 'service-4' },        // Property Photo Enhancement
+    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'property-marketing' }       // property marketing section
   ],
   project: [
-    { intent: 'project_marketing', key: 'eco_pw_project_marketing', page: 'services.html', hash: 'service-40' }, // project launch campaigns
-    { intent: 'creative', key: 'eco_pw_brochures', page: 'services.html', hash: 'service-6' },                 // PDF brochures / booklets
-    { intent: 'website', key: 'eco_pw_landing', page: 'services.html', hash: 'service-15' }                     // property/project landing page
+    { intent: 'project_marketing', key: 'eco_pw_project_marketing', page: 'services.html', hash: 'service-40' }, // Project Launch Campaign
+    { intent: 'creative', key: 'eco_pw_brochures', page: 'services.html', hash: 'service-27' },                // Project Brochure
+    { intent: 'website', key: 'eco_pw_landing', page: 'services.html', hash: 'service-33' }                    // Project Landing Page
   ],
   professional: [
-    { intent: 'brand', key: 'eco_pw_personal_brand', page: 'services.html', hash: 'service-3' },  // agent personal branding kit
-    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'social-media' },
-    { intent: 'creative', key: 'eco_pw_material', page: 'services.html', hash: 'print-and-sales' }
+    { intent: 'brand', key: 'eco_pw_personal_brand', page: 'services.html', hash: 'service-13' },  // Agent Personal Branding Kit
+    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'property-marketing' },
+    { intent: 'creative', key: 'eco_pw_material', page: 'services.html', hash: 'service-3' }       // Property Flyer
   ],
   agency: [
-    { intent: 'brand', key: 'eco_pw_agency_brand', page: 'services.html', hash: 'service-1' },    // logo and brand identity
-    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'social-media' },
-    { intent: 'website', key: 'eco_pw_website', page: 'services.html', hash: 'service-14' },      // agency and developer websites
-    { intent: 'promote', key: 'eco_pw_campaigns', page: 'services.html', hash: 'campaigns' }
+    { intent: 'brand', key: 'eco_pw_agency_brand', page: 'services.html', hash: 'service-14' },    // Agency Logo + Brand Kit
+    { intent: 'social', key: 'eco_pw_social', page: 'services.html', hash: 'property-marketing' },
+    { intent: 'website', key: 'eco_pw_website', page: 'services.html', hash: 'service-16' },       // Agency Website
+    { intent: 'promote', key: 'eco_pw_campaigns', page: 'services.html', hash: 'service-21' }      // Paid Ads Management
   ],
   builder: [
     { intent: 'project_marketing', key: 'eco_pw_project_marketing', page: 'services.html', hash: 'service-40' },
-    { intent: 'creative', key: 'eco_pw_brochures', page: 'services.html', hash: 'service-6' },
-    { intent: 'website', key: 'eco_pw_website', page: 'services.html', hash: 'service-14' }
+    { intent: 'creative', key: 'eco_pw_brochures', page: 'services.html', hash: 'service-27' },
+    { intent: 'website', key: 'eco_pw_website', page: 'services.html', hash: 'service-34' }        // Project / Developer Website
   ]
 };
 

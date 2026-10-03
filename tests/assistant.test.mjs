@@ -247,3 +247,17 @@ test('assistant panel: every string and every button key exists in English and U
   for (const a of ACTIONS) { assert.ok(ACTION_LABEL.en[a], 'en ' + a); assert.ok(ACTION_LABEL.ur[a], 'ur ' + a); }
   for (const k of Object.keys(T.en)) if (typeof T.en[k] === 'string') assert.ok(T.ur[k] && /[\u0600-\u06FF]|AI|AgenticCore/.test(T.ur[k]), k);
 });
+
+// ---------- links into AgenticCore Pakistan follow its Catalogue V2 numbering ----------
+test('Estate → PK service links point at the intended V2 services', () => {
+  // Pinned from agenticcorepk.com data/services.json (Catalogue V2). If PK renumbers, update here AND the links.
+  const V2 = { 3: 'Property Flyer', 4: 'Property Photo Enhancement', 7: 'Property Promo Reel', 12: 'Single Property Landing Page', 13: 'Agent Personal Branding Kit',
+    14: 'Agency Logo + Brand Kit', 16: 'Agency Website', 18: 'Google Business Profile Management', 21: 'Paid Ads Management — One Platform', 27: 'Project Brochure',
+    33: 'Project Landing Page', 34: 'Project / Developer Website', 40: 'Project Launch Campaign' };
+  const SECTIONS = ['property-marketing', 'project-marketing', 'ai-automation', 'specialist'];
+  const src = ['ecosystem.js', 'ac-assistant.js', 'developer-corner.html'].map((f) => fs.readFileSync(new URL('../' + f, import.meta.url), 'utf8')).join('\n');
+  const nums = [...src.matchAll(/service-(\d+)/g)].map((m) => Number(m[1]));
+  assert.ok(nums.length > 10);
+  for (const n of nums) assert.ok(V2[n], 'service-' + n + ' is not a pinned V2 target');
+  for (const m of src.matchAll(/hash: '([a-z-]+)'|services\.html#([a-z-]+)'/g)) { const h = m[1] || m[2]; assert.ok(SECTIONS.includes(h), h); }
+});
