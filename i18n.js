@@ -1159,6 +1159,7 @@ Object.assign(AC_I18N.en, {
   social_youtube_aria: 'AgenticCore on YouTube (opens in a new tab)', social_tiktok_aria: 'AgenticCore on TikTok (opens in a new tab)',
   social_facebook_aria: 'AgenticCore on Facebook (opens in a new tab)', social_instagram_aria: 'AgenticCore on Instagram (opens in a new tab)',
   amaan_cta: 'Chat with Amaan — AI property assistant', amaan_list_cta: 'List a property with Amaan',
+  amaan_waiting: 'Your listing details from Amaan are ready.', amaan_continue: 'Continue your listing',
   amaan_from_chat: 'Filled in from your chat with Amaan. Check every detail, add photos, then publish — nothing is published until you submit.'
 });
 Object.assign(AC_I18N.ur, {
@@ -1170,6 +1171,7 @@ Object.assign(AC_I18N.ur, {
   social_youtube_aria: 'یوٹیوب پر AgenticCore (نئی ٹیب میں کھلے گا)', social_tiktok_aria: 'ٹک ٹاک پر AgenticCore (نئی ٹیب میں کھلے گا)',
   social_facebook_aria: 'فیس بک پر AgenticCore (نئی ٹیب میں کھلے گا)', social_instagram_aria: 'انسٹاگرام پر AgenticCore (نئی ٹیب میں کھلے گا)',
   amaan_cta: 'امان سے بات کریں — AI پراپرٹی اسسٹنٹ', amaan_list_cta: 'امان کے ساتھ پراپرٹی لسٹ کریں',
+  amaan_waiting: 'امان کے ساتھ آپ کی لسٹنگ کی تفصیلات تیار ہیں۔', amaan_continue: 'لسٹنگ جاری رکھیں',
   amaan_from_chat: 'یہ معلومات امان کے ساتھ آپ کی گفتگو سے بھری گئی ہیں۔ ہر تفصیل چیک کریں، تصاویر لگائیں، پھر شائع کریں — آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔'
 });
 

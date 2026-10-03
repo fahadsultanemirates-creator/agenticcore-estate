@@ -188,8 +188,23 @@ function acRenderWhatsAppFloat() {
   document.body.classList.add('has-wa-float');
 }
 
+// Signed in (e.g. straight from the email-confirmation link) with Amaan's listing
+// notes still waiting on this device: offer a way back to the filled-in form.
+function acRenderAmaanResume(user) {
+  if (!user || user.role === 'admin' || typeof acAmaanDraftWaiting !== 'function' || !acAmaanDraftWaiting()) return;
+  if (/(^|\/)(sell|login|signup)\.html$/.test(location.pathname)) return;
+  const bar = document.createElement('div');
+  bar.className = 'ac-amaan-resume'; bar.setAttribute('role', 'status');
+  bar.innerHTML = '<div class="container"><span data-i18n="amaan_waiting"></span> ' +
+    '<a href="' + AC_AMAAN_FORM + '" class="btn btn-primary btn-sm" data-i18n="amaan_continue"></a></div>';
+  const nav = document.getElementById('nav');
+  if (nav) bar.style.setProperty('--ac-nav-h', nav.getBoundingClientRect().height + 'px');
+  document.body.appendChild(bar);
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
   await acRenderHeader();
+  acRenderAmaanResume(typeof AcDB !== 'undefined' ? await AcDB.currentUser() : null);
   acRenderFooter();
   acRenderWhatsAppFloat();
   if (typeof acInitLanguage === 'function') acInitLanguage();

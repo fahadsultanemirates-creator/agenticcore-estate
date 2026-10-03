@@ -261,3 +261,10 @@ test('Estate → PK service links point at the intended V2 services', () => {
   for (const n of nums) assert.ok(V2[n], 'service-' + n + ' is not a pinned V2 target');
   for (const m of src.matchAll(/hash: '([a-z-]+)'|services\.html#([a-z-]+)'/g)) { const h = m[1] || m[2]; assert.ok(SECTIONS.includes(h), h); }
 });
+
+test('Amaan tells owners to log in or create a free account before the form, in every language', async () => {
+  const { AMAAN } = await import('../services/assistant-knowledge.mjs');
+  assert.match(AMAAN.list_ready.en, /log in/i); assert.match(AMAAN.list_ready.en, /free account/i);
+  assert.match(AMAAN.list_ready.ur, /لاگ ان/); assert.match(AMAAN.list_ready.ur, /مفت اکاؤنٹ/);
+  assert.match(AMAAN.list_ready.ro, /log in/i); assert.match(AMAAN.list_ready.ro, /free account/i);
+});

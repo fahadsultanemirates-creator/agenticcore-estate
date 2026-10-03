@@ -208,9 +208,9 @@ export const AMAAN = {
     ro: 'Listing AgenticCore Estate par hoti hai, aur launch ke dauran free hai. Estate kholein, main wahan aap ke saath qadam ba qadam details jama karunga.'
   },
   list_ready: {
-    en: 'Thanks — I have the main details. Continue to the listing form: it will be filled in for you to check, add photos and publish. Nothing is published until you submit it.',
-    ur: 'شکریہ — بنیادی تفصیلات مل گئی ہیں۔ لسٹنگ فارم پر جائیں: وہ آپ کے لیے بھرا ہوا ملے گا تاکہ آپ چیک کریں، تصاویر لگائیں اور شائع کریں۔ آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔',
-    ro: 'Shukriya — buniyadi details mil gayi hain. Listing form par jayein: woh aap ke liye bhara hua milega taake aap check karein, tasveerein lagayein aur publish karein. Aap ke submit kiye baghair kuch publish nahin hota.'
+    en: 'Thanks — I have the main details. Next, log in — or create a free account if you don\'t have one. Your details stay on this device, and the listing form opens filled in for you to check, add photos and publish. Nothing is published until you submit it.',
+    ur: 'شکریہ — بنیادی تفصیلات مل گئی ہیں۔ اب لاگ ان کریں — یا اگر اکاؤنٹ نہیں ہے تو مفت اکاؤنٹ بنائیں۔ آپ کی تفصیلات اسی ڈیوائس پر محفوظ رہیں گی، اور لسٹنگ فارم بھرا ہوا کھلے گا تاکہ آپ چیک کریں، تصاویر لگائیں اور شائع کریں۔ آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔',
+    ro: 'Shukriya — buniyadi details mil gayi hain. Ab log in karein — ya agar account nahin hai to free account banayein. Aap ki details isi device par mehfooz rahengi, aur listing form bhara hua khulega taake aap check karein, tasveerein lagayein aur publish karein. Aap ke submit kiye baghair kuch publish nahin hota.'
   },
   ask: {
     purpose: { en: 'Is it for sale or for rent?', ur: 'یہ فروخت کے لیے ہے یا کرائے پر؟', ro: 'Yeh bechne ke liye hai ya kiraye par?' },

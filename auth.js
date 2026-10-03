@@ -79,7 +79,8 @@ if (signupForm) {
       return;
     }
     if (result.needsConfirmation) {
-      showAuthError(errorEl, 'Account created — check your email to confirm it, then log in.');
+      showAuthError(errorEl, 'Account created — check your email to confirm it, then log in.' +
+        (acAmaanDraftWaiting() ? ' Your listing details from Amaan are kept on this device — after you log in, the form opens filled in.' : ''));
       errorEl.style.background = 'rgba(16,185,129,0.1)';
       errorEl.style.color = '#34D399';
       return;
@@ -89,7 +90,7 @@ if (signupForm) {
     // else lands in the one dashboard, on the module that matches their intent.
     // Project accounts always start the admin-reviewed application.
     const next = acSafeNext() || (acJoinIntent() ? AC_JOIN[acJoinIntent()].dest : '');
-    window.location.href = role === 'developer' ? 'developer-apply.html' : next || 'my.html?welcome=' + encodeURIComponent(role);
+    window.location.href = role === 'developer' ? 'developer-apply.html' : next || (acAmaanDraftWaiting() ? AC_AMAAN_FORM : 'my.html?welcome=' + encodeURIComponent(role));
   });
 }
 
@@ -117,6 +118,8 @@ if (loginForm) {
     const user = result.user;
     const next = acSafeNext();
     if (next) { window.location.href = next; return; }
+    // e.g. signed up, confirmed by email, now logging in: finish the Amaan listing
+    if (user.role !== 'admin' && acAmaanDraftWaiting()) { window.location.href = AC_AMAAN_FORM; return; }
     if (user.role === 'admin') window.location.href = 'admin-dashboard.html';
     else if (user.role === 'developer' && user.developer_status === 'unsubmitted') window.location.href = 'developer-apply.html';   // signup intent: finish the application
     else window.location.href = 'my.html';
