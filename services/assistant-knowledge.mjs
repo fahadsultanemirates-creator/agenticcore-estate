@@ -183,9 +183,14 @@ export const AMAAN = {
     ro: 'Batayein aap kya dhoond rahe hain — area ya shehar, budget, aur size ya kamron ki tadaad.'
   },
   found: {
-    en: 'I found {n} genuine listing(s) that match what you asked for.',
-    ur: 'آپ کی تلاش کے مطابق {n} اصل لسٹنگ ملی ہیں۔',
-    ro: 'Aap ki talaash ke mutabiq {n} asli listing(s) mili hain.'
+    en: 'I found {n} genuine listings that match what you asked for.',
+    ur: 'آپ کی تلاش کے مطابق {n} اصل لسٹنگز ملی ہیں۔',
+    ro: 'Aap ki talaash ke mutabiq {n} asli listings mili hain.'
+  },
+  found_one: {
+    en: 'I found 1 genuine listing that matches what you asked for.',
+    ur: 'آپ کی تلاش کے مطابق ایک اصل لسٹنگ ملی ہے۔',
+    ro: 'Aap ki talaash ke mutabiq 1 asli listing mili hai.'
   },
   closest: {
     en: 'Nothing matches everything yet. Here are the closest genuine listings, with how each one differs.',

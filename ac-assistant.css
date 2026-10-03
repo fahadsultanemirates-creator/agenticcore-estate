@@ -44,6 +44,7 @@ html[dir="rtl"] .aca-assistant { align-self: flex-end; }
 .aca-chip:hover, .aca-chip:focus-visible { border-color: #D4AF37; }
 .aca-form { display: flex; gap: .45rem; padding: .5rem 1rem; border-top: 1px solid #1D4835; }
 .aca-form textarea { flex: 1; min-height: 44px; max-height: 120px; resize: none; padding: .6rem .7rem; border: 1px solid #1D4835; border-radius: 12px; background: #0C3324; color: #F4EFE0; font: inherit; }
+.aca-form textarea::placeholder { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .aca-form textarea:focus-visible { outline: none; border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212,175,55,.45); }
 .aca-send { min-height: 44px; padding: 0 1rem; border: 0; border-radius: 12px; background: #D4AF37; color: #071F17; font: inherit; font-weight: 700; cursor: pointer; }
 .aca-send:disabled { opacity: .55; cursor: default; }
