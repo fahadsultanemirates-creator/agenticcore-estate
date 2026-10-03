@@ -8,6 +8,8 @@
 
 // same rule as public.mv2_valid_phone() in 0018
 const AC_PHONE_RE = /^\+?[0-9][0-9 ()-]{6,19}$/;
+// the AgenticCore Telegram bot (accounts and listings in Telegram)
+const AC_TG_BOT = 'AgenticcoreEstatebot';
 const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agency', 'company', 'enquiries', 'promotion', 'referrals', 'account'];
 
 (function () {
@@ -500,7 +502,11 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     });
   };
   R.account = function () {
-    main.innerHTML = header(t('my_nav_account'), '') + '<div class="panel"><dl class="mk-facts">' +
+    const needsPassword = user.created_via === 'telegram' && !user.password_set_at;
+    main.innerHTML = header(t('my_nav_account'), '') +
+      (needsPassword ? '<div class="panel"><h3>' + esc(t('pw_set_h')) + '</h3><p class="my-sub">' + esc(t('pw_set_sub')) + '</p><a class="btn btn-primary btn-sm" href="set-password.html">' + esc(t('pw_set_btn')) + '</a></div>' : '') +
+      '<div class="panel"><dl class="mk-facts">' +
+      (user.member_no ? '<div class="mk-fact"><dt>' + esc(t('my_f_member')) + '</dt><dd><strong>AC-' + esc(user.member_no) + '</strong></dd></div>' : '') +
       '<div class="mk-fact"><dt>' + esc(t('my_f_name')) + '</dt><dd>' + esc(user.full_name) + '</dd></div>' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_email')) + '</dt><dd>' + esc(user.email || '') + '</dd></div>' +
       '<div class="mk-fact"><dt>' + esc(t('my_f_phone')) + '</dt><dd>' + esc(/^[0-9a-f-]{36}$/.test(user.phone) ? '—' : user.phone) + ' <span class="my-hint">' + esc(t('my_h_login_phone')) + '</span></dd></div>' +
@@ -509,7 +515,9 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
       '<div class="panel"><h3>' + esc(t('my_pub_phone_h')) + '</h3><p class="my-sub">' + esc(t('my_pub_phone_sub')) + '</p>' +
         '<form class="my-inline" id="myPubPhone" novalidate><label for="myPubPhoneIn" class="sr-only">' + esc(t('my_f_public_phone')) + '</label>' +
         '<input id="myPubPhoneIn" type="tel" inputmode="tel" autocomplete="off" maxlength="24" placeholder="+92 3XX XXXXXXX" value="' + esc(user.public_phone || '') + '">' +
-        '<button type="submit" class="btn btn-secondary btn-sm">' + esc(t('my_save')) + '</button><p class="my-msg" role="status"></p></form></div>' + earlyHTML();
+        '<button type="submit" class="btn btn-secondary btn-sm">' + esc(t('my_save')) + '</button><p class="my-msg" role="status"></p></form></div>' +
+      '<div class="panel" id="myTg" hidden><h3>' + esc(t('tg_h')) + '</h3><p class="my-sub">' + esc(t('tg_sub')) + '</p><div id="myTgBody"></div><p class="my-msg" role="status" id="myTgMsg"></p></div>' + earlyHTML();
+    renderTelegram();
     document.getElementById('myPubPhone').addEventListener('submit', async function (e) {
       e.preventDefault();
       const status = e.target.querySelector('.my-msg');
@@ -521,6 +529,36 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
       msg(status, t('my_saved'), true);
     });
   };
+
+  // Telegram: connect with a one-time code (the bot never asks for a password)
+  async function renderTelegram() {
+    const box = document.getElementById('myTg');
+    if (!box) return;
+    const r = await supabaseClient.rpc('my_telegram_link');
+    if (r.error) return;                       // bot not set up yet: keep the panel hidden
+    box.hidden = false;
+    const body = document.getElementById('myTgBody');
+    const link = (r.data || [])[0];
+    if (link) {
+      body.innerHTML = '<p>' + esc(t('tg_connected')) + (link.tg_username ? ' (@' + esc(link.tg_username) + ')' : '') + '</p>' +
+        '<p class="my-inline"><a class="btn btn-primary btn-sm" href="https://t.me/' + AC_TG_BOT + '" target="_blank" rel="noopener">' + esc(t('tg_open')) + '</a> ' +
+        '<button type="button" class="btn btn-secondary btn-sm" id="myTgUnlink">' + esc(t('tg_unlink')) + '</button></p>';
+      document.getElementById('myTgUnlink').addEventListener('click', async function () {
+        const u = await supabaseClient.rpc('unlink_telegram');
+        if (u.error) { msg(document.getElementById('myTgMsg'), t('tg_err')); return; }
+        renderTelegram();
+      });
+    } else {
+      body.innerHTML = '<button type="button" class="btn btn-primary btn-sm" id="myTgConnect">' + esc(t('tg_connect')) + '</button>';
+      document.getElementById('myTgConnect').addEventListener('click', async function (e) {
+        e.target.disabled = true;
+        const tok = await supabaseClient.rpc('create_telegram_link_token');
+        if (tok.error || !tok.data) { e.target.disabled = false; msg(document.getElementById('myTgMsg'), t('tg_err')); return; }
+        if (typeof acTrack === 'function') acTrack('contact_click', { channel: 'telegram_connect' });
+        location.href = 'https://t.me/' + AC_TG_BOT + '?start=link_' + encodeURIComponent(tok.data);
+      });
+    }
+  }
 
   async function route(forced, flash) {
     let m = forced || (location.hash.replace('#', '').split('?')[0] || 'overview');
