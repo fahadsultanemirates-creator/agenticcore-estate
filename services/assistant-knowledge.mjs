@@ -21,7 +21,8 @@ AGENTICCORE ESTATE (agenticcore.estate)
 
 AGENTICCORE PAKISTAN (agenticcorepk.com)
 - A separate, paid marketing and technology service for property businesses. Its services are NOT included free with Estate.
-- Service areas: branding (logo and brand identity, agent personal branding), print and sales material (brochures and project booklets), websites (agency and developer websites, single property or project landing pages), video, social media management, campaigns (including project launch campaigns), leads and automation, and local search.
+- Four service areas: property marketing for agents and agencies (WhatsApp cards, social posts, flyers, photo enhancement, reels, branding kits, agency websites, Google Business Profile, paid ads); project marketing for builders and developers (project branding, brochures, landing pages, project websites, launch campaigns, videos, plot maps, buyer and dealer portals); AI and automation (WhatsApp enquiry bots, website AI assistants, auto-posting, CRM and lead routing); and specialist add-ons.
+- Monthly plans for agents, agencies and projects, and one-off launch kits for new agencies and new projects. Delivery runs 7 days a week.
 - Owners can send an Estate listing to AgenticCore Pakistan to order promotion for it.
 - Prices are published on the AgenticCore Pakistan services page; custom work is quoted. The assistants never quote prices.
 
