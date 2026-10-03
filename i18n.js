@@ -96,6 +96,7 @@ const AC_I18N = {
     auth_signup_btn: 'Create account', auth_login_btn: 'Log in',
     auth_has_account: 'Already have an account?', auth_no_account: "Don't have an account?",
     auth_create_one: 'Create one', auth_login_link: 'Log in',
+    auth_new_here: 'New to AgenticCore? Create a free account first — it takes a minute, and listing is free during our launch period.', auth_new_btn: 'Create a free account',
     auth_id_note: 'Kept private and never shown publicly. Used only to keep listings accountable to a real person.',
 
     pricing_eyebrow: 'For sellers & agencies', pricing_title: 'Listing packages',
@@ -211,6 +212,7 @@ const AC_I18N = {
     auth_signup_btn: 'اکاؤنٹ بنائیں', auth_login_btn: 'لاگ ان',
     auth_has_account: 'پہلے سے اکاؤنٹ ہے؟', auth_no_account: 'اکاؤنٹ نہیں ہے؟',
     auth_create_one: 'ایک بنائیں', auth_login_link: 'لاگ ان کریں',
+    auth_new_here: 'AgenticCore پر نئے ہیں؟ پہلے مفت اکاؤنٹ بنائیں — ایک منٹ لگتا ہے، اور لانچ کے دوران لسٹنگ مفت ہے۔', auth_new_btn: 'مفت اکاؤنٹ بنائیں',
     auth_id_note: 'نجی رکھا جاتا ہے اور کبھی عوامی طور پر ظاہر نہیں ہوتا۔ صرف اس لیے کہ فہرستیں ایک حقیقی شخص سے منسلک رہیں۔',
 
     pricing_eyebrow: 'فروخت کنندگان اور ایجنسیوں کے لیے', pricing_title: 'لسٹنگ پیکجز',
