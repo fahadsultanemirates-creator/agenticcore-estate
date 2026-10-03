@@ -132,4 +132,11 @@ if (loginForm) {
   if (!a) return;
   const next = acSafeNext();
   if (next) a.href = 'signup.html?next=' + encodeURIComponent(next);
+  // Sent here from a page that needs an account (e.g. "List a property"):
+  // people new to AgenticCore see the sign-up option first, not only in the footer.
+  const box = document.getElementById('authNewHere');
+  if (box && next) {
+    document.getElementById('authNewHereBtn').href = a.href;
+    box.hidden = false;
+  }
 })();
