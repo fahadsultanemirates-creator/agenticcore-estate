@@ -999,3 +999,10 @@ html[dir="rtl"] .ac-wa-float { right: auto; left: 18px; }
 @media print { .ac-wa-float { display: none; } }
 
 .assist-from-amaan { margin: 0 0 .6rem; padding: .6rem .8rem; border: 1px solid var(--accent-gold); border-radius: var(--radius-sm); font-size: .9rem; }
+
+/* Amaan listing waiting on this device (signed in, not yet on the form):
+   a bar just under the fixed nav, clear of the WhatsApp and Ask AI buttons */
+.ac-amaan-resume { position: fixed; left: 16px; right: 16px; top: var(--ac-nav-h, 72px); z-index: 99; display: flex; justify-content: center; pointer-events: none; }
+.ac-amaan-resume .container { pointer-events: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem; max-width: 560px; margin-top: 8px; padding: .6rem 1rem; background: var(--bg-panel); border: 1px solid var(--accent-gold); border-radius: var(--radius-md); box-shadow: 0 8px 24px rgba(0,0,0,.35); font-size: .92rem; }
+.ac-amaan-resume .btn { min-height: 44px; display: inline-flex; align-items: center; }
+@media print { .ac-amaan-resume { display: none; } }

@@ -526,6 +526,17 @@ async function acCapabilityStatus() {
   return error ? 'none' : (data || 'none');
 }
 
+// Amaan's listing notes wait in this browser (ac_amaan_listing, 2 hours, never in
+// a URL) until the owner reaches the listing form. This only peeks; sell.js uses
+// and deletes them. Lets log-in / sign-up / the header send the owner back there.
+const AC_AMAAN_FORM = 'sell.html?assist=1&amaan=1';
+function acAmaanDraftWaiting() {
+  try {
+    const s = JSON.parse(localStorage.getItem('ac_amaan_listing') || 'null');
+    return !!(s && Array.isArray(s.notes) && s.notes.length && Date.now() - Number(s.at || 0) < 2 * 3600 * 1000);
+  } catch (e) { return false; }
+}
+
 async function requireAuth(roles) {
   const user = await AcDB.currentUser();
   if (!user) {
