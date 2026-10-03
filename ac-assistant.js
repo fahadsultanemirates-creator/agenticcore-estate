@@ -18,7 +18,7 @@
     en: {
       title: 'How can AgenticCore help?', close: 'Close assistant', tab_guide: 'AgenticCore AI', tab_amaan: 'Amaan · Property',
       sub_guide: 'AgenticCore AI Assistant — an AI, not a person.', sub_amaan: 'Amaan, AgenticCore Property Assistant — an AI, not a human agent.',
-      ph_guide: 'Ask about AgenticCore Estate or Pakistan…', ph_amaan: 'e.g. 10 marla house in Rawalpindi under 4 crore', send: 'Send', input: 'Your message',
+      ph_guide: 'Ask anything about AgenticCore…', ph_amaan: 'e.g. 10 marla house, Rawalpindi', send: 'Send', input: 'Your message',
       human: 'Talk to a person:', wa: 'WhatsApp', email: 'Email', note: 'AI can make mistakes — check details on the listing page and with the owner.',
       thinking: 'Thinking…', err: 'I couldn\'t reach the assistant just now. Please try again, or talk to our team.', slow: 'Too many messages in a short time — please wait a few minutes.',
       reset: 'New chat', results: 'Listings', differs: 'Differs:', mine_note: 'Your conversation stays in this browser tab.',
@@ -27,7 +27,7 @@
     ur: {
       title: 'AgenticCore آپ کی کیا مدد کرے؟', close: 'اسسٹنٹ بند کریں', tab_guide: 'AgenticCore AI', tab_amaan: 'امان · پراپرٹی',
       sub_guide: 'AgenticCore AI اسسٹنٹ — یہ AI ہے، انسان نہیں۔', sub_amaan: 'امان، AgenticCore پراپرٹی اسسٹنٹ — یہ AI ہے، انسانی ایجنٹ نہیں۔',
-      ph_guide: 'AgenticCore Estate یا Pakistan کے بارے میں پوچھیں…', ph_amaan: 'مثلاً راولپنڈی میں 4 کروڑ تک 10 مرلہ گھر', send: 'بھیجیں', input: 'آپ کا پیغام',
+      ph_guide: 'AgenticCore کے بارے میں کچھ بھی پوچھیں…', ph_amaan: 'مثلاً راولپنڈی میں 10 مرلہ گھر', send: 'بھیجیں', input: 'آپ کا پیغام',
       human: 'کسی انسان سے بات کریں:', wa: 'واٹس ایپ', email: 'ای میل', note: 'AI سے غلطی ہو سکتی ہے — تفصیلات لسٹنگ پیج اور مالک سے ضرور تصدیق کریں۔',
       thinking: 'سوچ رہا ہوں…', err: 'ابھی اسسٹنٹ سے رابطہ نہیں ہو سکا۔ دوبارہ کوشش کریں یا ہماری ٹیم سے بات کریں۔', slow: 'کم وقت میں بہت زیادہ پیغامات — براہ کرم چند منٹ انتظار کریں۔',
       reset: 'نئی گفتگو', results: 'لسٹنگز', differs: 'فرق:', mine_note: 'آپ کی گفتگو صرف اسی براؤزر ٹیب میں رہتی ہے۔',

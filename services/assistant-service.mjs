@@ -185,7 +185,7 @@ async function amaanFind(ctx, deps) {
     return Object.assign({ mode: 'find' }, await phrase(deps, Object.assign({}, ctx, { mode: 'find' }), { reply: AMAAN.find_ask[ctx.lang], actions: ['estate_properties'] }));
   }
   const matches = (res.matches || []).map(card), closest = (res.closest || []).map(card);
-  const base = matches.length ? AMAAN.found[ctx.lang].replace('{n}', matches.length) : closest.length ? AMAAN.closest[ctx.lang] : AMAAN.none[ctx.lang];
+  const base = matches.length === 1 ? AMAAN.found_one[ctx.lang] : matches.length ? AMAAN.found[ctx.lang].replace('{n}', matches.length) : closest.length ? AMAAN.closest[ctx.lang] : AMAAN.none[ctx.lang];
   const data = { understood: res.understood, matches: matches.map(({ id, ...r }) => r), closest: closest.map(({ id, ...r }) => r) };
   const worded = await phrase(deps, Object.assign({}, ctx, { mode: 'find', data }), { reply: base, actions: matches.length || closest.length ? ['estate_properties'] : ['estate_properties', 'contact_whatsapp'] });
   return Object.assign(worded, { mode: 'find', listings: matches.length ? matches : closest, result: matches.length ? 'match' : closest.length ? 'closest' : 'none' });

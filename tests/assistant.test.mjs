@@ -268,3 +268,9 @@ test('Amaan tells owners to log in or create a free account before the form, in 
   assert.match(AMAAN.list_ready.ur, /لاگ ان/); assert.match(AMAAN.list_ready.ur, /مفت اکاؤنٹ/);
   assert.match(AMAAN.list_ready.ro, /log in/i); assert.match(AMAAN.list_ready.ro, /free account/i);
 });
+
+test('Amaan counts listings in plain words (no "listing(s)")', async () => {
+  const { AMAAN } = await import('../services/assistant-knowledge.mjs');
+  for (const l of ['en', 'ur', 'ro']) { assert.doesNotMatch(AMAAN.found[l] + AMAAN.found_one[l], /\(s\)/); }
+  assert.match(AMAAN.found_one.en, /1 genuine listing that matches/);
+});
