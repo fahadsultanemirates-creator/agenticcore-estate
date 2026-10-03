@@ -866,7 +866,15 @@ Object.assign(AC_I18N.en, {
   my_ref_open: 'Open referral dashboard',
   my_role_buyer: 'Browse or list property', my_role_seller: 'Browse or list property', my_role_professional: 'Property professional', my_role_agency: 'Agency',
   my_role_developer: 'Project account', my_role_builder: 'Builder / developer company', my_role_admin: 'Admin',
-  my_account_note: 'Your phone number is your login identity and can only be changed by our team.'
+  my_account_note: 'Your phone number is your login identity and can only be changed by our team.',
+  my_f_member: 'Member number',
+  tg_h: 'Telegram', tg_sub: 'Connect Telegram to list properties, get enquiry alerts and receive sign-in links in the AgenticCore bot.',
+  tg_connect: 'Connect Telegram', tg_connected: 'Telegram is connected', tg_open: 'Open the bot', tg_unlink: 'Disconnect', tg_err: 'That didn\'t work. Please try again.',
+  pw_set_h: 'Set your password', pw_set_sub: 'Your account was opened in Telegram. Set a password within 30 days of opening it — otherwise the account is paused until you do.', pw_set_btn: 'Set password',
+  sp_title: 'Set your password', sp_sub: 'Choose a password for signing in on agenticcore.estate. Your member number and listings stay the same.',
+  sp_new: 'New password', sp_confirm: 'Repeat the password', sp_btn: 'Save password', sp_saving: 'Saving…',
+  sp_short: 'Use at least 8 characters.', sp_mismatch: 'The two passwords don\'t match.', sp_done: 'Password saved. Opening your dashboard…',
+  sp_expired: 'This sign-in link has expired or was already used. In Telegram, send /login to @AgenticcoreEstatebot for a new one, or sign in normally.'
 });
 
 Object.assign(AC_I18N.ur, {
@@ -958,7 +966,15 @@ Object.assign(AC_I18N.ur, {
   my_ref_open: 'ریفرل ڈیش بورڈ کھولیں',
   my_role_buyer: 'پراپرٹی دیکھنا یا لسٹ کرنا', my_role_seller: 'پراپرٹی دیکھنا یا لسٹ کرنا', my_role_professional: 'پراپرٹی پروفیشنل', my_role_agency: 'ایجنسی',
   my_role_developer: 'پروجیکٹ اکاؤنٹ', my_role_builder: 'بلڈر / ڈویلپر کمپنی', my_role_admin: 'ایڈمن',
-  my_account_note: 'آپ کا فون نمبر آپ کی لاگ اِن شناخت ہے اور صرف ہماری ٹیم اسے تبدیل کر سکتی ہے۔'
+  my_account_note: 'آپ کا فون نمبر آپ کی لاگ اِن شناخت ہے اور صرف ہماری ٹیم اسے تبدیل کر سکتی ہے۔',
+  my_f_member: 'ممبر نمبر',
+  tg_h: 'ٹیلیگرام', tg_sub: 'ٹیلیگرام جوڑیں تاکہ AgenticCore بوٹ میں پراپرٹی لسٹ کر سکیں، انکوائری کی اطلاع اور سائن اِن لنک حاصل کر سکیں۔',
+  tg_connect: 'ٹیلیگرام جوڑیں', tg_connected: 'ٹیلیگرام جُڑا ہوا ہے', tg_open: 'بوٹ کھولیں', tg_unlink: 'الگ کریں', tg_err: 'یہ نہیں ہو سکا۔ براہِ کرم دوبارہ کوشش کریں۔',
+  pw_set_h: 'اپنا پاس ورڈ بنائیں', pw_set_sub: 'آپ کا اکاؤنٹ ٹیلیگرام میں کھولا گیا تھا۔ اکاؤنٹ کھلنے کے 30 دن کے اندر پاس ورڈ بنائیں — ورنہ پاس ورڈ بننے تک اکاؤنٹ رُک جاتا ہے۔', pw_set_btn: 'پاس ورڈ بنائیں',
+  sp_title: 'اپنا پاس ورڈ بنائیں', sp_sub: 'agenticcore.estate پر سائن اِن کے لیے پاس ورڈ منتخب کریں۔ آپ کا ممبر نمبر اور لسٹنگز وہی رہیں گی۔',
+  sp_new: 'نیا پاس ورڈ', sp_confirm: 'پاس ورڈ دوبارہ لکھیں', sp_btn: 'پاس ورڈ محفوظ کریں', sp_saving: 'محفوظ ہو رہا ہے…',
+  sp_short: 'کم از کم 8 حروف استعمال کریں۔', sp_mismatch: 'دونوں پاس ورڈ ایک جیسے نہیں۔', sp_done: 'پاس ورڈ محفوظ ہو گیا۔ آپ کا ڈیش بورڈ کھل رہا ہے…',
+  sp_expired: 'یہ سائن اِن لنک ختم ہو چکا ہے یا استعمال ہو چکا ہے۔ نیا لنک لینے کے لیے ٹیلیگرام میں ‎@AgenticcoreEstatebot‎ کو ‎/login‎ بھیجیں، یا عام طریقے سے سائن اِن کریں۔'
 });
 
 // The old launch offer (50% / 30% on standard and higher tiers) is replaced by the
