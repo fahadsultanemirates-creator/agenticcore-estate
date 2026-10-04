@@ -176,11 +176,35 @@ export const S = {
     ur: 'یاد دہانی: براہِ کرم {days} دن کے اندر ویب سائٹ کا پاس ورڈ بنا لیں، ورنہ پاس ورڈ بننے تک آپ کا اکاؤنٹ رُک جائے گا۔ ایک بار کا سائن اِن لنک لینے کے لیے نیچے دبائیں۔',
     ro: 'Yaad dihani: barah-e-karam {days} din ke andar website ka password bana lein, warna password banne tak aap ka account ruk jayega. Ek baar ka sign-in link lene ke liye neeche dabayein.'
   },
-  help: {
-    en: 'I can:\n• open an AgenticCore Estate account\n• list your property (tell me about it, send photos, confirm)\n• show your listings\n• send you a one-time website sign-in link\n• order marketing from AgenticCore Pakistan (/order, /orders)\n\nYou can type or send a voice note, in English or Urdu. /menu shows the buttons again. Talk to a person: WhatsApp +1 808 998 5226.',
-    ur: 'میں یہ کر سکتا ہوں:\n• AgenticCore Estate اکاؤنٹ کھولنا\n• آپ کی پراپرٹی لسٹ کرنا (بتائیں، تصاویر بھیجیں، تصدیق کریں)\n• آپ کی لسٹنگز دکھانا\n• ویب سائٹ کا ایک بار کا سائن اِن لنک بھیجنا\n• AgenticCore Pakistan سے مارکیٹنگ آرڈر کرنا (/order، /orders)\n\nآپ لکھ کر یا وائس نوٹ بھیج سکتے ہیں، انگریزی یا اردو میں۔ /menu سے بٹن دوبارہ آ جاتے ہیں۔ کسی انسان سے بات: واٹس ایپ +1 808 998 5226۔',
-    ro: 'Main yeh kar sakta hoon:\n• AgenticCore Estate account kholna\n• aap ki property list karna (batayein, tasveerein bhejein, tasdeeq karein)\n• aap ki listings dikhana\n• website ka ek baar ka sign-in link bhejna\n• AgenticCore Pakistan se marketing order karna (/order, /orders)\n\nAap likh kar ya voice note bhej sakte hain, English ya Urdu mein. /menu se buttons dobara aa jate hain. Kisi insaan se baat: WhatsApp +1 808 998 5226.'
+  // ---- language & voice ----
+  lang_pick: {
+    en: 'Assalam-o-Alaikum! Which language would you like to use?\nالسلام علیکم! آپ کس زبان میں بات کرنا چاہیں گے؟',
+    ur: 'Assalam-o-Alaikum! Which language would you like to use?\nالسلام علیکم! آپ کس زبان میں بات کرنا چاہیں گے؟',
+    ro: 'Assalam-o-Alaikum! Which language would you like to use?\nالسلام علیکم! آپ کس زبان میں بات کرنا چاہیں گے؟'
   },
+  lang_set: {
+    en: 'Great — we\'ll talk in English. You can type or send a voice note. Change it any time with /language.',
+    ur: 'بہت خوب — اب ہم اردو میں بات کریں گے۔ آپ لکھ کر یا وائس نوٹ بھیج کر بات کر سکتے ہیں، اور میں آپ کو آواز میں بھی جواب دوں گا۔ زبان بدلنے کے لیے /language اور آواز بند کرنے کے لیے /voice لکھیں۔',
+    ro: 'Bohat khoob — ab hum Urdu mein baat karenge. Aap likh kar ya voice note bhej kar baat kar sakte hain. Zaban badalne ke liye /language likhein.'
+  },
+  btn_language: { en: '🌐 English / اردو', ur: '🌐 English / اردو', ro: '🌐 English / اردو' },
+  voice_now_on: {
+    en: '🔊 Voice replies are on.', ur: '🔊 آواز میں جوابات آن ہیں۔', ro: '🔊 Awaaz mein jawab on hain.'
+  },
+  voice_now_off: {
+    en: '🔇 Voice replies are off. Send /voice to turn them back on.', ur: '🔇 آواز میں جوابات بند ہیں۔ دوبارہ چالو کرنے کے لیے /voice بھیجیں۔', ro: '🔇 Awaaz mein jawab band hain. Dobara on karne ke liye /voice bhejein.'
+  },
+  manage: {
+    en: 'Managing your account:\n• My listings — see everything you have listed (button below).\n• To edit a listing, change the price, add photos, mark it sold or delete it, open your dashboard on the website: tap "Website sign-in link" and you\'re signed in straight away.\n• Every 30 days I\'ll ask whether your property is still available — one tap keeps it showing as "Confirmed available".\n• Marketing orders: /orders shows their progress.',
+    ur: 'اکاؤنٹ کا انتظام:\n• میری لسٹنگز — آپ کی تمام لسٹ کی ہوئی پراپرٹیز (نیچے بٹن)۔\n• لسٹنگ میں ترمیم، قیمت بدلنے، تصاویر لگانے، فروخت شدہ کرنے یا ہٹانے کے لیے ویب سائٹ پر اپنا ڈیش بورڈ کھولیں: "ویب سائٹ سائن اِن لنک" دبائیں، آپ فوراً سائن اِن ہو جائیں گے۔\n• ہر 30 دن بعد میں پوچھوں گا کہ پراپرٹی ابھی دستیاب ہے یا نہیں — ایک بٹن دبانے سے یہ "Confirmed available" دکھتی رہے گی۔\n• مارکیٹنگ آرڈرز: /orders سے ان کی پیش رفت دیکھیں۔',
+    ro: 'Account ka intezam:\n• Meri listings — aap ki tamam listed properties (neeche button).\n• Listing edit karne, qeemat badalne, tasveerein lagane, sold karne ya hatane ke liye website par apna dashboard kholein: "Website sign-in link" dabayein, aap foran sign in ho jayenge.\n• Har 30 din baad main poochunga ke property abhi available hai ya nahin — ek button dabane se yeh "Confirmed available" dikhti rahegi.\n• Marketing orders: /orders se un ki progress dekhein.'
+  },
+  help: {
+    en: 'I can:\n• open an AgenticCore Estate account (I ask for your mobile number with Telegram\'s button, your name and email)\n• list your property step by step — sale or rent, type, city, area, price, size, bedrooms and bathrooms — then photos; you check everything before it goes live\n• show your listings and help you manage them (/mylistings, /manage)\n• send a one-time website sign-in link (/login)\n• tell you AgenticCore Pakistan prices and packages, and take marketing orders (/order, /orders)\n\nType or send a voice note, in English or Urdu. /language changes the language, /voice turns voice replies on or off, /menu shows the buttons. Talk to a person: WhatsApp +1 808 998 5226.',
+    ur: 'میں یہ کر سکتا ہوں:\n• AgenticCore Estate اکاؤنٹ کھولنا (ٹیلیگرام کے بٹن سے آپ کا موبائل نمبر، پھر نام اور ای میل)\n• مرحلہ وار پراپرٹی لسٹ کرنا — فروخت یا کرایہ، قسم، شہر، علاقہ، قیمت، سائز، بیڈ روم اور باتھ روم — پھر تصاویر؛ شائع ہونے سے پہلے آپ سب کچھ خود دیکھ لیتے ہیں\n• آپ کی لسٹنگز دکھانا اور ان کا انتظام (/mylistings، /manage)\n• ویب سائٹ کا ایک بار کا سائن اِن لنک بھیجنا (/login)\n• AgenticCore Pakistan کی قیمتیں اور پیکجز بتانا اور مارکیٹنگ آرڈر لینا (/order، /orders)\n\nلکھیں یا وائس نوٹ بھیجیں، اردو یا انگریزی میں۔ /language سے زبان بدلیں، /voice سے آواز والے جوابات آن یا بند کریں، /menu سے بٹن دوبارہ آ جاتے ہیں۔ کسی انسان سے بات: واٹس ایپ +1 808 998 5226۔',
+    ro: 'Main yeh kar sakta hoon:\n• AgenticCore Estate account kholna (Telegram ke button se aap ka mobile number, phir naam aur email)\n• qadam ba qadam property list karna — sale ya rent, qisam, shehar, area, qeemat, size, bedroom aur bathroom — phir tasveerein; publish se pehle aap sab kuch khud check karte hain\n• aap ki listings dikhana aur un ka intezam (/mylistings, /manage)\n• website ka ek baar ka sign-in link bhejna (/login)\n• AgenticCore Pakistan ki qeematein aur packages batana aur marketing order lena (/order, /orders)\n\nLikhein ya voice note bhejein, Urdu ya English mein. /language se zaban badlein, /voice se awaaz wale jawab on/off karein, /menu se buttons dobara aa jate hain. Kisi insaan se baat: WhatsApp +1 808 998 5226.'
+  },
+
   error: { en: 'Sorry, something went wrong on our side. Please try again in a minute.', ur: 'معذرت، ہماری طرف سے کوئی مسئلہ آ گیا۔ براہِ کرم ایک منٹ بعد دوبارہ کوشش کریں۔', ro: 'Maazrat, hamari taraf se koi masla aa gaya. Barah-e-karam ek minute baad dobara koshish karein.' }
 };
 

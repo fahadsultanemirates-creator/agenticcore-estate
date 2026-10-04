@@ -1,0 +1,1968 @@
+{
+ "source": "AgenticCore Pakistan — Catalogue V2 (owner-approved specification, October 2026). Introductory prices.",
+ "notes": [
+  "All prices are in Pakistani rupees, are introductory and exclude taxes where applicable.",
+  "Delivery times count from when we have your details, content (logo files, photos, text) and payment.",
+  "\"Same day\" applies to orders confirmed before 6pm PKT; orders confirmed later are delivered the next day.",
+  "Partner work (printing, filming, 360° capture, event crews) and approvals by Meta, Google or phone providers follow their own timings.",
+  "Monthly fees are paid in advance. One-off work is usually paid half at the start and half on delivery.",
+  "Ad accounts, pages, domains, WhatsApp numbers and automations are set up in your name, so you keep them.",
+  "We only present approvals you can show us; we do not independently verify them.",
+  "We never promise a set number of leads, enquiries or sales. We agree clear targets and report honestly."
+ ],
+ "notes_ur": [
+  "تمام قیمتیں پاکستانی روپوں میں ہیں، تعارفی ہیں اور جہاں لاگو ہو ٹیکس شامل نہیں۔",
+  "ڈیلیوری کا وقت تب شروع ہوتا ہے جب ہمیں آپ کی تفصیلات، مواد (لوگو، تصاویر، متن) اور ادائیگی مل جائے۔",
+  "\"اسی دن\" شام 6 بجے سے پہلے کنفرم آرڈرز پر لاگو ہے؛ بعد والے آرڈر اگلے دن۔",
+  "پارٹنر کام (پرنٹنگ، فلم بندی، 360 تصویر کشی، تقریب کا عملہ) اور میٹا، گوگل یا فون کمپنیوں کی منظوری ان کے اپنے وقت پر ہوتی ہے۔",
+  "ماہانہ فیس پیشگی ادا کی جاتی ہے۔ ایک بار کے کام کی عموماً آدھی ادائیگی شروع میں اور آدھی ڈیلیوری پر۔",
+  "اشتہاری اکاؤنٹس، پیجز، ڈومینز، واٹس ایپ نمبرز اور آٹومیشنز آپ کے نام پر بنتے ہیں، اس لیے آپ کے پاس رہتے ہیں۔",
+  "ہم صرف وہ منظوریاں پیش کرتے ہیں جو آپ دکھا سکیں؛ ہم ان کی آزادانہ تصدیق نہیں کرتے۔",
+  "ہم لیڈز، انکوائریز یا فروخت کی کسی تعداد کا وعدہ نہیں کرتے۔ ہم واضح اہداف طے کرتے ہیں اور ایمانداری سے رپورٹ کرتے ہیں۔"
+ ],
+ "groups": [
+  {
+   "no": 1,
+   "type": "Property marketing — agents & agencies",
+   "type_ur": "پراپرٹی مارکیٹنگ — ایجنٹس اور ایجنسیاں"
+  },
+  {
+   "no": 2,
+   "type": "Project marketing — builders & developers",
+   "type_ur": "پراجیکٹ مارکیٹنگ — بلڈرز اور ڈویلپرز"
+  },
+  {
+   "no": 3,
+   "type": "AI & Automation",
+   "type_ur": "اے آئی اور آٹومیشن"
+  },
+  {
+   "no": 4,
+   "type": "Specialist & add-on services",
+   "type_ur": "خصوصی اور اضافی سروسز"
+  }
+ ],
+ "services": [
+  {
+   "no": 1,
+   "group": 1,
+   "name": "Property WhatsApp Card",
+   "name_ur": "پراپرٹی واٹس ایپ کارڈ",
+   "brief": "One designed WhatsApp card for one property: photo, price, key facts and your contact.",
+   "brief_ur": "ایک پراپرٹی کے لیے ڈیزائن شدہ واٹس ایپ کارڈ: تصویر، قیمت، اہم تفصیلات اور آپ کا رابطہ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per property: one WhatsApp card (1080×1350) from your photos and facts.",
+     "text_ur": "Rs 999 فی پراپرٹی: آپ کی تصاویر اور تفصیلات سے ایک واٹس ایپ کارڈ (1080×1350)۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 2,
+   "group": 1,
+   "name": "Property Social Media Post",
+   "name_ur": "پراپرٹی سوشل میڈیا پوسٹ",
+   "brief": "One designed post for one property, sized for Facebook and Instagram feeds.",
+   "brief_ur": "ایک پراپرٹی کے لیے ڈیزائن شدہ پوسٹ، فیس بک اور انسٹاگرام فیڈ کے سائز میں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per property: one square social post (1080×1080) with the price and key facts.",
+     "text_ur": "Rs 999 فی پراپرٹی: قیمت اور اہم تفصیلات کے ساتھ ایک مربع سوشل پوسٹ (1080×1080)۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 3,
+   "group": 1,
+   "name": "Property Flyer",
+   "name_ur": "پراپرٹی فلائر",
+   "brief": "A designed flyer for one property, ready to share digitally or send to print.",
+   "brief_ur": "ایک پراپرٹی کے لیے ڈیزائن شدہ فلائر، ڈیجیٹل شیئرنگ یا پرنٹ کے لیے تیار۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per property: one A4/A5 flyer (print-ready PDF plus a phone-size image). Printing is separate.",
+     "text_ur": "Rs 999 فی پراپرٹی: ایک A4/A5 فلائر (پرنٹ کے لیے PDF اور فون سائز تصویر)۔ پرنٹنگ الگ ہے۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 4,
+   "group": 1,
+   "name": "Property Photo Enhancement",
+   "name_ur": "پراپرٹی فوٹو بہتری",
+   "brief": "Clean-up of your own property photos: lighting, colour, straightening and light decluttering.",
+   "brief_ur": "آپ کی اپنی پراپرٹی تصاویر کی صفائی: روشنی، رنگ، سیدھا کرنا اور ہلکی بے ترتیبی ہٹانا۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,299 for up to 10 photos.",
+     "text_ur": "Rs 1,299 میں زیادہ سے زیادہ 10 تصاویر۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 5,
+   "group": 1,
+   "name": "Property Captions — English + Roman Urdu",
+   "name_ur": "پراپرٹی کیپشنز — انگریزی + رومن اردو",
+   "brief": "Ready-to-post captions for one property in English and Roman Urdu, with hashtags.",
+   "brief_ur": "ایک پراپرٹی کے لیے انگریزی اور رومن اردو میں پوسٹ کے لیے تیار کیپشنز، ہیش ٹیگز کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per property: a caption set in English and Roman Urdu for WhatsApp and social media.",
+     "text_ur": "Rs 999 فی پراپرٹی: واٹس ایپ اور سوشل میڈیا کے لیے انگریزی اور رومن اردو کیپشن سیٹ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 6,
+   "group": 1,
+   "name": "Property Reel — AI Voiceover",
+   "name_ur": "پراپرٹی ریل — اے آئی وائس اوور",
+   "brief": "A short reel from your photos or clips with an AI voiceover in Urdu or English.",
+   "brief_ur": "آپ کی تصاویر یا کلپس سے مختصر ریل، اردو یا انگریزی اے آئی وائس اوور کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 2,499 per reel of up to 60 seconds.",
+     "text_ur": "Rs 2,499 فی ریل، زیادہ سے زیادہ 60 سیکنڈ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 7,
+   "group": 1,
+   "name": "Property Promo Reel",
+   "name_ur": "پراپرٹی پرومو ریل",
+   "brief": "A branded promo reel with motion text and music, made from your photos or clips.",
+   "brief_ur": "آپ کی تصاویر یا کلپس سے موشن ٹیکسٹ اور موسیقی کے ساتھ برانڈڈ پرومو ریل۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,999 per reel of up to 60 seconds.",
+     "text_ur": "Rs 3,999 فی ریل، زیادہ سے زیادہ 60 سیکنڈ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 8,
+   "group": 1,
+   "name": "Property PDF / WhatsApp Catalogue",
+   "name_ur": "پراپرٹی پی ڈی ایف / واٹس ایپ کیٹلاگ",
+   "brief": "A short PDF catalogue that stays sharp when shared on WhatsApp.",
+   "brief_ur": "مختصر پی ڈی ایف کیٹلاگ جو واٹس ایپ پر شیئر کرنے پر بھی واضح رہتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,499 for a catalogue of up to 6 pages.",
+     "text_ur": "Rs 4,499 میں زیادہ سے زیادہ 6 صفحات کا کیٹلاگ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 9,
+   "group": 1,
+   "name": "QR Property Flyer",
+   "name_ur": "کیو آر پراپرٹی فلائر",
+   "brief": "A property flyer with a tested QR code linking to your listing, landing page or WhatsApp.",
+   "brief_ur": "ٹیسٹ شدہ کیو آر کوڈ والا پراپرٹی فلائر جو آپ کی لسٹنگ، لینڈنگ پیج یا واٹس ایپ پر لے جائے۔",
+   "partner": true,
+   "lines": [
+    {
+     "text": "Rs 1,999 per flyer, with the QR link set up and tested. Printing is separate.",
+     "text_ur": "Rs 1,999 فی فلائر، کیو آر لنک سیٹ اپ اور ٹیسٹ کے ساتھ۔ پرنٹنگ الگ ہے۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 10,
+   "group": 1,
+   "name": "3D Floor Plan",
+   "name_ur": "تھری ڈی فلور پلان",
+   "brief": "Your 2D floor plan turned into a clear 3D render.",
+   "brief_ur": "آپ کے 2D فلور پلان سے واضح تھری ڈی رینڈر۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,499 per 3D floor plan.",
+     "text_ur": "Rs 3,499 فی تھری ڈی فلور پلان۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 11,
+   "group": 1,
+   "name": "AI-Staged Interior",
+   "name_ur": "اے آئی سے سجا ہوا کمرہ",
+   "brief": "An empty room photo furnished with AI, clearly marked as virtually staged.",
+   "brief_ur": "خالی کمرے کی تصویر کو اے آئی سے سجایا جاتا ہے، واضح نشان کے ساتھ کہ یہ ورچوئل سجاوٹ ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per room image.",
+     "text_ur": "Rs 999 فی کمرہ تصویر۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 12,
+   "group": 1,
+   "name": "Single Property Landing Page",
+   "name_ur": "سنگل پراپرٹی لینڈنگ پیج",
+   "brief": "A one-page site for one property with photos, enquiry form, WhatsApp button and ad tracking.",
+   "brief_ur": "ایک پراپرٹی کے لیے ایک صفحے کی سائٹ: تصاویر، انکوائری فارم، واٹس ایپ بٹن اور اشتہاری ٹریکنگ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 per landing page.",
+     "text_ur": "Rs 9,999 فی لینڈنگ پیج۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 13,
+   "group": 1,
+   "name": "Agent Personal Branding Kit",
+   "name_ur": "ایجنٹ ذاتی برانڈنگ کٹ",
+   "brief": "A professional look for an individual agent: card design, photo touch-up and social templates.",
+   "brief_ur": "انفرادی ایجنٹ کے لیے پروفیشنل شناخت: کارڈ ڈیزائن، تصویر کی بہتری اور سوشل ٹیمپلیٹس۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,499 per agent: business card design, profile photo touch-up and 5 social media templates.",
+     "text_ur": "Rs 4,499 فی ایجنٹ: بزنس کارڈ ڈیزائن، پروفائل تصویر کی بہتری اور 5 سوشل میڈیا ٹیمپلیٹس۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 14,
+   "group": 1,
+   "name": "Agency Logo + Brand Kit",
+   "name_ur": "ایجنسی لوگو + برانڈ کٹ",
+   "brief": "A logo, colours, fonts and a one-page brand guide for your agency.",
+   "brief_ur": "آپ کی ایجنسی کے لیے لوگو، رنگ، فونٹس اور ایک صفحے کی برانڈ گائیڈ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 6,499: 3 logo ideas, up to 3 rounds of changes, colours, fonts, one-page brand guide and all files.",
+     "text_ur": "Rs 6,499: لوگو کے 3 آئیڈیاز، 3 بار تک تبدیلیاں، رنگ، فونٹس، ایک صفحے کی برانڈ گائیڈ اور تمام فائلیں۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 15,
+   "group": 1,
+   "name": "Social Media Pages Setup",
+   "name_ur": "سوشل میڈیا پیجز سیٹ اپ",
+   "brief": "Your business pages set up with branding, bio and contact details, plus WhatsApp Business.",
+   "brief_ur": "آپ کے بزنس پیجز برانڈنگ، تعارف اور رابطہ تفصیلات کے ساتھ، اور واٹس ایپ بزنس۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,499 for up to 5 platforms plus your WhatsApp Business profile.",
+     "text_ur": "Rs 3,499 میں 5 پلیٹ فارمز تک اور آپ کا واٹس ایپ بزنس پروفائل۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 16,
+   "group": 1,
+   "name": "Agency Website",
+   "name_ur": "ایجنسی ویب سائٹ",
+   "brief": "A fast, mobile-first agency website with listings, WhatsApp button and enquiry forms.",
+   "brief_ur": "تیز، موبائل فرسٹ ایجنسی ویب سائٹ: لسٹنگز، واٹس ایپ بٹن اور انکوائری فارمز کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 32,499 for a site of up to 6 pages. Larger sites are quoted.",
+     "text_ur": "Rs 32,499 سے، زیادہ سے زیادہ 6 صفحات کی سائٹ۔ بڑی سائٹ کی کوٹیشن الگ۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 17,
+   "group": 1,
+   "name": "Website + Easy Listing Editor",
+   "name_ur": "ویب سائٹ + آسان لسٹنگ ایڈیٹر",
+   "brief": "An agency website with an easy editor, so your team adds and updates listings itself.",
+   "brief_ur": "آسان ایڈیٹر والی ایجنسی ویب سائٹ، تاکہ آپ کی ٹیم خود لسٹنگز شامل اور اپڈیٹ کرے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 42,499 for the website with the listing editor and a training session.",
+     "text_ur": "Rs 42,499 سے، لسٹنگ ایڈیٹر اور ٹریننگ سیشن کے ساتھ ویب سائٹ۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "7–10 days, including a training session at handover.",
+   "delivery_ur": "7 سے 10 دن، حوالگی پر ٹریننگ سیشن سمیت۔"
+  },
+  {
+   "no": 18,
+   "group": 1,
+   "name": "Google Business Profile Management",
+   "name_ur": "گوگل بزنس پروفائل مینجمنٹ",
+   "brief": "Your Google Business Profile kept active and up to date every month. Initial profile set-up or clean-up is included where required — there is no separate set-up fee.",
+   "brief_ur": "آپ کا گوگل بزنس پروفائل ہر ماہ فعال اور تازہ رکھا جاتا ہے۔ ضرورت ہو تو ابتدائی پروفائل سیٹ اپ یا درستی شامل ہے — کوئی الگ سیٹ اپ فیس نہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,999 a month.",
+     "text_ur": "Rs 3,999 ماہانہ۔",
+     "from": false,
+     "included": "Initial profile set-up or clean-up where required (no separate fee), then 8 posts a month, photo updates, review replies and a monthly report.",
+     "included_ur": "ضرورت ہو تو ابتدائی پروفائل سیٹ اپ یا درستی (الگ فیس نہیں)، پھر ہر ماہ 8 پوسٹس، تصاویر کی اپڈیٹ، ریویوز کے جواب اور ماہانہ رپورٹ۔"
+    }
+   ],
+   "delivery": "Profile ready within 2 days where set-up is needed (Google verification can take longer); then managed every month.",
+   "delivery_ur": "جہاں سیٹ اپ درکار ہو وہاں 2 دن میں پروفائل تیار (گوگل تصدیق میں زیادہ وقت لگ سکتا ہے)؛ پھر ہر ماہ مینجمنٹ۔"
+  },
+  {
+   "no": 19,
+   "group": 1,
+   "name": "Facebook Property Group Marketing",
+   "name_ur": "فیس بک پراپرٹی گروپ مارکیٹنگ",
+   "brief": "Regular posting of your listings in relevant, approved property groups.",
+   "brief_ur": "متعلقہ اور منظور شدہ پراپرٹی گروپس میں آپ کی لسٹنگز کی باقاعدہ پوسٹنگ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 6,499 a month.",
+     "text_ur": "Rs 6,499 ماہانہ۔",
+     "from": false,
+     "included": "Up to 60 posts a month in approved property groups, with replies passed to your team.",
+     "included_ur": "منظور شدہ پراپرٹی گروپس میں ہر ماہ 60 پوسٹس تک، جوابات آپ کی ٹیم کو بھیجے جاتے ہیں۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 20,
+   "group": 1,
+   "name": "Multi-Portal Listing Management",
+   "name_ur": "ملٹی پورٹل لسٹنگ مینجمنٹ",
+   "brief": "Your listings on Zameen, Graana, OLX and Facebook kept current from one master sheet.",
+   "brief_ur": "زمین، گرانہ، او ایل ایکس اور فیس بک پر آپ کی لسٹنگز ایک ماسٹر شیٹ سے تازہ رکھی جاتی ہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Set-up: Rs 19,499 for the master sheet and sync.",
+     "text_ur": "سیٹ اپ: ماسٹر شیٹ اور ہم آہنگی کے لیے Rs 19,499۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    },
+    {
+     "text": "Plus Rs 9,999 a month.",
+     "text_ur": "اور Rs 9,999 ماہانہ۔",
+     "from": false,
+     "included": "Up to 50 active listings kept current on the portals you choose.",
+     "included_ur": "آپ کے منتخب پورٹلز پر 50 تک فعال لسٹنگز تازہ رکھی جاتی ہیں۔"
+    }
+   ],
+   "delivery": "Set-up: 3–5 days. Monthly: listing changes go live within 1 day.",
+   "delivery_ur": "سیٹ اپ: 3 سے 5 دن۔ ماہانہ: لسٹنگ کی تبدیلیاں 1 دن میں۔"
+  },
+  {
+   "no": 21,
+   "group": 1,
+   "name": "Paid Ads Management — One Platform",
+   "name_ur": "پیڈ اشتہارات مینجمنٹ — ایک پلیٹ فارم",
+   "brief": "Campaigns on Meta, Google or TikTok, aimed at messages and enquiries. Ad spend is separate.",
+   "brief_ur": "میٹا، گوگل یا ٹک ٹاک پر مہمات، پیغامات اور انکوائریز کے لیے۔ اشتہاری خرچ الگ ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 a month for one platform.",
+     "text_ur": "ایک پلیٹ فارم کے لیے Rs 9,999 ماہانہ۔",
+     "from": false,
+     "included": "Campaign set-up, audiences, 4 ad creatives a month, weekly checks and a monthly report. Ad spend is paid by you to the platform.",
+     "included_ur": "مہم سیٹ اپ، آڈینس، ہر ماہ 4 اشتہاری ڈیزائن، ہفتہ وار جائزہ اور ماہانہ رپورٹ۔ اشتہاری خرچ آپ پلیٹ فارم کو ادا کرتے ہیں۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; ads start once the platform approves them.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پلیٹ فارم کی منظوری کے بعد اشتہارات شروع۔"
+  },
+  {
+   "no": 22,
+   "group": 1,
+   "name": "Paid Ads Management — Two Platforms",
+   "name_ur": "پیڈ اشتہارات مینجمنٹ — دو پلیٹ فارمز",
+   "brief": "Campaigns run on two platforms (for example Meta and Google). Ad spend is separate.",
+   "brief_ur": "دو پلیٹ فارمز پر مہمات (مثلاً میٹا اور گوگل)۔ اشتہاری خرچ الگ ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 16,499 a month for two platforms.",
+     "text_ur": "دو پلیٹ فارمز کے لیے Rs 16,499 ماہانہ۔",
+     "from": false,
+     "included": "Campaign set-up on both platforms, audiences, 4 ad creatives a month, weekly checks and a monthly report. Ad spend is paid by you.",
+     "included_ur": "دونوں پلیٹ فارمز پر مہم سیٹ اپ، آڈینس، ہر ماہ 4 اشتہاری ڈیزائن، ہفتہ وار جائزہ اور ماہانہ رپورٹ۔ اشتہاری خرچ آپ ادا کرتے ہیں۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 23,
+   "group": 1,
+   "name": "Overseas Buyer Campaign",
+   "name_ur": "اوورسیز خریدار مہم",
+   "brief": "Ads for your listings aimed at overseas Pakistanis in the Gulf, UK and North America. Ad spend is separate.",
+   "brief_ur": "خلیج، برطانیہ اور شمالی امریکہ میں مقیم اوورسیز پاکستانیوں کے لیے آپ کی لسٹنگز کے اشتہارات۔ اشتہاری خرچ الگ ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 12,999 a month.",
+     "text_ur": "Rs 12,999 ماہانہ۔",
+     "from": false,
+     "included": "Country targeting, time-zone scheduling, 4 creatives a month and a monthly report. Ad spend is paid by you.",
+     "included_ur": "ملک کے حساب سے ٹارگٹنگ، ٹائم زون شیڈولنگ، ہر ماہ 4 ڈیزائن اور ماہانہ رپورٹ۔ اشتہاری خرچ آپ ادا کرتے ہیں۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 24,
+   "group": 1,
+   "name": "Retargeting",
+   "name_ur": "ری ٹارگٹنگ",
+   "brief": "Follow-up ads for people who saw your ads or listing but did not enquire. Added to paid ads.",
+   "brief_ur": "ان لوگوں کے لیے فالو اپ اشتہارات جنہوں نے اشتہار یا لسٹنگ دیکھی مگر رابطہ نہیں کیا۔ پیڈ اشتہارات کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,999 a month, added to paid ads.",
+     "text_ur": "Rs 4,999 ماہانہ، پیڈ اشتہارات کے ساتھ۔",
+     "from": false,
+     "included": "Retargeting audiences and 2 follow-up creatives a month.",
+     "included_ur": "ری ٹارگٹنگ آڈینس اور ہر ماہ 2 فالو اپ ڈیزائن۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 25,
+   "group": 2,
+   "name": "Project Branding Kit",
+   "name_ur": "پراجیکٹ برانڈنگ کٹ",
+   "brief": "Name ideas, logo, tagline, colours and launch templates for a new project.",
+   "brief_ur": "نئے پراجیکٹ کے لیے نام کے آئیڈیاز، لوگو، ٹیگ لائن، رنگ اور لانچ ٹیمپلیٹس۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 19,499 per project.",
+     "text_ur": "Rs 19,499 فی پراجیکٹ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 26,
+   "group": 2,
+   "name": "Payment / Instalment Plan Design",
+   "name_ur": "ادائیگی / قسط پلان ڈیزائن",
+   "brief": "A clear chart of booking, instalments, balloon and possession payments.",
+   "brief_ur": "بکنگ، اقساط، بیلون اور قبضے کی ادائیگیوں کا واضح چارٹ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,599 per plan, in phone, print and WhatsApp sizes.",
+     "text_ur": "Rs 1,599 فی پلان، فون، پرنٹ اور واٹس ایپ سائز میں۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 27,
+   "group": 2,
+   "name": "Project Brochure",
+   "name_ur": "پراجیکٹ بروشر",
+   "brief": "A full project brochure for print and digital use.",
+   "brief_ur": "پرنٹ اور ڈیجیٹل استعمال کے لیے مکمل پراجیکٹ بروشر۔",
+   "partner": true,
+   "lines": [
+    {
+     "text": "Rs 9,999 for up to 8 pages. Printing is separate.",
+     "text_ur": "Rs 9,999 میں زیادہ سے زیادہ 8 صفحات۔ پرنٹنگ الگ ہے۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 28,
+   "group": 2,
+   "name": "Project WhatsApp One-Pager",
+   "name_ur": "پراجیکٹ واٹس ایپ ون پیجر",
+   "brief": "A single-page project summary designed to be shared on WhatsApp.",
+   "brief_ur": "واٹس ایپ پر شیئر کرنے کے لیے ایک صفحے کا پراجیکٹ خلاصہ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,999 per one-pager.",
+     "text_ur": "Rs 1,999 فی ون پیجر۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 29,
+   "group": 2,
+   "name": "Project Rate / Offer Creative",
+   "name_ur": "پراجیکٹ ریٹ / آفر ڈیزائن",
+   "brief": "A rate sheet or offer creative, updated when your prices change.",
+   "brief_ur": "ریٹ شیٹ یا آفر ڈیزائن، قیمتیں بدلنے پر اپڈیٹ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 999 per creative.",
+     "text_ur": "Rs 999 فی ڈیزائن۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 30,
+   "group": 2,
+   "name": "NOC / Approval Presentation Kit",
+   "name_ur": "این او سی / منظوری پریزنٹیشن کٹ",
+   "brief": "Presentation design for the approval details you supply (authority, reference numbers, documents). AgenticCore designs what you provide; we do not independently verify approvals.",
+   "brief_ur": "آپ کی فراہم کردہ منظوری کی تفصیلات (ادارہ، حوالہ نمبر، دستاویزات) کی پریزنٹیشن ڈیزائن۔ ہم صرف آپ کی دی ہوئی معلومات ڈیزائن کرتے ہیں؛ منظوری کی آزادانہ تصدیق نہیں کرتے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,499 per project: badge set and a one-page approvals presentation.",
+     "text_ur": "Rs 3,499 فی پراجیکٹ: بیج سیٹ اور ایک صفحے کی منظوریوں کی پریزنٹیشن۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 31,
+   "group": 2,
+   "name": "Master Plan / Society Map Digitisation",
+   "name_ur": "ماسٹر پلان / سوسائٹی نقشہ ڈیجیٹائزیشن",
+   "brief": "A clean digital map of sectors, roads, amenities and plot numbers, easy to read on a phone.",
+   "brief_ur": "سیکٹرز، سڑکوں، سہولیات اور پلاٹ نمبروں کا صاف ڈیجیٹل نقشہ، فون پر آسانی سے پڑھنے کے قابل۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 12,999 per map (up to about 500 plots).",
+     "text_ur": "Rs 12,999 سے فی نقشہ (تقریباً 500 پلاٹس تک)۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days for maps of up to about 500 plots; larger maps are quoted with a date.",
+   "delivery_ur": "تقریباً 500 پلاٹس تک کے نقشے کے لیے 2 سے 3 دن؛ بڑے نقشوں کی تاریخ کوٹیشن میں۔"
+  },
+  {
+   "no": 32,
+   "group": 2,
+   "name": "Investor Presentation",
+   "name_ur": "انویسٹر پریزنٹیشن",
+   "brief": "A presentation deck for overseas or institutional investors.",
+   "brief_ur": "اوورسیز یا ادارہ جاتی سرمایہ کاروں کے لیے پریزنٹیشن ڈیک۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 12,999 for up to 15 slides.",
+     "text_ur": "Rs 12,999 میں زیادہ سے زیادہ 15 سلائیڈز۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 33,
+   "group": 2,
+   "name": "Project Landing Page",
+   "name_ur": "پراجیکٹ لینڈنگ پیج",
+   "brief": "A one-page project site with booking/enquiry form, brochure download and WhatsApp chat.",
+   "brief_ur": "ایک صفحے کی پراجیکٹ سائٹ: بکنگ/انکوائری فارم، بروشر ڈاؤن لوڈ اور واٹس ایپ چیٹ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 per project landing page.",
+     "text_ur": "Rs 9,999 فی پراجیکٹ لینڈنگ پیج۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 34,
+   "group": 2,
+   "name": "Project / Developer Website",
+   "name_ur": "پراجیکٹ / ڈویلپر ویب سائٹ",
+   "brief": "A full website for a project or developer: overview, plans, payment plan, gallery and enquiries.",
+   "brief_ur": "پراجیکٹ یا ڈویلپر کے لیے مکمل ویب سائٹ: تعارف، پلانز، ادائیگی پلان، گیلری اور انکوائریز۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 32,499 for a site of up to 6 pages. Larger sites are quoted.",
+     "text_ur": "Rs 32,499 سے، زیادہ سے زیادہ 6 صفحات کی سائٹ۔ بڑی سائٹ کی کوٹیشن الگ۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 35,
+   "group": 2,
+   "name": "Project Promo Video",
+   "name_ur": "پراجیکٹ پرومو ویڈیو",
+   "brief": "A branded project video with motion text and music, from your renders, photos or clips.",
+   "brief_ur": "آپ کے رینڈرز، تصاویر یا کلپس سے موشن ٹیکسٹ اور موسیقی کے ساتھ برانڈڈ پراجیکٹ ویڈیو۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 3,999 per video of up to 60 seconds.",
+     "text_ur": "Rs 3,999 فی ویڈیو، زیادہ سے زیادہ 60 سیکنڈ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 36,
+   "group": 2,
+   "name": "AI Presenter Project Video",
+   "name_ur": "اے آئی پریزنٹر پراجیکٹ ویڈیو",
+   "brief": "A digital presenter explains the project, location and booking steps.",
+   "brief_ur": "ڈیجیٹل پریزنٹر پراجیکٹ، مقام اور بکنگ کے مراحل سمجھاتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,999 per video of up to 60 seconds in English or Urdu.",
+     "text_ur": "Rs 4,999 فی ویڈیو، 60 سیکنڈ تک، انگریزی یا اردو میں۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    },
+    {
+     "text": "Rs 6,999 per bilingual video of up to 60 seconds.",
+     "text_ur": "Rs 6,999 فی دو لسانی ویڈیو، 60 سیکنڈ تک۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 37,
+   "group": 2,
+   "name": "Drone Footage Editing",
+   "name_ur": "ڈرون فوٹیج ایڈیٹنگ",
+   "brief": "Your drone footage edited with roads, landmarks and boundaries marked. Filming is quoted separately.",
+   "brief_ur": "آپ کی ڈرون فوٹیج کی ایڈیٹنگ، سڑکوں، نشانیوں اور حدود کی نشاندہی کے ساتھ۔ فلم بندی کی کوٹیشن الگ۔",
+   "partner": true,
+   "lines": [
+    {
+     "text": "Rs 6,499 per edited film, from footage you supply.",
+     "text_ur": "Rs 6,499 فی ایڈٹ شدہ فلم، آپ کی فراہم کردہ فوٹیج سے۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 days.",
+   "delivery_ur": "1 سے 2 دن۔"
+  },
+  {
+   "no": 38,
+   "group": 2,
+   "name": "360° Virtual Tour",
+   "name_ur": "360 ڈگری ورچوئل ٹور",
+   "brief": "An online tour built from your 360° images. On-site capture is quoted separately.",
+   "brief_ur": "آپ کی 360 ڈگری تصاویر سے آن لائن ٹور۔ موقع پر تصویر کشی کی کوٹیشن الگ۔",
+   "partner": true,
+   "lines": [
+    {
+     "text": "Rs 12,999 per tour, from 360° images you supply.",
+     "text_ur": "Rs 12,999 فی ٹور، آپ کی فراہم کردہ 360 ڈگری تصاویر سے۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 39,
+   "group": 2,
+   "name": "Site Progress Video Service",
+   "name_ur": "سائٹ پروگریس ویڈیو سروس",
+   "brief": "Dated construction-update reels from your site footage, to keep buyers informed.",
+   "brief_ur": "آپ کی سائٹ فوٹیج سے تاریخ والی تعمیراتی اپڈیٹ ریلز، خریداروں کو باخبر رکھنے کے لیے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 a month.",
+     "text_ur": "Rs 9,999 ماہانہ۔",
+     "from": false,
+     "included": "4 dated, captioned progress reels a month from footage you supply.",
+     "included_ur": "آپ کی فراہم کردہ فوٹیج سے ہر ماہ تاریخ اور کیپشن والی 4 پروگریس ریلز۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 40,
+   "group": 2,
+   "name": "Project Launch Campaign",
+   "name_ur": "پراجیکٹ لانچ مہم",
+   "brief": "Teasers, launch promotion and a booking push across two ad platforms. Ad spend, event and printing are separate.",
+   "brief_ur": "ٹیزرز، لانچ پروموشن اور بکنگ مہم دو اشتہاری پلیٹ فارمز پر۔ اشتہاری خرچ، تقریب اور پرنٹنگ الگ ہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 32,499 a month (usually 2–3 months).",
+     "text_ur": "Rs 32,499 ماہانہ (عموماً 2 سے 3 ماہ)۔",
+     "from": false,
+     "included": "Teaser plan, 8 creatives and 2 videos a month, ads on 2 platforms, launch promotion, booking push and a weekly report.",
+     "included_ur": "ٹیزر پلان، ہر ماہ 8 ڈیزائن اور 2 ویڈیوز، 2 پلیٹ فارمز پر اشتہارات، لانچ پروموشن، بکنگ مہم اور ہفتہ وار رپورٹ۔"
+    }
+   ],
+   "delivery": "Planned and set up in 3–5 days; then runs weekly.",
+   "delivery_ur": "3 سے 5 دن میں منصوبہ اور سیٹ اپ؛ پھر ہفتہ وار۔"
+  },
+  {
+   "no": 41,
+   "group": 2,
+   "name": "Overseas Project Campaign",
+   "name_ur": "اوورسیز پراجیکٹ مہم",
+   "brief": "Project ads aimed at overseas Pakistanis in the Gulf, UK and North America. Ad spend is separate.",
+   "brief_ur": "خلیج، برطانیہ اور شمالی امریکہ میں مقیم اوورسیز پاکستانیوں کے لیے پراجیکٹ اشتہارات۔ اشتہاری خرچ الگ ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 12,999 a month.",
+     "text_ur": "Rs 12,999 ماہانہ۔",
+     "from": false,
+     "included": "Country targeting, time-zone scheduling, 4 creatives a month and a monthly report. Ad spend is paid by you.",
+     "included_ur": "ملک کے حساب سے ٹارگٹنگ، ٹائم زون شیڈولنگ، ہر ماہ 4 ڈیزائن اور ماہانہ رپورٹ۔ اشتہاری خرچ آپ ادا کرتے ہیں۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 42,
+   "group": 2,
+   "name": "Overseas Investor Webinar / Virtual Visit",
+   "name_ur": "اوورسیز انویسٹر ویبینار / ورچوئل وزٹ",
+   "brief": "Online sessions timed for overseas evenings, with registration, reminders and replay.",
+   "brief_ur": "بیرون ملک شام کے اوقات کے مطابق آن لائن سیشنز، رجسٹریشن، یاددہانی اور ریکارڈنگ کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 19,499 a month.",
+     "text_ur": "Rs 19,499 ماہانہ۔",
+     "from": false,
+     "included": "2 online sessions a month, registration page, reminders, replay and follow-up messages.",
+     "included_ur": "ہر ماہ 2 آن لائن سیشنز، رجسٹریشن پیج، یاددہانیاں، ریکارڈنگ اور فالو اپ پیغامات۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 43,
+   "group": 2,
+   "name": "Interactive Plot Availability Map",
+   "name_ur": "انٹرایکٹو پلاٹ دستیابی نقشہ",
+   "brief": "A clickable master plan showing plots as available, on hold or sold.",
+   "brief_ur": "کلک کے قابل ماسٹر پلان جو پلاٹس کو دستیاب، ہولڈ یا فروخت شدہ دکھائے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 38,999 set-up (up to 1,000 plots).",
+     "text_ur": "Rs 38,999 سے سیٹ اپ (1,000 پلاٹس تک)۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 weeks, agreed at the start.",
+   "delivery_ur": "1 سے 2 ہفتے، شروع میں طے شدہ۔"
+  },
+  {
+   "no": 44,
+   "group": 2,
+   "name": "Online Booking + E-Receipts",
+   "name_ur": "آن لائن بکنگ + ای رسید",
+   "brief": "Online booking with CNIC/NICOP capture, proof of payment and QR-verifiable receipts.",
+   "brief_ur": "آن لائن بکنگ: شناختی کارڈ/نائیکوپ، ادائیگی کا ثبوت اور کیو آر سے قابلِ تصدیق رسیدیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 32,499 set-up.",
+     "text_ur": "Rs 32,499 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 weeks, agreed at the start.",
+   "delivery_ur": "1 سے 2 ہفتے، شروع میں طے شدہ۔"
+  },
+  {
+   "no": 45,
+   "group": 2,
+   "name": "Buyer Portal",
+   "name_ur": "خریدار پورٹل",
+   "brief": "Buyers log in to see payments, documents and status.",
+   "brief_ur": "خریدار لاگ اِن کر کے ادائیگیاں، دستاویزات اور اسٹیٹس دیکھتے ہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 64,999 set-up.",
+     "text_ur": "Rs 64,999 سے سیٹ اپ۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 weeks for a standard set-up; larger work is quoted with a delivery date.",
+   "delivery_ur": "معیاری سیٹ اپ کے لیے 2 سے 3 ہفتے؛ بڑے کام کی تاریخ کوٹیشن میں دی جاتی ہے۔"
+  },
+  {
+   "no": 46,
+   "group": 2,
+   "name": "Dealer Portal",
+   "name_ur": "ڈیلر پورٹل",
+   "brief": "Each dealer gets plot allocation, marketing kit, lead tracking and commission statements.",
+   "brief_ur": "ہر ڈیلر کو پلاٹ الاٹمنٹ، مارکیٹنگ کٹ، لیڈ ٹریکنگ اور کمیشن اسٹیٹمنٹ ملتی ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 64,999 set-up.",
+     "text_ur": "Rs 64,999 سے سیٹ اپ۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 weeks for a standard set-up; larger work is quoted with a delivery date.",
+   "delivery_ur": "معیاری سیٹ اپ کے لیے 2 سے 3 ہفتے؛ بڑے کام کی تاریخ کوٹیشن میں دی جاتی ہے۔"
+  },
+  {
+   "no": 47,
+   "group": 2,
+   "name": "Instalment / Dues Reminder System",
+   "name_ur": "قسط / واجبات یاددہانی سسٹم",
+   "brief": "Automatic WhatsApp, SMS and email reminders with statements and a record of every notice.",
+   "brief_ur": "گوشواروں اور ہر نوٹس کے ریکارڈ کے ساتھ خودکار واٹس ایپ، ایس ایم ایس اور ای میل یاددہانیاں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 32,499 set-up.",
+     "text_ur": "Rs 32,499 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "1–2 weeks, plus any time Meta takes to approve message templates.",
+   "delivery_ur": "1 سے 2 ہفتے، اور میٹا کی ٹیمپلیٹ منظوری کا وقت۔"
+  },
+  {
+   "no": 48,
+   "group": 2,
+   "name": "Project CRM + Sales Team Setup",
+   "name_ur": "پراجیکٹ سی آر ایم + سیلز ٹیم سیٹ اپ",
+   "brief": "Lead tracking for your sales team, with controls that keep leads in the company, plus 2 training sessions.",
+   "brief_ur": "آپ کی سیلز ٹیم کے لیے لیڈ ٹریکنگ، ایسے کنٹرولز کے ساتھ کہ لیڈز کمپنی میں رہیں، اور 2 ٹریننگ سیشنز۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 22,999 set-up, including 2 training sessions.",
+     "text_ur": "Rs 22,999 سیٹ اپ، 2 ٹریننگ سیشنز سمیت۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 49,
+   "group": 3,
+   "name": "AI Listing Assistant",
+   "name_ur": "اے آئی لسٹنگ اسسٹنٹ",
+   "brief": "Turns rough property information into organised listing and content drafts for your team to review. It works only from the facts you give it and never invents property details or prices.",
+   "brief_ur": "کچی پراپرٹی معلومات کو منظم لسٹنگ اور مواد کے مسودوں میں بدلتا ہے، جنہیں آپ کی ٹیم چیک کرتی ہے۔ یہ صرف آپ کی دی ہوئی معلومات سے کام کرتا ہے اور جائیداد کی تفصیل یا قیمت خود سے نہیں بناتا۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 7,999 set-up.",
+     "text_ur": "Rs 7,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 50,
+   "group": 3,
+   "name": "Website AI Assistant",
+   "name_ur": "ویب سائٹ اے آئی اسسٹنٹ",
+   "brief": "Answers common website enquiries using only the business and property information you approve.",
+   "brief_ur": "صرف آپ کی منظور شدہ کاروباری اور پراپرٹی معلومات کی بنیاد پر ویب سائٹ کے عام سوالات کے جواب دیتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 7,999 set-up.",
+     "text_ur": "Rs 7,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 51,
+   "group": 3,
+   "name": "WhatsApp Enquiry / Qualification Bot",
+   "name_ur": "واٹس ایپ انکوائری / کوالیفیکیشن بوٹ",
+   "brief": "Collects structured enquiry details (budget, area, property type) and routes each enquiry to your team.",
+   "brief_ur": "انکوائری کی منظم تفصیلات (بجٹ، علاقہ، پراپرٹی کی قسم) جمع کرتا ہے اور ہر انکوائری آپ کی ٹیم تک پہنچاتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 set-up.",
+     "text_ur": "Rs 9,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days, plus any time Meta takes to approve your WhatsApp number.",
+   "delivery_ur": "3 سے 5 دن، اور میٹا کی واٹس ایپ نمبر منظوری کا وقت۔"
+  },
+  {
+   "no": 52,
+   "group": 3,
+   "name": "Automatic Property Posting System",
+   "name_ur": "خودکار پراپرٹی پوسٹنگ سسٹم",
+   "brief": "Turns your property data into scheduled posts for your own connected channels.",
+   "brief_ur": "آپ کے پراپرٹی ڈیٹا کو آپ کے اپنے منسلک چینلز کے لیے شیڈول شدہ پوسٹس میں بدلتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 set-up.",
+     "text_ur": "Rs 9,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 53,
+   "group": 3,
+   "name": "AI Property Content System",
+   "name_ur": "اے آئی پراپرٹی کانٹینٹ سسٹم",
+   "brief": "Property details in; listing copy, WhatsApp text, captions and social drafts out, for your review. It works only from the facts you give it and never invents property details or prices.",
+   "brief_ur": "پراپرٹی کی تفصیل دیں؛ لسٹنگ تحریر، واٹس ایپ متن، کیپشنز اور سوشل مسودے حاصل کریں، آپ کے جائزے کے لیے۔ یہ صرف آپ کی دی ہوئی معلومات سے کام کرتا ہے اور جائیداد کی تفصیل یا قیمت خود سے نہیں بناتا۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 set-up.",
+     "text_ur": "Rs 9,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 54,
+   "group": 3,
+   "name": "Lead Routing Automation",
+   "name_ur": "لیڈ روٹنگ آٹومیشن",
+   "brief": "Routes your approved lead sources into Google Sheets, a CRM and team alerts.",
+   "brief_ur": "آپ کے منظور شدہ لیڈ ذرائع کو گوگل شیٹس، سی آر ایم اور ٹیم الرٹس تک پہنچاتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 6,499 set-up.",
+     "text_ur": "Rs 6,499 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "3–5 days.",
+   "delivery_ur": "3 سے 5 دن۔"
+  },
+  {
+   "no": 55,
+   "group": 3,
+   "name": "AI Document & Proposal Assistant",
+   "name_ur": "اے آئی دستاویز اور پروپوزل اسسٹنٹ",
+   "brief": "Helps prepare routine proposals, quotations, reports, letters and internal documents. Not legal advice.",
+   "brief_ur": "روزمرہ پروپوزلز، کوٹیشنز، رپورٹس، خطوط اور اندرونی دستاویزات کی تیاری میں مدد۔ یہ قانونی مشورہ نہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 12,999 set-up.",
+     "text_ur": "Rs 12,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 56,
+   "group": 3,
+   "name": "AI Office Assistant",
+   "name_ur": "اے آئی آفس اسسٹنٹ",
+   "brief": "Configured around the common day-to-day tasks of a real-estate office.",
+   "brief_ur": "رئیل اسٹیٹ دفتر کے روزمرہ عام کاموں کے مطابق ترتیب دیا جاتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 14,999 set-up.",
+     "text_ur": "Rs 14,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 57,
+   "group": 3,
+   "name": "AI Lead Follow-up System",
+   "name_ur": "اے آئی لیڈ فالو اپ سسٹم",
+   "brief": "Organises enquiries and drafts follow-ups, reminders and team actions. It helps your team follow up; it does not promise sales.",
+   "brief_ur": "انکوائریز کو منظم کرتا ہے اور فالو اپ، یاددہانیوں اور ٹیم کے کاموں کے مسودے بناتا ہے۔ یہ فالو اپ میں مدد ہے، فروخت کی ضمانت نہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 14,999 set-up.",
+     "text_ur": "Rs 14,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 58,
+   "group": 3,
+   "name": "Custom AI Assistant",
+   "name_ur": "کسٹم اے آئی اسسٹنٹ",
+   "brief": "An AI assistant built for one specific task in your business.",
+   "brief_ur": "آپ کے کاروبار کے کسی ایک مخصوص کام کے لیے بنایا گیا اے آئی اسسٹنٹ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 14,999 set-up, depending on scope.",
+     "text_ur": "Rs 14,999 سے سیٹ اپ، کام کی وسعت کے مطابق۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Quoted after a short scoping call; typically 1–3 weeks.",
+   "delivery_ur": "مختصر اسکوپنگ کال کے بعد کوٹیشن؛ عموماً 1 سے 3 ہفتے۔"
+  },
+  {
+   "no": 59,
+   "group": 3,
+   "name": "CRM + AI Workflow Setup",
+   "name_ur": "سی آر ایم + اے آئی ورک فلو سیٹ اپ",
+   "brief": "A CRM set up with AI-assisted workflows for enquiries, follow-ups and reporting.",
+   "brief_ur": "انکوائریز، فالو اپ اور رپورٹنگ کے لیے اے آئی معاون ورک فلوز کے ساتھ سی آر ایم سیٹ اپ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 19,999 set-up, depending on scope.",
+     "text_ur": "Rs 19,999 سے سیٹ اپ، کام کی وسعت کے مطابق۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Quoted after a short scoping call; typically 1–3 weeks.",
+   "delivery_ur": "مختصر اسکوپنگ کال کے بعد کوٹیشن؛ عموماً 1 سے 3 ہفتے۔"
+  },
+  {
+   "no": 60,
+   "group": 3,
+   "name": "Agency Automation Framework",
+   "name_ur": "ایجنسی آٹومیشن فریم ورک",
+   "brief": "Connects listings, content, leads and routine agency workflows into one system.",
+   "brief_ur": "لسٹنگز، مواد، لیڈز اور ایجنسی کے روزمرہ ورک فلوز کو ایک نظام میں جوڑتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 24,999 set-up, depending on scope.",
+     "text_ur": "Rs 24,999 سے سیٹ اپ، کام کی وسعت کے مطابق۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Quoted after a short scoping call; typically 1–3 weeks.",
+   "delivery_ur": "مختصر اسکوپنگ کال کے بعد کوٹیشن؛ عموماً 1 سے 3 ہفتے۔"
+  },
+  {
+   "no": 61,
+   "group": 3,
+   "name": "AI Voice Bot",
+   "name_ur": "اے آئی وائس بوٹ",
+   "brief": "Answers and qualifies incoming calls in Urdu and English.",
+   "brief_ur": "آنے والی کالز کا اردو اور انگریزی میں جواب دیتا اور انہیں کوالیفائی کرتا ہے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 29,999 set-up, depending on scope.",
+     "text_ur": "Rs 29,999 سے سیٹ اپ، کام کی وسعت کے مطابق۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Quoted after a short scoping call; typically 1–3 weeks.",
+   "delivery_ur": "مختصر اسکوپنگ کال کے بعد کوٹیشن؛ عموماً 1 سے 3 ہفتے۔"
+  },
+  {
+   "no": 62,
+   "group": 3,
+   "name": "Developer Automation Framework",
+   "name_ur": "ڈویلپر آٹومیشن فریم ورک",
+   "brief": "Configurable automation for project enquiries, content, reporting and internal workflows.",
+   "brief_ur": "پراجیکٹ انکوائریز، مواد، رپورٹنگ اور اندرونی ورک فلوز کے لیے قابلِ ترتیب آٹومیشن۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "From Rs 39,999 set-up, depending on scope.",
+     "text_ur": "Rs 39,999 سے سیٹ اپ، کام کی وسعت کے مطابق۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Quoted after a short scoping call; typically 1–3 weeks.",
+   "delivery_ur": "مختصر اسکوپنگ کال کے بعد کوٹیشن؛ عموماً 1 سے 3 ہفتے۔"
+  },
+  {
+   "no": 63,
+   "group": 4,
+   "name": "Video Script",
+   "name_ur": "ویڈیو اسکرپٹ",
+   "brief": "A ready-to-record script for a market update or property video.",
+   "brief_ur": "مارکیٹ اپڈیٹ یا پراپرٹی ویڈیو کے لیے ریکارڈ کرنے کے لیے تیار اسکرپٹ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 649 per script of up to 60 seconds.",
+     "text_ur": "Rs 649 فی اسکرپٹ، 60 سیکنڈ تک۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 64,
+   "group": 4,
+   "name": "English + Roman Urdu Ad Copy",
+   "name_ur": "انگریزی + رومن اردو اشتہاری تحریر",
+   "brief": "Ad text written with local property terms (file vs plot, balloting, possession).",
+   "brief_ur": "مقامی پراپرٹی اصطلاحات (فائل بمقابلہ پلاٹ، بیلٹنگ، قبضہ) کے ساتھ اشتہاری تحریر۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,599 per campaign set: 5 headlines and 5 ad texts.",
+     "text_ur": "Rs 1,599 فی مہم سیٹ: 5 سرخیاں اور 5 اشتہاری متن۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 65,
+   "group": 4,
+   "name": "Advertising Wording Check",
+   "name_ur": "اشتہاری الفاظ کی جانچ",
+   "brief": "A review of approval, location and price wording before ads go live. Marketing wording review only; not legal advice.",
+   "brief_ur": "اشتہار چلنے سے پہلے منظوری، مقام اور قیمت کے الفاظ کا جائزہ۔ صرف مارکیٹنگ کے الفاظ کا جائزہ؛ قانونی مشورہ نہیں۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,299 per campaign (up to 10 pieces of copy).",
+     "text_ur": "Rs 1,299 فی مہم (10 تحریروں تک)۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 66,
+   "group": 4,
+   "name": "Market / Area Guide",
+   "name_ur": "مارکیٹ / علاقائی گائیڈ",
+   "brief": "A downloadable area guide with a contact form.",
+   "brief_ur": "رابطہ فارم کے ساتھ قابلِ ڈاؤن لوڈ علاقائی گائیڈ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 6,499 per guide of up to 8 pages.",
+     "text_ur": "Rs 6,499 فی گائیڈ، 8 صفحات تک۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 67,
+   "group": 4,
+   "name": "Overseas Buyer Guide",
+   "name_ur": "اوورسیز خریدار گائیڈ",
+   "brief": "A simple explainer for overseas buyers (for example filer status and buying from abroad).",
+   "brief_ur": "اوورسیز خریداروں کے لیے آسان وضاحت (مثلاً فائلر اسٹیٹس اور بیرون ملک سے خریداری)۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,999 per guide.",
+     "text_ur": "Rs 4,999 فی گائیڈ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days.",
+   "delivery_ur": "2 سے 3 دن۔"
+  },
+  {
+   "no": 68,
+   "group": 4,
+   "name": "Blog + SEO Content",
+   "name_ur": "بلاگ + ایس ای او مواد",
+   "brief": "Regular articles published on your website.",
+   "brief_ur": "آپ کی ویب سائٹ پر باقاعدہ مضامین کی اشاعت۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 6,499 a month.",
+     "text_ur": "Rs 6,499 ماہانہ۔",
+     "from": false,
+     "included": "4 articles a month, a keyword plan and publishing on your site.",
+     "included_ur": "ہر ماہ 4 مضامین، کی ورڈ پلان اور آپ کی سائٹ پر اشاعت۔"
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 69,
+   "group": 4,
+   "name": "Review & Reputation Management",
+   "name_ur": "ریویو اور ساکھ مینجمنٹ",
+   "brief": "Review requests, reply drafts and a weekly check for rumours in groups.",
+   "brief_ur": "ریویو کی درخواستیں، جوابات کے مسودے اور گروپس میں افواہوں کی ہفتہ وار جانچ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 4,999 a month.",
+     "text_ur": "Rs 4,999 ماہانہ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Set up within 2–3 days; then runs on the monthly schedule.",
+   "delivery_ur": "2 سے 3 دن میں سیٹ اپ؛ پھر ماہانہ شیڈول پر چلتا ہے۔"
+  },
+  {
+   "no": 70,
+   "group": 4,
+   "name": "Urdu Sale / Purchase / Rental Agreement — First Draft",
+   "name_ur": "اردو بیع / خرید / کرایہ اقرار نامہ — پہلا مسودہ",
+   "brief": "A first draft in Urdu from the details you give us. First draft only; not legal advice. Your own lawyer must review it before signing or use.",
+   "brief_ur": "آپ کی دی ہوئی تفصیلات سے اردو میں پہلا مسودہ۔ صرف پہلا مسودہ؛ قانونی مشورہ نہیں۔ دستخط یا استعمال سے پہلے آپ کا اپنا وکیل اسے لازماً دیکھے۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 1,299 per agreement: Urdu first draft, one round of changes, Word and PDF files.",
+     "text_ur": "Rs 1,299 فی اقرار نامہ: اردو پہلا مسودہ، ایک بار تبدیلی، ورڈ اور پی ڈی ایف فائلیں۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "Same day for orders confirmed before 6pm PKT.",
+   "delivery_ur": "اسی دن، اگر آرڈر شام 6 بجے (پاکستانی وقت) سے پہلے کنفرم ہو۔"
+  },
+  {
+   "no": 71,
+   "group": 4,
+   "name": "Custom Agreement Drafting Assistant",
+   "name_ur": "کسٹم اقرار نامہ ڈرافٹنگ اسسٹنٹ",
+   "brief": "Your own drafting assistant with sale, purchase and rental templates. Same legal caution: drafts only, reviewed by your own lawyer.",
+   "brief_ur": "بیع، خرید اور کرایہ ٹیمپلیٹس کے ساتھ آپ کا اپنا ڈرافٹنگ اسسٹنٹ۔ وہی قانونی احتیاط: صرف مسودے، آپ کے اپنے وکیل کے جائزے کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 22,999 set-up.",
+     "text_ur": "Rs 22,999 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 72,
+   "group": 4,
+   "name": "Embeddable Property Calculator",
+   "name_ur": "ویب سائٹ پراپرٹی کیلکولیٹر",
+   "brief": "Instalment, tax or transfer-cost calculators for your own website.",
+   "brief_ur": "آپ کی اپنی ویب سائٹ کے لیے قسط، ٹیکس یا منتقلی لاگت کیلکولیٹرز۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 9,999 per calculator.",
+     "text_ur": "Rs 9,999 فی کیلکولیٹر۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    },
+    {
+     "text": "Rs 19,499 for all 3.",
+     "text_ur": "تینوں کے لیے Rs 19,499۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "2–3 days for one; 3–5 days for all three.",
+   "delivery_ur": "ایک کے لیے 2 سے 3 دن؛ تینوں کے لیے 3 سے 5 دن۔"
+  },
+  {
+   "no": 73,
+   "group": 4,
+   "name": "Balloting Results Page",
+   "name_ur": "بیلٹنگ نتائج پیج",
+   "brief": "A results page where buyers search by file or CNIC number, with WhatsApp result notices.",
+   "brief_ur": "نتائج کا صفحہ جہاں خریدار فائل یا شناختی کارڈ نمبر سے تلاش کریں، واٹس ایپ نتیجہ نوٹس کے ساتھ۔",
+   "partner": false,
+   "lines": [
+    {
+     "text": "Rs 32,499 set-up.",
+     "text_ur": "Rs 32,499 سیٹ اپ۔",
+     "from": false,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "5–7 days.",
+   "delivery_ur": "5 سے 7 دن۔"
+  },
+  {
+   "no": 74,
+   "group": 4,
+   "name": "Balloting Event Digital / Live Support",
+   "name_ur": "بیلٹنگ ایونٹ ڈیجیٹل / لائیو سپورٹ",
+   "brief": "Digital and live-stream support on the balloting day. External crew, cameras and venue are quoted separately where required.",
+   "brief_ur": "بیلٹنگ کے دن ڈیجیٹل اور لائیو اسٹریم سپورٹ۔ بیرونی عملہ، کیمرے اور جگہ کی ضرورت ہو تو کوٹیشن الگ۔",
+   "partner": true,
+   "lines": [
+    {
+     "text": "From Rs 25,999 per balloting event.",
+     "text_ur": "فی بیلٹنگ ایونٹ Rs 25,999 سے شروع۔",
+     "from": true,
+     "included": null,
+     "included_ur": null
+    }
+   ],
+   "delivery": "On the event day, booked in advance.",
+   "delivery_ur": "تقریب کے دن، پیشگی بکنگ کے ساتھ۔"
+  }
+ ],
+ "packages": [
+  {
+   "no": 1,
+   "id": "agent-monthly",
+   "section": "agents",
+   "name": "Agent Monthly",
+   "name_ur": "ایجنٹ ماہانہ",
+   "for": "Agents and dealers who market several properties every month.",
+   "for_ur": "وہ ایجنٹس اور ڈیلرز جو ہر ماہ کئی پراپرٹیز کی مارکیٹنگ کرتے ہیں۔",
+   "monthly": 7999,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": null,
+   "delivery_short": "Onboarding within 2 days",
+   "delivery_short_ur": "2 دن میں آغاز",
+   "includes": [
+    "Up to 10 Property Marketing Sets a month — each: WhatsApp property card + social property creative + English/Roman Urdu captions",
+    "Basic enhancement of up to 5 of your photos per set",
+    "Up to 2 property reels a month",
+    "Up to 4 rate / offer updates a month",
+    "Scheduling and posting to up to 3 of your own social channels (client-owned pages)",
+    "Brand Kit set up and reused on every piece",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "ہر ماہ 10 تک پراپرٹی مارکیٹنگ سیٹس — ہر سیٹ: واٹس ایپ پراپرٹی کارڈ + سوشل پراپرٹی ڈیزائن + انگریزی/رومن اردو کیپشنز",
+    "ہر سیٹ میں آپ کی 5 تک تصاویر کی بنیادی بہتری",
+    "ہر ماہ 2 تک پراپرٹی ریلز",
+    "ہر ماہ 4 تک ریٹ / آفر اپڈیٹس",
+    "آپ کے اپنے (آپ کی ملکیت) زیادہ سے زیادہ 3 سوشل چینلز پر شیڈولنگ اور پوسٹنگ",
+    "برانڈ کٹ سیٹ اپ اور ہر ڈیزائن میں استعمال",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Printing, photo or video shoots, a scheduler subscription of your own, and paid ads."
+  },
+  {
+   "no": 2,
+   "id": "agent-pro",
+   "section": "agents",
+   "name": "Agent Pro",
+   "name_ur": "ایجنٹ پرو",
+   "for": "Busy agents and small teams with a steady flow of listings.",
+   "for_ur": "مصروف ایجنٹس اور چھوٹی ٹیمیں جن کی لسٹنگز مسلسل آتی رہتی ہیں۔",
+   "monthly": 14999,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": null,
+   "delivery_short": "Onboarding within 2 days",
+   "delivery_short_ur": "2 دن میں آغاز",
+   "includes": [
+    "Up to 25 Property Marketing Sets a month",
+    "Up to 4 reels a month",
+    "Up to 8 rate / offer updates a month",
+    "Scheduling and posting to up to 5 of your own social channels (client-owned pages), with a content calendar",
+    "Google Business Profile activity",
+    "AgenticCore Estate connection: market your Estate listings straight from your dashboard",
+    "Monthly report",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "ہر ماہ 25 تک پراپرٹی مارکیٹنگ سیٹس",
+    "ہر ماہ 4 تک ریلز",
+    "ہر ماہ 8 تک ریٹ / آفر اپڈیٹس",
+    "آپ کے اپنے (آپ کی ملکیت) زیادہ سے زیادہ 5 سوشل چینلز پر شیڈولنگ اور پوسٹنگ، کانٹینٹ کیلنڈر کے ساتھ",
+    "گوگل بزنس پروفائل سرگرمی",
+    "AgenticCore Estate سے رابطہ: اپنی Estate لسٹنگز کی مارکیٹنگ براہِ راست ڈیش بورڈ سے",
+    "ماہانہ رپورٹ",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Printing, photo or video shoots, a scheduler subscription of your own, and paid ads."
+  },
+  {
+   "no": 3,
+   "id": "agency-growth",
+   "section": "agents",
+   "name": "Agency Growth",
+   "name_ur": "ایجنسی گروتھ",
+   "for": "Agencies that want content, social, Google and paid ads run together.",
+   "for_ur": "وہ ایجنسیاں جو مواد، سوشل، گوگل اور پیڈ اشتہارات ایک ساتھ چلوانا چاہتی ہیں۔",
+   "monthly": 29999,
+   "monthly_from": false,
+   "setup": 9999,
+   "setup_quoted": false,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": null,
+   "delivery_short": "Set-up in 3–5 days",
+   "delivery_short_ur": "3 سے 5 دن میں سیٹ اپ",
+   "includes": [
+    "Up to 50 Property Marketing Sets a month",
+    "Up to 8 reels / short videos a month",
+    "Regular rate / offer creatives",
+    "Social media management across up to 5 of your own channels (client-owned pages)",
+    "Google Business Profile",
+    "Sharing your listings in suitable third-party Facebook property groups, where each group's rules allow (these are not AgenticCore channels)",
+    "Paid-ad management on ONE platform, with ad creatives and copy",
+    "Basic enquiry workflow",
+    "Monthly reporting",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "ہر ماہ 50 تک پراپرٹی مارکیٹنگ سیٹس",
+    "ہر ماہ 8 تک ریلز / مختصر ویڈیوز",
+    "باقاعدہ ریٹ / آفر ڈیزائن",
+    "آپ کے اپنے (آپ کی ملکیت) زیادہ سے زیادہ 5 چینلز پر سوشل میڈیا مینجمنٹ",
+    "گوگل بزنس پروفائل",
+    "جہاں ہر گروپ کے قواعد اجازت دیں، آپ کی لسٹنگز موزوں تھرڈ پارٹی فیس بک پراپرٹی گروپس میں شیئر کرنا (یہ AgenticCore کے چینلز نہیں)",
+    "ایک پلیٹ فارم پر پیڈ اشتہارات کی مینجمنٹ، اشتہاری ڈیزائن اور تحریر کے ساتھ",
+    "بنیادی انکوائری ورک فلو",
+    "ماہانہ رپورٹنگ",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Ad spend is paid by you directly to the platform. Printing and photo or video shoots."
+  },
+  {
+   "no": 4,
+   "id": "project-monthly",
+   "section": "projects",
+   "name": "Project Monthly",
+   "name_ur": "پراجیکٹ ماہانہ",
+   "for": "Builders and developers who need their project marketed every month.",
+   "for_ur": "وہ بلڈرز اور ڈویلپرز جن کے پراجیکٹ کی ہر ماہ مارکیٹنگ ضروری ہے۔",
+   "monthly": 19999,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": null,
+   "delivery_short": "Onboarding within 3 days",
+   "delivery_short_ur": "3 دن میں آغاز",
+   "includes": [
+    "12 project creatives a month",
+    "4 reels / videos a month",
+    "4 price, payment-plan or rate updates a month",
+    "2 construction / progress updates a month (from your footage)",
+    "English + Roman Urdu captions and content",
+    "Content calendar; scheduling and posting to up to 4 of your own channels (client-owned pages)",
+    "Google Business content and activity",
+    "Monthly report",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "ہر ماہ 12 پراجیکٹ ڈیزائن",
+    "ہر ماہ 4 ریلز / ویڈیوز",
+    "ہر ماہ 4 قیمت، ادائیگی پلان یا ریٹ اپڈیٹس",
+    "ہر ماہ 2 تعمیراتی / پیش رفت اپڈیٹس (آپ کی فوٹیج سے)",
+    "انگریزی + رومن اردو کیپشنز اور مواد",
+    "کانٹینٹ کیلنڈر؛ آپ کے اپنے (آپ کی ملکیت) زیادہ سے زیادہ 4 چینلز پر شیڈولنگ اور پوسٹنگ",
+    "گوگل بزنس مواد اور سرگرمی",
+    "ماہانہ رپورٹ",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Printing, photo or video shoots, a scheduler subscription of your own, and paid ads."
+  },
+  {
+   "no": 5,
+   "id": "project-growth",
+   "section": "projects",
+   "name": "Project Growth",
+   "name_ur": "پراجیکٹ گروتھ",
+   "for": "Projects ready to run paid campaigns, retargeting and overseas-focused content.",
+   "for_ur": "وہ پراجیکٹس جو پیڈ مہمات، ری ٹارگٹنگ اور اوورسیز مواد چلانے کے لیے تیار ہیں۔",
+   "monthly": 39999,
+   "monthly_from": false,
+   "setup": 9999,
+   "setup_quoted": false,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": null,
+   "delivery_short": "Set-up in 3–5 days",
+   "delivery_short_ur": "3 سے 5 دن میں سیٹ اپ",
+   "includes": [
+    "16 project creatives a month",
+    "6 reels / videos a month",
+    "4 project / progress updates a month",
+    "Rate and payment-plan updates",
+    "Full social media management of your own channels (client-owned pages)",
+    "Paid-advertising management on up to 2 platforms, with ad creatives",
+    "Retargeting",
+    "Overseas-oriented campaign content",
+    "Monthly reporting and a monthly planning call",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "ہر ماہ 16 پراجیکٹ ڈیزائن",
+    "ہر ماہ 6 ریلز / ویڈیوز",
+    "ہر ماہ 4 پراجیکٹ / پیش رفت اپڈیٹس",
+    "ریٹ اور ادائیگی پلان اپڈیٹس",
+    "آپ کے اپنے (آپ کی ملکیت) چینلز کی مکمل سوشل میڈیا مینجمنٹ",
+    "2 تک پلیٹ فارمز پر پیڈ اشتہارات کی مینجمنٹ، اشتہاری ڈیزائن کے ساتھ",
+    "ری ٹارگٹنگ",
+    "اوورسیز خریداروں کے لیے مہماتی مواد",
+    "ماہانہ رپورٹنگ اور ماہانہ پلاننگ کال",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Ad spend is paid by you directly to the platform. Printing, events and on-site filming."
+  },
+  {
+   "no": 6,
+   "id": "developer-partner",
+   "section": "projects",
+   "name": "Developer Partner",
+   "name_ur": "ڈویلپر پارٹنر",
+   "for": "Developers who want marketing plus the digital and AI systems behind the project, configured to their needs.",
+   "for_ur": "وہ ڈویلپرز جو مارکیٹنگ کے ساتھ پراجیکٹ کے ڈیجیٹل اور اے آئی سسٹمز بھی، اپنی ضرورت کے مطابق، چاہتے ہیں۔",
+   "monthly": 74999,
+   "monthly_from": true,
+   "setup": null,
+   "setup_quoted": true,
+   "min_months": 3,
+   "one_off": null,
+   "one_off_from": false,
+   "quote_only": true,
+   "term_note": null,
+   "delivery_short": "Proposal first; timings agreed per system",
+   "delivery_short_ur": "پہلے پروپوزل؛ ہر سسٹم کا وقت الگ طے",
+   "includes": [
+    "Everything appropriate from Project Growth",
+    "Plus a customised combination of: WhatsApp bot, website AI assistant, CRM, lead routing, plot availability map, booking and e-receipts, instalment reminders, buyer/dealer portals, overseas campaigns, automation and custom AI assistants",
+    "Set-up quoted according to the systems you choose",
+    "Eligible content may also be featured on AgenticCore's own channels (optional — see \"AgenticCore network featuring\")"
+   ],
+   "includes_ur": [
+    "پراجیکٹ گروتھ کی تمام موزوں چیزیں",
+    "اس کے ساتھ آپ کی ضرورت کا امتزاج: واٹس ایپ بوٹ، ویب سائٹ اے آئی اسسٹنٹ، سی آر ایم، لیڈ روٹنگ، پلاٹ دستیابی نقشہ، بکنگ اور ای رسید، قسط یاددہانیاں، خریدار/ڈیلر پورٹلز، اوورسیز مہمات، آٹومیشن اور کسٹم اے آئی اسسٹنٹس",
+    "سیٹ اپ کی کوٹیشن آپ کے منتخب سسٹمز کے مطابق",
+    "اہل مواد AgenticCore کے اپنے چینلز پر بھی دکھایا جا سکتا ہے (اختیاری — دیکھیں \"AgenticCore نیٹ ورک فیچرنگ\")"
+   ],
+   "paid_separately": "Ad spend is paid by you directly to the platform. Running costs of the systems you choose (AI usage, WhatsApp, hosting, CRM, phone), printing, events and filming."
+  },
+  {
+   "no": 7,
+   "id": "agency-launch",
+   "section": "launch",
+   "name": "Agency Launch Kit",
+   "name_ur": "ایجنسی لانچ کٹ",
+   "for": "New agents and agencies who want to start looking professional everywhere at once.",
+   "for_ur": "نئے ایجنٹس اور ایجنسیاں جو ایک ساتھ ہر جگہ پروفیشنل نظر آنا چاہتی ہیں۔",
+   "monthly": null,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 0,
+   "one_off": 14999,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": "One-off payment. No monthly commitment.",
+   "delivery_short": "3–5 days",
+   "delivery_short_ur": "3 سے 5 دن",
+   "includes": [
+    "Agency / agent brand setup, with logo and brand styling where required",
+    "Business and social profile setup",
+    "Google Business Profile setup",
+    "Reusable property creative templates",
+    "Brand Kit configuration"
+   ],
+   "includes_ur": [
+    "ایجنسی / ایجنٹ برانڈ سیٹ اپ، ضرورت ہو تو لوگو اور برانڈ اسٹائلنگ",
+    "بزنس اور سوشل پروفائل سیٹ اپ",
+    "گوگل بزنس پروفائل سیٹ اپ",
+    "دوبارہ استعمال ہونے والے پراپرٹی ڈیزائن ٹیمپلیٹس",
+    "برانڈ کٹ کی ترتیب"
+   ],
+   "paid_separately": "Printing, domain and hosting (if you add a website later)."
+  },
+  {
+   "no": 7,
+   "id": "agency-launch-web",
+   "section": "launch",
+   "name": "Agency Launch Kit with website",
+   "name_ur": "ایجنسی لانچ کٹ ویب سائٹ کے ساتھ",
+   "for": "The Agency Launch Kit plus an agency website.",
+   "for_ur": "ایجنسی لانچ کٹ اور ایجنسی ویب سائٹ۔",
+   "monthly": null,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 0,
+   "one_off": 39999,
+   "one_off_from": true,
+   "quote_only": false,
+   "term_note": "One-off payment. Larger websites are quoted.",
+   "delivery_short": "7–10 days",
+   "delivery_short_ur": "7 سے 10 دن",
+   "includes": [
+    "Everything in the Agency Launch Kit",
+    "Agency website (up to 6 pages)"
+   ],
+   "includes_ur": [
+    "ایجنسی لانچ کٹ کی تمام چیزیں",
+    "ایجنسی ویب سائٹ (6 صفحات تک)"
+   ],
+   "paid_separately": "Domain and hosting (in your name), printing."
+  },
+  {
+   "no": 8,
+   "id": "project-launch",
+   "section": "launch",
+   "name": "Project Launch Kit",
+   "name_ur": "پراجیکٹ لانچ کٹ",
+   "for": "A new project that needs its complete launch material in one order.",
+   "for_ur": "نیا پراجیکٹ جسے ایک ہی آرڈر میں مکمل لانچ مواد چاہیے۔",
+   "monthly": null,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 0,
+   "one_off": 39999,
+   "one_off_from": false,
+   "quote_only": false,
+   "term_note": "One-off payment. No monthly commitment.",
+   "delivery_short": "5–7 days",
+   "delivery_short_ur": "5 سے 7 دن",
+   "includes": [
+    "Project branding",
+    "Payment-plan design",
+    "Project brochure",
+    "Project WhatsApp one-pager",
+    "Landing page",
+    "NOC / approval presentation (from approvals you supply)",
+    "Initial social creatives",
+    "Initial project promo video"
+   ],
+   "includes_ur": [
+    "پراجیکٹ برانڈنگ",
+    "ادائیگی پلان ڈیزائن",
+    "پراجیکٹ بروشر",
+    "پراجیکٹ واٹس ایپ ون پیجر",
+    "لینڈنگ پیج",
+    "این او سی / منظوری پریزنٹیشن (آپ کی فراہم کردہ منظوریوں سے)",
+    "ابتدائی سوشل ڈیزائن",
+    "ابتدائی پراجیکٹ پرومو ویڈیو"
+   ],
+   "paid_separately": "Printing, domain and hosting, on-site filming."
+  },
+  {
+   "no": 8,
+   "id": "project-launch-web",
+   "section": "launch",
+   "name": "Project Launch Kit with full website",
+   "name_ur": "پراجیکٹ لانچ کٹ مکمل ویب سائٹ کے ساتھ",
+   "for": "The Project Launch Kit plus a full project website.",
+   "for_ur": "پراجیکٹ لانچ کٹ اور مکمل پراجیکٹ ویب سائٹ۔",
+   "monthly": null,
+   "monthly_from": false,
+   "setup": null,
+   "setup_quoted": false,
+   "min_months": 0,
+   "one_off": 64999,
+   "one_off_from": true,
+   "quote_only": false,
+   "term_note": "One-off payment. Larger websites are quoted.",
+   "delivery_short": "7–10 days",
+   "delivery_short_ur": "7 سے 10 دن",
+   "includes": [
+    "Everything in the Project Launch Kit",
+    "Full project website (up to 6 pages)"
+   ],
+   "includes_ur": [
+    "پراجیکٹ لانچ کٹ کی تمام چیزیں",
+    "مکمل پراجیکٹ ویب سائٹ (6 صفحات تک)"
+   ],
+   "paid_separately": "Domain and hosting (in your name), printing, on-site filming."
+  }
+ ],
+ "running_costs": [
+  {
+   "name": "Ad spend",
+   "text": "Paid by you directly to Meta, Google or TikTok, never to us. You set the budget."
+  },
+  {
+   "name": "AI usage",
+   "text": "AI usage is billed by the AI provider (for example OpenAI, Anthropic or xAI) to your own account, based on how much it is used. We share a current estimate before set-up."
+  },
+  {
+   "name": "WhatsApp Business messaging",
+   "text": "WhatsApp Business messaging fees are charged by Meta to your account. Check Meta's current rate card; we never hard-code it."
+  },
+  {
+   "name": "Automation and hosting",
+   "text": "Automation or hosting (for example n8n or a small cloud server) is billed by the provider."
+  },
+  {
+   "name": "Social scheduler",
+   "text": "A social scheduler (for example Buffer), if you want your own account, is billed by that provider."
+  },
+  {
+   "name": "Website domain and hosting",
+   "text": "Your domain and hosting are paid by you to the provider and stay in your name."
+  },
+  {
+   "name": "Phone and voice AI",
+   "text": "The phone line and voice-AI minutes are billed by the telephony and AI providers."
+  },
+  {
+   "name": "Portals and CRM",
+   "text": "Your Zameen, Graana or other portal package and any CRM subscription stay in your name and are paid by you."
+  },
+  {
+   "name": "Partner work",
+   "text": "Printing, drone filming, 360° capture and event crews: quoted per job, with a written quote first."
+  }
+ ]
+}

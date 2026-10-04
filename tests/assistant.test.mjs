@@ -75,10 +75,11 @@ test('general assistant: approved answers and routing', async () => {
   assert.match(proj.reply, /reviews and approves/);
   const pk = await ask('Builder ko website aur brochure chahiye.');
   assert.ok(pk.actions.includes('pk_services'));
-  assert.match(pk.reply, /alag, paid service/);
+  assert.match(pk.reply, /Project \/ Developer Website: From Rs 32,499/);   // published PK prices, word for word
+  assert.match(pk.reply, /Project Brochure: Rs 9,999/);
   const price = await ask('How much is the premium package?');
-  assert.doesNotMatch(price.reply, /\d/);                     // never invents a price
-  assert.match(price.reply, /can't quote/);
+  assert.match(price.reply, /Agent Monthly: Rs 7,999 a month/);   // the real packages, never an invented "premium" price
+  assert.doesNotMatch(price.reply, /premium/i);
   assert.match((await ask('are you a real person?')).reply, /AI assistant/);
   assert.deepEqual((await ask('G-13 mein 2 bed flat hai?')).actions[0], 'amaan_find');
 });

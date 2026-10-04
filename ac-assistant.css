@@ -181,3 +181,12 @@ body.aca-full-open .ac-wa-float, body.aca-full-open .wa-float, body.aca-full-ope
   .aca-fhead .aca-reset, .aca-head .aca-reset { font-size: .75rem; padding: 0 .5rem; }
   .aca-full .aca-msg { max-width: 86%; }
 }
+
+/* Language choice at the start of a chat */
+.aca-langpick .aca-bubble { max-width: 100%; }
+.aca-lp-t { margin: 0 0 .25rem; font-weight: 600; }
+.aca-lp-t[dir="rtl"] { font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Noto Naskh Arabic', serif; font-weight: 500; font-size: 1.05rem; line-height: 2; }
+.aca-lp-row { display: flex; gap: .6rem; margin-top: .6rem; flex-wrap: wrap; }
+.aca-lp-btn { flex: 1 1 120px; min-height: 48px; padding: .4rem 1rem; border-radius: 12px; border: 2px solid #C9A84C; background: #FFFBEF; color: #1E2A24; font: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
+.aca-lp-btn[lang="ur"] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; font-size: 1.2rem; }
+.aca-lp-btn:hover, .aca-lp-btn:focus-visible { background: #0C3324; color: #F3E3B0; border-color: #0C3324; outline: none; }

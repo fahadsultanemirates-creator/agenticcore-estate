@@ -18,6 +18,9 @@ const COMMANDS = [
   { command: 'login', description: 'One-time website sign-in link' },
   { command: 'order', description: 'Order marketing (AgenticCore Pakistan)' },
   { command: 'orders', description: 'My marketing orders' },
+  { command: 'manage', description: 'Manage my account and listings' },
+  { command: 'language', description: 'English / اردو' },
+  { command: 'voice', description: 'Voice replies on / off' },
   { command: 'help', description: 'Help' },
   { command: 'cancel', description: 'Stop the current step' }
 ];
@@ -25,7 +28,8 @@ const COMMANDS = [
 export async function ensureWebhook(tg, siteUrl) {
   const want = siteUrl + '/api/telegram';
   const info = await tg.call('getWebhookInfo', {});
-  if (info && info.url === want) return { changed: false };
+  // the command list is refreshed every run, so new commands appear after a deploy
+  if (info && info.url === want) { await tg.call('setMyCommands', { commands: COMMANDS }).catch(() => null); return { changed: false }; }
   await tg.call('setWebhook', { url: want, secret_token: webhookSecret(), allowed_updates: ['message', 'callback_query'], max_connections: 20 });
   await tg.call('setMyCommands', { commands: COMMANDS }).catch(() => null);
   return { changed: true };

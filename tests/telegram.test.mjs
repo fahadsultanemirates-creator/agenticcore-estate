@@ -107,6 +107,8 @@ test('groups, other bots and repeated updates are ignored', async () => {
 test('new person: welcome offers to open an account (EN, Urdu and Roman Urdu)', async () => {
   const store = fakeStore(), tg = fakeTg(), d = deps(store, tg);
   await run(d, text('/start'));
+  assert.ok(btnData(last(tg)).includes('lg:en') && btnData(last(tg)).includes('lg:ur'));   // English or Urdu first
+  await run(d, press('lg:en'));
   assert.match(lastText(tg), /open an AgenticCore Estate account/);
   assert.ok(btnData(last(tg)).includes('m:signup'));
   await run(d, text('السلام علیکم'));

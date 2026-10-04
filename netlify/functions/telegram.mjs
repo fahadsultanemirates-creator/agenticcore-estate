@@ -7,7 +7,8 @@
 import { handleUpdate } from '../../services/telegram/bot.mjs';
 import { makeTelegram, botConfigured, webhookSecret } from '../../services/telegram/tg-api.mjs';
 import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
-import { voiceConfigured, transcribe } from '../../services/telegram/voice.mjs';
+import { voiceConfigured, transcribe, synthesize } from '../../services/telegram/voice.mjs';
+import { getCatalog } from '../../services/pk-catalog.mjs';
 import { handleTurn } from '../../services/assistant-service.mjs';
 import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
 import { getAreaNames } from '../../services/supabase.mjs';
@@ -24,10 +25,11 @@ export function makeDeps(fetchImpl) {
     tg: makeTelegram(fetchImpl),
     store,
     refreshPlaces: () => refreshPlaces(() => store.rpc('kb_known_places')),
-    voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl) },
+    voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl), synthesize: (text, lang) => synthesize(text, lang, fetchImpl) },
     assistant: {
       handleTurn,
       areaNames: () => getAreaNames().catch(() => []),
+      catalog: () => getCatalog({ fetchImpl }),
       guideDeps: () => ({ allowAI: claudeAvailable(), ai: (opts) => claudeJSON(Object.assign({}, opts, { timeoutMs: 6000 })), areaNames: [] })
     },
     quality,

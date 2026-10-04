@@ -2,7 +2,7 @@
 // Used by agenticcore.estate and agenticcorepk.com (cross-site requests are
 // allowed for those two sites only). Body (JSON, max 12 KB):
 //   { bot: 'guide'|'amaan', site: 'estate'|'pk', ui_lang, lang, messages: [{role, text}],
-//     mode, asked, notes, quick }
+//     lang_choice, mode, asked, notes, quick }
 // No conversation text is stored or logged. When Claude is unavailable, slow
 // or over the daily cap, answers come from the deterministic path.
 
@@ -13,6 +13,7 @@ import { getAreaNames, getKnownPlaces } from '../../services/supabase.mjs';
 import { refreshPlaces } from '../../services/memory.mjs';
 import { getUserFromToken } from '../../services/supabase.mjs';
 import { handleHandoff } from '../../services/amaan-handoff.mjs';
+import { getCatalog } from '../../services/pk-catalog.mjs';
 import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
 import { makeTelegram, botConfigured } from '../../services/telegram/tg-api.mjs';
 
@@ -83,10 +84,11 @@ export default async function handler(req, context) {
 
   const allowAI = claudeAvailable() && aiBudgetLeft() && !limited('ai:' + ip, 60, 24 * 60 * 60 * 1000);
   try {
-    const [areaNames] = await Promise.all([getAreaNames().catch(() => []), refreshPlaces(getKnownPlaces)]);
+    const [areaNames, , catalog] = await Promise.all([getAreaNames().catch(() => []), refreshPlaces(getKnownPlaces), getCatalog()]);
     const out = await handleTurn(body, {
       allowAI,
       areaNames,
+      catalog,
       ai: async (opts) => { aiToday += 1; return claudeJSON(opts); },
       find: (text) => findProperty(text, { ai: false })
     });

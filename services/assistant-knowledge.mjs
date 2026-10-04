@@ -1,8 +1,9 @@
 // Approved knowledge for the two AgenticCore assistants (the AgenticCore AI
 // Assistant and Amaan). Everything an assistant may state as fact lives here
 // or comes from live site data for the turn (search results, listing facts).
-// Prices, packages, approvals, legal status and availability are never
-// stated unless they appear in that site data.
+// AgenticCore Pakistan prices and packages come from the published price
+// list (services/pk-catalog.mjs) and are quoted word for word; approvals,
+// legal status and availability are never stated unless in site data.
 
 export const KNOWLEDGE = `
 AGENTICCORE ESTATE (agenticcore.estate)
@@ -10,7 +11,9 @@ AGENTICCORE ESTATE (agenticcore.estate)
 - Lahore, Karachi, Sialkot and Faisalabad open on Tuesday 6 October 2026. Before that date people in those cities can already sign up and list free; their listings show publicly from 6 October. Islamabad and Rawalpindi are live now.
 - AgenticCore Pakistan marketing services are available in all six cities (from 6 October in Lahore, Karachi, Sialkot and Faisalabad).
 - Five directories: Properties (to buy or rent), Projects, Property professionals, Agencies, Builders & developers.
-- Listing a property is free during the launch period. Creating a professional, agency or builder/developer profile is free.
+- Listing a property is free during the launch period. Creating a professional, agency or builder/developer profile is free. Project listing is free during launch too (project accounts are reviewed first). There is nothing to buy on Estate yet.
+- Estate marketplace packages are planned from 1 November 2026. They are not available yet and their prices have not been announced — never guess them.
+- 30% early-participant benefit: people who join during the free launch period and create genuine marketplace content (a property, project or profile) before packages launch are eligible for 30% off their first two months of qualifying Estate marketplace packages once they launch. The date is recorded automatically and shown in the dashboard; sample content never qualifies.
 - One AgenticCore account works on both AgenticCore Estate and AgenticCore Pakistan.
 - Anyone can list a property after signing up. The owner reviews the form before publishing.
 - Projects: any account can apply to publish projects; a project goes live only after the AgenticCore team reviews and approves the application.
@@ -26,7 +29,15 @@ AGENTICCORE PAKISTAN (agenticcorepk.com)
 - Four service areas: property marketing for agents and agencies (WhatsApp cards, social posts, flyers, photo enhancement, reels, branding kits, agency websites, Google Business Profile, paid ads); project marketing for builders and developers (project branding, brochures, landing pages, project websites, launch campaigns, videos, plot maps, buyer and dealer portals); AI and automation (WhatsApp enquiry bots, website AI assistants, auto-posting, CRM and lead routing); and specialist add-ons.
 - Monthly plans for agents, agencies and projects, and one-off launch kits for new agencies and new projects. Delivery runs 7 days a week.
 - Owners can send an Estate listing to AgenticCore Pakistan to order promotion for it.
-- Prices are published on the AgenticCore Pakistan services page; custom work is quoted. The assistants never quote prices.
+- Prices are published on the AgenticCore Pakistan services page and in the PRICE LIST below. Quote them exactly; custom or larger work is quoted by the team.
+- To order: on the website, Amaan can take the request with photos, videos, logos or documents (the 📎 button, after signing in) and send it to the AgenticCore team with "Send to AgenticCore team"; or order in the dashboard on agenticcorepk.com; or in Telegram with /order. Nothing starts until the client and the team confirm.
+
+TELEGRAM
+- The AgenticCore Telegram bot (@AgenticcoreEstatebot) opens an account, lists a property step by step (with photos), shows your listings, sends a one-time website sign-in link and takes AgenticCore Pakistan orders (/order). It understands typed messages and voice notes in Urdu and English.
+
+WHO DOES WHAT
+- The AgenticCore AI Assistant (small gold window) answers general questions: what AgenticCore is, prices, packages, profiles, how things work.
+- Amaan (full-screen chat) finds genuine listings, helps owners list a property, and takes marketing or project orders with files and sends them to the team.
 
 CONTACT
 - WhatsApp chat with the AgenticCore team, business email, and the AgenticCore WhatsApp Channel (for updates). Also on YouTube, TikTok, Facebook and Instagram.
@@ -35,7 +46,7 @@ CONTACT
 // Buttons an assistant may offer. The browser maps each key to a URL for the
 // site it runs on, so a model can never inject a link.
 export const ACTIONS = [
-  'amaan_find', 'amaan_list', 'ask_guide',
+  'amaan_find', 'amaan_list', 'amaan_order', 'ask_guide',
   'estate_home', 'estate_properties', 'estate_buy', 'estate_rent', 'estate_projects', 'estate_professionals', 'estate_agencies', 'estate_builders',
   'estate_list', 'estate_pricing', 'estate_dashboard', 'estate_signup',
   'join_professional', 'join_agency', 'join_builder', 'join_developer',
@@ -49,7 +60,7 @@ export const TOPICS = [
   { id: 'human', words: ['human', 'real person', 'talk to someone', 'customer care', 'support team', 'insaan', 'banday se', 'kisi se baat', 'انسان', 'نمائندہ'] },
   { id: 'contact', words: ['contact', 'whatsapp', 'email', 'phone number of agenticcore', 'call you', 'reach you', 'rabta', 'raabta', 'رابطہ', 'ای میل', 'واٹس ایپ'] },
   { id: 'pk_service', words: ['website', 'web site', 'brochure', 'logo', 'branding', 'marketing', 'market my', 'promote', 'promotion', 'advert', 'ads', 'campaign', 'social media', 'reel', 'video', 'photo enhancement', 'landing page', 'leads', 'tashheer', 'tashhir', 'ویب سائٹ', 'بروشر', 'لوگو', 'مارکیٹنگ', 'تشہیر', 'اشتہار', 'ویڈیو'] },
-  { id: 'pricing', words: ['package', 'packages', 'fee', 'fees', 'charges', 'subscription', 'how much does', 'cost of', 'pricing', 'paid plan', 'kitne paise', 'kitna kharcha', 'fees kya', 'فیس', 'چارجز', 'پیکج', 'خرچہ'] },
+  { id: 'pricing', words: ['package', 'packages', 'fee', 'fees', 'charges', 'subscription', 'how much', 'cost', 'costs', 'price', 'prices', 'rate', 'rates', 'pricing', 'paid plan', 'kitne', 'kitne paise', 'kitna kharcha', 'kitne ka', 'kitne ki', 'qeemat', 'keemat', 'rate kya', 'fees kya', 'قیمت', 'کتنے', 'کتنا', 'ریٹ', 'فیس', 'چارجز', 'پیکج', 'خرچہ'] },
   { id: 'trust', words: ['verify', 'verified', 'verification', 'noc', 'title', 'fraud', 'scam', 'fake', 'genuine', 'safe', 'legal', 'dhoka', 'asli', 'jaali', 'تصدیق', 'دھوکہ', 'جعلی', 'قانونی'] },
   { id: 'samples', words: ['sample', 'example listing', 'examples', 'namoona', 'نمونہ'] },
   { id: 'project', words: ['project', 'projects', 'housing scheme', 'society', 'off plan', 'off-plan', 'publish project', 'پروجیکٹ', 'سوسائٹی'] },
@@ -129,10 +140,10 @@ export const ANSWERS = {
     actions: ['pk_services', 'contact_whatsapp']
   },
   pricing: {
-    en: 'Listing and profiles on AgenticCore Estate are free during the launch period. I can\'t quote package or service prices here — AgenticCore Pakistan publishes its prices on its services page, and our team can answer anything else.',
-    ur: 'لانچ کے دوران AgenticCore Estate پر لسٹنگ اور پروفائلز مفت ہیں۔ میں یہاں پیکج یا سروس کی قیمت نہیں بتا سکتا — AgenticCore Pakistan اپنی قیمتیں سروسز پیج پر دیتا ہے، باقی سوالات کے لیے ہماری ٹیم سے بات کریں۔',
-    ro: 'Launch ke dauran AgenticCore Estate par listing aur profiles free hain. Main yahan package ya service ki qeemat nahin bata sakta — AgenticCore Pakistan apni qeematein services page par deta hai, baqi sawalon ke liye hamari team se baat karein.',
-    actions: ['estate_pricing', 'pk_services', 'contact_whatsapp']
+    en: 'Everything on AgenticCore Estate is free during the launch period — listings, projects and profiles. Estate marketplace packages are planned from 1 November 2026 (prices not announced yet), and people who join now are eligible for 30% off their first two months. AgenticCore Pakistan marketing services have published prices — tell me what you need (for example a logo, a 3D floor plan or a website) and I\'ll give you the exact price.',
+    ur: 'لانچ کے دوران AgenticCore Estate پر سب کچھ مفت ہے — لسٹنگز، پروجیکٹس اور پروفائلز۔ Estate مارکیٹ پلیس پیکجز 1 نومبر 2026 سے متوقع ہیں (قیمتوں کا اعلان ابھی نہیں ہوا)، اور ابھی شامل ہونے والے پہلے دو مہینوں پر 30% رعایت کے اہل ہوں گے۔ AgenticCore Pakistan کی مارکیٹنگ سروسز کی قیمتیں شائع شدہ ہیں — بتائیں آپ کو کیا چاہیے (مثلاً لوگو، تھری ڈی فلور پلان یا ویب سائٹ)، میں آپ کو درست قیمت بتا دوں گا۔',
+    ro: 'Launch ke dauran AgenticCore Estate par sab kuch free hai — listings, projects aur profiles. Estate marketplace packages 1 November 2026 se mutawaqqe hain (qeematon ka elaan abhi nahin hua), aur abhi join karne wale pehle do mahinon par 30% discount ke ahal honge. AgenticCore Pakistan ki marketing services ki qeematein published hain — batayein aap ko kya chahiye (maslan logo, 3D floor plan ya website), main aap ko durust qeemat bata dunga.',
+    actions: ['pk_services', 'estate_pricing', 'amaan_order']
   },
   trust: {
     en: 'AgenticCore does not verify property titles, NOCs or government approvals. "Checked" only means we reviewed the listing information. Always check documents with your own lawyer and the relevant authority before paying.',
