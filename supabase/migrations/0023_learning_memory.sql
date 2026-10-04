@@ -122,6 +122,8 @@ begin
     case when v_parent is not null then jsonb_build_object('parent', v_parent) else jsonb_build_object('known', v_known is not null) end,
     'listing', new.owner_id::text);
   return new;
+exception when others then
+  return new;            -- learning never blocks a listing
 end;
 $$;
 drop trigger if exists listings_kb_learn on public.listings;
