@@ -7,7 +7,7 @@
 import { handleUpdate } from '../../services/telegram/bot.mjs';
 import { makeTelegram, botConfigured, webhookSecret } from '../../services/telegram/tg-api.mjs';
 import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
-import { voiceConfigured, transcribe, synthesize } from '../../services/telegram/voice.mjs';
+import { voiceConfigured, transcribe } from '../../services/telegram/voice.mjs';
 import { getCatalog } from '../../services/pk-catalog.mjs';
 import { handleTurn } from '../../services/assistant-service.mjs';
 import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
@@ -25,7 +25,7 @@ export function makeDeps(fetchImpl) {
     tg: makeTelegram(fetchImpl),
     store,
     refreshPlaces: () => refreshPlaces(() => store.rpc('kb_known_places')),
-    voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl), synthesize: (text, lang) => synthesize(text, lang, fetchImpl) },
+    voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl) },
     assistant: {
       handleTurn,
       areaNames: () => getAreaNames().catch(() => []),
