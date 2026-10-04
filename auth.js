@@ -11,6 +11,7 @@ function showAuthError(el, message) {
 
 function hideAuthError(el) {
   el.style.display = 'none';
+  el.classList.remove('ok');
 }
 
 function setLoading(btn, loading, defaultText) {
@@ -140,3 +141,25 @@ if (loginForm) {
     box.hidden = false;
   }
 })();
+
+// "Forgot your password? Email me a sign-in link": a one-time link to the
+// account's email; it opens the set-password page already signed in. Never
+// creates an account, and says the same thing whether or not the email exists.
+const mailLinkBtn = document.getElementById('mailLinkBtn');
+if (mailLinkBtn) {
+  let lastAt = 0;
+  mailLinkBtn.addEventListener('click', async function () {
+    const errorEl = document.getElementById('authError');
+    hideAuthError(errorEl);
+    const email = document.getElementById('identifier').value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError(errorEl, acT('auth_maillink_need')); return; }
+    if (Date.now() - lastAt < 60000) { showAuthError(errorEl, acT('auth_maillink_wait')); return; }
+    lastAt = Date.now();
+    mailLinkBtn.disabled = true;
+    const { error } = await supabaseClient.auth.signInWithOtp({ email: email, options: { shouldCreateUser: false, emailRedirectTo: location.origin + '/set-password.html' } });
+    mailLinkBtn.disabled = false;
+    if (error && /rate|seconds|too many/i.test(error.message || '')) { showAuthError(errorEl, acT('auth_maillink_wait')); return; }
+    showAuthError(errorEl, acT('auth_maillink_sent'));
+    errorEl.classList.add('ok');
+  });
+}

@@ -257,6 +257,7 @@ test('website sign-in link: right page, limited to 3 an hour', async () => {
   const { store, tg, d } = await signedUp();
   await run(d, text('/login'));
   assert.match(btnData(last(tg))[0], /set-password\.html/);
+  assert.ok(btnData(last(tg)).some((u) => /redirect_to=https%3A%2F%2Fagenticcorepk\.com%2Fdashboard\.html/.test(u)), 'one-time PK dashboard button too');
   Object.values(store.db.profiles)[0].password_set_at = '2026-10-01';
   await run(d, text('/login'));
   assert.match(btnData(last(tg))[0], /my\.html/);

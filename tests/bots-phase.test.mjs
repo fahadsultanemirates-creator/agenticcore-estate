@@ -7,7 +7,7 @@ process.env.TELEGRAM_BOT_TOKEN = 'test-token';
 delete process.env.ANTHROPIC_API_KEY;
 
 const cat = await import('../services/pk-catalog.mjs');
-const { handleTurn, isPriceQuestion, onlyAllowedNumbers, numbersIn } = await import('../services/assistant-service.mjs');
+const { handleTurn, isPriceQuestion, onlyAllowedNumbers, numbersIn, plainMoney } = await import('../services/assistant-service.mjs');
 const { handleUpdate } = await import('../services/telegram/bot.mjs');
 const { default: quality } = await import('../listing-quality.js');
 
@@ -159,4 +159,14 @@ test('Telegram: "how do I edit my listing" explains managing the account', async
   assert.match(tg.sent[tg.sent.length - 1].text, /open an account|account/i);
   assert.ok(isPriceQuestion('website kitne ki hai'));
   assert.ok(!isPriceQuestion('10 marla house in G-13 under 3 crore'));
+});
+
+test('rent written without a unit word is understood ("Rs 85,000 per month", "85000 PKR", "85000")', () => {
+  assert.match(plainMoney('Rs 85,000 per month'), /85 thousand\s+per month/);
+  assert.match(plainMoney('Monthly rent is 85000 PKR'), /85 thousand/);
+  assert.match(plainMoney('85000', 'price'), /85 thousand/);
+  assert.match(plainMoney('Rs 3,25,00,000'), /3\.25 crore/);
+  assert.equal(plainMoney('2.5 crore'), '2.5 crore');            // already has a unit
+  assert.equal(plainMoney('House 112, street 5'), 'House 112, street 5');
+  assert.equal(plainMoney('85000'), '85000');                    // a bare number only when a price was asked
 });

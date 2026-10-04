@@ -169,7 +169,8 @@ async function placeOrder(ctx) {
   await ctx.deps.store.pkEnableTelegram(ctx.account.id).catch(() => null);
   ctx.session.state = { rl: s.rl };
   await ctx.log('pk_order_placed', { task: task.public_id, line: o.line.line_id, qty: o.qty || 1 });
-  await ctx.say('pk_placed', { id: task.public_id, url: PK_DASHBOARD });
+  const dash = ctx.signInButton ? await ctx.signInButton('pk') : null;      // signs them straight in (no password needed)
+  await ctx.say('pk_placed', { id: task.public_id, url: PK_DASHBOARD }, dash ? buttons([[dash]]) : undefined);
   await alertNewOrder(ctx.deps, task.task_id, ctx.account);
 }
 
@@ -202,7 +203,8 @@ export async function myOrders(ctx) {
   if (!rows.length) return ctx.say('pk_orders_none', {}, buttons([[[t('btn_pk_order', ctx.lang), 'o:start']]]));
   const lines = rows.map((r) => r.public_id + ' · ' + r.title + (r.quantity > 1 ? ' × ' + r.quantity : '') + ' — ' + r.status.replace(/_/g, ' ') +
     (r.due_at && !['delivered', 'cancelled'].includes(r.status) ? ' (due ' + new Date(r.due_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Asia/Karachi' }) + ')' : ''));
-  return ctx.raw(t('pk_orders_title', ctx.lang) + '\n\n' + lines.join('\n') + '\n\n' + PK_DASHBOARD);
+  const dash = ctx.signInButton ? await ctx.signInButton('pk') : null;
+  return ctx.raw(t('pk_orders_title', ctx.lang) + '\n\n' + lines.join('\n') + '\n\n' + PK_DASHBOARD, dash ? buttons([[dash]]) : undefined);
 }
 
 // ---------- owner actions ----------
