@@ -170,3 +170,12 @@ test('rent written without a unit word is understood ("Rs 85,000 per month", "85
   assert.equal(plainMoney('House 112, street 5'), 'House 112, street 5');
   assert.equal(plainMoney('85000'), '85000');                    // a bare number only when a price was asked
 });
+
+test('voice notes heard in Hindi letters are written in Urdu script', async () => {
+  const { devanagariToUrdu } = await import('../services/telegram/voice.mjs');
+  assert.equal(devanagariToUrdu('मेरा घर जोहर टाउन में है।'), 'میرا گھر جوہر ٹاؤن میں ہے۔');
+  assert.equal(devanagariToUrdu('मुझे डीएचए फेज़ 6 में 10 मरला घर चाहिए, बजट 3 करोड़'), 'مجھے DHA فیز 6 میں 10 مرلہ گھر چاہئے, بجٹ 3 کروڑ');
+  assert.equal(devanagariToUrdu('मैं अपना प्लॉट बेचना चाहता हूँ'), 'میں اپنا پلاٹ بیچنا چاہتا ہوں');
+  assert.equal(devanagariToUrdu('mera ghar G-13 mein hai'), 'mera ghar G-13 mein hai');
+  assert.equal(devanagariToUrdu('میرا گھر'), 'میرا گھر');
+});
