@@ -26,6 +26,7 @@ const AC_CONTACT = {
   whatsappDisplay: '+1 808 998 5226',
   whatsappMessage: 'Hello AgenticCore Estate, I need help with property.',
   email: 'hello@agenticcore.agency',
+  telegram: 'https://t.me/AgenticcoreEstatebot',          // AgenticCore bot: accounts, listings, alerts
   social: [
     { key: 'whatsapp_channel', url: 'https://whatsapp.com/channel/0029Vb8on5ZGpLHWOTLXUT45' },
     { key: 'youtube', url: 'https://www.youtube.com/@AgenticcoreEstate' },
@@ -41,6 +42,7 @@ const AC_SOCIAL_ICONS = {
   tiktok: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 2h-3.4v13.4a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.4 6.3V8.6a8.1 8.1 0 0 0 4.7 1.5V6.7A4.7 4.7 0 0 1 16.6 2z"/></svg>',
   facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V6.6c0-.9.6-1.1 1-1.1h2.6V1.6L14 1.6c-4 0-4.9 3-4.9 4.9v2H6.4v4h2.7V22H14v-9.5h3.3l.4-4H14z"/></svg>',
   instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>',
+  telegram: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6c.3-1.1-.8-2-1.9-1.6L2.6 9.9c-1.1.4-1.1 2 0 2.4l4.7 1.5 1.8 5.7c.3.9 1.5 1.1 2.1.3l2.5-3.2 4.9 3.6c.9.6 2.1.1 2.3-1l3-14.6zM9.6 14.1l-.4 4.1-1.4-4.6 10.9-7.2-9.1 7.7z"/></svg>',
   email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>'
 };
 function acWhatsAppHref(message) {
@@ -57,10 +59,11 @@ function acSocialHTML() {
       AC_SOCIAL_ICONS[s.key] + '<span class="ac-social-label" data-i18n="social_' + s.key + '"></span></a></li>';
   }).join('') + '</ul>';
 }
-// Footer "Contact AgenticCore" — WhatsApp chat with the team + business email.
+// Footer "Contact AgenticCore" — WhatsApp chat with the team, the Telegram bot, business email.
 function acContactHTML() {
   return '<ul class="ac-contact" role="list">' +
     '<li><a href="' + acEcoEsc(acWhatsAppHref()) + '" target="_blank" rel="noopener noreferrer" data-i18n-aria="contact_wa_aria" aria-label="WhatsApp" data-track="contact_click" data-channel="whatsapp">' + AC_SOCIAL_ICONS.whatsapp + '<span data-i18n="contact_wa_chat"></span></a></li>' +
+    '<li><a href="' + acEcoEsc(AC_CONTACT.telegram) + '?start=estate" target="_blank" rel="noopener noreferrer" aria-label="Telegram" data-track="contact_click" data-channel="telegram">' + AC_SOCIAL_ICONS.telegram + '<span><span data-i18n="contact_telegram">Telegram</span> <span dir="ltr">@AgenticcoreEstatebot</span></span></a></li>' +
     '<li><a href="' + acEcoEsc(acMailHref('AgenticCore Estate enquiry')) + '" data-i18n-aria="contact_email_aria" aria-label="Email" data-track="contact_click" data-channel="email">' + AC_SOCIAL_ICONS.email + '<span dir="ltr">' + acEcoEsc(AC_CONTACT.email) + '</span></a></li>' +
     '</ul>';
 }
