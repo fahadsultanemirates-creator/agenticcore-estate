@@ -212,7 +212,7 @@ test('/api/assistant: allowed sites only, size limit, deterministic answer witho
   const evil = await call('POST', '{}', 'https://evil.example');
   assert.equal(evil.status, 403);
   assert.equal(evil.headers.get('access-control-allow-origin'), null);
-  assert.equal((await call('POST', 'x'.repeat(13000), 'https://agenticcore.estate')).status, 413);
+  assert.equal((await call('POST', 'x'.repeat(17000), 'https://agenticcore.estate')).status, 413);
   const ok = await call('POST', JSON.stringify({ bot: 'guide', messages: [{ role: 'user', text: 'What is AgenticCore Estate?' }] }), 'https://agenticcore.estate');
   assert.equal(ok.status, 200);
   const d = await ok.json();

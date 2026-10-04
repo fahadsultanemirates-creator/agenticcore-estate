@@ -11,6 +11,10 @@ import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
 import { findProperty } from '../../services/copilot-service.mjs';
 import { getAreaNames, getKnownPlaces } from '../../services/supabase.mjs';
 import { refreshPlaces } from '../../services/memory.mjs';
+import { getUserFromToken } from '../../services/supabase.mjs';
+import { handleHandoff } from '../../services/amaan-handoff.mjs';
+import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
+import { makeTelegram, botConfigured } from '../../services/telegram/tg-api.mjs';
 
 const ORIGINS = ['https://agenticcore.estate', 'https://www.agenticcore.estate', 'https://agenticcorepk.com', 'https://www.agenticcorepk.com', 'https://agenticcorepk.netlify.app'];
 const hits = new Map();   // best-effort per-instance limiter: key -> [timestamps]
@@ -35,7 +39,7 @@ function headers(origin) {
   if (ORIGINS.indexOf(origin) >= 0) {
     h['Access-Control-Allow-Origin'] = origin;
     h['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
-    h['Access-Control-Allow-Headers'] = 'Content-Type';
+    h['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
     h['Access-Control-Max-Age'] = '600';
     h.Vary = 'Origin';
   }
@@ -57,9 +61,25 @@ export default async function handler(req, context) {
   let body;
   try {
     const raw = await req.text();
-    if (raw.length > 12000) return json(413, { error: 'too_large' }, origin);
+    if (raw.length > 16000) return json(413, { error: 'too_large' }, origin);
     body = JSON.parse(raw || '{}');
   } catch (e) { return json(400, { error: 'bad_request' }, origin); }
+
+  // Amaan → "Send to the AgenticCore team": signed-in people only; files must be in their own folder.
+  if (body && body.action === 'handoff') {
+    if (limited('handoff:' + ip, 10, 60 * 60 * 1000)) return json(429, { error: 'limit' }, origin);
+    if (!storeConfigured() || !botConfigured()) return json(503, { error: 'unavailable' }, origin);
+    const token = (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+    const user = token ? await getUserFromToken(token) : null;
+    if (!user) return json(401, { error: 'sign_in' }, origin);
+    try {
+      const out = await handleHandoff(body, { userId: user.id, store: makeStore(), tg: makeTelegram(), ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim() });
+      return json(out.status, out.body, origin);
+    } catch (e) {
+      console.error('[assistant] handoff failed:', e && e.message);
+      return json(502, { error: 'unavailable' }, origin);
+    }
+  }
 
   const allowAI = claudeAvailable() && aiBudgetLeft() && !limited('ai:' + ip, 60, 24 * 60 * 60 * 1000);
   try {
