@@ -22,6 +22,8 @@ import { detectLang, contextualise, factsSummary } from '../assistant-service.mj
 import { AMAAN } from '../assistant-knowledge.mjs';
 import { extractFacts, templateDraft } from '../listing-draft.mjs';
 import { PROPERTY_TYPES } from '../util.mjs';
+import { pkMenu, startOrder, myOrders, onPkCallback, onPkInput, ownerDeliverStart, ownerMessage, ownerJobs } from './pk-orders.mjs';
+import { looksLikeSearch, findProperty, startEnquiry, sendEnquiry } from './find.mjs';
 
 export const LIMITS = { photos: 8, listingsPerDay: 5, loginLinksPerHour: 3, msgsPer10Min: 40, aiAnswersPerDay: 20 };
 const BUILT = ['house', 'flat', 'upper_portion', 'lower_portion', 'room', 'farm_house'];
@@ -52,7 +54,7 @@ const RE = {
   list: /\b(list (my|a)|listing|sell (my|a)|rent out|post (my )?(property|house|plot|flat)|bechna|bechni|farokht|kiraye? (par|pe) (dena|deni))\b|لسٹ کر|بیچنا|فروخت کرن/i,
   mine: /\bmy listings?\b|\bmeri listings?\b|میری لسٹنگ/i,
   login: /\b(log ?in|sign ?in|password)\b|لاگ ان|سائن ان|پاس ورڈ/i,
-  pk: /\b(marketing|design|logo|flyers?|brochures?|reels?|videos?|ads|advertis\w*|social media|branding|agenticcore ?pakistan|services|packages?)\b|مارکیٹنگ|ڈیزائن|ویڈیو|اشتہار/i,
+  pk: /\b(marketing|design|logo|flyers?|brochures?|reels?|videos?|ads|advertis\w*|social media|branding|agenticcore ?pakistan|services|packages?|whats ?app card|(social |instagram |facebook )?posts?|photo (enhancement|editing)|enhance (my )?photos|order)\b|مارکیٹنگ|ڈیزائن|ویڈیو|اشتہار|واٹس ایپ کارڈ|لوگو/i,
   greet: /^(hi|hello|hey|salam|salaam|assalam\w*|aoa|menu|start)\b|^(السلام|سلام)/i,
   cancel: /^(\/cancel|cancel|stop|band karo|ruk jao|منسوخ)$/i,
   done: /^(done|finish(ed)?|ho gaya|ho gya|bas|ہو گیا|بس)$/i
@@ -106,6 +108,11 @@ export async function handleUpdate(update, deps) {
     raw(text, extra) { return deps.tg.send(chat.id, text, extra); },
     account: null
   };
+  // helpers shared with the Phase 2/3 modules
+  ctx.isOwner = () => isOwner(ctx);
+  ctx.requireActive = () => requireActive(ctx);
+  ctx.log = (kind, detail, alertText) => logActivity(ctx, kind, detail, alertText);
+  ctx.menu = () => menu(ctx);
 
   try {
     // simple per-chat flood limit
@@ -172,6 +179,9 @@ async function onMessage(ctx, msg) {
     ctx.session.lang = detectLang(text, ctx.session.lang);
   }
 
+  const isCommand = /^\//.test(text);
+  if (!isCommand && ['order', 'changes', 'deliver'].includes(s.flow) && (await onPkInput(ctx, msg, text))) return;
+  if (!isCommand && s.flow === 'enquiry' && text) return sendEnquiry(ctx, text);
   if (msg.contact) return onContact(ctx, msg.contact);
   if (msg.photo) return onPhoto(ctx, msg.photo);
   if (msg.document) {
@@ -187,6 +197,7 @@ async function onMessage(ctx, msg) {
     if (name === 'start') {
       if (arg && /^link_[A-Za-z0-9_-]{20,60}$/.test(arg)) return linkWithToken(ctx, arg.slice(5));
       ctx.session.state = { rl: s.rl };
+      if (arg === 'pk') return pkMenu(ctx);          // from agenticcorepk.com
       return showMenu(ctx);
     }
     if (name === 'menu') { ctx.session.state = { rl: s.rl }; return showMenu(ctx); }
@@ -196,7 +207,13 @@ async function onMessage(ctx, msg) {
     if (name === 'list') return startListing(ctx);
     if (name === 'mylistings') return myListings(ctx);
     if (name === 'signup') return startSignup(ctx);
+    if (name === 'orders') return myOrders(ctx);
+    if (name === 'order') return startOrder(ctx, arg);
+    if (name === 'services') return pkMenu(ctx);
     if (name === 'stats' && isOwner(ctx)) return ownerStats(ctx);
+    if (name === 'deliver' && isOwner(ctx)) return ownerDeliverStart(ctx, arg);
+    if (name === 'jobs' && isOwner(ctx)) return ownerJobs(ctx);
+    if (name === 'msg' && isOwner(ctx)) { const mm = String(arg || '').match(/^(ACPK-\d+)\s+([\s\S]+)$/i); return ownerMessage(ctx, mm && mm[1], mm && mm[2]); }
     return showMenu(ctx);
   }
 
@@ -209,7 +226,8 @@ async function onMessage(ctx, msg) {
   if (RE.signup.test(text) && !ctx.account) return startSignup(ctx);
   if (RE.list.test(text)) return startListing(ctx, text);
   if (RE.login.test(text)) return sendLoginLink(ctx);
-  if (RE.pk.test(text)) return ctx.say('pk_services', {}, buttons([[['agenticcorepk.com', 'https://agenticcorepk.com/services.html']]]));
+  if (RE.pk.test(text)) return ctx.account ? startOrder(ctx, text) : pkMenu(ctx);
+  if (looksLikeSearch(text)) return findProperty(ctx, text);
   if (RE.greet.test(text)) return showMenu(ctx);
   return guideAnswer(ctx, text);
 }
@@ -236,13 +254,15 @@ async function onCallback(ctx, cb) {
   const data = String(cb.data || '');
   const msgId = cb.message && cb.message.message_id;
   const s = ctx.session.state;
+  if (await onPkCallback(ctx, data, msgId)) return;
+  if (/^q:[0-9a-f-]{36}$/.test(data)) return startEnquiry(ctx, data.slice(2));
   switch (data) {
     case 'm:signup': return startSignup(ctx);
     case 'm:have': return ctx.say('have_account', {}, buttons([[['agenticcore.estate', ctx.deps.siteUrl + '/login.html']]]));
     case 'm:list': return startListing(ctx);
     case 'm:mine': return myListings(ctx);
     case 'm:login': return sendLoginLink(ctx);
-    case 'm:services': return ctx.say('pk_services', {}, buttons([[['agenticcorepk.com', 'https://agenticcorepk.com/services.html']]]));
+    case 'm:services': return pkMenu(ctx);
     case 'm:help': return ctx.say('help', {}, menu(ctx));
     case 's:yes': if (s.flow === 'signup' && s.step === 'confirm') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return createAccount(ctx); } return;
     case 's:edit': if (s.flow === 'signup') { s.step = 'name'; return ctx.say('signup_name'); } return;

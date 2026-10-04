@@ -64,3 +64,70 @@ Database triggers (sample/link checks, freeze) apply to the bot's writes as well
 notifications), `set-password.html`, `my.js` (Account → Telegram panel),
 `supabase/migrations/0020_telegram_bot_accounts.sql`, tests in
 `tests/telegram.test.mjs` and `tests/db/telegram_bot.test.sql`.
+
+---
+
+# Phase 2 — AgenticCore Pakistan orders in Telegram
+
+## Client flow
+1. "I need a WhatsApp card", "/order" or the menu → the bot matches the
+   request against the live PK catalogue (`pk_catalog_v2`, one-off services
+   only; monthly plans stay on the website). Prices come from the catalogue,
+   never from the bot.
+2. Quantity (1–20) → brief: notes, photos/files (stored privately in
+   `pk-attachments/<client>/…`) and, optionally, one of the client's own
+   Estate listings.
+3. Text summary with the price → **Place order**. No payment is taken in
+   Telegram; the team confirms first. The order is a normal ACPK task
+   (`pk_place_order`, source `telegram`) and shows in the PK dashboard.
+4. Status updates, messages and deliveries arrive in Telegram (and the
+   dashboard). On delivery: **Approve** or **Ask for changes** (2 free
+   rounds, the existing PK rule).
+
+## Owner approval — at the start and at delivery
+- Every new order alerts the owner with the choice of worker:
+  🖼 Grok image · 🎬 Grok video · 🤖 Grok agent · 👤 Team (manual), or ✖ Decline.
+  Nothing starts without that tap.
+- Every result comes to the owner first: ✅ Deliver · 🔁 Redo · ✖ Reject.
+  The client sees nothing until **Deliver**.
+- Owner commands: `/jobs` (open work), `/deliver ACPK-0001` (send your own
+  files/links, then Done), `/msg ACPK-0001 text` (message the client).
+
+## Workers
+| Worker | How it runs |
+|---|---|
+| Grok image | Timer (every 10 min): 2 options from the brief via xAI image generation. Labelled "AI-generated from the brief" — image generation does not use the client's photos. |
+| Grok video | Timer: xAI video, image-to-video from the client's first photo when there is one; polled until ready (fails after 2 h). |
+| Grok agent / Team | Picked up through the work inbox `/api/work` (below) or delivered by the owner with `/deliver`. |
+
+## Work inbox `/api/work` (Grok agent on your computer, or Claude Code)
+Header: `Authorization: Bearer <WORK_API_KEY>` (Netlify secret, 24+ chars).
+- `GET /api/work` → open Grok-agent/Team jobs: order id, service, brief,
+  listing link, client files (links valid 1 day).
+- `POST /api/work` `{"action":"deliver","job_id":"…","note":"…","files":[{"url":"https://…"} or {"name":"card","content_type":"image/png","content_base64":"…"}]}`
+  → files saved privately, sent to the owner for Deliver/Redo/Reject.
+  JPG/PNG/WebP/MP4/PDF/ZIP, ≤25 MB each, ≤10 files; other https links are
+  delivered as links.
+- `POST /api/work` `{"action":"fail","job_id":"…","note":"why"}` → owner alerted.
+
+# Phase 3 — finding property (OFF by default)
+"I want a 10 marla house in G-13" → genuine listings only (no samples), with
+an **Enquire** button that sends a normal enquiry as the person
+(`send_enquiry_as` → `send_enquiry`, all its rules). Requires an
+AgenticCore account; 15 searches and 10 enquiries a day. Turned on only with
+`BOT_PROPERTY_SEARCH=on`; the access rule lives in one function
+(`searchAccess` in `services/telegram/find.mjs`) so the agreed process
+(paid plan, verification…) can be added there.
+
+## Setup for Phase 2/3 (owner)
+1. Supabase SQL editor: run PK `pk_0006_telegram_orders.sql`, then Estate
+   `0021_telegram_enquiries.sql`.
+2. Netlify (Estate): add `WORK_API_KEY` (any long random value) if you will
+   use the work inbox. Optional: `XAI_IMAGE_MODEL`, `XAI_VIDEO_MODEL`.
+3. Phase 3 later: `BOT_PROPERTY_SEARCH=on`.
+
+## Phase 2/3 files
+`services/telegram/{pk-orders,workers,find,strings-pk}.mjs`,
+`netlify/functions/work.mjs`, `supabase/migrations/0021_telegram_enquiries.sql`,
+`tests/telegram-phase2.test.mjs`, `tests/db/telegram_enquiries.test.sql`;
+PK repo: `supabase/migrations/pk_0006_telegram_orders.sql`.

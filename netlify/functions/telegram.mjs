@@ -11,6 +11,7 @@ import { voiceConfigured, transcribe } from '../../services/telegram/voice.mjs';
 import { handleTurn } from '../../services/assistant-service.mjs';
 import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
 import { getAreaNames } from '../../services/supabase.mjs';
+import { findProperty } from '../../services/copilot-service.mjs';
 import quality from '../../listing-quality.js';
 import crypto from 'node:crypto';
 
@@ -27,6 +28,7 @@ export function makeDeps(fetchImpl) {
       guideDeps: () => ({ allowAI: claudeAvailable(), ai: (opts) => claudeJSON(Object.assign({}, opts, { timeoutMs: 6000 })), areaNames: [] })
     },
     quality,
+    find: (text) => findProperty(text, { ai: false }),
     ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim(),
     siteUrl: SITE
   };
