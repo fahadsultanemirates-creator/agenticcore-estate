@@ -48,3 +48,10 @@ test('places already in the list never go to the owner for review', async () => 
   const store = { rest: async () => [{ id: 1, kind: 'area', city: 'Lahore', name: 'Abdalians Society - Block B', sources: 3 }, { id: 2, kind: 'area', city: 'Lahore', name: 'Noor Sahar Enclave', sources: 3 }] };
   assert.deepEqual((await pendingFacts(store, 10)).map((f) => f.id), [2]);
 });
+
+test('listing title names the city once ("DHA Phase 6 Lahore", not "…Lahore, Lahore")', async () => {
+  const { templateDraft } = await import('../services/listing-draft.mjs');
+  const t = (area, city) => templateDraft({ purpose: 'buy', property_type: 'house', size_value: 10, size_unit: 'marla', area, city, features: [] }).title;
+  assert.equal(t('DHA Phase 6 Lahore', 'Lahore'), '10 Marla House for Sale in DHA Phase 6 Lahore');
+  assert.equal(t('G-13', 'Islamabad'), '10 Marla House for Sale in G-13, Islamabad');
+});

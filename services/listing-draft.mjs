@@ -60,7 +60,9 @@ export function missingChecklist(f) {
 export function templateDraft(f) {
   const typeLabel = PROPERTY_TYPES[f.property_type] || 'Property';
   const size = f.size_value ? f.size_value + ' ' + (UNIT_LABEL[f.size_unit] || 'Marla') + ' ' : '';
-  const where = [f.area, f.city].filter(Boolean).join(', ');
+  // "DHA Phase 6 Lahore" already names the city: no ", Lahore" after it
+  const areaHasCity = f.area && f.city && new RegExp('\\b' + String(f.city).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(f.area);
+  const where = (areaHasCity ? [f.area] : [f.area, f.city]).filter(Boolean).join(', ');
   const title = (size + typeLabel + (f.purpose === 'rent' ? ' for Rent' : f.purpose === 'buy' ? ' for Sale' : '') + (where ? ' in ' + where : '')).trim();
   const bullets = [];
   if (f.size_value) bullets.push(size.trim() + ' ' + typeLabel.toLowerCase());
