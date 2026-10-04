@@ -9,6 +9,7 @@ import { completeJSON, aiAvailable } from './ai.mjs';
 import { draftListing, improveWording } from './listing-draft.mjs';
 import { PROPERTY_TYPES, norm, redactPII } from './util.mjs';
 import quality from '../listing-quality.js';
+import { CITY_NAMES } from './places.mjs';
 
 const TYPE_KEYS = Object.keys(PROPERTY_TYPES);
 
@@ -19,7 +20,7 @@ async function refineWithAI(text, c) {
   const ai = await completeJSON({
     task: 'parse', maxTokens: 300,
     schema: {
-      purpose: { optional: ['buy', 'rent'] }, city: { optional: ['Islamabad', 'Rawalpindi'] },
+      purpose: { optional: ['buy', 'rent'] }, city: { optional: CITY_NAMES },
       property_type: { optional: TYPE_KEYS }, price_min: { optional: 'number' }, price_max: { optional: 'number' },
       size_value: { optional: 'number' }, size_unit: { optional: ['marla', 'kanal', 'sqft', 'sqyd'] },
       beds_min: { optional: 'number' }, locations: { optional: 'string[]' }

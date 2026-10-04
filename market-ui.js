@@ -198,8 +198,9 @@ function acDirFilterValues(form) {
 async function acFillCities(select) {
   if (!select || select.dataset.filled) return;
   const cities = await AcDB.getActiveCities();
-  select.insertAdjacentHTML('beforeend', cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc(c) + '</option>'; }).join(''));
+  select.insertAdjacentHTML('beforeend', cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc((typeof acCityLabel === 'function' ? acCityLabel(c, acUiLang()) : c)) + '</option>'; }).join(''));
   select.dataset.filled = '1';
+  select.setAttribute('data-city-select', '');
 }
 async function acFillAreas(select, city) {
   if (!select) return;
@@ -244,7 +245,9 @@ function acInitMarketDirectory(cat, fixed) {
     if (reset) grid.innerHTML = html; else grid.insertAdjacentHTML('beforeend', html);
     loaded += res.rows.length;
     const filtered = Object.keys(acDirFilterValues(form)).filter(function (k) { return k !== 'sort'; }).length > 0;
-    if (!loaded) grid.innerHTML = '<div class="mk-empty">' + acEsc(acT(filtered ? 'mk_no_match' : 'mk_empty_' + cat)) +
+    const fCity = acDirFilterValues(form).city;
+    const launching = fCity && typeof acCityLaunching === 'function' && acCityLaunching(fCity);
+    if (!loaded) grid.innerHTML = '<div class="mk-empty">' + acEsc(launching ? acT('city_launching_note') : acT(filtered ? 'mk_no_match' : 'mk_empty_' + cat)) +
       ' <a href="' + AC_MARKET_PAGES[cat].create + '">' + acEsc(acT('mk_cta_' + cat)) + ' →</a></div>';
     if (countEl) countEl.textContent = total ? acT('mk_count').replace('{n}', total) : '';
     // A thin (but not empty) category invites the next genuine participant.

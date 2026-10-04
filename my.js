@@ -68,7 +68,7 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
       (f.type === 'url' ? ' placeholder="https://"' : '') + ' maxlength="' + (f.max || 300) + '" value="' + esc(val == null ? '' : val) + '"' + (f.req ? ' required' : '') + '>';
     return '<div class="my-field' + (f.wide ? ' wide' : '') + '">' + label + input + hint + '</div>';
   }
-  const cityOpts = function () { return cities.map(function (c) { return [c, c]; }); };
+  const cityOpts = function () { return cities.map(function (c) { return [c, (typeof acCityLabel === 'function' ? acCityLabel(c, acUiLang()) : c)]; }); };
   const segOpts = function () { return [['residential', t('mk_seg_residential')], ['commercial', t('mk_seg_commercial')]]; };
   const purpOpts = function () { return [['sale', t('mk_purpose_sale')], ['rent', t('mk_purpose_rent')]]; };
   const typeOpts = function () { return AC_PROPERTY_TYPES.map(function (p) { return [p.value, acPropertyTypeLabel(p.value)]; }); };

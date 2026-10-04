@@ -83,8 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const n = Number(st[key[cat]]) || 0;
       if (el) el.textContent = n ? acT('mk_count_short').replace('{n}', n) : acT('mk_explore');
     });
-    ['Islamabad', 'Rawalpindi'].forEach(function (city) {
+    ['Islamabad', 'Rawalpindi', 'Lahore', 'Karachi', 'Sialkot', 'Faisalabad'].forEach(function (city) {
       const n = Number((st.by_city || {})[city]) || 0;
+      if (typeof acCityLaunching === 'function' && acCityLaunching(city)) { const c = document.getElementById('count' + city); if (c) c.textContent = ''; return; }
       const el = document.getElementById('count' + city);
       if (el) el.textContent = n ? n + ' ' + (n === 1 ? acT('h2_listing_one') : acT('h2_listing_many')) : acT('h2_be_first');
     });

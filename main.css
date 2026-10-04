@@ -1006,3 +1006,7 @@ html[dir="rtl"] .ac-wa-float { right: auto; left: 18px; }
 .ac-amaan-resume .container { pointer-events: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem; max-width: 560px; margin-top: 8px; padding: .6rem 1rem; background: var(--bg-panel); border: 1px solid var(--accent-gold); border-radius: var(--radius-md); box-shadow: 0 8px 24px rgba(0,0,0,.35); font-size: .92rem; }
 .ac-amaan-resume .btn { min-height: 44px; display: inline-flex; align-items: center; }
 @media print { .ac-amaan-resume { display: none; } }
+
+/* six cities: "listing shows from launch day" note under city pickers */
+.ac-city-note { margin: .4rem 0 0; padding: .55rem .75rem; border-radius: 10px; background: rgba(212, 175, 55, 0.10); border: 1px solid rgba(212, 175, 55, 0.35); color: var(--accent-gold-bright); font-size: .88rem; }
+.ac-city-note[hidden] { display: none; }

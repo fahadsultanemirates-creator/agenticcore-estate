@@ -183,3 +183,65 @@ html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 
 }
 html[dir="rtl"] .tgh-msg.bot { align-self: flex-end; border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; }
 html[dir="rtl"] .tgh-msg.me { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 4px; }
+
+/* ---------- Six cities: launch announcement ---------- */
+.nc { position: relative; padding: calc(72px + 1.3rem) 0 1.5rem; background:
+  linear-gradient(100deg, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0.04) 45%, rgba(42, 171, 238, 0.06)),
+  var(--bg-panel); border-bottom: 1px solid rgba(212, 175, 55, 0.28); overflow: hidden; }
+.nc::before { content: ''; position: absolute; inset: 0; background: radial-gradient(600px 220px at 0% 0%, rgba(240, 206, 99, 0.18), transparent 70%); pointer-events: none; }
+.nc + .h2-hero { padding-top: 3rem; }
+.nc-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.6rem 2.4rem; align-items: center; }
+.nc-badge { display: inline-flex; align-items: center; gap: .5rem; padding: .28rem .75rem; border-radius: 999px; background: rgba(212, 175, 55, 0.14); border: 1px solid rgba(212, 175, 55, 0.5); color: var(--accent-gold-bright); font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+html[dir="rtl"] .nc-badge { text-transform: none; letter-spacing: 0; }
+.nc-pin { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-gold-bright); box-shadow: 0 0 0 4px rgba(240, 206, 99, .22); animation: ncPulse 2.4s ease-in-out infinite; }
+@keyframes ncPulse { 50% { box-shadow: 0 0 0 7px rgba(240, 206, 99, 0); } }
+@media (prefers-reduced-motion: reduce) { .nc-pin { animation: none; } }
+.nc-title { font-size: clamp(1.35rem, 2.6vw, 1.9rem); line-height: 1.2; margin: .7rem 0 .45rem; }
+.nc-sub { margin: 0 0 .35rem; color: var(--text-primary); font-size: 1rem; }
+.nc-ro { margin: 0 0 .35rem; color: var(--text-secondary); font-style: italic; font-size: .95rem; }
+.nc-now { margin: .5rem 0 0; color: var(--accent-gold-bright); font-size: .88rem; font-weight: 600; }
+.nc-cities { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.nc-cities a { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: .5rem; min-height: 0 !important; }
+.nc-cities a small { margin: .25rem 0 0; flex-basis: auto; white-space: nowrap; }
+@media (min-width: 561px) { .nc-cities a small { margin: 0 0 0 auto; } html[dir="rtl"] .nc-cities a small { margin: 0 auto 0 0; } }
+.nc-cities a { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; padding: .7rem .75rem; border-radius: 12px; background: rgba(7, 31, 23, 0.55); border: 1px solid rgba(212, 175, 55, 0.28); color: var(--text-primary); text-decoration: none; transition: border-color .2s, transform .2s; min-height: 92px; }
+.nc-cities a:hover, .nc-cities a:focus-visible { border-color: var(--accent-gold); transform: translateY(-2px); }
+.nc-cities strong { font-family: var(--font-display); font-size: 1.05rem; }
+.nc-ur { color: var(--text-secondary); font-size: .95rem; }
+.nc-cities small, .h2-city-launch { margin-top: auto; display: inline-block; padding: .12rem .45rem; border-radius: 999px; background: rgba(240, 206, 99, 0.16); color: var(--accent-gold-bright); font-size: .7rem; font-weight: 700; line-height: 1.3; max-width: 100%; }
+.nc-cities small[hidden], .h2-city-launch[hidden] { display: none; }
+.nc-ctas { display: flex; flex-wrap: wrap; gap: .55rem; }
+.nc-ctas .btn { min-height: 44px; display: inline-flex; align-items: center; }
+.nc-tg { background: #2AABEE; color: #fff; border: 1px solid #2AABEE; }
+.nc-tg:hover, .nc-tg:focus-visible { background: #229ED9; color: #fff; }
+@media (max-width: 900px) { .nc-inner { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .nc { padding: calc(66px + .9rem) 0 1.1rem; }
+  .nc + .h2-hero { padding-top: 2rem; }
+  .nc-inner { gap: .9rem; }
+  .nc-title { font-size: 1.22rem; margin: .55rem 0 .35rem; }
+  .nc-sub, .nc-ro { font-size: .9rem; }
+  .nc-now { font-size: .82rem; margin-top: .3rem; }
+  .nc-cities { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; margin-bottom: .7rem; }
+  .nc-cities a { padding: .5rem .3rem; flex-direction: column; align-items: center; text-align: center; }
+  .nc-cities a small { white-space: normal; }
+  .nc-cities strong { font-size: .86rem; }
+  .nc-ur { display: none; }
+  .nc-cities small { font-size: .6rem; padding: .1rem .3rem; margin-top: .2rem; }
+  .nc-ctas { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+  .nc-ctas .btn { justify-content: center; text-align: center; min-height: 42px; font-size: .88rem; padding: 0 .5rem; }
+  .nc-ctas .btn-primary { grid-column: 1 / -1; }
+}
+html[dir="rtl"] .nc-ro { text-align: right; }
+
+/* the four new cities in "Where we serve" (no photos: text tiles) */
+.h2-cities-more { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 0; }
+@media (min-width: 760px) { .h2-cities-more { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.h2-city-plain { aspect-ratio: auto; min-height: 120px; padding: 1rem; display: flex; flex-direction: column; gap: .2rem; text-decoration: none; color: var(--text-primary);
+  background: radial-gradient(260px 120px at 100% 0%, rgba(212, 175, 55, 0.16), transparent 70%), var(--bg-panel); }
+.h2-city-plain::after { display: none; }
+.h2-city-plain .h2-city-name, .h2-city-plain .h2-city-count { position: static; }
+.h2-city-plain .h2-city-name { font-size: 1.3rem; }
+.h2-city-ur { color: var(--text-secondary); }
+.h2-city-plain .h2-city-launch { margin-top: auto; align-self: flex-start; }
+html[dir="rtl"] .h2-city-plain .h2-city-launch { align-self: flex-end; }

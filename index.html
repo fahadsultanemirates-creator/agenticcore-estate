@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>AgenticCore Estate — Property in Islamabad & Rawalpindi, search normally or just ask</title>
-<meta name="description" content="Discover property, projects, property professionals, agencies and builders in Islamabad and Rawalpindi. Search normally or just ask. Listing is free during our launch period.">
+<title>AgenticCore Estate — Property in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad</title>
+<meta name="description" content="Property, projects, professionals, agencies and builders in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad. Search normally or just ask. Listing is free during our launch period.">
 <link rel="canonical" href="https://agenticcore.estate/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AgenticCore Estate">
 <meta property="og:title" content="Find property your way — AgenticCore Estate">
-<meta property="og:description" content="Search Islamabad & Rawalpindi normally, or tell AgenticCore exactly what you're looking for. List free during launch.">
+<meta property="og:description" content="Serving 6 cities across Pakistan: Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad. Search normally or just ask. List free during launch.">
 <meta property="og:url" content="https://agenticcore.estate/">
 <meta property="og:image" content="https://agenticcore.estate/images/og-estate.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -31,7 +31,7 @@
 <script>try { if (localStorage.getItem('acLang') === 'ur') document.documentElement.classList.add('ac-ur-pending'); } catch (e) {}</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
- {"@type":"Organization","name":"AgenticCore Estate","url":"https://agenticcore.estate/","logo":"https://agenticcore.estate/images/agenticcore-icon.png","areaServed":["Islamabad","Rawalpindi"]},
+ {"@type":"Organization","name":"AgenticCore Estate","url":"https://agenticcore.estate/","logo":"https://agenticcore.estate/images/agenticcore-icon.png","areaServed":["Islamabad","Rawalpindi","Lahore","Karachi","Sialkot","Faisalabad"]},
  {"@type":"WebSite","name":"AgenticCore Estate","url":"https://agenticcore.estate/","potentialAction":{"@type":"SearchAction","target":"https://agenticcore.estate/buy.html?q={search_term_string}","query-input":"required name=search_term_string"}}
 ]}
 </script>
@@ -42,13 +42,40 @@
 
 <main id="main">
 
+<!-- 0. Six cities: launch announcement (switches to "now live" by itself at 00:00 PKT, 6 Oct 2026) -->
+<section class="nc" id="new-cities" aria-labelledby="ncTitle">
+  <div class="container nc-inner">
+    <div class="nc-copy">
+      <span class="nc-badge"><span class="nc-pin" aria-hidden="true"></span><span data-i18n="nc_badge">New cities · Tuesday 6 October 2026</span></span>
+      <h2 id="ncTitle" class="nc-title" data-i18n="nc_title">Coming to Lahore, Karachi, Sialkot and Faisalabad on Tuesday 6 October 2026.</h2>
+      <p class="nc-sub" data-i18n="nc_sub">From 6 October you can list your property free and use our marketing services in these cities.</p>
+      <p class="nc-ro" lang="ur-Latn" dir="ltr" data-i18n="nc_ro">6 October 2026 se Lahore, Karachi, Sialkot aur Faisalabad mein: apni property free list karein aur hamari marketing services use karein.</p>
+      <p class="nc-now" data-launch-only data-i18n="nc_now">Sign-ups and listings are open today — listings in these cities show from launch day.</p>
+    </div>
+    <div class="nc-side">
+      <ul class="nc-cities" aria-label="New cities">
+        <li><a href="sell.html?city=Lahore"><strong>Lahore</strong><span class="nc-ur" lang="ur">لاہور</span><small data-city-launch="Lahore">Launching 6 Oct</small></a></li>
+        <li><a href="sell.html?city=Karachi"><strong>Karachi</strong><span class="nc-ur" lang="ur">کراچی</span><small data-city-launch="Karachi">Launching 6 Oct</small></a></li>
+        <li><a href="sell.html?city=Sialkot"><strong>Sialkot</strong><span class="nc-ur" lang="ur">سیالکوٹ</span><small data-city-launch="Sialkot">Launching 6 Oct</small></a></li>
+        <li><a href="sell.html?city=Faisalabad"><strong>Faisalabad</strong><span class="nc-ur" lang="ur">فیصل آباد</span><small data-city-launch="Faisalabad">Launching 6 Oct</small></a></li>
+      </ul>
+      <div class="nc-ctas">
+        <a class="btn btn-primary" href="sell.html" data-track="new_cities_list" data-i18n="nc_cta_list">List your property free</a>
+        <a class="btn btn-secondary" href="https://agenticcorepk.com/services.html?from=estate&amp;intent=services" rel="noopener" data-track="estate_to_pk_click" data-intent="new_cities" data-i18n="nc_cta_pk">Marketing services</a>
+        <a class="btn nc-tg" href="https://t.me/AgenticcoreEstatebot?start=estate" target="_blank" rel="noopener" data-track="contact_click" data-channel="telegram_new_cities" data-i18n="nc_cta_tg">List in Telegram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- 1. Hero: AI + conventional search -->
 <header class="h2-hero">
   <canvas class="hero-network" id="heroNetwork" aria-hidden="true"></canvas>
   <div class="container h2-hero-inner">
-    <p class="h2-eyebrow"><span class="dot"></span> <span data-i18n="h2_eyebrow">Islamabad & Rawalpindi · Khwabon se ghar tak</span></p>
+    <p class="h2-eyebrow"><span class="dot"></span> <span data-i18n="h2_eyebrow">Serving 6 cities across Pakistan · Khwabon se ghar tak</span></p>
     <h1 class="h2-title" data-i18n="h2_title">Find property your way.</h1>
-    <p class="h2-sub" data-i18n="h2_sub">Search Islamabad & Rawalpindi normally — or tell AgenticCore exactly what you're looking for.</p>
+    <p class="h2-sub" data-i18n="h2_sub">Search Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad normally — or tell AgenticCore exactly what you're looking for.</p>
 
     <div class="h2-ctas">
       <a href="properties.html" class="btn btn-secondary" data-i18n="h2_cta_search">Search Properties</a>
@@ -84,10 +111,14 @@
         </div>
         <div class="search-field">
           <label for="hsCity" data-i18n="search_city">City</label>
-          <select id="hsCity">
+          <select id="hsCity" data-city-select>
             <option value="" data-i18n="search_any_city">Any city</option>
-            <option>Islamabad</option>
-            <option>Rawalpindi</option>
+            <option value="Islamabad">Islamabad</option>
+            <option value="Rawalpindi">Rawalpindi</option>
+            <option value="Lahore">Lahore</option>
+            <option value="Karachi">Karachi</option>
+            <option value="Sialkot">Sialkot</option>
+            <option value="Faisalabad">Faisalabad</option>
           </select>
         </div>
         <div class="search-field">
@@ -200,12 +231,12 @@
   </div>
 </section>
 
-<!-- 8. Islamabad & Rawalpindi -->
+<!-- 8. Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad -->
 <section id="locations" class="h2-section">
   <div class="container">
     <span class="section-eyebrow" data-i18n="h2_loc_eyebrow">Where we're live</span>
-    <h2 data-i18n="mk_cities_title">Currently serving Islamabad & Rawalpindi</h2>
-    <p class="h2-lead" data-i18n="mk_cities_sub">More cities are coming.</p>
+    <h2 data-i18n="mk_cities_title">Serving Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad</h2>
+    <p class="h2-lead" data-i18n="mk_cities_sub">Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad are live now. Lahore, Karachi, Sialkot and Faisalabad open on Tuesday 6 October 2026 — you can sign up and list free today.</p>
     <div class="h2-cities">
       <a class="h2-city" href="properties.html?city=Islamabad">
         <img src="images/islamabad-skyline-800.webp" alt="Islamabad skyline with the Margalla Hills" loading="lazy" decoding="async" width="800" height="450">
@@ -215,6 +246,12 @@
         <img src="images/rawalpindi-house-800.webp" alt="A house in Rawalpindi" loading="lazy" decoding="async" width="800" height="450">
         <span class="h2-city-name">Rawalpindi</span><span class="h2-city-count" id="countRawalpindi"></span>
       </a>
+    </div>
+    <div class="h2-cities h2-cities-more">
+      <a class="h2-city h2-city-plain" href="properties.html?city=Lahore"><span class="h2-city-name">Lahore</span><span class="h2-city-ur" lang="ur">لاہور</span><small class="h2-city-launch" data-city-launch="Lahore">Launching 6 Oct</small><span class="h2-city-count" id="countLahore"></span></a>
+      <a class="h2-city h2-city-plain" href="properties.html?city=Karachi"><span class="h2-city-name">Karachi</span><span class="h2-city-ur" lang="ur">کراچی</span><small class="h2-city-launch" data-city-launch="Karachi">Launching 6 Oct</small><span class="h2-city-count" id="countKarachi"></span></a>
+      <a class="h2-city h2-city-plain" href="properties.html?city=Sialkot"><span class="h2-city-name">Sialkot</span><span class="h2-city-ur" lang="ur">سیالکوٹ</span><small class="h2-city-launch" data-city-launch="Sialkot">Launching 6 Oct</small><span class="h2-city-count" id="countSialkot"></span></a>
+      <a class="h2-city h2-city-plain" href="properties.html?city=Faisalabad"><span class="h2-city-name">Faisalabad</span><span class="h2-city-ur" lang="ur">فیصل آباد</span><small class="h2-city-launch" data-city-launch="Faisalabad">Launching 6 Oct</small><span class="h2-city-count" id="countFaisalabad"></span></a>
     </div>
     <div class="h2-areas" id="popularAreas"></div>
   </div>
@@ -285,7 +322,7 @@
     </div>
     <div class="h2-split" style="margin-top:var(--space-lg)">
       <div>
-        <h3 data-i18n="mk_cities_title">Currently serving Islamabad & Rawalpindi</h3>
+        <h3 data-i18n="mk_cities_title">Serving Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad</h3>
         <p class="h2-lead" data-i18n="mk_map_sub"></p>
       </div>
       <img class="h2-map-img" src="images/pakistan-map-800.webp" decoding="async" alt="Map of Pakistan with the words Khwabon se ghar tak" loading="lazy" width="1200" height="896">
@@ -310,6 +347,7 @@
 <div id="site-footer"></div>
 
 <!-- i18n before the CDN script so Urdu is applied (and the page revealed) without waiting for it. -->
+<script src="ac-cities.js"></script>
 <script src="i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-client.js"></script>

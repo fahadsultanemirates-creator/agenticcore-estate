@@ -31,6 +31,11 @@ export async function getAreaNames() {
   return areaCache.names;
 }
 
+// Places the system has learned (0023): public place names only.
+export async function getKnownPlaces() {
+  return (await rest('/rest/v1/rpc/kb_known_places', { method: 'POST', body: {} })) || [];
+}
+
 // Coarse pre-filter in the database (purpose / city / types); the fine
 // ranking and explanations happen in search.mjs.
 export async function fetchCandidateListings(c) {

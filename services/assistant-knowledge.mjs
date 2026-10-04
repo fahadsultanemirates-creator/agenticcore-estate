@@ -6,7 +6,9 @@
 
 export const KNOWLEDGE = `
 AGENTICCORE ESTATE (agenticcore.estate)
-- A property marketplace currently focused on Islamabad and Rawalpindi.
+- A property marketplace for Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad ("Serving 6 cities across Pakistan").
+- Lahore, Karachi, Sialkot and Faisalabad open on Tuesday 6 October 2026. Before that date people in those cities can already sign up and list free; their listings show publicly from 6 October. Islamabad and Rawalpindi are live now.
+- AgenticCore Pakistan marketing services are available in all six cities (from 6 October in Lahore, Karachi, Sialkot and Faisalabad).
 - Five directories: Properties (to buy or rent), Projects, Property professionals, Agencies, Builders & developers.
 - Listing a property is free during the launch period. Creating a professional, agency or builder/developer profile is free.
 - One AgenticCore account works on both AgenticCore Estate and AgenticCore Pakistan.
@@ -73,9 +75,9 @@ export const ANSWERS = {
     actions: ['amaan_find', 'amaan_list', 'pk_services']
   },
   about: {
-    en: 'AgenticCore Estate is a property marketplace for Islamabad and Rawalpindi: properties to buy or rent, projects, property professionals, agencies and builders. AgenticCore Pakistan is our separate, paid marketing and technology service for property businesses.',
-    ur: 'AgenticCore Estate اسلام آباد اور راولپنڈی کی پراپرٹی مارکیٹ پلیس ہے — خریدنے یا کرائے کے لیے پراپرٹی، پروجیکٹس، پراپرٹی پروفیشنلز، ایجنسیاں اور بلڈرز۔ AgenticCore Pakistan ہماری الگ، معاوضے والی مارکیٹنگ اور ٹیکنالوجی سروس ہے۔',
-    ro: 'AgenticCore Estate Islamabad aur Rawalpindi ki property marketplace hai — khareedne ya kiraye ke liye property, projects, property professionals, agencies aur builders. AgenticCore Pakistan hamari alag, paid marketing aur technology service hai.',
+    en: 'AgenticCore Estate is a property marketplace serving 6 cities across Pakistan — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad (the last four from 6 October 2026): properties to buy or rent, projects, property professionals, agencies and builders. AgenticCore Pakistan is our separate, paid marketing and technology service for property businesses.',
+    ur: 'AgenticCore Estate پاکستان کے 6 شہروں — اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد (آخری چار 6 اکتوبر 2026 سے) — کی پراپرٹی مارکیٹ پلیس ہے: خریدنے یا کرائے کے لیے پراپرٹی، پروجیکٹس، پراپرٹی پروفیشنلز، ایجنسیاں اور بلڈرز۔ AgenticCore Pakistan ہماری الگ، معاوضے والی مارکیٹنگ اور ٹیکنالوجی سروس ہے۔',
+    ro: 'AgenticCore Estate Pakistan ke 6 shehron — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot aur Faisalabad (aakhri chaar 6 October 2026 se) — ki property marketplace hai: khareedne ya kiraye ke liye property, projects, property professionals, agencies aur builders. AgenticCore Pakistan hamari alag, paid marketing aur technology service hai.',
     actions: ['estate_properties', 'amaan_find', 'pk_services']
   },
   pk: {
@@ -217,10 +219,26 @@ export const AMAAN = {
     ur: 'شکریہ — بنیادی تفصیلات مل گئی ہیں۔ اب لاگ ان کریں — یا اگر اکاؤنٹ نہیں ہے تو مفت اکاؤنٹ بنائیں۔ آپ کی تفصیلات اسی ڈیوائس پر محفوظ رہیں گی، اور لسٹنگ فارم بھرا ہوا کھلے گا تاکہ آپ چیک کریں، تصاویر لگائیں اور شائع کریں۔ آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔',
     ro: 'Shukriya — buniyadi details mil gayi hain. Ab log in karein — ya agar account nahin hai to free account banayein. Aap ki details isi device par mehfooz rahengi, aur listing form bhara hua khulega taake aap check karein, tasveerein lagayein aur publish karein. Aap ke submit kiye baghair kuch publish nahin hota.'
   },
+  // the area is in more than one city (Bahria Town / DHA phases, Gulberg…)
+  city_which: {
+    en: '{area} — is that in {options}?', ur: '{area} — یہ {options} میں ہے؟', ro: '{area} — yeh {options} mein hai?'
+  },
+  // a city that opens on 6 October 2026 (shown only before that date)
+  launching: {
+    en: 'We launch in {city} on 6 October. You can create your account and list your property now; the listing will show from launch day.',
+    ur: 'ہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں۔ آپ ابھی اکاؤنٹ بنا کر پراپرٹی لسٹ کر سکتے ہیں، لسٹنگ لانچ کے دن سے نظر آئے گی۔',
+    ro: 'Hum 6 October ko {city} mein launch kar rahe hain. Aap abhi account bana kar property list kar sakte hain, listing launch ke din se show hogi.'
+  },
+  place: {
+    en: '{area} is in {city}.', ur: '{area} {city} میں ہے۔', ro: '{area} {city} mein hai.'
+  },
+  place_both: {
+    en: '{area} is listed under {options} — tell me which one yours is.', ur: '{area} {options} دونوں میں آتا ہے — بتائیں آپ کا کون سا ہے۔', ro: '{area} {options} dono mein aata hai — batayein aap ka kaunsa hai.'
+  },
   ask: {
     purpose: { en: 'Is it for sale or for rent?', ur: 'یہ فروخت کے لیے ہے یا کرائے پر؟', ro: 'Yeh bechne ke liye hai ya kiraye par?' },
     property_type: { en: 'What type of property is it — house, flat, plot, shop or something else?', ur: 'پراپرٹی کس قسم کی ہے — گھر، فلیٹ، پلاٹ، دکان یا کچھ اور؟', ro: 'Property kis qisam ki hai — ghar, flat, plot, dukaan ya kuch aur?' },
-    city: { en: 'Which city is it in — Islamabad or Rawalpindi?', ur: 'یہ کس شہر میں ہے — اسلام آباد یا راولپنڈی؟', ro: 'Yeh kis shehar mein hai — Islamabad ya Rawalpindi?' },
+    city: { en: 'Which city is it in — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot or Faisalabad?', ur: 'یہ کس شہر میں ہے — اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ یا فیصل آباد؟', ro: 'Yeh kis shehar mein hai — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot ya Faisalabad?' },
     area: { en: 'Which area exactly — society, phase, block or sector?', ur: 'بالکل کون سا علاقہ — سوسائٹی، فیز، بلاک یا سیکٹر؟', ro: 'Bilkul kaunsa area — society, phase, block ya sector?' },
     price: { en: 'What is your asking price (or monthly rent)?', ur: 'آپ کی مانگی گئی قیمت (یا ماہانہ کرایہ) کیا ہے؟', ro: 'Aap ki demand (ya mahana kiraya) kya hai?' },
     size: { en: 'What is the size — in marla, kanal or square feet?', ur: 'سائز کیا ہے — مرلہ، کنال یا مربع فٹ میں؟', ro: 'Size kya hai — marla, kanal ya square feet mein?' },

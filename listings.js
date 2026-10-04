@@ -91,7 +91,9 @@ function acRenderListings(containerId, list) {
   if (!el) return;
   list = acDedupeListings(list);
   if (!list.length) {
-    el.innerHTML = '<div class="empty-state">No listings match these filters yet.</div>';
+    const fc = document.getElementById('filterCity');
+    const launching = fc && fc.value && typeof acCityLaunching === 'function' && acCityLaunching(fc.value);
+    el.innerHTML = '<div class="empty-state">' + (launching ? acEsc(acT('city_launching_note')) : 'No listings match these filters yet.') + '</div>';
     return;
   }
   el.innerHTML = list.map(acListingCardHTML).join('');
@@ -101,9 +103,10 @@ async function acPopulateCityOptions(selectEl) {
   const cities = await AcDB.getActiveCities();
   cities.forEach(function (c) {
     const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
+    opt.value = c; opt.textContent = (typeof acCityLabel === 'function' ? acCityLabel(c, acUiLang()) : c);
     selectEl.appendChild(opt);
   });
+  selectEl.setAttribute('data-city-select', '');
 }
 
 function acInitListingPage(fixedType) {

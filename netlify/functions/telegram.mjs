@@ -13,14 +13,17 @@ import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
 import { getAreaNames } from '../../services/supabase.mjs';
 import { findProperty } from '../../services/copilot-service.mjs';
 import quality from '../../listing-quality.js';
+import { refreshPlaces } from '../../services/memory.mjs';
 import crypto from 'node:crypto';
 
 const SITE = 'https://agenticcore.estate';
 
 export function makeDeps(fetchImpl) {
+  const store = makeStore(fetchImpl);
   return {
     tg: makeTelegram(fetchImpl),
-    store: makeStore(fetchImpl),
+    store,
+    refreshPlaces: () => refreshPlaces(() => store.rpc('kb_known_places')),
     voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl) },
     assistant: {
       handleTurn,

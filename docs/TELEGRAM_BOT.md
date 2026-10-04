@@ -90,7 +90,7 @@ notifications), `set-password.html`, `my.js` (Account → Telegram panel),
   Nothing starts without that tap.
 - Every result comes to the owner first: ✅ Deliver · 🔁 Redo · ✖ Reject.
   The client sees nothing until **Deliver**.
-- Owner commands: `/jobs` (open work), `/deliver ACPK-0001` (send your own
+- Owner commands: `/learn` (new places to approve), `/jobs` (open work), `/deliver ACPK-0001` (send your own
   files/links, then Done), `/msg ACPK-0001 text` (message the client).
 
 ## Workers

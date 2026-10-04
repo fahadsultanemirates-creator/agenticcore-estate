@@ -7,6 +7,7 @@ import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
 import { ensureWebhook, runNotifications } from '../../services/telegram/notify.mjs';
 import { runWorkers } from '../../services/telegram/workers.mjs';
 import { flushClientNotes } from '../../services/telegram/pk-orders.mjs';
+import { learnDigest } from '../../services/memory.mjs';
 
 const SITE = 'https://agenticcore.estate';
 
@@ -29,6 +30,8 @@ export default async function handler() {
   const deps = { tg, store, ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim(), siteUrl: SITE };
   try { await flushClientNotes(deps); } catch (e) { console.error('[telegram-cron] order updates failed:', e && e.message); }
   try { console.log('[telegram-cron] workers', JSON.stringify(await runWorkers(deps))); } catch (e) { console.error('[telegram-cron] workers failed:', e && e.message); }
+  // learning memory: once a day (09:00–09:09 PKT) tell the owner about new places to review
+  try { await learnDigest(deps); } catch (e) { console.error('[telegram-cron] learn digest failed:', e && e.message); }
 }
 
 export const config = { schedule: '*/10 * * * *' };

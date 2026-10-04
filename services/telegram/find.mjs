@@ -10,6 +10,7 @@
 import { t } from './strings.mjs';
 import { buttons } from './tg-api.mjs';
 import { formatPKR } from '../util.mjs';
+import { isLaunched } from '../places.mjs';
 
 export const FIND_LIMITS = { searchesPerDay: 15, enquiriesPerDay: 10 };
 export function searchEnabled() { return String(process.env.BOT_PROPERTY_SEARCH || '').trim().toLowerCase() === 'on'; }
@@ -48,8 +49,8 @@ export async function startEnquiry(ctx, listingId) {
   if (!searchEnabled() || !(await ctx.requireActive())) return;
   const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
   if ((await ctx.deps.store.countActivity(ctx.account.id, 'enquiry_sent', since)) >= FIND_LIMITS.enquiriesPerDay) return ctx.say('find_limit');
-  const rows = await ctx.deps.store.rest('listings?id=eq.' + listingId + '&is_sample=eq.false&moderation_status=eq.active&select=id,title');
-  if (!rows || !rows[0]) return ctx.say('find_none');
+  const rows = await ctx.deps.store.rest('listings?id=eq.' + listingId + '&is_sample=eq.false&moderation_status=eq.active&select=id,title,city');
+  if (!rows || !rows[0] || (rows[0].city && !isLaunched(rows[0].city))) return ctx.say('find_none');
   ctx.session.state = { rl: ctx.session.state.rl, flow: 'enquiry', listing: listingId, title: rows[0].title };
   return ctx.say('enquire_ask', { title: rows[0].title });
 }
