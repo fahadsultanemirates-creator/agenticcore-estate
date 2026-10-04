@@ -25,7 +25,8 @@ export async function transcribe(bytes, filename, fetchImpl) {
 // ---------- replies as voice notes (text → speech) ----------
 // xAI (Grok) text-to-speech, the endpoint the agenticcore-click bot uses
 // (POST https://api.x.ai/v1/tts → mp3, which Telegram accepts as a voice
-// note). `language: 'auto'` reads Urdu script correctly. TTS_VOICE can pick
+// note). `language: 'auto'` reads Urdu script correctly. Voice: "naksh"
+// (xAI's warm male voice with a South Asian accent); TTS_VOICE can pick
 // another voice; nothing is stored.
 export async function synthesize(text, lang, fetchImpl) {
   const f = fetchImpl || globalThis.fetch;
@@ -35,7 +36,7 @@ export async function synthesize(text, lang, fetchImpl) {
     const res = await f('https://api.x.ai/v1/tts', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + (process.env.XAI_API_KEY || '').trim(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, language: lang === 'en' ? 'en' : 'auto', voice_id: (process.env.TTS_VOICE || 'rex').trim(), output_format: { codec: 'mp3' } }),
+      body: JSON.stringify({ text, language: lang === 'en' ? 'en' : 'auto', voice_id: (process.env.TTS_VOICE || 'naksh').trim(), output_format: { codec: 'mp3' } }),
       signal: ctrl.signal
     });
     if (!res.ok) throw new Error('tts_' + res.status);

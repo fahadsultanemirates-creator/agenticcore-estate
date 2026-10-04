@@ -175,3 +175,11 @@ test('read aloud: no links, commands or emoji; Rs in Urdu as روپے; capped', 
   assert.match(s, /3,499 روپے/);
   assert.ok(speakable('۔ '.repeat(800) + 'x', 'ur').length <= 701);
 });
+
+test('voice: Urdu replies use the "naksh" voice by default', async () => {
+  const { synthesize } = await import('../services/telegram/voice.mjs');
+  let sent;
+  await synthesize('سلام', 'ur', async (url, opts) => { sent = JSON.parse(opts.body); return { ok: true, arrayBuffer: async () => new ArrayBuffer(4000) }; });
+  assert.equal(sent.voice_id, 'naksh');
+  assert.equal(sent.language, 'auto');
+});
