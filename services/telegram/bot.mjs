@@ -148,6 +148,7 @@ async function processUpdate(update, deps, msg, cb, from, chat) {
   ctx.requireActive = () => requireActive(ctx);
   ctx.log = (kind, detail, alertText) => logActivity(ctx, kind, detail, alertText);
   ctx.menu = () => menu(ctx);
+  ctx.signInButton = (site) => signInButton(ctx, site);
 
   if (msg && deps.tg.typing) deps.tg.typing(chat.id).catch(() => null);   // "typing…" straight away
   if (deps.refreshPlaces) await deps.refreshPlaces();      // learned places (cached 10 min)
@@ -436,6 +437,24 @@ async function linkWithToken(ctx, token) {
   return showMenu(ctx);
 }
 
+// One-time sign-in link straight into a dashboard (Estate or AgenticCore
+// Pakistan — same account), as a button. Counts toward the hourly link limit;
+// returns null (no button) when the limit is reached or a link can't be made.
+const DASHBOARD = { estate: '/my.html', pk: 'https://agenticcorepk.com/dashboard.html' };
+async function signInButton(ctx, site) {
+  if (!ctx.account) return null;
+  try {
+    const since = new Date(Date.now() - 3600 * 1000).toISOString();
+    if ((await ctx.deps.store.countActivity(ctx.account.id, 'login_link', since)) >= LIMITS.loginLinksPerHour) return null;
+    const email = await ctx.deps.store.userEmail(ctx.account.id);
+    const target = site === 'pk' ? DASHBOARD.pk : ctx.deps.siteUrl + (ctx.account.password_set_at ? DASHBOARD.estate : '/set-password.html');
+    const link = email ? await ctx.deps.store.signInLink(email, target) : null;
+    if (!link) return null;
+    await logActivity(ctx, 'login_link', { site: site || 'estate' });
+    return [t(site === 'pk' ? 'btn_open_pk_dashboard' : 'btn_open_site', ctx.lang), link];
+  } catch (e) { return null; }
+}
+
 async function sendLoginLink(ctx) {
   if (!ctx.account) return ctx.say('need_account', {}, buttons([[[t('btn_signup', ctx.lang), 'm:signup']], [[t('btn_have_account', ctx.lang), 'm:have']]]));
   const since = new Date(Date.now() - 3600 * 1000).toISOString();
@@ -445,7 +464,11 @@ async function sendLoginLink(ctx) {
   const link = email ? await ctx.deps.store.signInLink(email, ctx.deps.siteUrl + target) : null;
   if (!link) throw new Error('login_link_failed');
   await logActivity(ctx, 'login_link', {}, 'Website sign-in link sent to ' + memberNo(ctx.account.member_no) + '.');
-  return ctx.say('login_link', {}, buttons([[[t(ctx.account.password_set_at ? 'btn_open_site' : 'btn_open_link', ctx.lang), link]]]));
+  // the same account also opens the AgenticCore Pakistan dashboard (orders, files, invoices)
+  const pk = email ? await ctx.deps.store.signInLink(email, DASHBOARD.pk).catch(() => null) : null;
+  const rows = [[[t(ctx.account.password_set_at ? 'btn_open_site' : 'btn_open_link', ctx.lang), link]]];
+  if (pk) rows.push([[t('btn_open_pk_dashboard', ctx.lang), pk]]);
+  return ctx.say('login_link', {}, buttons(rows));
 }
 
 async function requireActive(ctx) {

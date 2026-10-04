@@ -249,9 +249,24 @@ function missingRequired(f) {
   return miss.filter((m) => REQUIRED.indexOf(m) >= 0);
 }
 // A bare answer to the question just asked ("4", "sale") gets its context back.
+// "Rs 85,000", "85000 PKR", "85,000 per month" (no crore/lakh/thousand word)
+// → "85 thousand", the form the price reader understands. A bare number
+// counts only as the answer to the price question.
+const MONEY_UNIT = /\b(crores?|cr|karor|karod|lacs?|lakhs?|lkh|million|mn|thousand|hazaa?r|k)\b/i;
+export function plainMoney(text, asked) {
+  let t = String(text || '');
+  if (MONEY_UNIT.test(t)) return t;
+  const cue = /(?:rs\.?|pkr|rupees?)\s*(\d{1,3}(?:,\d{2,3})+|\d{4,})|(\d{1,3}(?:,\d{2,3})+|\d{4,})\s*(?:\/-|pkr|rs\b|rupees?|per month|a month|monthly|mahana|mahina)/i;
+  let m = t.match(cue);
+  if (!m && asked === 'price') m = t.match(/^\s*(?:rs\.?\s*)?(\d{1,3}(?:,\d{2,3})+|\d{4,})\s*$/i);
+  if (!m) return t;
+  const n = Number(String(m[1] || m[2]).replace(/,/g, ''));
+  if (!(n >= 1000)) return t;
+  return t.replace(m[0], ' ' + (n >= 1e7 ? n / 1e7 + ' crore' : n >= 1e5 ? n / 1e5 + ' lakh' : n / 1e3 + ' thousand') + ' ' + (/(per month|a month|monthly|mahana|mahina)/i.test(m[0]) ? 'per month ' : ''));
+}
 export function contextualise(text, asked) {
   // Roman Urdu sale/rent phrasing → words the facts extractor knows
-  const t = toSearchText(text).trim()
+  const t = plainMoney(toSearchText(text), asked).trim()
     .replace(/\b(bechna|bechni|bechne|bechna chahta|farokht karna|sell karna)\b/gi, 'for sale')
     .replace(/\bkiraye? (par|pe) (dena|deni|dene)\b/gi, 'for rent');
   const bare = /^\d+(\.\d+)?$/.test(t);

@@ -13,6 +13,7 @@ export const S_PK = {
     ur: 'یہ آرڈر اب کھلا نہیں ہے (یا تو دیا جا چکا ہے، منسوخ ہو گیا ہے یا وقت ختم ہو گیا)۔ نیا آرڈر شروع کریں یا اپنے آرڈرز دیکھیں:',
     ro: 'Yeh order ab khula nahin hai (ya to diya ja chuka hai, mansookh ho gaya hai ya waqt khatam ho gaya). Naya order shuru karein ya apne orders dekhein:'
   },
+  btn_open_pk_dashboard: { en: 'Open my orders dashboard (agenticcorepk.com)', ur: 'میرا آرڈرز ڈیش بورڈ کھولیں (agenticcorepk.com)', ro: 'Mera orders dashboard kholein (agenticcorepk.com)' },
   btn_pk_order: { en: 'Order a service', ur: 'سروس آرڈر کریں', ro: 'Service order karein' },
   btn_pk_orders: { en: 'My orders', ur: 'میرے آرڈرز', ro: 'Mere orders' },
   btn_pk_all: { en: 'All services & prices', ur: 'تمام سروسز اور قیمتیں', ro: 'Tamam services aur prices' },
