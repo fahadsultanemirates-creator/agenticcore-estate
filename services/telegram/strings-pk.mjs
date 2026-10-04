@@ -8,6 +8,11 @@ export const S_PK = {
     ur: 'AgenticCore Pakistan آپ کی پراپرٹی مارکیٹنگ تیار کرتا ہے — واٹس ایپ کارڈز، پوسٹس، فلائرز، ریلز، بروشرز، ویب سائٹس، اشتہارات اور AI ٹولز — شائع شدہ قیمتوں پر۔ یہیں آرڈر کریں اور فائلیں اسی چیٹ میں پائیں۔',
     ro: 'AgenticCore Pakistan aap ki property marketing tayyar karta hai — WhatsApp cards, posts, flyers, reels, brochures, websites, ads aur AI tools — published prices par. Yahin order karein aur files isi chat mein payein.'
   },
+  pk_order_closed: {
+    en: 'That order screen is no longer open (it was placed, cancelled or timed out). Start a new order, or see your orders:',
+    ur: 'یہ آرڈر اب کھلا نہیں ہے (یا تو دیا جا چکا ہے، منسوخ ہو گیا ہے یا وقت ختم ہو گیا)۔ نیا آرڈر شروع کریں یا اپنے آرڈرز دیکھیں:',
+    ro: 'Yeh order ab khula nahin hai (ya to diya ja chuka hai, mansookh ho gaya hai ya waqt khatam ho gaya). Naya order shuru karein ya apne orders dekhein:'
+  },
   btn_pk_order: { en: 'Order a service', ur: 'سروس آرڈر کریں', ro: 'Service order karein' },
   btn_pk_orders: { en: 'My orders', ur: 'میرے آرڈرز', ro: 'Mere orders' },
   btn_pk_all: { en: 'All services & prices', ur: 'تمام سروسز اور قیمتیں', ro: 'Tamam services aur prices' },

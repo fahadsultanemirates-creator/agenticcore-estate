@@ -148,6 +148,9 @@ export function makeStore(fetchImpl) {
     },
     // ---- generic ----
     rpc(name, body) { return rest('rpc/' + name, { method: 'POST', body: body || {} }); },
+    // one update at a time per chat (0025): true = held, false = busy
+    async lock(chatId) { return (await rest('rpc/tg_lock', { method: 'POST', body: { p_chat: Number(chatId), p_seconds: 30 } })) === true; },
+    async unlock(chatId) { await rest('rpc/tg_unlock', { method: 'POST', body: { p_chat: Number(chatId) } }); },
     // Private-bucket files (pk-attachments / pk-deliverables): uploaded with
     // the service key, shared only through short-lived signed links.
     async uploadObject(bucket, path, bytes, contentType) {
