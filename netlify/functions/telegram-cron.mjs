@@ -5,6 +5,8 @@
 import { makeTelegram, botConfigured } from '../../services/telegram/tg-api.mjs';
 import { makeStore, storeConfigured } from '../../services/telegram/store.mjs';
 import { ensureWebhook, runNotifications } from '../../services/telegram/notify.mjs';
+import { runWorkers } from '../../services/telegram/workers.mjs';
+import { flushClientNotes } from '../../services/telegram/pk-orders.mjs';
 
 const SITE = 'https://agenticcore.estate';
 
@@ -23,6 +25,10 @@ export default async function handler() {
     const sent = await runNotifications({ tg, store, siteUrl: SITE });
     console.log('[telegram-cron] sent', JSON.stringify(sent));
   } catch (e) { console.error('[telegram-cron] notifications failed:', e && e.message); }
+  // Phase 2: dashboard notifications queued for Telegram, then the Grok workers
+  const deps = { tg, store, ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim(), siteUrl: SITE };
+  try { await flushClientNotes(deps); } catch (e) { console.error('[telegram-cron] order updates failed:', e && e.message); }
+  try { console.log('[telegram-cron] workers', JSON.stringify(await runWorkers(deps))); } catch (e) { console.error('[telegram-cron] workers failed:', e && e.message); }
 }
 
 export const config = { schedule: '*/10 * * * *' };

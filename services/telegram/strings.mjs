@@ -1,3 +1,5 @@
+import { S_PK } from './strings-pk.mjs';
+
 // Everything the AgenticCore Telegram bot says, in English, Urdu and Roman Urdu.
 // {placeholders} are filled by t(). Numbers and links are only ever filled in
 // from real account/listing data, never from AI output.
@@ -165,12 +167,14 @@ export const S = {
     ro: 'Yaad dihani: barah-e-karam {days} din ke andar website ka password bana lein, warna password banne tak aap ka account ruk jayega. Ek baar ka sign-in link lene ke liye neeche dabayein.'
   },
   help: {
-    en: 'I can:\n• open an AgenticCore Estate account\n• list your property (tell me about it, send photos, confirm)\n• show your listings\n• send you a one-time website sign-in link\n\nYou can type or send a voice note, in English or Urdu. /menu shows the buttons again. Talk to a person: WhatsApp +1 808 998 5226.',
-    ur: 'میں یہ کر سکتا ہوں:\n• AgenticCore Estate اکاؤنٹ کھولنا\n• آپ کی پراپرٹی لسٹ کرنا (بتائیں، تصاویر بھیجیں، تصدیق کریں)\n• آپ کی لسٹنگز دکھانا\n• ویب سائٹ کا ایک بار کا سائن اِن لنک بھیجنا\n\nآپ لکھ کر یا وائس نوٹ بھیج سکتے ہیں، انگریزی یا اردو میں۔ /menu سے بٹن دوبارہ آ جاتے ہیں۔ کسی انسان سے بات: واٹس ایپ +1 808 998 5226۔',
-    ro: 'Main yeh kar sakta hoon:\n• AgenticCore Estate account kholna\n• aap ki property list karna (batayein, tasveerein bhejein, tasdeeq karein)\n• aap ki listings dikhana\n• website ka ek baar ka sign-in link bhejna\n\nAap likh kar ya voice note bhej sakte hain, English ya Urdu mein. /menu se buttons dobara aa jate hain. Kisi insaan se baat: WhatsApp +1 808 998 5226.'
+    en: 'I can:\n• open an AgenticCore Estate account\n• list your property (tell me about it, send photos, confirm)\n• show your listings\n• send you a one-time website sign-in link\n• order marketing from AgenticCore Pakistan (/order, /orders)\n\nYou can type or send a voice note, in English or Urdu. /menu shows the buttons again. Talk to a person: WhatsApp +1 808 998 5226.',
+    ur: 'میں یہ کر سکتا ہوں:\n• AgenticCore Estate اکاؤنٹ کھولنا\n• آپ کی پراپرٹی لسٹ کرنا (بتائیں، تصاویر بھیجیں، تصدیق کریں)\n• آپ کی لسٹنگز دکھانا\n• ویب سائٹ کا ایک بار کا سائن اِن لنک بھیجنا\n• AgenticCore Pakistan سے مارکیٹنگ آرڈر کرنا (/order، /orders)\n\nآپ لکھ کر یا وائس نوٹ بھیج سکتے ہیں، انگریزی یا اردو میں۔ /menu سے بٹن دوبارہ آ جاتے ہیں۔ کسی انسان سے بات: واٹس ایپ +1 808 998 5226۔',
+    ro: 'Main yeh kar sakta hoon:\n• AgenticCore Estate account kholna\n• aap ki property list karna (batayein, tasveerein bhejein, tasdeeq karein)\n• aap ki listings dikhana\n• website ka ek baar ka sign-in link bhejna\n• AgenticCore Pakistan se marketing order karna (/order, /orders)\n\nAap likh kar ya voice note bhej sakte hain, English ya Urdu mein. /menu se buttons dobara aa jate hain. Kisi insaan se baat: WhatsApp +1 808 998 5226.'
   },
   error: { en: 'Sorry, something went wrong on our side. Please try again in a minute.', ur: 'معذرت، ہماری طرف سے کوئی مسئلہ آ گیا۔ براہِ کرم ایک منٹ بعد دوبارہ کوشش کریں۔', ro: 'Maazrat, hamari taraf se koi masla aa gaya. Barah-e-karam ek minute baad dobara koshish karein.' }
 };
+
+Object.assign(S, S_PK);
 
 export function t(key, lang, vars) {
   const entry = S[key];

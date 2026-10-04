@@ -40,6 +40,10 @@ export function makeTelegram(fetchImpl) {
     send(chatId, text, extra) {
       return call('sendMessage', Object.assign({ chat_id: chatId, text: String(text).slice(0, 4000), disable_web_page_preview: true }, extra || {}));
     },
+    // Files by https URL (signed links); Telegram downloads them itself.
+    sendPhoto(chatId, url, caption, extra) { return call('sendPhoto', Object.assign({ chat_id: chatId, photo: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 20000); },
+    sendVideo(chatId, url, caption, extra) { return call('sendVideo', Object.assign({ chat_id: chatId, video: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 30000); },
+    sendDocument(chatId, url, caption, extra) { return call('sendDocument', Object.assign({ chat_id: chatId, document: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 30000); },
     typing(chatId) { return call('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => null); },
     answerCallback(id, text) { return call('answerCallbackQuery', { callback_query_id: id, text: text || undefined }).catch(() => null); },
     removeButtons(chatId, messageId) {

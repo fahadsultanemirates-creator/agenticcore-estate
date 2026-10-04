@@ -16,6 +16,8 @@ const COMMANDS = [
   { command: 'list', description: 'List a property' },
   { command: 'mylistings', description: 'My listings' },
   { command: 'login', description: 'One-time website sign-in link' },
+  { command: 'order', description: 'Order marketing (AgenticCore Pakistan)' },
+  { command: 'orders', description: 'My marketing orders' },
   { command: 'help', description: 'Help' },
   { command: 'cancel', description: 'Stop the current step' }
 ];

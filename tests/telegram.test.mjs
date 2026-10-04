@@ -270,7 +270,8 @@ test('voice notes: transcribed with Grok when configured, otherwise a clear mess
 test('marketing services questions go to the Pakistan agent; flood limit holds', async () => {
   const store = fakeStore(), tg = fakeTg(), d = deps(store, tg);
   await run(d, text('I need a logo and social media marketing'));
-  assert.match(lastText(tg), /agenticcorepk\.com/);
+  assert.match(lastText(tg), /AgenticCore Pakistan/);
+  assert.ok(btnData(last(tg)).includes('o:start') && btnData(last(tg)).includes('https://agenticcorepk.com/services.html'));
   for (let i = 0; i < 45; i++) await run(d, text('hello'));
   assert.ok(tg.sent.some((m) => /very quickly/.test(m.text)));
 });

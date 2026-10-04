@@ -146,6 +146,61 @@ export function makeStore(fetchImpl) {
       });
       return SUPABASE_URL + '/storage/v1/object/public/listing-photos/' + path;
     },
+    // ---- generic ----
+    rpc(name, body) { return rest('rpc/' + name, { method: 'POST', body: body || {} }); },
+    // Private-bucket files (pk-attachments / pk-deliverables): uploaded with
+    // the service key, shared only through short-lived signed links.
+    async uploadObject(bucket, path, bytes, contentType) {
+      await req('/storage/v1/object/' + bucket + '/' + path.split('/').map(enc).join('/'), {
+        method: 'POST', raw: bytes, headers: { 'Content-Type': contentType || 'application/octet-stream', 'x-upsert': 'true' }, timeoutMs: 20000
+      });
+      return path;
+    },
+    async signedUrl(bucket, path, seconds) {
+      const r = await req('/storage/v1/object/sign/' + bucket + '/' + path.split('/').map(enc).join('/'), { method: 'POST', body: { expiresIn: seconds || 3600 } });
+      const u = r && (r.signedURL || r.signedUrl);
+      return u ? SUPABASE_URL + '/storage/v1' + (u.startsWith('/') ? u : '/' + u) : null;
+    },
+    // ---- AgenticCore Pakistan (Phase 2) ----
+    async catalogue() {
+      return (await rest('pk_catalog_lines?active=eq.true&select=line_id,service_no,service_name,model,price,unit,days,is_from&order=service_no.asc')) || [];
+    },
+    async pkTask(id) {
+      const rows = await rest('pk_tasks?id=eq.' + id + '&select=*');
+      return (rows && rows[0]) || null;
+    },
+    async pkTaskByPublicId(publicId) {
+      const rows = await rest('pk_tasks?public_id=eq.' + enc(publicId) + '&select=*');
+      return (rows && rows[0]) || null;
+    },
+    async pkClientTasks(clientId) {
+      return (await rest('pk_tasks?client_id=eq.' + clientId + '&select=id,public_id,title,quantity,status,due_at,created_at&order=created_at.desc&limit=10')) || [];
+    },
+    async pkPatchTask(id, patch) { await rest('pk_tasks?id=eq.' + id, { method: 'PATCH', body: patch, headers: { Prefer: 'return=minimal' } }); },
+    async pkAttachments(taskId) { return (await rest('pk_attachments?task_id=eq.' + taskId + '&select=path,name')) || []; },
+    async pkEnableTelegram(clientId) {
+      const rows = await rest('pk_client_settings?client_id=eq.' + clientId + '&select=notify');
+      const notify = Object.assign({ email: true, whatsapp: false }, (rows && rows[0] && rows[0].notify) || {}, { telegram: true });
+      await rest('pk_client_settings?on_conflict=client_id', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=minimal' }, body: { client_id: clientId, notify } });
+    },
+    async jobCreate(row) {
+      const rows = await rest('pk_work_jobs', { method: 'POST', body: row, headers: { Prefer: 'return=representation' } });
+      return rows && rows[0];
+    },
+    async jobGet(id) { const rows = await rest('pk_work_jobs?id=eq.' + id + '&select=*'); return (rows && rows[0]) || null; },
+    async jobUpdate(id, patch) {
+      const rows = await rest('pk_work_jobs?id=eq.' + id, { method: 'PATCH', body: Object.assign({ updated_at: new Date().toISOString() }, patch), headers: { Prefer: 'return=representation' } });
+      return rows && rows[0];
+    },
+    async jobsWhere(filter) { return (await rest('pk_work_jobs?' + filter + '&select=*&order=created_at.asc&limit=20')) || []; },
+    async chatFor(userId) {
+      const rows = await rest('telegram_links?user_id=eq.' + userId + '&select=chat_id,notify');
+      return rows && rows[0] && rows[0].notify ? rows[0].chat_id : null;
+    },
+    async profile(userId) {
+      const rows = await rest('profiles?id=eq.' + userId + '&select=id,full_name,member_no');
+      return (rows && rows[0]) || null;
+    },
     // ---- notifications ----
     async markSent(kind, ref, userId) {
       const rows = await rest('tg_notifications?on_conflict=kind,ref', {
