@@ -18,7 +18,10 @@ const VIDEO_MODEL = () => process.env.XAI_VIDEO_MODEL || 'grok-imagine-video-1.5
 export function jobPrompt(task, kind) {
   const brief = String((task.details && task.details.brief) || '').slice(0, 1200);
   const base = 'Professional real estate marketing ' + (kind === 'video' ? 'video' : 'creative') + ' for Pakistan: ' + task.title + '. ' + brief +
-    ' Clean modern premium style, accurate and realistic, no invented prices, phone numbers or text that was not provided.';
+    ' Clean modern premium style, accurate and realistic.' +
+    ' Use ONLY the words given above (business name, phone, city, details) and spell them exactly as written; add no slogans, taglines, mottos or claims.' +
+    ' Do not invent a logo, emblem, monogram or icon mark — show the business name as plain text only.' +
+    ' No invented prices, phone numbers, addresses, awards or website names.';
   return base.replace(/\s+/g, ' ').trim().slice(0, 1800);
 }
 
