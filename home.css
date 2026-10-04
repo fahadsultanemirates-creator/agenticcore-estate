@@ -135,3 +135,51 @@ html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 
 /* Amaan entry points under the homepage search */
 .h2-amaan { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 0; }
 .h2-amaan .btn { min-height: 44px; }
+
+/* ---------- AgenticCore in Telegram (homepage) ---------- */
+.tgh { padding: 3.2rem 0; background:
+  radial-gradient(900px 380px at 85% 20%, rgba(42, 171, 238, 0.10), transparent 70%),
+  radial-gradient(700px 320px at 10% 90%, rgba(212, 175, 55, 0.08), transparent 70%); border-top: 1px solid rgba(212, 175, 55, 0.12); border-bottom: 1px solid rgba(212, 175, 55, 0.12); }
+.tgh-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 2.6rem; align-items: center; }
+.tgh-eyebrow { display: inline-flex; align-items: center; gap: .5rem; padding: .3rem .8rem; border-radius: 999px; border: 1px solid rgba(42, 171, 238, 0.45); background: rgba(42, 171, 238, 0.10); color: #7CC8F2; font-size: .82rem; font-weight: 600; letter-spacing: .02em; }
+.tgh-dot { width: 8px; height: 8px; border-radius: 50%; background: #2AABEE; box-shadow: 0 0 0 4px rgba(42, 171, 238, .2); }
+.tgh h2 { font-size: clamp(1.75rem, 3.6vw, 2.6rem); line-height: 1.12; margin: .9rem 0 .7rem; }
+.tgh-sub { color: var(--text-secondary); font-size: 1.04rem; max-width: 36rem; margin: 0 0 1.4rem; }
+.tgh-points { list-style: none; padding: 0; margin: 0 0 1.6rem; display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 1.4rem; }
+.tgh-points li { display: flex; gap: .75rem; align-items: flex-start; }
+.tgh-points strong { display: block; font-size: .98rem; margin-bottom: .15rem; }
+.tgh-points span:not(.tgh-ico) { color: var(--text-secondary); font-size: .9rem; line-height: 1.45; }
+.tgh-ico { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; color: #071F17; background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-gold)); }
+.tgh-ctas { display: flex; flex-wrap: wrap; gap: .7rem; }
+.tgh-btn { display: inline-flex; align-items: center; gap: .55rem; background: #2AABEE; color: #fff; border: 1px solid #2AABEE; font-weight: 600; min-height: 48px; padding: 0 1.3rem; box-shadow: 0 8px 22px rgba(42, 171, 238, .28); }
+.tgh-btn:hover, .tgh-btn:focus-visible { background: #229ED9; border-color: #229ED9; color: #fff; }
+.tgh-btn svg { width: 20px; height: 20px; }
+.tgh-ctas .btn-secondary { min-height: 48px; display: inline-flex; align-items: center; }
+.tgh-fine { margin: .9rem 0 0; color: var(--text-tertiary, #6E8F7F); font-size: .82rem; }
+.tgh-visual { position: relative; display: flex; justify-content: center; align-items: flex-end; gap: 1rem; }
+.tgh-phone { position: relative; width: min(330px, 100%); border-radius: 28px; padding: 14px 12px 30px; background: #0E1621; border: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 28px 60px rgba(0, 0, 0, .45), 0 0 0 6px rgba(255, 255, 255, .03); }
+.tgh-phone-top { display: flex; align-items: center; gap: .6rem; padding: .3rem .4rem .7rem; border-bottom: 1px solid rgba(255, 255, 255, .06); color: #E9EEF2; }
+.tgh-phone-top b { display: block; font-size: .92rem; }
+.tgh-phone-top small { color: #7D8B99; font-size: .75rem; }
+.tgh-avatar { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; color: #fff; background: linear-gradient(135deg, #F06292, #E57373); }
+.tgh-chat { display: flex; flex-direction: column; gap: .5rem; padding: .8rem .2rem 0; }
+.tgh-msg { margin: 0; max-width: 86%; padding: .5rem .7rem; border-radius: 14px; font-size: .82rem; line-height: 1.4; color: #E9EEF2; }
+.tgh-msg.bot { align-self: flex-start; background: #182533; border-bottom-left-radius: 4px; }
+.tgh-msg.me { align-self: flex-end; background: #2B5278; border-bottom-right-radius: 4px; }
+.tgh-msg.ok { border: 1px solid rgba(52, 211, 153, .45); }
+.tgh-msg.voice { display: inline-flex; align-items: center; gap: .55rem; }
+.tgh-wave { width: 92px; height: 16px; background: repeating-linear-gradient(90deg, #8FC5EE 0 3px, transparent 3px 6px); -webkit-mask: linear-gradient(90deg, #000 0 100%); mask: radial-gradient(ellipse at center, #000 55%, transparent 75%); opacity: .9; }
+.tgh-caption { position: absolute; left: 0; right: 0; bottom: 9px; text-align: center; font-size: .7rem; color: #5E6E7D; }
+.tgh-qr { display: flex; flex-direction: column; align-items: center; gap: .45rem; padding: .6rem; border-radius: 14px; background: var(--bg-panel); border: 1px solid rgba(212, 175, 55, .25); color: var(--text-secondary); font-size: .74rem; text-align: center; max-width: 136px; }
+.tgh-qr img { border-radius: 6px; display: block; }
+@media (max-width: 960px) {
+  .tgh-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .tgh-qr { display: none; }
+}
+@media (max-width: 560px) {
+  .tgh { padding: 2.4rem 0; }
+  .tgh-points { grid-template-columns: 1fr; }
+  .tgh-ctas .btn { flex: 1 1 100%; justify-content: center; }
+}
+html[dir="rtl"] .tgh-msg.bot { align-self: flex-end; border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; }
+html[dir="rtl"] .tgh-msg.me { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 4px; }
