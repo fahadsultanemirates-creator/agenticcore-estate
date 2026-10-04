@@ -19,7 +19,6 @@ import crypto from 'node:crypto';
 import { t } from './strings.mjs';
 import { buttons, contactKeyboard, removeKeyboard } from './tg-api.mjs';
 import { detectLang, contextualise, factsSummary, askFor, launchNotice, isPriceQuestion } from '../assistant-service.mjs';
-import { speakable } from './voice.mjs';
 import { isLaunched, placeOf } from '../places.mjs';
 import { observe, remember, recall, recallLine, pendingFacts, factLine } from '../memory.mjs';
 import { replyToRequest } from '../amaan-handoff.mjs';
@@ -115,7 +114,6 @@ export async function handleUpdate(update, deps) {
   } finally {
     if (locked) await deps.store.unlock(chat.id).catch(() => null);
   }
-  if (ctx) await speakTurn(ctx);           // the voice note doesn't hold up the next message
   return { ok: true };
 }
 
@@ -179,23 +177,6 @@ async function processUpdate(update, deps, msg, cb, from, chat) {
   return ctx;
 }
 
-// Urdu conversations also get the reply as a voice note (and anyone who
-// sent a voice note hears the answer). /voice turns it off.
-async function speakTurn(ctx) {
-  const v = ctx.deps.voice;
-  if (!v || typeof v.synthesize !== 'function' || !v.configured() || !ctx.out.length) return;
-  const rl = ctx.session.state.rl || {};
-  const lang = ctx.session.lang || 'en';
-  if (rl.voice === false || lang === 'ro' || !(lang === 'ur' || ctx.heardVoice)) return;
-  if (isOwner(ctx) && ctx.ownerCommand) return;
-  const text = speakable(ctx.out.join('\n'), lang);
-  if (text.replace(/[\s\d.,:;!?؟۔-]/g, '').length < 3) return;
-  try {
-    await ctx.deps.tg.recording(ctx.chatId);
-    await ctx.deps.tg.sendVoice(ctx.chatId, await v.synthesize(text, lang));
-  } catch (e) { console.warn('[telegram] voice reply skipped:', e && e.message); }
-}
-
 // Language: asked once at the start ("English / اردو"); /language changes it.
 function langPicker(ctx) {
   return ctx.say('lang_pick', {}, buttons([[['English', 'lg:en'], ['اردو', 'lg:ur']]]));
@@ -246,7 +227,6 @@ async function onMessage(ctx, msg) {
       const file = await ctx.deps.tg.download((msg.voice || msg.audio).file_id, 5 * 1024 * 1024);
       text = await ctx.deps.voice.transcribe(file.bytes, 'voice.ogg');
     } catch (e) { return ctx.say('voice_failed'); }
-    ctx.heardVoice = true;
     ctx.session.lang = s.rl.pick === 'ur' ? 'ur' : detectLang(text, ctx.session.lang);
     await ctx.say('heard', { text });
   } else if (text && !/^\//.test(text)) {
@@ -278,10 +258,6 @@ async function onMessage(ctx, msg) {
       return showMenu(ctx);
     }
     if (name === 'language' || name === 'zaban') return langPicker(ctx);
-    if (name === 'voice') {
-      s.rl.voice = s.rl.voice === false;
-      return ctx.say(s.rl.voice ? 'voice_now_on' : 'voice_now_off');
-    }
     if (name === 'manage') return manage(ctx);
     if (name === 'menu') { ctx.session.state = { rl: s.rl }; return showMenu(ctx); }
     if (name === 'help') return ctx.say('help', {}, menu(ctx));

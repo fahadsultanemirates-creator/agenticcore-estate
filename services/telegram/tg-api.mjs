@@ -44,24 +44,6 @@ export function makeTelegram(fetchImpl) {
     sendPhoto(chatId, url, caption, extra) { return call('sendPhoto', Object.assign({ chat_id: chatId, photo: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 20000); },
     sendVideo(chatId, url, caption, extra) { return call('sendVideo', Object.assign({ chat_id: chatId, video: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 30000); },
     sendDocument(chatId, url, caption, extra) { return call('sendDocument', Object.assign({ chat_id: chatId, document: url, caption: caption ? String(caption).slice(0, 1000) : undefined }, extra || {}), 30000); },
-    // A voice note from audio bytes (mp3), uploaded as multipart.
-    async sendVoice(chatId, bytes, extra) {
-      const token = botToken();
-      if (!token) throw new Error('telegram_not_configured');
-      const form = new FormData();
-      form.set('chat_id', String(chatId));
-      form.set('voice', new Blob([bytes], { type: 'audio/mpeg' }), 'amaan.mp3');
-      Object.keys(extra || {}).forEach((k) => form.set(k, typeof extra[k] === 'string' ? extra[k] : JSON.stringify(extra[k])));
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 20000);
-      try {
-        const res = await f('https://api.telegram.org/bot' + token + '/sendVoice', { method: 'POST', body: form, signal: ctrl.signal });
-        const data = await res.json().catch(() => ({}));
-        if (!data.ok) throw new Error('telegram_sendVoice_' + (data.error_code || res.status));
-        return data.result;
-      } finally { clearTimeout(timer); }
-    },
-    recording(chatId) { return call('sendChatAction', { chat_id: chatId, action: 'record_voice' }).catch(() => null); },
     typing(chatId) { return call('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => null); },
     answerCallback(id, text) { return call('answerCallbackQuery', { callback_query_id: id, text: text || undefined }).catch(() => null); },
     removeButtons(chatId, messageId) {

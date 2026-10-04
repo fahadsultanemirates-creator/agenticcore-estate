@@ -20,7 +20,6 @@ const COMMANDS = [
   { command: 'orders', description: 'My marketing orders' },
   { command: 'manage', description: 'Manage my account and listings' },
   { command: 'language', description: 'English / اردو' },
-  { command: 'voice', description: 'Voice replies on / off' },
   { command: 'help', description: 'Help' },
   { command: 'cancel', description: 'Stop the current step' }
 ];

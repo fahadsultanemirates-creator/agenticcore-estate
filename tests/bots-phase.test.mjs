@@ -1,5 +1,5 @@
 // Bots phase: published prices in every assistant, language choice at the
-// start (web + Telegram), Urdu voice replies in Telegram, account help.
+// start (web + Telegram), text-only replies in Telegram, account help.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -9,7 +9,6 @@ delete process.env.ANTHROPIC_API_KEY;
 const cat = await import('../services/pk-catalog.mjs');
 const { handleTurn, isPriceQuestion, onlyAllowedNumbers, numbersIn } = await import('../services/assistant-service.mjs');
 const { handleUpdate } = await import('../services/telegram/bot.mjs');
-const { speakable } = await import('../services/telegram/voice.mjs');
 const { default: quality } = await import('../listing-quality.js');
 
 const { cat: C, text: PRICE_TEXT } = cat.bundledCatalog();
@@ -132,33 +131,26 @@ const press = (data) => ({ update_id: uid++, callback_query: { id: 'cb' + uid, d
 const btns = (m) => ((m && m.extra && m.extra.reply_markup && m.extra.reply_markup.inline_keyboard) || []).flat().map((b) => b.callback_data || b.url);
 async function run(d, ...u) { for (const x of u) await handleUpdate(x, d); }
 
-test('Telegram: /start asks English or Urdu; Urdu replies come with a voice note', async () => {
+test('Telegram: /start asks English or Urdu; replies are text only (no voice notes)', async () => {
   const tg = fakeTg(), spoken = [], d = deps(tg, spoken);
   await run(d, text('/start'));
   assert.deepEqual(btns(tg.sent[tg.sent.length - 1]).slice(0, 2), ['lg:en', 'lg:ur']);
-  assert.equal(tg.voices.length, 0);                                     // the question itself is not read out
   await run(d, press('lg:ur'));
   assert.match(tg.sent[tg.sent.length - 2].text, /اردو میں بات/);
-  assert.equal(tg.voices.length, 1);
-  assert.match(spoken[0].text, /[؀-ۿ]/);
   await run(d, text('3D floor plan kitne ka hai?'));                     // picked Urdu → Urdu, with prices
   const r = tg.sent[tg.sent.length - 1];
   assert.match(r.text, /تھری ڈی فلور پلان: Rs 3,499/);
   assert.ok(btns(r).includes('o:start'));
-  assert.match(spoken[spoken.length - 1].text, /3,499 روپے/);         // read as rupees
-  await run(d, text('/voice'));
-  const before = tg.voices.length;
-  await run(d, text('packages?'));
-  assert.equal(tg.voices.length, before);                               // voice off
+  assert.equal(tg.voices.length, 0);
+  assert.equal(spoken.length, 0);
 });
 
-test('Telegram: English chats get no voice unless they send a voice note', async () => {
+test('Telegram: a voice note from the client is still understood (answered in text)', async () => {
   const tg = fakeTg(), spoken = [], d = deps(tg, spoken);
-  await run(d, text('/start'), press('lg:en'), text('how much is a 3d floor plan?'));
-  assert.match(tg.sent[tg.sent.length - 1].text, /3D Floor Plan: Rs 3,499/);
+  await run(d, text('/start'), press('lg:en'), voice());
+  assert.ok(tg.sent.some((m) => /I heard|میں نے سنا/.test(m.text)));
+  assert.match(tg.sent[tg.sent.length - 1].text, /3,499/);
   assert.equal(tg.voices.length, 0);
-  await run(d, voice());                                                // Urdu voice note → Urdu answer, spoken
-  assert.ok(tg.voices.length >= 1);
 });
 
 test('Telegram: "how do I edit my listing" explains managing the account', async () => {
@@ -167,19 +159,4 @@ test('Telegram: "how do I edit my listing" explains managing the account', async
   assert.match(tg.sent[tg.sent.length - 1].text, /open an account|account/i);
   assert.ok(isPriceQuestion('website kitne ki hai'));
   assert.ok(!isPriceQuestion('10 marla house in G-13 under 3 crore'));
-});
-
-test('read aloud: no links, commands or emoji; Rs in Urdu as روپے; capped', () => {
-  const s = speakable('📄 Rs 3,499 فی پلان۔ دیکھیں https://agenticcorepk.com/services.html یا /order لکھیں', 'ur');
-  assert.doesNotMatch(s, /https|\/order|📄/);
-  assert.match(s, /3,499 روپے/);
-  assert.ok(speakable('۔ '.repeat(800) + 'x', 'ur').length <= 701);
-});
-
-test('voice: Urdu replies use the "naksh" voice by default', async () => {
-  const { synthesize } = await import('../services/telegram/voice.mjs');
-  let sent;
-  await synthesize('سلام', 'ur', async (url, opts) => { sent = JSON.parse(opts.body); return { ok: true, arrayBuffer: async () => new ArrayBuffer(4000) }; });
-  assert.equal(sent.voice_id, 'naksh');
-  assert.equal(sent.language, 'auto');
 });
