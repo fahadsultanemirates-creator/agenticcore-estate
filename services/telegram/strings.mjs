@@ -106,6 +106,17 @@ export const S = {
   photo_max: { en: 'That\'s 8 photos — the maximum. Tap "Done" to continue.', ur: '8 تصاویر ہو گئیں — یہ زیادہ سے زیادہ ہیں۔ آگے بڑھنے کے لیے "ہو گیا" دبائیں۔', ro: '8 tasveerein ho gayin — yeh zyada se zyada hain. Aage barhne ke liye "Ho gaya" dabayein.' },
   photo_as_file: { en: 'Please send photos as normal photos (not as a file or document).', ur: 'براہِ کرم تصاویر عام تصویر کے طور پر بھیجیں (فائل یا ڈاکیومنٹ کے طور پر نہیں)۔', ro: 'Barah-e-karam tasveerein aam tasveer ke taur par bhejein (file ya document ke taur par nahin).' },
   need_photo: { en: 'Please send at least one photo first — buyers rarely open listings without photos.', ur: 'براہِ کرم پہلے کم از کم ایک تصویر بھیجیں — خریدار بغیر تصویر والی لسٹنگ کم ہی کھولتے ہیں۔', ro: 'Barah-e-karam pehle kam az kam ek tasveer bhejein — khareedar baghair tasveer wali listing kam hi kholte hain.' },
+  button_old: {
+    en: 'That button is from an earlier step, so nothing changed. Here is the menu:',
+    ur: 'یہ بٹن پچھلے مرحلے کا ہے، اس لیے کچھ تبدیل نہیں ہوا۔ یہ رہا مینیو:',
+    ro: 'Yeh button pichle marhale ka hai, is liye kuch tabdeel nahin hua. Yeh raha menu:'
+  },
+  extra_ask: {
+    en: 'Anything that makes it stand out? For example: corner, double storey, 2 car parking, park facing, gas and electricity connected, near school. Write it in your own words — or tap Skip. (Please don\'t write the exact house number: the listing is public.)',
+    ur: 'کوئی خاص بات جو اسے نمایاں کرے؟ مثلاً: کارنر، ڈبل اسٹوری، 2 گاڑیوں کی پارکنگ، پارک فیسنگ، گیس اور بجلی لگی ہوئی، اسکول کے قریب۔ اپنے الفاظ میں لکھیں — یا "چھوڑیں" دبائیں۔ (براہِ کرم گھر کا مکمل نمبر نہ لکھیں، لسٹنگ سب کو نظر آتی ہے۔)',
+    ro: 'Koi khaas baat jo isay numayan kare? Maslan: corner, double storey, 2 gaariyon ki parking, park facing, gas aur bijli lagi hui, school ke qareeb. Apne alfaaz mein likhein — ya Skip dabayein. (Barah-e-karam ghar ka mukammal number na likhein, listing sab ko nazar aati hai.)'
+  },
+  btn_skip: { en: 'Skip', ur: 'چھوڑیں', ro: 'Skip' },
   btn_done_photos: { en: 'Done', ur: 'ہو گیا', ro: 'Ho gaya' },
   photo_not_now: { en: 'To list a property, tell me about it first — then I\'ll ask for photos.', ur: 'پراپرٹی لسٹ کرنے کے لیے پہلے اس کے بارے میں بتائیں — پھر میں تصاویر مانگوں گا۔', ro: 'Property list karne ke liye pehle us ke baare mein batayein — phir main tasveerein mangunga.' },
   review: {

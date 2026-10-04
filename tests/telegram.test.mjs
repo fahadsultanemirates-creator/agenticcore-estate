@@ -181,6 +181,9 @@ test('listing by chat: details → photos → review → publish with a link; no
   await run(d, text('4 crore'));
   assert.match(lastText(tg), /bedrooms/i);
   await run(d, text('5'), text('6'));
+  assert.match(lastText(tg), /stand out/i);                          // one optional question, Skip allowed
+  assert.ok(btnData(last(tg)).includes('l:skip'));
+  await run(d, text('Corner, double storey, 2 car parking'));
   assert.match(lastText(tg), /send photos/i);
   await run(d, press('l:done'));
   assert.match(lastText(tg), /at least one photo/);
@@ -193,6 +196,7 @@ test('listing by chat: details → photos → review → publish with a link; no
   assert.match(review, /10 Marla House for Sale in G-13, Islamabad/);
   assert.match(review, /Rs 4 Crore|4 Crore|4 crore/i);
   assert.match(review, /Photos: 2/);
+  assert.match(review, /Corner, double storey, 2 car parking/);       // the owner's own words
   assert.equal(store.db.listings.length, 0, 'not published before confirmation');
   // change something after the review
   await run(d, press('l:edit'), text('price is 3.8 crore'));
@@ -204,6 +208,7 @@ test('listing by chat: details → photos → review → publish with a link; no
   assert.equal(l.type, 'buy'); assert.equal(l.property_type, 'house'); assert.equal(l.city, 'Islamabad'); assert.equal(l.area, 'G-13');
   assert.equal(l.price, 38000000); assert.equal(l.beds, 5); assert.equal(l.baths, 6); assert.equal(l.size_marla, 10);
   assert.equal(l.photos.length, 2); assert.equal(l.thumbs.length, 2);
+  assert.match(l.description, /^Corner, double storey, 2 car parking/);
   const pub = tg.sent.find((m) => /Your listing is live/.test(m.text));
   assert.match(pub.text, new RegExp('https://agenticcore\\.estate/listing\\.html\\?id=' + l.id));
   assert.match(pub.text, /Listing quality: \d+\/100/);
@@ -464,4 +469,35 @@ test('memory: the owner gets one daily nudge at 09:00 PKT when places wait for r
   assert.equal(await learnDigest(deps2, new Date('2026-10-07T04:05:00Z')), 1, 'at 09:05 PKT');
   assert.equal(await learnDigest(deps2, new Date('2026-10-07T04:15:00Z')), 0, 'only in the 09:00–09:09 slot');
   assert.deepEqual(sent, ['📚 1 new place(s) to review — send /learn.']);
+});
+
+test('an album (photos arriving together) and a tap during an upload never overwrite each other', async () => {
+  const { store, tg, d } = await signedUp();
+  // a slow database, like the real one, and the per-chat lock (0025)
+  const locks = new Set();
+  const slow = (fn) => async (...a) => { await new Promise((r) => setTimeout(r, 15)); return fn(...a); };
+  store.getSession = slow(store.getSession); store.saveSession = slow(store.saveSession);
+  store.lock = async (chat) => { if (locks.has(chat)) return false; locks.add(chat); return true; };
+  store.unlock = async (chat) => { locks.delete(chat); };
+  await run(d, press('m:list'), text('10 marla house for sale in G-13 Islamabad'), text('4 crore'), text('5'), text('6'), press('l:skip'));
+  await Promise.all([handleUpdate(photo(), d), handleUpdate(photo(), d), handleUpdate(photo(), d)]);   // one album of 3
+  await run(d, press('l:done'));
+  assert.match(lastText(tg), /Photos: 3/);
+  // without the lock the same album keeps only one photo (what the live test saw)
+  const { store: s2, tg: tg2, d: d2 } = await signedUp();
+  s2.getSession = slow(s2.getSession); s2.saveSession = slow(s2.saveSession);
+  await run(d2, press('m:list'), text('10 marla house for sale in G-13 Islamabad'), text('4 crore'), text('5'), text('6'), press('l:skip'));
+  await Promise.all([handleUpdate(photo(), d2), handleUpdate(photo(), d2), handleUpdate(photo(), d2)]);
+  await run(d2, press('l:done'));
+  assert.doesNotMatch(lastText(tg2), /Photos: 3/);
+});
+
+test('buttons are never silent: an old or out-of-step button always gets a reply', async () => {
+  const { tg, d } = await signedUp();
+  for (const b of ['l:publish', 'l:done', 's:yes', 'o:place', 'o:done', 'zz:unknown']) {
+    const before = tg.sent.length;
+    await run(d, press(b));
+    assert.ok(tg.sent.length > before, b + ' got no reply');
+  }
+  assert.match(lastText(tg), /earlier step|no longer open/);
 });

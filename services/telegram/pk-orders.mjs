@@ -383,6 +383,13 @@ export async function onPkCallback(ctx, data, msgId) {
   if (data === 'o:done' && s.flow === 'order') { await toOrderReview(ctx); return true; }
   if (data === 'o:edit' && s.flow === 'order') { s.step = 'review'; await ctx.say('what_change'); return true; }
   if (data === 'o:place' && s.flow === 'order' && s.step === 'review') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); await placeOrder(ctx); return true; }
+  // never silent: an order not at its review step is shown again to confirm; a finished/expired one says so
+  if (data === 'o:place' && s.flow === 'order') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); await toOrderReview(ctx); return true; }
+  if (data === 'o:place' || data === 'o:done' || data === 'o:edit' || /^o:[ql]:/.test(data)) {
+    await ctx.deps.tg.removeButtons(ctx.chatId, msgId);
+    await ctx.say('pk_order_closed', {}, buttons([[[t('btn_pk_order', ctx.lang), 'o:start']], [[t('btn_pk_orders', ctx.lang), 'm:orders']]]));
+    return true;
+  }
   if ((m = data.match(/^ca:([0-9a-f-]{36})$/))) { if (await ctx.requireActive()) await clientApprove(ctx, m[1], msgId); return true; }
   if ((m = data.match(/^cc:([0-9a-f-]{36})$/))) {
     if (!(await ctx.requireActive())) return true;

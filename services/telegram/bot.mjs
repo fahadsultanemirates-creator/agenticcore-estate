@@ -25,7 +25,7 @@ import { observe, remember, recall, recallLine, pendingFacts, factLine } from '.
 import { replyToRequest } from '../amaan-handoff.mjs';
 import { AMAAN } from '../assistant-knowledge.mjs';
 import { extractFacts, templateDraft } from '../listing-draft.mjs';
-import { PROPERTY_TYPES } from '../util.mjs';
+import { PROPERTY_TYPES, redactPII } from '../util.mjs';
 import { pkMenu, startOrder, myOrders, onPkCallback, onPkInput, ownerDeliverStart, ownerMessage, ownerJobs } from './pk-orders.mjs';
 import { looksLikeSearch, findProperty, startEnquiry, sendEnquiry } from './find.mjs';
 
@@ -78,18 +78,21 @@ function missingFacts(f) {
 }
 function factsFromNotes(notes, areaNames) { return extractFacts(notes.slice().reverse().join('. '), areaNames || []); }
 
-export function listingRow(f, ownerId, cityName) {
+export function listingRow(f, ownerId, cityName, extra) {
   const d = templateDraft(f);
+  // the owner's own words first ("corner, double storey, 2 car parking"), then the standard write-up
+  const own = extra ? String(extra).trim() : '';
+  const description = (own ? own + '\n\n' : '') + d.description;
   return {
     owner_id: ownerId, title: d.title.slice(0, 120), type: f.purpose === 'rent' ? 'rent' : 'buy', property_type: f.property_type,
     city: cityName, area: String(f.area).slice(0, 80), price: Math.round(f.price), beds: f.beds || 0, baths: f.baths || 0,
     size_marla: f.size_value || 0, size_unit: ['marla', 'kanal', 'sqft', 'sqyd'].includes(f.size_unit) ? f.size_unit : 'marla',
-    description: d.description.slice(0, 3000), last_confirmed_at: new Date().toISOString()
+    description: description.slice(0, 3000), last_confirmed_at: new Date().toISOString()
   };
 }
-function reviewText(f, photoCount) {
+function reviewText(f, photoCount, extra) {
   const d = templateDraft(f);
-  return [d.title, factsSummary(f), 'Photos: ' + photoCount, '', d.description].join('\n');
+  return [d.title, factsSummary(f), 'Photos: ' + photoCount, '', extra ? extra + '\n' : null, d.description].filter((x) => x !== null).join('\n');
 }
 
 // ---------- main entry ----------
@@ -103,6 +106,34 @@ export async function handleUpdate(update, deps) {
   if (!from || !chat || from.is_bot || chat.type !== 'private') return { ignored: true };
   if (!(await deps.store.firstSeen(update.update_id))) return { duplicate: true };
 
+  // One update at a time per chat: an album of photos, or a button tapped
+  // while a photo is still uploading, must not overwrite each other's work.
+  const locked = await chatLock(deps, chat.id);
+  let ctx;
+  try {
+    ctx = await processUpdate(update, deps, msg, cb, from, chat);
+  } finally {
+    if (locked) await deps.store.unlock(chat.id).catch(() => null);
+  }
+  if (ctx) await speakTurn(ctx);           // the voice note doesn't hold up the next message
+  return { ok: true };
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Waits (up to ~20 s) for another update of the same chat to finish. Without
+// the lock functions (0025 not run yet) the bot works as before.
+export async function chatLock(deps, chatId) {
+  if (!deps.store.lock) return false;
+  for (let i = 0; i < 70; i++) {
+    let got;
+    try { got = await deps.store.lock(chatId); } catch (e) { return false; }
+    if (got) return true;
+    await sleep(i < 10 ? 150 : 300);
+  }
+  return false;
+}
+
+async function processUpdate(update, deps, msg, cb, from, chat) {
   const session = (await deps.store.getSession(chat.id)) || { chat_id: chat.id, tg_user_id: from.id, lang: 'en', state: {}, history: [] };
   session.tg_user_id = from.id;
   session.state = session.state || {};
@@ -120,6 +151,7 @@ export async function handleUpdate(update, deps) {
   ctx.log = (kind, detail, alertText) => logActivity(ctx, kind, detail, alertText);
   ctx.menu = () => menu(ctx);
 
+  if (msg && deps.tg.typing) deps.tg.typing(chat.id).catch(() => null);   // "typing…" straight away
   if (deps.refreshPlaces) await deps.refreshPlaces();      // learned places (cached 10 min)
   try {
     // simple per-chat flood limit
@@ -129,14 +161,13 @@ export async function handleUpdate(update, deps) {
     if (rl.n > LIMITS.msgsPer10Min) {
       if (rl.n === LIMITS.msgsPer10Min + 1) await ctx.say('too_fast');
       if (cb) await deps.tg.answerCallback(cb.id);
-      return { limited: true };
+      return null;
     }
 
     ctx.account = await deps.store.linkedAccount(from.id);
 
     if (cb) { await deps.tg.answerCallback(cb.id); await onCallback(ctx, cb); }
     else await onMessage(ctx, msg);
-    await speakTurn(ctx);
   } catch (e) {
     console.error('[telegram] update failed:', e && e.message);
     await ctx.say('error').catch(() => null);
@@ -145,7 +176,7 @@ export async function handleUpdate(update, deps) {
     if (!session.state.flow) session.state = keep ? { rl: keep } : {};
     await deps.store.saveSession(session).catch((e) => console.error('[telegram] session save failed:', e && e.message));
   }
-  return { ok: true };
+  return ctx;
 }
 
 // Urdu conversations also get the reply as a voice note (and anyone who
@@ -305,7 +336,7 @@ async function guideAnswer(ctx, text, prices) {
   if (rl.aiDay !== day) { rl.aiDay = day; rl.aiN = 0; }
   const gd = ctx.deps.assistant.guideDeps();
   if (ctx.deps.assistant.catalog) gd.catalog = await ctx.deps.assistant.catalog();
-  if (rl.aiN >= LIMITS.aiAnswersPerDay) gd.allowAI = false;
+  if (rl.aiN >= LIMITS.aiAnswersPerDay || prices) gd.allowAI = false;   // prices: the published line, at once
   else if (gd.allowAI) rl.aiN += 1;
   const out = await ctx.deps.assistant.handleTurn({ bot: 'guide', site: 'estate', lang: ctx.lang, lang_choice: ctx.session.state.rl.pick || null, messages: [{ role: 'user', text }] }, gd);
   ctx.session.lang = out.lang || ctx.session.lang;
@@ -334,14 +365,17 @@ async function onCallback(ctx, cb) {
     case 'm:manage': return manage(ctx);
     case 'lg:en': return setLanguage(ctx, 'en', msgId);
     case 'lg:ur': return setLanguage(ctx, 'ur', msgId);
-    case 's:yes': if (s.flow === 'signup' && s.step === 'confirm') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return createAccount(ctx); } return;
-    case 's:edit': if (s.flow === 'signup') { s.step = 'name'; return ctx.say('signup_name'); } return;
-    case 'l:done': if (s.flow === 'list' && s.step === 'photos') return toReview(ctx); return;
-    case 'l:publish': if (s.flow === 'list' && s.step === 'review') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return publish(ctx); } return;
-    case 'l:edit': if (s.flow === 'list') { s.step = 'review'; s.editing = true; return ctx.say('what_change'); } return;
+    case 's:yes': if (s.flow === 'signup' && s.step === 'confirm') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return createAccount(ctx); } return ctx.say('button_old', {}, menu(ctx));
+    case 's:edit': if (s.flow === 'signup') { s.step = 'name'; return ctx.say('signup_name'); } return ctx.say('button_old', {}, menu(ctx));
+    case 'l:done': if (s.flow === 'list' && s.step === 'photos') return toReview(ctx); return ctx.say('button_old', {}, menu(ctx));
+    case 'l:skip': if (s.flow === 'list' && s.step === 'extra') { s.step = 'photos'; return ctx.say('photos_ask', {}, buttons([[[t('btn_done_photos', ctx.lang), 'l:done']]])); } return ctx.say('button_old', {}, menu(ctx));
+    case 'l:publish': if (s.flow === 'list' && s.step === 'review') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return publish(ctx); } if (s.flow === 'list' && (s.photos || []).length) return toReview(ctx); return ctx.say('button_old', {}, menu(ctx));
+    case 'l:edit': if (s.flow === 'list') { s.step = 'review'; s.editing = true; return ctx.say('what_change'); } return ctx.say('button_old', {}, menu(ctx));
     case 'l:cancel': ctx.session.state = { rl: s.rl }; await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return ctx.say('cancelled', {}, menu(ctx));
     default:
       if (/^av:[0-9a-f-]{36}$/.test(data)) return confirmAvailable(ctx, data.slice(3), msgId);
+      // a button from an earlier step: say so, never stay silent
+      return ctx.say('button_old', {}, menu(ctx));
   }
 }
 
@@ -461,6 +495,11 @@ async function startListing(ctx, firstText) {
 async function listingText(ctx, text) {
   const s = ctx.session.state;
   if (s.step === 'photos' && RE.done.test(text)) return toReview(ctx);
+  if (s.step === 'extra') {
+    s.extra = redactPII(text).replace(/https?:\/\/\S+/g, '').trim().slice(0, 600);
+    s.step = 'photos';
+    return ctx.say('photos_ask', {}, buttons([[[t('btn_done_photos', ctx.lang), 'l:done']]]));
+  }
   const areaNames = await ctx.deps.assistant.areaNames();
   const prev = (s.notes || []).length ? factsFromNotes(s.notes, areaNames) : null;
   s.notes = (s.notes || []).concat(contextualise(text, s.asked)).slice(-12);
@@ -482,6 +521,11 @@ async function listingText(ctx, text) {
   }
   s.asked = null;
   if (s.step === 'review') return toReview(ctx);           // a change after the review → show it again
+  // one optional question: what makes it stand out (skip allowed)
+  if (s.step === 'details') {
+    s.step = 'extra';
+    return ctx.raw(factsSummary(facts) + '\n\n' + t('extra_ask', ctx.lang), buttons([[[t('btn_skip', ctx.lang), 'l:skip']]]));
+  }
   if (s.step !== 'photos') {
     s.step = 'photos';
     return ctx.raw(factsSummary(facts) + '\n\n' + t('photos_ask', ctx.lang), buttons([[[t('btn_done_photos', ctx.lang), 'l:done']]]));
@@ -493,6 +537,7 @@ async function listingText(ctx, text) {
 // own folder, so publishing later only links them.
 async function onPhoto(ctx, sizes) {
   const s = ctx.session.state;
+  if (s.flow === 'list' && s.step === 'extra') s.step = 'photos';     // sending photos skips the optional question
   if (!(s.flow === 'list' && s.step === 'photos')) return ctx.say('photo_not_now');
   if (!ctx.account) return requireActive(ctx);
   s.photos = s.photos || [];
@@ -524,7 +569,7 @@ async function toReview(ctx) {
   if (!(s.photos || []).length) return ctx.say('need_photo');
   const facts = factsFromNotes(s.notes || [], await ctx.deps.assistant.areaNames());
   s.step = 'review'; s.editing = false;
-  return ctx.say('review', { summary: reviewText(facts, s.photos.length) },
+  return ctx.say('review', { summary: reviewText(facts, s.photos.length, s.extra) },
     buttons([[[t('btn_publish', ctx.lang), 'l:publish']], [[t('btn_change', ctx.lang), 'l:edit'], [t('btn_cancel', ctx.lang), 'l:cancel']]]));
 }
 
@@ -554,7 +599,7 @@ async function publish(ctx) {
   const check = await publishChecks(facts, ctx.account, ctx.deps.store, ctx.lang);
   if (check.reason) { s.step = 'review'; return ctx.say('check_failed', { reason: check.reason }); }
   await ctx.say('publishing');
-  const row = listingRow(facts, ctx.account.id, check.city);
+  const row = listingRow(facts, ctx.account.id, check.city, s.extra);
   const photos = (s.photos || []).slice(0, LIMITS.photos);
   row.photos = photos.map((p) => p.url);
   row.thumbs = photos.map((p) => p.thumb);

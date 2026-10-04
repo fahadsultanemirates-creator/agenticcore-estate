@@ -51,8 +51,11 @@ if (detailRoot) {
         return acMediaUrl(url) ? '<a href="' + acMediaUrl(url) + '" target="_blank" rel="noopener"><img src="' + acMediaUrl(url) + '" alt="" loading="lazy"></a>' : '';
       }).join('');
       const unit = acSizeUnitLabel(listing.sizeUnit || 'marla');
+      // Lahore, Karachi, Sialkot, Faisalabad before 6 Oct: only the owner can open it yet
+      const prelaunch = !listing.is_sample && typeof acCityLaunching === 'function' && acCityLaunching(listing.city);
       detailRoot.innerHTML =
         (listing.is_sample ? acSampleNoticeHTML() : '') +
+        (prelaunch ? '<p class="ac-city-note" role="status">' + acEsc(acT('city_saved_prelaunch').replace('{city}', listing.city).replace(/^[^✓]*✓\s*/, '')) + '</p>' : '') +
         '<div class="mk-hero mk-hero-listing">' + (hero ? '<img src="' + hero + '" alt="' + acEsc(listing.title) + '" decoding="async">' : '<span class="mk-media-icon">' + AC_ICONS.house + '</span>') +
           '<span class="mk-purpose ' + (listing.type === 'rent' ? 'rent' : 'buy') + '">' + acEsc(acPurposeLabel(listing.type)) + '</span>' +
           (listing.is_sample ? acSampleBadge('listing') : acPromoBadge(listing, settings)) + '</div>' +
