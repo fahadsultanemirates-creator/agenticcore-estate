@@ -34,7 +34,7 @@ if (sellForm) {
       areaSelect.innerHTML = '<option value="">Loading…</option>';
       const areas = await AcDB.getAreasForCity(citySelect.value);
       areaSelect.innerHTML = '<option value="">Select an area</option>' +
-        areas.map(function (a) { return '<option value="' + acEsc(a) + '">' + acEsc(a) + '</option>'; }).join('') +
+        acAreaOptions(areas) +
         '<option value="' + MANUAL_AREA_VALUE + '">' + acEsc(acT('city_area_other')) + '</option>';
       toggleManualArea();
       return areas;
@@ -109,7 +109,7 @@ if (sellForm) {
         document.getElementById('sellDescription').value = editing.description || '';
         citySelect.value = editing.city;
         const areas = await loadAreas();
-        if (areas.indexOf(editing.area) >= 0) areaSelect.value = editing.area;
+        if (areas.concat(areas.more || []).indexOf(editing.area) >= 0) areaSelect.value = editing.area;
         else { areaSelect.value = MANUAL_AREA_VALUE; areaManual.value = editing.area; }
         toggleManualArea();
         const count = (editing.photos || []).length;
@@ -252,8 +252,9 @@ if (sellForm) {
           // Exact name, else the one known area containing every word the owner used ("Bahria Phase 7" → "Bahria Town Phase 7").
           const words = function (x) { return String(x).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' '); };
           const want = words(f.area);
-          const close = areas.filter(function (a) { const have = words(a); return want.every(function (t) { return have.indexOf(t) >= 0; }); });
-          const match = areas.indexOf(f.area) >= 0 ? f.area : (close.length === 1 ? close[0] : null);
+          const all = areas.concat(areas.more || []);
+          const close = all.filter(function (a) { const have = words(a); return want.every(function (t) { return have.indexOf(t) >= 0; }); });
+          const match = all.indexOf(f.area) >= 0 ? f.area : (close.length === 1 ? close[0] : null);
           if (match) { areaSelect.value = match; toggleManualArea(); filled.push(areaSelect); }
           else { areaSelect.value = MANUAL_AREA_VALUE; toggleManualArea(); areaManual.value = f.area; filled.push(areaManual); }
         }

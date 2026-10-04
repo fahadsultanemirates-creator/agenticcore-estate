@@ -28,6 +28,12 @@ export function sectorOf(text) {
 // areas named like ordinary words that only count when typed on their own.
 const NOT_BARE = new Set(['new', 'old', 'north', 'south', 'east', 'west', 'the', 'city', 'town', 'road', 'eden']);
 const EXACT_ONLY = new Set(['eighteen']);
+// One-word names that are also everyday words ("Airport", "Cantt", "Garden"):
+// recognised when typed as the place itself, never picked out of a sentence.
+const EVERYDAY = new Set(['airport', 'cantt', 'cantonment', 'garden', 'gardens', 'city', 'town', 'colony', 'road', 'avenue', 'park', 'market', 'chowk',
+  'bazaar', 'bazar', 'main', 'heights', 'tower', 'towers', 'plaza', 'mall', 'residency', 'villas', 'enclave', 'valley', 'hills', 'model', 'green', 'sector',
+  'block', 'phase', 'zone', 'commercial', 'mohalla', 'saddar', 'station', 'university', 'hospital', 'court', 'centre', 'center', 'township', 'cottages',
+  'apartments', 'homes', 'housing', 'society', 'scheme', 'extension', 'gate', 'canal', 'lake', 'river', 'village', 'farm', 'farms', 'industrial', 'industrial area']);
 
 function build(learned) {
   const byKey = new Map();   // area key → { names: { city: area name }, cities[] }
@@ -38,8 +44,12 @@ function build(learned) {
     if (!e.cities.includes(city)) { e.cities.push(city); e.names[city] = name; }
     byKey.set(k, e);
   };
-  for (const c of data.cities) for (const a of c.areas) {
+  // popular areas first, then every other area (more), then phases, blocks
+  // and sectors (places) — the first city a name is added under leads
+  for (const c of data.cities) for (const a of c.areas.concat(c.more || [], c.places || [])) {
     add(a, c.name);
+    // "Abdalians Society - Block B" is typed "Abdalians Society Block B"
+    if (/\s-\s/.test(a)) add(a, c.name, a.replace(/\s+-\s+/g, ' '));
     // "DHA Phase 6 Lahore" is also typed just "DHA Phase 6"; "Citi Housing Sialkot" as "Citi Housing"
     const bare = a.replace(new RegExp('\\s+' + c.name + '$', 'i'), '').replace(/\s+city$/i, '');
     if (bare !== a && bare.length > 2 && !NOT_BARE.has(key(bare))) add(a, c.name, bare);
@@ -55,7 +65,7 @@ function build(learned) {
     const top = counts[k + '|' + e.cities[0]] || 0, next = counts[k + '|' + e.cities[1]] || 0;
     e.settled = top >= 5 && top >= 4 * Math.max(next, 1);
   }
-  const keys = [...byKey.keys()].filter((k) => !EXACT_ONLY.has(k)).sort((a, b) => b.length - a.length);
+  const keys = [...byKey.keys()].filter((k) => !EXACT_ONLY.has(k) && !EVERYDAY.has(k) && k.length >= 4).sort((a, b) => b.length - a.length);
   return { byKey, keys };
 }
 let GAZ = build();

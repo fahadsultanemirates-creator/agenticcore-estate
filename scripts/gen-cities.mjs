@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const data = JSON.parse(fs.readFileSync(path.join(root, 'data/cities.json'), 'utf8'));
-const slim = { launch_at: data.launch_at, cities: data.cities.map((c) => ({ name: c.name, ur: c.ur, launch_at: c.launch_at, areas: c.areas })),
+const slim = { launch_at: data.launch_at, cities: data.cities.map((c) => ({ name: c.name, ur: c.ur, launch_at: c.launch_at, areas: c.areas, more: c.more || [] })),
   shared: data.shared.map((s) => ({ name: s.name, cities: s.cities })) };
 
 export function browserFile() {
@@ -29,6 +29,8 @@ function acCityAreas(name) {
   AC_CITIES.shared.forEach(function (s) { if (s.cities.indexOf(name) >= 0 && out.indexOf(s.name) < 0) out.push(s.name); });
   return out;
 }
+// Every other area of the city with live listings, A–Z (dropdowns show it under "All areas A–Z").
+function acCityMoreAreas(name) { var c = acCityInfo(name); return c && c.more ? c.more.slice() : []; }
 function acAnyCityLaunching() { return AC_CITIES.cities.some(function (c) { return acCityLaunching(c.name); }); }
 function acUiLang() { return document.documentElement.lang === 'ur' ? 'ur' : 'en'; }
 // i18n: after the launch moment every "<key>_live" text replaces "<key>"

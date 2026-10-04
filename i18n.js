@@ -1239,6 +1239,7 @@ Object.assign(AC_I18N.en, {
   city_launching_note: 'Lahore, Karachi, Sialkot and Faisalabad open on 6 October 2026. You can sign up and save your listing now; it shows publicly from launch day.',
   city_saved_prelaunch: 'Saved ✓ We launch in {city} on 6 October — your listing shows publicly from launch day. Until then only you can see it.',
   city_area_other: 'Other / type your area',
+  city_area_all: 'All areas A–Z',
   city_shows_from: 'Shows from 6 Oct'
 });
 Object.assign(AC_I18N.ur, {
@@ -1256,6 +1257,7 @@ Object.assign(AC_I18N.ur, {
   city_launching_note: 'لاہور، کراچی، سیالکوٹ اور فیصل آباد 6 اکتوبر 2026 سے کھلیں گے۔ آپ ابھی سائن اپ کر کے لسٹنگ محفوظ کر سکتے ہیں؛ یہ لانچ کے دن سے سب کو نظر آئے گی۔',
   city_saved_prelaunch: 'محفوظ ہو گئی ✓ ہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں — آپ کی لسٹنگ لانچ کے دن سے سب کو نظر آئے گی۔ تب تک صرف آپ اسے دیکھ سکتے ہیں۔',
   city_area_other: 'دیگر / اپنا علاقہ لکھیں',
+  city_area_all: 'تمام علاقے (A–Z)',
   city_shows_from: '6 اکتوبر سے نظر آئے گی'
 });
 

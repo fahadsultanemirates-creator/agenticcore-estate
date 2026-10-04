@@ -8,7 +8,7 @@
 // used to pick up where they left off. Contributors are hashed in the
 // database; nothing personal goes into shared knowledge.
 
-import { setLearnedPlaces } from './places.mjs';
+import { setLearnedPlaces, placeOf, key as placeKey } from './places.mjs';
 
 const TTL = 10 * 60 * 1000;
 let cache = { at: 0, rows: null };
@@ -62,8 +62,15 @@ export function recallLine(mem, typeLabel) {
 // a second person confirms, so the owner isn't asked about every typo.
 export async function pendingFacts(store, limit = 10) {
   try {
-    return (await store.rest('kb_facts?status=in.(candidate,learned)&decided_at=is.null&sources=gte.2&select=id,kind,city,name,detail,status,sources,seen&order=sources.desc,last_seen.desc&limit=' + limit)) || [];
+    const rows = (await store.rest('kb_facts?status=in.(candidate,learned)&decided_at=is.null&sources=gte.2&select=id,kind,city,name,detail,status,sources,seen&order=sources.desc,last_seen.desc&limit=' + limit * 4)) || [];
+    // places already in the area list (data/cities.json) need no review
+    return rows.filter((f) => !alreadyKnown(f)).slice(0, limit);
   } catch (e) { return []; }
+}
+function alreadyKnown(f) {
+  if (!f || !f.city || !f.name || (f.kind !== 'area' && f.kind !== 'subarea')) return false;
+  const p = placeOf(f.name, f.city);
+  return Boolean(p && p.cities.includes(f.city) && placeKey(p.area) === placeKey(f.name));
 }
 export function factLine(f) {
   const what = f.kind === 'subarea' ? 'block/sub-area' + (f.detail && f.detail.parent ? ' of ' + f.detail.parent : '') : f.kind;

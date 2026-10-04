@@ -67,7 +67,7 @@ function fakeStore(opts) {
     async uploadPhoto(path) { db.uploads.push(path); return 'https://iuwjlvcfnxbfhbkztsel.supabase.co/storage/v1/object/public/listing-photos/' + path; },
     async markSent(kind, ref) { const k = kind + '|' + ref; if (db.notes.has(k)) return false; db.notes.add(k); return true; },
     async rest(path) { return opts.rest ? opts.rest(path) : []; },
-    async rpc(name, body) { (db.rpc = db.rpc || []).push([name, body]); return name === 'kb_decide' ? 'Bismillah Housing Scheme' : null; }
+    async rpc(name, body) { (db.rpc = db.rpc || []).push([name, body]); return name === 'kb_decide' ? 'Noor Sahar Enclave' : null; }
   };
   return s;
 }
@@ -414,7 +414,7 @@ test('memory: the bots learn which city people use; once settled they stop askin
   setLearnedPlaces([]);
   assert.equal(findPlace('Bahria Town Phase 7').ambiguous, true);
   setLearnedPlaces([{ city: 'Rawalpindi', area: 'Bahria Town Phase 7', n: 8 }, { city: 'Islamabad', area: 'Bahria Town Phase 7', n: 1 },
-    { city: 'Lahore', area: 'Bismillah Housing Scheme', n: 3 }]);
+    { city: 'Lahore', area: 'Noor Sahar Enclave', n: 3 }]);
   assert.deepEqual([findPlace('Bahria Town Phase 7').impliedCity, findPlace('Bahria Town Phase 7').ambiguous], ['Rawalpindi', false]);
   assert.equal(findPlace('5 marla in bismillah housing scheme').impliedCity, 'Lahore', 'a learned society');
   setLearnedPlaces([]);
@@ -428,8 +428,8 @@ test('memory: a city chosen in chat and an unknown area are observations; publis
   assert.deepEqual(obs[0], ['Islamabad', 'Bahria Town Phase 7', 'city_choice']);
   await run(d, text('/cancel'), press('m:list'), text('5 marla house for sale in Lahore demand 1.5 crore'));
   assert.match(lastText(tg), /Which area exactly/);
-  await run(d, text('Bismillah Housing Scheme'));
-  assert.ok((store.db.rpc || []).some(([n, b]) => n === 'kb_observe' && b.p_name === 'Bismillah Housing Scheme' && b.p_city === 'Lahore' && b.p_detail.from === 'chat'));
+  await run(d, text('Noor Sahar Enclave'));
+  assert.ok((store.db.rpc || []).some(([n, b]) => n === 'kb_observe' && b.p_name === 'Noor Sahar Enclave' && b.p_city === 'Lahore' && b.p_detail.from === 'chat'));
   await run(d, text('3 bedrooms 3 bathrooms'), photo(), press('l:done'), press('l:publish'));
   const mem = (store.db.rpc || []).find(([n]) => n === 'member_remember');
   assert.equal((store.db.rpc || []).filter(([n]) => n === 'kb_observe').length, 2, 'each place observed once per conversation');
@@ -439,14 +439,14 @@ test('memory: a city chosen in chat and an unknown area are observations; publis
 
 test('memory: welcome back recalls the last area; owner reviews new places with /learn', async () => {
   const store = fakeStore({ rest: (p) => p.startsWith('member_memory') ? [{ data: { cities: ['Lahore'], areas: ['Johar Town'], types: ['house'] } }]
-    : p.startsWith('kb_facts') ? [{ id: 7, kind: 'area', city: 'Lahore', name: 'Bismillah Housing Scheme', detail: {}, status: 'learned', sources: 3 }] : [] });
+    : p.startsWith('kb_facts') ? [{ id: 7, kind: 'area', city: 'Lahore', name: 'Noor Sahar Enclave', detail: {}, status: 'learned', sources: 3 }] : [] });
   const tg = fakeTg(), d = deps(store, tg);
   await run(d, press('m:signup'), contact('+92 300 1234567', ME), text('Ali Raza'), text('ali@example.com'), press('s:yes'), text('/menu'));
   assert.match(lastText(tg), /Last time: House, Johar Town, Lahore/);
   await run(d, text('/learn'));                                  // not the owner
-  assert.ok(!tg.sent.some((m) => /Bismillah/.test(m.text)));
+  assert.ok(!tg.sent.some((m) => /Noor Sahar/.test(m.text)));
   await run(d, text('/learn', Number(OWNER)));
-  const item = tg.sent.find((m) => String(m.chat) === String(OWNER) && /Bismillah Housing Scheme — Lahore \(area, 3 people, already in use\)/.test(m.text));
+  const item = tg.sent.find((m) => String(m.chat) === String(OWNER) && /Noor Sahar Enclave — Lahore \(area, 3 people, already in use\)/.test(m.text));
   assert.ok(item);
   assert.deepEqual(btnData(item), ['kb:a:7', 'kb:r:7']);
   await run(d, press('kb:a:7'));                                 // not the owner

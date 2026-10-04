@@ -156,6 +156,8 @@ const AcDB = (function () {
     // plus the built-in list for the city (ac-cities.js), so every known area is offered
     const have = names.map(function (n) { return n.toLowerCase(); });
     (typeof acCityAreas === 'function' ? acCityAreas(cityName) : []).forEach(function (a) { if (have.indexOf(a.toLowerCase()) < 0) { names.push(a); have.push(a.toLowerCase()); } });
+    // every other area of the city with live listings, A–Z (shown as its own group)
+    names.more = (typeof acCityMoreAreas === 'function' ? acCityMoreAreas(cityName) : []).filter(function (a) { return have.indexOf(a.toLowerCase()) < 0; });
     return names;
   }
 
@@ -551,4 +553,16 @@ async function requireAuth(roles) {
   }
   if (roles && roles.indexOf(user.role) === -1) { window.location.href = 'index.html'; return null; }
   return user;
+}
+
+// <option>s for an area dropdown: the popular areas, then "All areas A–Z".
+function acAreaOptions(areas, selected) {
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function opt(a) { return '<option value="' + esc(a) + '"' + (a === selected ? ' selected' : '') + '>' + esc(a) + '</option>'; }
+  var html = areas.map(opt).join('');
+  if (areas.more && areas.more.length) {
+    var label = (typeof acT === 'function' && acT('city_area_all') && acT('city_area_all') !== 'city_area_all') ? acT('city_area_all') : 'All areas A–Z';
+    html += '<optgroup label="' + esc(label) + '">' + areas.more.map(opt).join('') + '</optgroup>';
+  }
+  return html;
 }
