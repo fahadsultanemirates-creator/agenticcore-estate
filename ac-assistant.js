@@ -64,20 +64,21 @@
     }
   };
   var ACTION_LABEL = {
-    en: { amaan_find: 'Find with Amaan', amaan_list: 'List with Amaan', ask_guide: 'Ask AgenticCore AI', estate_home: 'AgenticCore Estate', estate_properties: 'Browse properties', estate_buy: 'Buy', estate_rent: 'Rent',
+    en: { amaan_find: 'Find with Amaan', amaan_list: 'List with Amaan', amaan_order: 'Order with Amaan (attach files)', ask_guide: 'Ask AgenticCore AI', estate_home: 'AgenticCore Estate', estate_properties: 'Browse properties', estate_buy: 'Buy', estate_rent: 'Rent',
       estate_projects: 'Projects', estate_professionals: 'Professionals', estate_agencies: 'Agencies', estate_builders: 'Builders & developers', estate_list: 'Continue to the listing form', estate_pricing: 'Launch & pricing',
       estate_dashboard: 'My dashboard', estate_signup: 'Create an account', join_professional: 'Create a professional profile', join_agency: 'Add your agency', join_builder: 'Create a company profile', join_developer: 'Apply to publish projects',
       pk_home: 'AgenticCore Pakistan', pk_services: 'PK services', pk_branding: 'Branding', pk_print: 'Flyers & print', pk_websites: 'Websites', pk_video: 'Video', pk_social: 'Social media', pk_campaigns: 'Campaigns', pk_leads: 'AI & automation', pk_local: 'Google Business Profile',
       pk_logo: 'Logo & brand identity', pk_agent_branding: 'Agent branding kit', pk_brochure: 'Brochures', pk_website: 'Agency & developer websites', pk_landing: 'Landing pages', pk_photos: 'Photo enhancement', pk_launch: 'Project launch campaign',
       contact_whatsapp: 'WhatsApp our team', contact_email: 'Email our team', whatsapp_channel: 'Follow our WhatsApp Channel', sign_in: 'Sign in' },
-    ur: { amaan_find: 'امان سے ڈھونڈیں', amaan_list: 'امان سے لسٹ کریں', ask_guide: 'AgenticCore AI سے پوچھیں', estate_home: 'AgenticCore Estate', estate_properties: 'پراپرٹیز دیکھیں', estate_buy: 'خریدیں', estate_rent: 'کرائے پر',
+    ur: { amaan_find: 'امان سے ڈھونڈیں', amaan_list: 'امان سے لسٹ کریں', amaan_order: 'امان کے ذریعے آرڈر (فائلیں لگائیں)', ask_guide: 'AgenticCore AI سے پوچھیں', estate_home: 'AgenticCore Estate', estate_properties: 'پراپرٹیز دیکھیں', estate_buy: 'خریدیں', estate_rent: 'کرائے پر',
       estate_projects: 'پروجیکٹس', estate_professionals: 'پروفیشنلز', estate_agencies: 'ایجنسیاں', estate_builders: 'بلڈرز اور ڈویلپرز', estate_list: 'لسٹنگ فارم پر جائیں', estate_pricing: 'لانچ اور قیمتیں',
       estate_dashboard: 'میرا ڈیش بورڈ', estate_signup: 'اکاؤنٹ بنائیں', join_professional: 'پروفیشنل پروفائل بنائیں', join_agency: 'اپنی ایجنسی شامل کریں', join_builder: 'کمپنی پروفائل بنائیں', join_developer: 'پروجیکٹس شائع کرنے کی درخواست',
       pk_home: 'AgenticCore Pakistan', pk_services: 'PK سروسز', pk_branding: 'برانڈنگ', pk_print: 'فلائرز اور پرنٹ', pk_websites: 'ویب سائٹس', pk_video: 'ویڈیو', pk_social: 'سوشل میڈیا', pk_campaigns: 'کیمپینز', pk_leads: 'AI اور آٹومیشن', pk_local: 'گوگل بزنس پروفائل',
       pk_logo: 'لوگو اور برانڈ', pk_agent_branding: 'ایجنٹ برانڈنگ کٹ', pk_brochure: 'بروشر', pk_website: 'ایجنسی اور ڈویلپر ویب سائٹ', pk_landing: 'لینڈنگ پیجز', pk_photos: 'تصاویر بہتر بنانا', pk_launch: 'پروجیکٹ لانچ کیمپین',
       contact_whatsapp: 'ٹیم سے واٹس ایپ پر بات', contact_email: 'ٹیم کو ای میل', whatsapp_channel: 'واٹس ایپ چینل فالو کریں', sign_in: 'سائن ان' }
   };
-  function ui() { return document.documentElement.lang === 'ur' ? 'ur' : 'en'; }
+  // The language picked at the start of the chat ("English" / "اردو"), else the site's.
+  function ui() { if (typeof state !== 'undefined' && state && state.langChoice) return state.langChoice; return document.documentElement.lang === 'ur' ? 'ur' : 'en'; }
   function t(k) { return T[ui()][k]; }
 
   // ---------- contact (central config of each site) ----------
@@ -176,7 +177,7 @@
       var b = e.target.closest('[data-x]'); if (!b) return;
       var x = b.getAttribute('data-x');
       if (x === 'close') close(bot);
-      else if (x === 'reset') { state.convs[bot] = freshConv(bot); save(); render(view); greet(view); }
+      else if (x === 'reset') { state.convs[bot] = freshConv(bot); delete state.langChoice; save(); render(view); greet(view); }
       else if (x === 'amaan') { track('assistant_action', { bot: 'guide', action: 'open_amaan' }); openAmaan(null); }
       else if (x === 'attach') pickFiles(view);
       else if (x === 'handoff') openSheet(view);
@@ -247,11 +248,13 @@
     return box;
   }
   function actionEl(view, key, m) {
-    if (key === 'amaan_find' || key === 'amaan_list' || key === 'ask_guide') {
+    if (key === 'amaan_find' || key === 'amaan_list' || key === 'amaan_order' || key === 'ask_guide') {
       var b = el('button', 'aca-act', ACTION_LABEL[ui()][key]); b.type = 'button';
       b.addEventListener('click', function () {
         track('assistant_action', { bot: view.bot, action: key });
-        if (key === 'ask_guide') { close('amaan'); openGuide(null); } else openAmaan(key);
+        if (key === 'ask_guide') { close('amaan'); openGuide(null); }
+        else if (key === 'amaan_order' && view.bot === 'amaan') pickFiles(view);
+        else openAmaan(key);
       });
       return b;
     }
@@ -275,6 +278,7 @@
   function quick(view) {
     var box = q(view, '.aca-quick'); box.innerHTML = '';
     var conv = state.convs[view.bot];
+    if (!state.langChoice && !conv.messages.length) return;              // language first
     if (conv.messages.some(function (m) { return m.role === 'user'; })) return;
     var keys = view.bot === 'amaan' ? ['amaan_find', 'amaan_list', 'amaan_order', 'contact'] : ['about', 'professional', 'agency', 'builder', 'project', 'pk_service', 'contact'];
     keys.forEach(function (k) {
@@ -292,6 +296,7 @@
     chrome(view);
     var log = q(view, '.aca-log'); log.innerHTML = '';
     state.convs[view.bot].messages.forEach(function (m) { log.appendChild(bubble(view, m)); });
+    if (!state.langChoice && !state.convs[view.bot].messages.length) log.appendChild(langPicker(view));
     quick(view);
     if (view.bot === 'amaan') { tray(view); handoffRow(view); }
     log.scrollTop = log.scrollHeight;
@@ -428,7 +433,27 @@
   function closeSheet(view) { var sh = q(view, '.aca-sheet'); sh.hidden = true; sh.innerHTML = ''; q(view, '.aca-handoff').focus(); }
 
   // ---------- conversation ----------
-  function greet(view) { if (!state.convs[view.bot].messages.length) send(view, null, null, true); }
+  function greet(view) { if (!state.convs[view.bot].messages.length && state.langChoice) send(view, null, null, true); }
+  // Start of a conversation: English or Urdu.
+  function langPicker(view) {
+    var box = el('div', 'aca-msg aca-assistant aca-langpick');
+    var bub = el('div', 'aca-bubble');
+    bub.appendChild(el('p', 'aca-lp-t', 'Which language would you like to use?'));
+    var ur = el('p', 'aca-lp-t', 'آپ کس زبان میں بات کرنا چاہیں گے؟'); ur.setAttribute('dir', 'rtl'); ur.setAttribute('lang', 'ur'); bub.appendChild(ur);
+    var row = el('div', 'aca-lp-row');
+    [['en', 'English'], ['ur', 'اردو']].forEach(function (o) {
+      var b = el('button', 'aca-lp-btn', o[1]); b.type = 'button'; b.setAttribute('lang', o[0]);
+      b.addEventListener('click', function () {
+        state.langChoice = o[0];
+        ['guide', 'amaan'].forEach(function (k) { if (!state.convs[k].messages.length) state.convs[k].lang = o[0]; });
+        track('assistant_language', { bot: view.bot, lang: o[0] });
+        save(); render(view); greet(view);
+      });
+      row.appendChild(b);
+    });
+    bub.appendChild(row); box.appendChild(bub);
+    return box;
+  }
   function send(view, text, quickKey, silent) {
     if (busy) return;
     var bot = view.bot, conv = state.convs[bot];
@@ -439,7 +464,7 @@
     var log = q(view, '.aca-log');
     var wait = el('div', 'aca-msg aca-assistant aca-wait'); wait.appendChild(el('div', 'aca-bubble', t('thinking'))); log.appendChild(wait); log.scrollTop = log.scrollHeight;
     busy = true; q(view, '.aca-send').disabled = true;
-    var body = { bot: bot, site: cfg.site, ui_lang: ui(), lang: conv.lang, quick: quickKey || null,
+    var body = { bot: bot, site: cfg.site, ui_lang: ui(), lang: conv.lang, lang_choice: state.langChoice || null, quick: quickKey || null,
       messages: conv.messages.filter(function (m) { return m.text && m.text !== '📎'; }).slice(-10).map(function (m) { return { role: m.role, text: m.text }; }) };
     if (bot === 'amaan') { body.mode = quickKey === 'amaan_find' ? 'find' : quickKey === 'amaan_list' ? 'list' : conv.mode; body.asked = conv.asked; body.notes = quickKey === 'amaan_list' ? [] : conv.notes; }
     var ctrl = new AbortController(); var timer = setTimeout(function () { ctrl.abort(); }, 25000);

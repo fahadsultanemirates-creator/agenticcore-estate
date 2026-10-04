@@ -18,7 +18,8 @@
 import crypto from 'node:crypto';
 import { t } from './strings.mjs';
 import { buttons, contactKeyboard, removeKeyboard } from './tg-api.mjs';
-import { detectLang, contextualise, factsSummary, askFor, launchNotice } from '../assistant-service.mjs';
+import { detectLang, contextualise, factsSummary, askFor, launchNotice, isPriceQuestion } from '../assistant-service.mjs';
+import { speakable } from './voice.mjs';
 import { isLaunched, placeOf } from '../places.mjs';
 import { observe, remember, recall, recallLine, pendingFacts, factLine } from '../memory.mjs';
 import { replyToRequest } from '../amaan-handoff.mjs';
@@ -57,6 +58,7 @@ const RE = {
   list: /\b(list (my|a)|listing|sell (my|a)|rent out|post (my )?(property|house|plot|flat)|bechna|bechni|farokht|kiraye? (par|pe) (dena|deni))\b|لسٹ کر|بیچنا|فروخت کرن/i,
   mine: /\bmy listings?\b|\bmeri listings?\b|میری لسٹنگ/i,
   login: /\b(log ?in|sign ?in|password)\b|لاگ ان|سائن ان|پاس ورڈ/i,
+  manage: /\b(edit|update|change|delete|remove|manage|mark (it )?(as )?sold|sold out)\b.*\b(listing|property|ad|post|account)\b|\b(listing|property|ad) (edit|update|delete|remove|hatani|hatana|badalni)\b|ترمیم|ڈیلیٹ|ہٹان|اکاؤنٹ کا انتظام/i,
   pk: /\b(marketing|design|logo|flyers?|brochures?|reels?|videos?|ads|advertis\w*|social media|branding|agenticcore ?pakistan|services|packages?|whats ?app card|(social |instagram |facebook )?posts?|photo (enhancement|editing)|enhance (my )?photos|order)\b|مارکیٹنگ|ڈیزائن|ویڈیو|اشتہار|واٹس ایپ کارڈ|لوگو/i,
   greet: /^(hi|hello|hey|salam|salaam|assalam\w*|aoa|menu|start)\b|^(السلام|سلام)/i,
   cancel: /^(\/cancel|cancel|stop|band karo|ruk jao|منسوخ)$/i,
@@ -107,8 +109,9 @@ export async function handleUpdate(update, deps) {
   const ctx = {
     deps, chatId: chat.id, from, session,
     get lang() { return session.lang || 'en'; },
-    say(key, vars, extra) { return deps.tg.send(chat.id, t(key, session.lang, vars), extra); },
-    raw(text, extra) { return deps.tg.send(chat.id, text, extra); },
+    out: [],                       // what was said this turn (read aloud at the end, in Urdu)
+    say(key, vars, extra) { const m = t(key, session.lang, vars); if (key !== 'heard' && key !== 'lang_pick') this.out.push(m); return deps.tg.send(chat.id, m, extra); },
+    raw(text, extra) { this.out.push(text); return deps.tg.send(chat.id, text, extra); },
     account: null
   };
   // helpers shared with the Phase 2/3 modules
@@ -133,6 +136,7 @@ export async function handleUpdate(update, deps) {
 
     if (cb) { await deps.tg.answerCallback(cb.id); await onCallback(ctx, cb); }
     else await onMessage(ctx, msg);
+    await speakTurn(ctx);
   } catch (e) {
     console.error('[telegram] update failed:', e && e.message);
     await ctx.say('error').catch(() => null);
@@ -142,6 +146,36 @@ export async function handleUpdate(update, deps) {
     await deps.store.saveSession(session).catch((e) => console.error('[telegram] session save failed:', e && e.message));
   }
   return { ok: true };
+}
+
+// Urdu conversations also get the reply as a voice note (and anyone who
+// sent a voice note hears the answer). /voice turns it off.
+async function speakTurn(ctx) {
+  const v = ctx.deps.voice;
+  if (!v || typeof v.synthesize !== 'function' || !v.configured() || !ctx.out.length) return;
+  const rl = ctx.session.state.rl || {};
+  const lang = ctx.session.lang || 'en';
+  if (rl.voice === false || lang === 'ro' || !(lang === 'ur' || ctx.heardVoice)) return;
+  if (isOwner(ctx) && ctx.ownerCommand) return;
+  const text = speakable(ctx.out.join('\n'), lang);
+  if (text.replace(/[\s\d.,:;!?؟۔-]/g, '').length < 3) return;
+  try {
+    await ctx.deps.tg.recording(ctx.chatId);
+    await ctx.deps.tg.sendVoice(ctx.chatId, await v.synthesize(text, lang));
+  } catch (e) { console.warn('[telegram] voice reply skipped:', e && e.message); }
+}
+
+// Language: asked once at the start ("English / اردو"); /language changes it.
+function langPicker(ctx) {
+  return ctx.say('lang_pick', {}, buttons([[['English', 'lg:en'], ['اردو', 'lg:ur']]]));
+}
+async function setLanguage(ctx, lang, msgId) {
+  const rl = ctx.session.state.rl;
+  rl.pick = lang;
+  ctx.session.lang = lang;
+  if (msgId) await ctx.deps.tg.removeButtons(ctx.chatId, msgId);
+  await ctx.say('lang_set');
+  return showMenu(ctx);
 }
 
 async function alert(ctx, text) {
@@ -157,9 +191,9 @@ async function logActivity(ctx, kind, detail, alertText) {
 function menu(ctx) {
   const L = ctx.lang;
   if (ctx.account) {
-    return buttons([[[t('btn_list', L), 'm:list']], [[t('btn_my_listings', L), 'm:mine'], [t('btn_login', L), 'm:login']], [[t('btn_services', L), 'm:services'], [t('btn_help', L), 'm:help']]]);
+    return buttons([[[t('btn_list', L), 'm:list']], [[t('btn_my_listings', L), 'm:mine'], [t('btn_login', L), 'm:login']], [[t('btn_services', L), 'm:services'], [t('btn_help', L), 'm:help']], [[t('btn_language', L), 'm:lang']]]);
   }
-  return buttons([[[t('btn_signup', L), 'm:signup']], [[t('btn_have_account', L), 'm:have']], [[t('btn_services', L), 'm:services'], [t('btn_help', L), 'm:help']]]);
+  return buttons([[[t('btn_signup', L), 'm:signup']], [[t('btn_have_account', L), 'm:have']], [[t('btn_services', L), 'm:services'], [t('btn_help', L), 'm:help']], [[t('btn_language', L), 'm:lang']]]);
 }
 async function showMenu(ctx) {
   if (ctx.account) {
@@ -181,10 +215,12 @@ async function onMessage(ctx, msg) {
       const file = await ctx.deps.tg.download((msg.voice || msg.audio).file_id, 5 * 1024 * 1024);
       text = await ctx.deps.voice.transcribe(file.bytes, 'voice.ogg');
     } catch (e) { return ctx.say('voice_failed'); }
-    ctx.session.lang = detectLang(text, ctx.session.lang);
+    ctx.heardVoice = true;
+    ctx.session.lang = s.rl.pick === 'ur' ? 'ur' : detectLang(text, ctx.session.lang);
     await ctx.say('heard', { text });
-  } else if (text) {
-    ctx.session.lang = detectLang(text, ctx.session.lang);
+  } else if (text && !/^\//.test(text)) {
+    // picked Urdu → Urdu throughout; otherwise follow how they write
+    ctx.session.lang = s.rl.pick === 'ur' ? 'ur' : detectLang(text, s.rl.pick || ctx.session.lang);
   }
 
   const isCommand = /^\//.test(text);
@@ -202,12 +238,20 @@ async function onMessage(ctx, msg) {
   const cmd = text.match(/^\/(\w+)(?:@\w+)?(?:\s+(.+))?$/);
   if (cmd) {
     const [, name, arg] = cmd;
+    ctx.ownerCommand = ['stats', 'deliver', 'jobs', 'learn', 'reply', 'msg'].includes(name);
     if (name === 'start') {
       if (arg && /^link_[A-Za-z0-9_-]{20,60}$/.test(arg)) return linkWithToken(ctx, arg.slice(5));
       ctx.session.state = { rl: s.rl };
+      if (!s.rl.pick) return langPicker(ctx);        // first time: English or Urdu
       if (arg === 'pk') return pkMenu(ctx);          // from agenticcorepk.com
       return showMenu(ctx);
     }
+    if (name === 'language' || name === 'zaban') return langPicker(ctx);
+    if (name === 'voice') {
+      s.rl.voice = s.rl.voice === false;
+      return ctx.say(s.rl.voice ? 'voice_now_on' : 'voice_now_off');
+    }
+    if (name === 'manage') return manage(ctx);
     if (name === 'menu') { ctx.session.state = { rl: s.rl }; return showMenu(ctx); }
     if (name === 'help') return ctx.say('help', {}, menu(ctx));
     if (name === 'cancel') { ctx.session.state = { rl: s.rl }; await ctx.say('cancelled', {}, removeKeyboard()); return showMenu(ctx); }
@@ -237,6 +281,9 @@ async function onMessage(ctx, msg) {
   if (s.flow === 'list') return listingText(ctx, text);
 
   // no flow: route to the right agent
+  if (!s.rl.pick && RE.greet.test(text)) return langPicker(ctx);
+  if (isPriceQuestion(text, ctx.deps.assistant.catalog ? await ctx.deps.assistant.catalog() : null)) return guideAnswer(ctx, text, true);
+  if (RE.manage.test(text)) return manage(ctx);
   if (RE.mine.test(text)) return myListings(ctx);
   if (RE.signup.test(text) && !ctx.account) return startSignup(ctx);
   if (RE.list.test(text)) return startListing(ctx, text);
@@ -250,17 +297,20 @@ async function onMessage(ctx, msg) {
 function isOwner(ctx) { return Boolean(ctx.deps.ownerId) && String(ctx.from.id) === String(ctx.deps.ownerId); }
 
 // General questions: the Estate guide's answers (AI wording only, facts from the knowledge base).
-async function guideAnswer(ctx, text) {
+async function guideAnswer(ctx, text, prices) {
   // AI wording for at most 20 answers per chat per day; after that the same
   // answers come straight from the knowledge base (no cost, same facts).
   const rl = ctx.session.state.rl;
   const day = new Date().toISOString().slice(0, 10);
   if (rl.aiDay !== day) { rl.aiDay = day; rl.aiN = 0; }
   const gd = ctx.deps.assistant.guideDeps();
+  if (ctx.deps.assistant.catalog) gd.catalog = await ctx.deps.assistant.catalog();
   if (rl.aiN >= LIMITS.aiAnswersPerDay) gd.allowAI = false;
   else if (gd.allowAI) rl.aiN += 1;
-  const out = await ctx.deps.assistant.handleTurn({ bot: 'guide', site: 'estate', lang: ctx.lang, messages: [{ role: 'user', text }] }, gd);
+  const out = await ctx.deps.assistant.handleTurn({ bot: 'guide', site: 'estate', lang: ctx.lang, lang_choice: ctx.session.state.rl.pick || null, messages: [{ role: 'user', text }] }, gd);
   ctx.session.lang = out.lang || ctx.session.lang;
+  // a price answer: one tap to order it here, or see every service
+  if (prices) return ctx.raw(out.reply, buttons([[[t('btn_pk_order', ctx.lang), 'o:start']], [[t('btn_pk_all', ctx.lang), 'https://agenticcorepk.com/services.html']], [[t('btn_help', ctx.lang), 'm:help']]]));
   return ctx.raw(out.reply, menu(ctx));
 }
 
@@ -280,6 +330,10 @@ async function onCallback(ctx, cb) {
     case 'm:login': return sendLoginLink(ctx);
     case 'm:services': return pkMenu(ctx);
     case 'm:help': return ctx.say('help', {}, menu(ctx));
+    case 'm:lang': return langPicker(ctx);
+    case 'm:manage': return manage(ctx);
+    case 'lg:en': return setLanguage(ctx, 'en', msgId);
+    case 'lg:ur': return setLanguage(ctx, 'ur', msgId);
     case 's:yes': if (s.flow === 'signup' && s.step === 'confirm') { await ctx.deps.tg.removeButtons(ctx.chatId, msgId); return createAccount(ctx); } return;
     case 's:edit': if (s.flow === 'signup') { s.step = 'name'; return ctx.say('signup_name'); } return;
     case 'l:done': if (s.flow === 'list' && s.step === 'photos') return toReview(ctx); return;
@@ -520,6 +574,12 @@ async function publish(ctx) {
   if (!isLaunched(check.city, ctx.deps.now && ctx.deps.now())) await ctx.say('published_prelaunch', { url, city: check.city, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
   else await ctx.say('published', { url, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
   if (s.photoFailures) await ctx.say('photos_failed', { n: s.photoFailures });
+}
+
+// How to look after an account and its listings.
+async function manage(ctx) {
+  if (!ctx.account) return ctx.say('need_account', {}, buttons([[[t('btn_signup', ctx.lang), 'm:signup']], [[t('btn_have_account', ctx.lang), 'm:have']]]));
+  return ctx.say('manage', {}, buttons([[[t('btn_my_listings', ctx.lang), 'm:mine'], [t('btn_login', ctx.lang), 'm:login']], [[t('btn_list', ctx.lang), 'm:list']]]));
 }
 
 async function myListings(ctx) {
