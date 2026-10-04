@@ -45,7 +45,16 @@ function build(learned) {
     if (bare !== a && bare.length > 2 && !NOT_BARE.has(key(bare))) add(a, c.name, bare);
   }
   for (const s of data.shared) for (const c of s.cities) add(s.name, c);
-  for (const l of learned || []) if (l && l.area && l.city) add(l.area, l.city);
+  // learned places (kb_known_places): new names join; for names found in
+  // more than one city, the city people actually use most comes first.
+  const counts = {};
+  for (const l of learned || []) if (l && l.area && l.city) { add(l.area, l.city); counts[key(l.area) + '|' + l.city] = (counts[key(l.area) + '|' + l.city] || 0) + (l.n || 1); }
+  for (const [k, e] of byKey) if (e.cities.length > 1 && e.cities.some((c) => counts[k + '|' + c])) {
+    e.cities.sort((a, b) => (counts[k + '|' + b] || 0) - (counts[k + '|' + a] || 0));
+    // learned well enough to stop asking: 5+ people, and 4× more than the next city
+    const top = counts[k + '|' + e.cities[0]] || 0, next = counts[k + '|' + e.cities[1]] || 0;
+    e.settled = top >= 5 && top >= 4 * Math.max(next, 1);
+  }
   const keys = [...byKey.keys()].filter((k) => !EXACT_ONLY.has(k)).sort((a, b) => b.length - a.length);
   return { byKey, keys };
 }
@@ -78,7 +87,7 @@ export function placeOf(areaText, cityHint) {
   }
   if (!e) return null;
   const city = hint && e.cities.includes(hint) ? hint : e.cities[0];
-  return { area: e.names[city], city, cities: e.cities.slice(), ambiguous: !hint && e.cities.length > 1 };
+  return { area: e.names[city], city, cities: e.cities.slice(), ambiguous: !hint && e.cities.length > 1 && !e.settled };
 }
 
 // Everything place-like in a free-text message: the city (stated or implied by

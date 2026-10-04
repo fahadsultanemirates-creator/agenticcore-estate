@@ -239,6 +239,8 @@ export function contextualise(text, asked) {
   if (asked === 'beds' && bare) return t + ' bedrooms';
   if (asked === 'baths' && bare) return t + ' bathrooms';
   if (asked === 'size' && bare) return t + ' marla';
+  // an answer to "which area?" is the area, even one we don't know yet
+  if (asked === 'area' && t.length >= 2 && t.length <= 80 && !/\d{4,}|crore|lakh|lac|marla|kanal/i.test(t)) return 'area: ' + t.replace(/[.:]/g, ' ').trim();
   if (asked === 'purpose' && /^(sale|sell|for sale|bechna|farokht|bechni)$/i.test(t)) return 'for sale';
   if (asked === 'purpose' && /^(rent|for rent|kiraya|kiraye|kiraye par|kiraye pe)$/i.test(t)) return 'for rent';
   return t;

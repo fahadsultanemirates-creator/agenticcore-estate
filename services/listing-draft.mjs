@@ -25,10 +25,18 @@ export function extractFacts(text, areaNames) {
     baths: c.baths_min || null,
     features: c.preferences.filter((p) => p !== 'investment')
   };
+  // "area: …" = the owner's own answer to the area question (newest first wins)
+  const said = String(text).match(/\barea:\s*([^.\n]{2,80})/i);
   // Prefer a known area name from the database; else the society label.
   const exact = c.locations.find((l) => areaNames && areaNames.some((a) => norm(a) === l.tokens[0]));
   if (exact) facts.area = areaNames.find((a) => norm(a) === exact.tokens[0]);
   else if (c.locations.length) facts.area = c.locations[0].label;
+  if (said && !(c.locations.length && norm(said[1]).includes(norm(c.locations[0].label)))) {
+    // keep the owner's words; a city named at the end goes to the city field
+    const words = said[1].trim();
+    const city = c.city && new RegExp('\\s*,?\\s*' + c.city + '$', 'i');
+    facts.area = city ? words.replace(city, '').trim() || words : words;
+  }
   return facts;
 }
 

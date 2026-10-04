@@ -9,7 +9,8 @@
 import { handleTurn } from '../../services/assistant-service.mjs';
 import { claudeJSON, claudeAvailable } from '../../services/claude.mjs';
 import { findProperty } from '../../services/copilot-service.mjs';
-import { getAreaNames } from '../../services/supabase.mjs';
+import { getAreaNames, getKnownPlaces } from '../../services/supabase.mjs';
+import { refreshPlaces } from '../../services/memory.mjs';
 
 const ORIGINS = ['https://agenticcore.estate', 'https://www.agenticcore.estate', 'https://agenticcorepk.com', 'https://www.agenticcorepk.com', 'https://agenticcorepk.netlify.app'];
 const hits = new Map();   // best-effort per-instance limiter: key -> [timestamps]
@@ -62,7 +63,7 @@ export default async function handler(req, context) {
 
   const allowAI = claudeAvailable() && aiBudgetLeft() && !limited('ai:' + ip, 60, 24 * 60 * 60 * 1000);
   try {
-    const areaNames = await getAreaNames().catch(() => []);
+    const [areaNames] = await Promise.all([getAreaNames().catch(() => []), refreshPlaces(getKnownPlaces)]);
     const out = await handleTurn(body, {
       allowAI,
       areaNames,

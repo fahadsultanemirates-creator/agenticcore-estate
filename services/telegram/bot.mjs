@@ -19,7 +19,8 @@ import crypto from 'node:crypto';
 import { t } from './strings.mjs';
 import { buttons, contactKeyboard, removeKeyboard } from './tg-api.mjs';
 import { detectLang, contextualise, factsSummary, askFor, launchNotice } from '../assistant-service.mjs';
-import { isLaunched } from '../places.mjs';
+import { isLaunched, placeOf } from '../places.mjs';
+import { observe, remember, recall, recallLine, pendingFacts, factLine } from '../memory.mjs';
 import { AMAAN } from '../assistant-knowledge.mjs';
 import { extractFacts, templateDraft } from '../listing-draft.mjs';
 import { PROPERTY_TYPES } from '../util.mjs';
@@ -115,6 +116,7 @@ export async function handleUpdate(update, deps) {
   ctx.log = (kind, detail, alertText) => logActivity(ctx, kind, detail, alertText);
   ctx.menu = () => menu(ctx);
 
+  if (deps.refreshPlaces) await deps.refreshPlaces();      // learned places (cached 10 min)
   try {
     // simple per-chat flood limit
     const rl = session.state.rl || { at: Date.now(), n: 0 };
@@ -159,7 +161,11 @@ function menu(ctx) {
   return buttons([[[t('btn_signup', L), 'm:signup']], [[t('btn_have_account', L), 'm:have']], [[t('btn_services', L), 'm:services'], [t('btn_help', L), 'm:help']]]);
 }
 async function showMenu(ctx) {
-  if (ctx.account) return ctx.say('welcome_back', { name: ctx.account.full_name, member: memberNo(ctx.account.member_no) }, menu(ctx));
+  if (ctx.account) {
+    const line = recallLine(await recall(ctx.deps.store, ctx.account), (v) => PROPERTY_TYPES[v] || v);
+    if (line) await ctx.say('welcome_back', { name: ctx.account.full_name, member: memberNo(ctx.account.member_no) });
+    return line ? ctx.say('welcome_recall', { what: line }, menu(ctx)) : ctx.say('welcome_back', { name: ctx.account.full_name, member: memberNo(ctx.account.member_no) }, menu(ctx));
+  }
   return ctx.say('welcome_new', {}, menu(ctx));
 }
 
@@ -214,6 +220,7 @@ async function onMessage(ctx, msg) {
     if (name === 'stats' && isOwner(ctx)) return ownerStats(ctx);
     if (name === 'deliver' && isOwner(ctx)) return ownerDeliverStart(ctx, arg);
     if (name === 'jobs' && isOwner(ctx)) return ownerJobs(ctx);
+    if (name === 'learn' && isOwner(ctx)) return ownerLearn(ctx);
     if (name === 'msg' && isOwner(ctx)) { const mm = String(arg || '').match(/^(ACPK-\d+)\s+([\s\S]+)$/i); return ownerMessage(ctx, mm && mm[1], mm && mm[2]); }
     return showMenu(ctx);
   }
@@ -257,6 +264,7 @@ async function onCallback(ctx, cb) {
   const s = ctx.session.state;
   if (await onPkCallback(ctx, data, msgId)) return;
   if (/^q:[0-9a-f-]{36}$/.test(data)) return startEnquiry(ctx, data.slice(2));
+  if (/^kb:[ar]:\d+$/.test(data) && isOwner(ctx)) return ownerDecide(ctx, data, msgId);
   switch (data) {
     case 'm:signup': return startSignup(ctx);
     case 'm:have': return ctx.say('have_account', {}, buttons([[['agenticcore.estate', ctx.deps.siteUrl + '/login.html']]]));
@@ -398,6 +406,12 @@ async function listingText(ctx, text) {
   const facts = factsFromNotes(s.notes, areaNames);
   // a city that opens on 6 October: say so once, then carry on (listings are saved now)
   const notice = launchNotice(prev, facts, ctx.lang, ctx.deps.now && ctx.deps.now());
+  // learning: the city a member chose for an area found in two cities, and
+  // area names we don't know yet (both only count once 3 people agree)
+  if (ctx.account && facts.city && facts.area) {
+    if (prev && !prev.city && prev.city_options && prev.city_options.length > 1) await observe(ctx.deps.store, ctx.account, 'area', facts.city, facts.area, { from: 'city_choice' });
+    else if ((!prev || prev.area !== facts.area || prev.city !== facts.city) && !placeOf(facts.area, facts.city)) await observe(ctx.deps.store, ctx.account, 'area', facts.city, facts.area, { from: 'chat' });
+  }
   if (notice) await ctx.raw(notice);
   const miss = missingFacts(facts);
   if (miss.length) {
@@ -495,6 +509,7 @@ async function publish(ctx) {
   const url = ctx.deps.siteUrl + '/listing.html?id=' + listing.id;
   await logActivity(ctx, 'listing_published', { listing_id: listing.id, photos: photos.length, score: q.score },
     'Listing published by ' + memberNo(ctx.account.member_no) + ': ' + row.title + ' — ' + url);
+  await remember(ctx.deps.store, ctx.account, { cities: [check.city], areas: [row.area], types: [row.property_type], lang: ctx.lang, last_intent: 'list' });
   if (!isLaunched(check.city, ctx.deps.now && ctx.deps.now())) await ctx.say('published_prelaunch', { url, city: check.city, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
   else await ctx.say('published', { url, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
   if (s.photoFailures) await ctx.say('photos_failed', { n: s.photoFailures });
@@ -526,4 +541,21 @@ async function ownerStats(ctx) {
     count('activity_log', 'kind=eq.listing_published&created_at=gt.' + encodeURIComponent(today), 'id')
   ]);
   return ctx.raw('Telegram accounts: ' + accounts + '\nConnected Telegram users: ' + links + '\nListings published via Telegram (24h): ' + published);
+}
+
+// ---------- learning memory: owner review ----------
+async function ownerLearn(ctx) {
+  const rows = await pendingFacts(ctx.deps.store, 10);
+  if (!rows.length) return ctx.say('learn_none');
+  await ctx.say('learn_head');
+  for (const f of rows) await ctx.raw(factLine(f), buttons([[['✅ Approve', 'kb:a:' + f.id], ['✖ Reject', 'kb:r:' + f.id]]]));
+}
+async function ownerDecide(ctx, data, msgId) {
+  const [, a, id] = data.split(':');
+  const status = a === 'a' ? 'approved' : 'rejected';
+  try {
+    const name = await ctx.deps.store.rpc('kb_decide', { p_id: Number(id), p_status: status, p_by: null });
+    if (msgId) await ctx.deps.tg.removeButtons(ctx.chatId, msgId);
+    return ctx.say('learn_done', { name: name || '#' + id, status: status === 'approved' ? 'approved — added to the area list' : 'rejected' });
+  } catch (e) { return ctx.say('error'); }
 }

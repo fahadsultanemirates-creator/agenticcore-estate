@@ -66,7 +66,8 @@ function fakeStore(opts) {
     async updateListing(id, owner, patch) { const l = db.listings.find((x) => x.id === id && x.owner_id === owner); if (!l) return null; Object.assign(l, patch); return l; },
     async uploadPhoto(path) { db.uploads.push(path); return 'https://iuwjlvcfnxbfhbkztsel.supabase.co/storage/v1/object/public/listing-photos/' + path; },
     async markSent(kind, ref) { const k = kind + '|' + ref; if (db.notes.has(k)) return false; db.notes.add(k); return true; },
-    async rest(path) { return opts.rest ? opts.rest(path) : []; }
+    async rest(path) { return opts.rest ? opts.rest(path) : []; },
+    async rpc(name, body) { (db.rpc = db.rpc || []).push([name, body]); return name === 'kb_decide' ? 'Bismillah Housing Scheme' : null; }
   };
   return s;
 }
@@ -401,4 +402,64 @@ test('Amaan knows which city an area is in (G-10 → Islamabad) and asks when an
   assert.match(lastText(tg), /Bahria Town Phase 7 — is that in Rawalpindi or Islamabad\?/);
   await run(d, text('Rawalpindi'));
   assert.doesNotMatch(lastText(tg), /which city|is that in/i);
+});
+
+// ---------- learning memory ----------
+import { setLearnedPlaces, findPlace } from '../services/places.mjs';
+import { learnDigest, recallLine } from '../services/memory.mjs';
+
+test('memory: the bots learn which city people use; once settled they stop asking', async () => {
+  setLearnedPlaces([]);
+  assert.equal(findPlace('Bahria Town Phase 7').ambiguous, true);
+  setLearnedPlaces([{ city: 'Rawalpindi', area: 'Bahria Town Phase 7', n: 8 }, { city: 'Islamabad', area: 'Bahria Town Phase 7', n: 1 },
+    { city: 'Lahore', area: 'Bismillah Housing Scheme', n: 3 }]);
+  assert.deepEqual([findPlace('Bahria Town Phase 7').impliedCity, findPlace('Bahria Town Phase 7').ambiguous], ['Rawalpindi', false]);
+  assert.equal(findPlace('5 marla in bismillah housing scheme').impliedCity, 'Lahore', 'a learned society');
+  setLearnedPlaces([]);
+});
+
+test('memory: a city chosen in chat and an unknown area are observations; publishing remembers the member', async () => {
+  const { store, tg, d } = await signedUp();
+  store.activeCities = async () => SIX; d.now = AFTER;
+  await run(d, press('m:list'), text('7 marla house for sale in Bahria Town Phase 7 demand 3 crore'), text('Islamabad'));
+  const obs = (store.db.rpc || []).filter(([n]) => n === 'kb_observe').map(([, b]) => [b.p_city, b.p_name, b.p_detail.from]);
+  assert.deepEqual(obs[0], ['Islamabad', 'Bahria Town Phase 7', 'city_choice']);
+  await run(d, text('/cancel'), press('m:list'), text('5 marla house for sale in Lahore demand 1.5 crore'));
+  assert.match(lastText(tg), /Which area exactly/);
+  await run(d, text('Bismillah Housing Scheme'));
+  assert.ok((store.db.rpc || []).some(([n, b]) => n === 'kb_observe' && b.p_name === 'Bismillah Housing Scheme' && b.p_city === 'Lahore' && b.p_detail.from === 'chat'));
+  await run(d, text('3 bedrooms 3 bathrooms'), photo(), press('l:done'), press('l:publish'));
+  const mem = (store.db.rpc || []).find(([n]) => n === 'member_remember');
+  assert.equal((store.db.rpc || []).filter(([n]) => n === 'kb_observe').length, 2, 'each place observed once per conversation');
+  assert.ok(mem && mem[1].p_patch.cities[0] === 'Lahore' && mem[1].p_patch.types[0] === 'house' && mem[1].p_patch.last_intent === 'list');
+  assert.ok(!JSON.stringify(mem[1].p_patch).includes('0300'), 'no phone in memory');
+});
+
+test('memory: welcome back recalls the last area; owner reviews new places with /learn', async () => {
+  const store = fakeStore({ rest: (p) => p.startsWith('member_memory') ? [{ data: { cities: ['Lahore'], areas: ['Johar Town'], types: ['house'] } }]
+    : p.startsWith('kb_facts') ? [{ id: 7, kind: 'area', city: 'Lahore', name: 'Bismillah Housing Scheme', detail: {}, status: 'learned', sources: 3 }] : [] });
+  const tg = fakeTg(), d = deps(store, tg);
+  await run(d, press('m:signup'), contact('+92 300 1234567', ME), text('Ali Raza'), text('ali@example.com'), press('s:yes'), text('/menu'));
+  assert.match(lastText(tg), /Last time: House, Johar Town, Lahore/);
+  await run(d, text('/learn'));                                  // not the owner
+  assert.ok(!tg.sent.some((m) => /Bismillah/.test(m.text)));
+  await run(d, text('/learn', Number(OWNER)));
+  const item = tg.sent.find((m) => String(m.chat) === String(OWNER) && /Bismillah Housing Scheme — Lahore \(area, 3 people, already in use\)/.test(m.text));
+  assert.ok(item);
+  assert.deepEqual(btnData(item), ['kb:a:7', 'kb:r:7']);
+  await run(d, press('kb:a:7'));                                 // not the owner
+  assert.ok(!(store.db.rpc || []).some(([n]) => n === 'kb_decide'));
+  await run(d, press('kb:a:7', Number(OWNER)));
+  assert.deepEqual((store.db.rpc || []).find(([n]) => n === 'kb_decide')[1], { p_id: 7, p_status: 'approved', p_by: null });
+  assert.match(tg.sent.filter((m) => String(m.chat) === String(OWNER)).slice(-1)[0].text, /approved — added to the area list/);
+  assert.equal(recallLine(null), '');
+});
+
+test('memory: the owner gets one daily nudge at 09:00 PKT when places wait for review', async () => {
+  const sent = [];
+  const deps2 = { ownerId: OWNER, tg: { send: async (c, t) => sent.push(t) }, store: { rest: async () => [{ id: 1, kind: 'area', city: 'Karachi', name: 'X', sources: 2 }] } };
+  assert.equal(await learnDigest(deps2, new Date('2026-10-07T03:05:00Z')), 0, 'not at 08:05 PKT');
+  assert.equal(await learnDigest(deps2, new Date('2026-10-07T04:05:00Z')), 1, 'at 09:05 PKT');
+  assert.equal(await learnDigest(deps2, new Date('2026-10-07T04:15:00Z')), 0, 'only in the 09:00–09:09 slot');
+  assert.deepEqual(sent, ['📚 1 new place(s) to review — send /learn.']);
 });
