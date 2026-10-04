@@ -152,7 +152,11 @@ const AcDB = (function () {
 
   async function getAreasForCity(cityName) {
     const { data } = await supabaseClient.from('areas').select('name').eq('city_name', cityName).order('sort_order');
-    return (data || []).map(function (a) { return a.name; });
+    const names = (data || []).map(function (a) { return a.name; });
+    // plus the built-in list for the city (ac-cities.js), so every known area is offered
+    const have = names.map(function (n) { return n.toLowerCase(); });
+    (typeof acCityAreas === 'function' ? acCityAreas(cityName) : []).forEach(function (a) { if (have.indexOf(a.toLowerCase()) < 0) { names.push(a); have.push(a.toLowerCase()); } });
+    return names;
   }
 
   // ---------- developer applications ----------

@@ -5,6 +5,11 @@
 // only ADD missing fields — it never overrides what the text states.
 
 import { norm, COMMERCIAL_TYPES, formatPKR } from './util.mjs';
+import { GAZETTEER, CITY_NAMES, findPlace } from './places.mjs';
+
+// Every area we know (all six cities, data/cities.json) — matched like DB area names.
+const KNOWN_AREAS = GAZETTEER.cities.flatMap((c) => c.areas).concat(GAZETTEER.shared.map((x) => x.name));
+const CITY_RE = GAZETTEER.cities.map((c) => [c.name, new RegExp('\\b(' + c.aliases.map((a) => a.replace(/\s+/g, '\\s*')).join('|') + ')\\b')]);
 
 const UNIT_MULT = {
   crore: 1e7, cr: 1e7, crores: 1e7, karor: 1e7, karod: 1e7,
@@ -13,7 +18,7 @@ const UNIT_MULT = {
   thousand: 1e3, k: 1e3, hazar: 1e3, hazaar: 1e3
 };
 
-// Societies / localities that people type in Islamabad & Rawalpindi.
+// Societies / localities that people type (all six cities; phases handled below).
 // Matching is token-based against listing.area, so "DHA" matches
 // "DHA Phase 2" and "Bahria Phase 7" matches "Bahria Town Phase 7".
 const SOCIETIES = [
@@ -25,7 +30,12 @@ const SOCIETIES = [
   ['adiala', ['adiala']], ['airport housing', ['airport housing']], ['jinnah garden', ['jinnah garden']],
   ['ghauri town', ['ghauri']], ['korang town', ['korang']], ['bani gala', ['bani gala', 'banigala']],
   ['faisal town', ['faisal town']], ['eighteen', ['eighteen']], ['rawat', ['rawat']], ['westridge', ['westridge']],
-  ['wapda town', ['wapda']], ['police foundation', ['police foundation']], ['mumtaz city', ['mumtaz city']]
+  ['wapda town', ['wapda']], ['police foundation', ['police foundation']], ['mumtaz city', ['mumtaz city']],
+  ['johar town', ['johar town']], ['model town', ['model town']], ['garden town', ['garden town']], ['allama iqbal town', ['iqbal town']],
+  ['lake city', ['lake city']], ['valencia', ['valencia']], ['clifton', ['clifton']], ['scheme 33', ['scheme 33', 'scheme-33']],
+  ['gulshan-e-iqbal', ['gulshan e iqbal', 'gulshan iqbal', 'gulshan-e-iqbal']], ['gulistan-e-jauhar', ['gulistan e jauhar', 'jauhar', 'johar block']],
+  ['north nazimabad', ['north nazimabad']], ['pechs', ['pechs']], ['citi housing', ['citi housing', 'city housing']],
+  ['eden valley', ['eden valley']], ['wapda city', ['wapda city']], ['cantonment', ['cantonment']]
 ];
 
 const TYPE_WORDS = [
@@ -138,14 +148,15 @@ function parseLocations(text, areaNames) {
 export function parseCriteria(input, areaNames) {
   const raw = String(input || '').slice(0, 600);
   const text = ' ' + norm(raw).replace(/(\d),(\d)/g, '$1$2') + ' ';
-  const c = { purpose: null, city: null, property_types: [], locations: [], price_min: null, price_max: null,
+  const c = { purpose: null, city: null, implied_city: null, implied_cities: null, property_types: [], locations: [], price_min: null, price_max: null,
     size: null, beds_min: null, beds_exact: null, baths_min: null, preferences: [], keywords: [] };
 
   if (/\b(rent|rental|kiraya|kiraye|kiraay|for lease|lease|per month|monthly|\/ ?month|pm)\b/.test(text)) c.purpose = 'rent';
   else if (/\b(buy|purchase|sale|for sale|sell|khareed|kharidna|invest)/.test(text)) c.purpose = 'buy';
 
-  if (/\b(islamabad|isb|isl)\b/.test(text)) c.city = 'Islamabad';
-  if (/\b(rawalpindi|pindi|rwp)\b/.test(text)) c.city = c.city ? null : 'Rawalpindi'; // both named: no city filter
+  // One city named → that city; two or more named → no city filter.
+  const named = CITY_RE.filter(([, re]) => re.test(text)).map(([name]) => name);
+  if (named.length === 1) c.city = named[0];
 
   for (const [re, types] of TYPE_WORDS) {
     if (re.test(text)) { types.forEach((t) => { if (c.property_types.indexOf(t) < 0) c.property_types.push(t); }); }
@@ -167,7 +178,15 @@ export function parseCriteria(input, areaNames) {
   const baths = parseCount(text, 'bath(?:room)?s?|washrooms?');
   if (baths) c.baths_min = baths.n;
 
-  c.locations = parseLocations(text, areaNames);
+  c.locations = parseLocations(text, (areaNames || []).concat(KNOWN_AREAS.filter((a) => !(areaNames || []).includes(a))));
+  // The city an area belongs to when no city was named: "G-10" → Islamabad,
+  // "Clifton" → Karachi. Areas found in more than one city (Bahria Town
+  // phases, DHA phases, Gulberg…) stay open: implied_cities lists them.
+  if (!c.city && !named.length) {
+    const p = findPlace(raw);
+    if (p.impliedCity && !p.ambiguous) c.implied_city = p.impliedCity;
+    else if (p.ambiguous) c.implied_cities = p.cities;
+  }
   PREFERENCES.forEach(function ([label, re, words]) {
     if (re.test(text)) { c.preferences.push(label); c.keywords.push.apply(c.keywords, words); }
   });
@@ -185,7 +204,7 @@ export function followUpQuestion(c) {
   const missing = [];
   if (!c.purpose) missing.push('are you looking to buy or rent');
   if (!c.property_types.length) missing.push('what type of property (house, flat, plot, shop…)');
-  if (!c.city && !c.locations.length) missing.push('which area of Islamabad or Rawalpindi');
+  if (!c.city && !c.locations.length) missing.push('which city and area (' + CITY_NAMES.join(', ') + ')');
   if (!c.price_max) missing.push('roughly what budget');
   return missing.length ? 'To narrow this down: ' + missing.slice(0, 3).join(', ') + '?' : null;
 }

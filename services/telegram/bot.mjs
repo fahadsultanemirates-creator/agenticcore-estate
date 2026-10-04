@@ -18,7 +18,8 @@
 import crypto from 'node:crypto';
 import { t } from './strings.mjs';
 import { buttons, contactKeyboard, removeKeyboard } from './tg-api.mjs';
-import { detectLang, contextualise, factsSummary } from '../assistant-service.mjs';
+import { detectLang, contextualise, factsSummary, askFor, launchNotice } from '../assistant-service.mjs';
+import { isLaunched } from '../places.mjs';
 import { AMAAN } from '../assistant-knowledge.mjs';
 import { extractFacts, templateDraft } from '../listing-draft.mjs';
 import { PROPERTY_TYPES } from '../util.mjs';
@@ -392,13 +393,17 @@ async function listingText(ctx, text) {
   const s = ctx.session.state;
   if (s.step === 'photos' && RE.done.test(text)) return toReview(ctx);
   const areaNames = await ctx.deps.assistant.areaNames();
+  const prev = (s.notes || []).length ? factsFromNotes(s.notes, areaNames) : null;
   s.notes = (s.notes || []).concat(contextualise(text, s.asked)).slice(-12);
   const facts = factsFromNotes(s.notes, areaNames);
+  // a city that opens on 6 October: say so once, then carry on (listings are saved now)
+  const notice = launchNotice(prev, facts, ctx.lang, ctx.deps.now && ctx.deps.now());
+  if (notice) await ctx.raw(notice);
   const miss = missingFacts(facts);
   if (miss.length) {
     s.step = 'details'; s.asked = miss[0];
     const summary = factsSummary(facts);
-    return ctx.raw((summary ? summary + '\n' : '') + AMAAN.ask[miss[0]][ctx.lang]);
+    return ctx.raw((summary ? summary + '\n' : '') + askFor(miss[0], facts, ctx.lang));
   }
   s.asked = null;
   if (s.step === 'review') return toReview(ctx);           // a change after the review → show it again
@@ -490,7 +495,8 @@ async function publish(ctx) {
   const url = ctx.deps.siteUrl + '/listing.html?id=' + listing.id;
   await logActivity(ctx, 'listing_published', { listing_id: listing.id, photos: photos.length, score: q.score },
     'Listing published by ' + memberNo(ctx.account.member_no) + ': ' + row.title + ' — ' + url);
-  await ctx.say('published', { url, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
+  if (!isLaunched(check.city, ctx.deps.now && ctx.deps.now())) await ctx.say('published_prelaunch', { url, city: check.city, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
+  else await ctx.say('published', { url, score: q.score, tips: tips ? '\n' + tips : '' }, menu(ctx));
   if (s.photoFailures) await ctx.say('photos_failed', { n: s.photoFailures });
 }
 
@@ -498,7 +504,7 @@ async function myListings(ctx) {
   if (!ctx.account) return ctx.say('need_account', {}, buttons([[[t('btn_signup', ctx.lang), 'm:signup']], [[t('btn_have_account', ctx.lang), 'm:have']]]));
   const rows = await ctx.deps.store.ownListings(ctx.account.id);
   if (!rows.length) return ctx.say('my_listings_none', {}, menu(ctx));
-  const lines = rows.slice(0, 10).map((l, i) => (i + 1) + '. ' + l.title + (l.moderation_status === 'hidden' ? ' (hidden)' : '') + '\n' + ctx.deps.siteUrl + '/listing.html?id=' + l.id);
+  const lines = rows.slice(0, 10).map((l, i) => (i + 1) + '. ' + l.title + (l.moderation_status === 'hidden' ? ' (hidden)' : '') + (l.city && !isLaunched(l.city) ? ' (shows from 6 Oct)' : '') + '\n' + ctx.deps.siteUrl + '/listing.html?id=' + l.id);
   return ctx.raw(t('my_listings', ctx.lang) + '\n\n' + lines.join('\n\n'), menu(ctx));
 }
 

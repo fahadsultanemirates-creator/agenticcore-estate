@@ -35,7 +35,7 @@ if (sellForm) {
       const areas = await AcDB.getAreasForCity(citySelect.value);
       areaSelect.innerHTML = '<option value="">Select an area</option>' +
         areas.map(function (a) { return '<option value="' + acEsc(a) + '">' + acEsc(a) + '</option>'; }).join('') +
-        '<option value="' + MANUAL_AREA_VALUE + '">Other — type it in</option>';
+        '<option value="' + MANUAL_AREA_VALUE + '">' + acEsc(acT('city_area_other')) + '</option>';
       toggleManualArea();
       return areas;
     }
@@ -43,8 +43,20 @@ if (sellForm) {
     if (citySelect) {
       const cities = await AcDB.getActiveCities();
       citySelect.innerHTML = '<option value="">Select a city</option>' +
-        cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc(c) + '</option>'; }).join('');
-      citySelect.addEventListener('change', function () { loadAreas(); });
+        (typeof acCityOptionsHTML === 'function' ? acCityOptionsHTML(cities) : cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc(c) + '</option>'; }).join(''));
+      citySelect.setAttribute('data-city-select', '');
+      // Lahore, Karachi, Sialkot, Faisalabad before 6 Oct: saved now, public from launch day
+      const cityNote = document.createElement('p');
+      cityNote.className = 'ac-city-note'; cityNote.hidden = true; cityNote.setAttribute('role', 'status');
+      citySelect.insertAdjacentElement('afterend', cityNote);
+      const showCityNote = function () {
+        const on = typeof acCityLaunching === 'function' && acCityLaunching(citySelect.value);
+        cityNote.hidden = !on;
+        if (on) cityNote.textContent = acT('city_saved_prelaunch').replace('{city}', citySelect.value).replace(/^[^✓]*✓\s*/, '');
+      };
+      citySelect.addEventListener('change', function () { showCityNote(); loadAreas(); });
+      const wantCity = new URLSearchParams(location.search).get('city');
+      if (wantCity && cities.indexOf(wantCity) >= 0 && !new URLSearchParams(location.search).get('edit')) { citySelect.value = wantCity; showCityNote(); loadAreas(); }
       areaSelect.addEventListener('change', toggleManualArea);
     }
 
@@ -343,7 +355,8 @@ if (sellForm) {
         return;
       }
 
-      window.location.href = 'listing.html?id=' + encodeURIComponent(result.listing.id) + (editing ? '&saved=1' : '&posted=1');
+      const pre = typeof acCityLaunching === 'function' && acCityLaunching(payload.city);
+      window.location.href = 'listing.html?id=' + encodeURIComponent(result.listing.id) + (editing ? '&saved=1' : pre ? '&prelaunch=1' : '&posted=1');
     });
   })();
 }

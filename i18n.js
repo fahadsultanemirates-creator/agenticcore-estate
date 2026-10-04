@@ -269,9 +269,9 @@ const AC_I18N = {
 
 /* ---------- Product 2.0 homepage + Copilot strings ---------- */
 Object.assign(AC_I18N.en, {
- "h2_eyebrow": "Islamabad & Rawalpindi · Khwabon se ghar tak",
+ "h2_eyebrow": "Serving 6 cities across Pakistan · Khwabon se ghar tak",
  "h2_title": "Find property your way.",
- "h2_sub": "Search Islamabad & Rawalpindi normally — or tell AgenticCore exactly what you're looking for.",
+ "h2_sub": "Search Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad normally — or tell AgenticCore exactly what you're looking for.",
  "h2_cta_search": "Search Properties",
  "h2_cta_ask": "Ask AgenticCore",
  "h2_cta_list": "List a Property",
@@ -293,7 +293,7 @@ Object.assign(AC_I18N.en, {
  "h2_ask_fine": "AgenticCore never invents properties or details. It only recommends listings that exist on AgenticCore Estate.",
  "h2_try": "Try an example — it runs a real search:",
  "h2_loc_eyebrow": "Where we're live",
- "h2_loc_title": "Islamabad & Rawalpindi",
+ "h2_loc_title": "Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad",
  "h2_why_eyebrow": "For sellers, agents & agencies",
  "h2_why_title": "Have a property to sell or rent? List it here.",
  "h2_why_sub": "AgenticCore helps turn your details into a better listing — and puts buyers in direct contact with you.",
@@ -374,7 +374,7 @@ Object.assign(AC_I18N.en, {
  "h2_eco_s4t": "Grow",
  "h2_eco_s4": "Keep listings complete and up to date — the quality score shows what to add next.",
  "h2_map_eyebrow": "Khwabon se ghar tak",
- "h2_map_title": "Live in Islamabad & Rawalpindi — more cities next",
+ "h2_map_title": "Serving 6 cities across Pakistan",
  "h2_map_sub": "We're starting where we can serve properly, then joining the rest of Pakistan city by city.",
  "h2_final_title": "Search normally — or ask AgenticCore.",
  "h2_final_sub": "Find a property, or list yours free in a few minutes.",
@@ -390,9 +390,9 @@ Object.assign(AC_I18N.en, {
  "h2_tk_preview": "Example card, generated from a real listing on this site."
 });
 Object.assign(AC_I18N.ur, {
- "h2_eyebrow": "اسلام آباد اور راولپنڈی · خوابوں سے گھر تک",
+ "h2_eyebrow": "پاکستان کے 6 شہروں میں · خوابوں سے گھر تک",
  "h2_title": "جائیداد اپنے انداز سے تلاش کریں۔",
- "h2_sub": "اسلام آباد اور راولپنڈی میں عام طریقے سے تلاش کریں — یا AgenticCore کو بتائیں کہ آپ کو بالکل کیا چاہیے۔",
+ "h2_sub": "اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں عام طریقے سے تلاش کریں — یا AgenticCore کو بتائیں کہ آپ کو بالکل کیا چاہیے۔",
  "h2_cta_search": "جائیداد تلاش کریں",
  "h2_cta_ask": "AgenticCore سے پوچھیں",
  "h2_cta_list": "جائیداد درج کریں",
@@ -414,7 +414,7 @@ Object.assign(AC_I18N.ur, {
  "h2_ask_fine": "AgenticCore کبھی جائیداد یا تفصیلات خود سے نہیں گھڑتا۔ یہ صرف وہی جائیدادیں تجویز کرتا ہے جو AgenticCore Estate پر موجود ہیں۔",
  "h2_try": "مثال آزمائیں — یہ اصل تلاش چلاتی ہے:",
  "h2_loc_eyebrow": "ہم کہاں دستیاب ہیں",
- "h2_loc_title": "اسلام آباد اور راولپنڈی",
+ "h2_loc_title": "اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد",
  "h2_why_eyebrow": "فروخت کنندگان، ایجنٹس اور ایجنسیوں کے لیے",
  "h2_why_title": "جائیداد بیچنی یا کرایے پر دینی ہے؟ یہاں درج کریں۔",
  "h2_why_sub": "AgenticCore آپ کی تفصیلات کو بہتر اشتہار میں بدلنے میں مدد کرتا ہے — اور خریداروں کو براہِ راست آپ سے رابطے کا موقع دیتا ہے۔",
@@ -495,7 +495,7 @@ Object.assign(AC_I18N.ur, {
  "h2_eco_s4t": "آگے بڑھیں",
  "h2_eco_s4": "اشتہارات مکمل اور تازہ رکھیں — کوالٹی اسکور بتاتا ہے کہ آگے کیا شامل کرنا ہے۔",
  "h2_map_eyebrow": "خوابوں سے گھر تک",
- "h2_map_title": "اسلام آباد اور راولپنڈی میں دستیاب — اگلے مزید شہر",
+ "h2_map_title": "پاکستان کے 6 شہروں میں خدمات",
  "h2_map_sub": "ہم وہاں سے شروع کر رہے ہیں جہاں اچھی خدمت دے سکیں، پھر شہر بہ شہر پورے پاکستان تک۔",
  "h2_final_title": "عام طریقے سے تلاش کریں — یا AgenticCore سے پوچھیں۔",
  "h2_final_sub": "جائیداد تلاش کریں، یا چند منٹوں میں اپنی مفت درج کریں۔",
@@ -658,7 +658,7 @@ Object.assign(AC_I18N.en, {
   mk_unit_per_sqft: 'per sq. ft.', mk_unit_per_marla: 'per marla', mk_unit_per_kanal: 'per kanal', mk_unit_lump_sum: 'lump sum',
   mk_from: 'From', mk_up_to: 'Up to', mk_rate_from: 'Rates from',
   mk_view_profile: 'View profile', mk_view_agency: 'View agency', mk_view_company: 'View company',
-  mk_dir_properties_h: 'Properties for sale and rent', mk_dir_properties_sub: 'Search genuine listings in Islamabad and Rawalpindi by area, type, budget and bedrooms.',
+  mk_dir_properties_h: 'Properties for sale and rent', mk_dir_properties_sub: 'Search genuine listings in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad by area, type, budget and bedrooms.',
   mk_dir_projects_h: 'Projects & developments', mk_dir_projects_sub: 'Towers, housing societies and commercial projects — status, unit types, price ranges and payment plans.',
   mk_dir_professionals_h: 'Property professionals', mk_dir_professionals_sub: 'Find an agent or adviser by area and specialisation. Each profile explains how they can help — even without listings.',
   mk_dir_agencies_h: 'Real estate agencies', mk_dir_agencies_sub: 'Agencies with their services, team and active listings.',
@@ -690,8 +690,9 @@ Object.assign(AC_I18N.en, {
   mk_completed: 'Completed projects', mk_current: 'Current projects', mk_payment_terms: 'Payment terms', mk_portfolio: 'Portfolio', mk_projects_by: 'Projects',
   mk_back_project: 'All projects', mk_back_professional: 'All professionals', mk_back_agency: 'All agencies', mk_back_company: 'All builders & developers',
   mk_not_found: 'This page could not be found.',
-  mk_cities_title: 'Currently serving Islamabad & Rawalpindi', mk_cities_sub: 'More cities are coming.',
-  mk_map_sub: 'We are starting where we can serve properly. More cities are coming — Lahore and Karachi are next on the map.',
+  mk_cities_title: 'Serving Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad', mk_cities_sub: 'Islamabad and Rawalpindi are live now. Lahore, Karachi, Sialkot and Faisalabad open on Tuesday 6 October 2026 — you can sign up and list free today.',
+  mk_cities_sub_live: 'Serving 6 cities across Pakistan. Listing is free during our launch period.',
+  mk_map_sub: 'We grow city by city, where we can serve properly: Islamabad and Rawalpindi first, then Lahore, Karachi, Sialkot and Faisalabad from Tuesday 6 October 2026.',
   mk_eco_title: 'List here. Market with AgenticCore Pakistan.',
   mk_eco_sub: 'AgenticCore Estate is where property, projects and professionals are listed and found. AgenticCore Pakistan creates, promotes and automates the marketing.',
   mk_j1: 'LIST', mk_j1s: 'List on AgenticCore Estate and get a searchable marketplace presence.',
@@ -747,7 +748,7 @@ Object.assign(AC_I18N.ur, {
   mk_unit_per_sqft: 'فی مربع فٹ', mk_unit_per_marla: 'فی مرلہ', mk_unit_per_kanal: 'فی کنال', mk_unit_lump_sum: 'یکمشت',
   mk_from: 'سے', mk_up_to: 'تک', mk_rate_from: 'ریٹ شروع',
   mk_view_profile: 'پروفائل دیکھیں', mk_view_agency: 'ایجنسی دیکھیں', mk_view_company: 'کمپنی دیکھیں',
-  mk_dir_properties_h: 'فروخت اور کرایے کی پراپرٹیز', mk_dir_properties_sub: 'اسلام آباد اور راولپنڈی میں حقیقی لسٹنگز علاقہ، قسم، بجٹ اور کمروں کے لحاظ سے تلاش کریں۔',
+  mk_dir_properties_h: 'فروخت اور کرایے کی پراپرٹیز', mk_dir_properties_sub: 'اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں حقیقی لسٹنگز علاقہ، قسم، بجٹ اور کمروں کے لحاظ سے تلاش کریں۔',
   mk_dir_projects_h: 'پروجیکٹس اور منصوبے', mk_dir_projects_sub: 'ٹاورز، ہاؤسنگ سوسائٹیز اور کمرشل پروجیکٹس — اسٹیٹس، یونٹ کی اقسام، قیمت کی حد اور ادائیگی پلان۔',
   mk_dir_professionals_h: 'پراپرٹی پروفیشنلز', mk_dir_professionals_sub: 'علاقے اور مہارت کے لحاظ سے ایجنٹ یا مشیر تلاش کریں۔ ہر پروفائل بتاتی ہے کہ وہ کیسے مدد کر سکتے ہیں — چاہے لسٹنگ نہ بھی ہو۔',
   mk_dir_agencies_h: 'رئیل اسٹیٹ ایجنسیاں', mk_dir_agencies_sub: 'خدمات، ٹیم اور فعال لسٹنگز کے ساتھ ایجنسیاں۔',
@@ -779,8 +780,9 @@ Object.assign(AC_I18N.ur, {
   mk_completed: 'مکمل شدہ پروجیکٹس', mk_current: 'جاری پروجیکٹس', mk_payment_terms: 'ادائیگی کی شرائط', mk_portfolio: 'پورٹ فولیو', mk_projects_by: 'پروجیکٹس',
   mk_back_project: 'تمام پروجیکٹس', mk_back_professional: 'تمام پروفیشنلز', mk_back_agency: 'تمام ایجنسیاں', mk_back_company: 'تمام بلڈرز و ڈویلپرز',
   mk_not_found: 'یہ صفحہ نہیں ملا۔',
-  mk_cities_title: 'فی الحال اسلام آباد اور راولپنڈی میں', mk_cities_sub: 'مزید شہر جلد آ رہے ہیں۔',
-  mk_map_sub: 'ہم وہاں سے شروع کر رہے ہیں جہاں اچھی خدمت دے سکیں۔ مزید شہر جلد آ رہے ہیں — لاہور اور کراچی اگلے مرحلے میں۔',
+  mk_cities_title: 'اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں', mk_cities_sub: 'اسلام آباد اور راولپنڈی میں ابھی دستیاب۔ لاہور، کراچی، سیالکوٹ اور فیصل آباد منگل 6 اکتوبر 2026 سے — آپ آج ہی سائن اپ کر کے مفت لسٹ کر سکتے ہیں۔',
+  mk_cities_sub_live: 'پاکستان کے 6 شہروں میں خدمات۔ لانچ کے دوران لسٹنگ مفت ہے۔',
+  mk_map_sub: 'ہم شہر بہ شہر بڑھ رہے ہیں، جہاں اچھی خدمت دے سکیں: پہلے اسلام آباد اور راولپنڈی، پھر منگل 6 اکتوبر 2026 سے لاہور، کراچی، سیالکوٹ اور فیصل آباد۔',
   mk_eco_title: 'یہاں لسٹ کریں۔ مارکیٹنگ AgenticCore Pakistan سے۔',
   mk_eco_sub: 'AgenticCore Estate وہ جگہ ہے جہاں پراپرٹی، پروجیکٹس اور پروفیشنلز لسٹ ہوتے اور تلاش کیے جاتے ہیں۔ AgenticCore Pakistan مارکیٹنگ تیار کرتا، پروموٹ کرتا اور خودکار بناتا ہے۔',
   mk_j1: 'لسٹ کریں', mk_j1s: 'AgenticCore Estate پر لسٹ کریں اور قابلِ تلاش مارکیٹ پلیس موجودگی حاصل کریں۔',
@@ -831,7 +833,7 @@ Object.assign(AC_I18N.en, {
   dc_see_builders: 'See builders & developers →', dc_pk_h: 'Need marketing for your project?',
   dc_pk: 'Brochures, social creatives, reels, WhatsApp catalogues and websites are made by AgenticCore Pakistan as separate, priced services. They are not included with an Estate listing.',
   dc_final: 'Ready to list your project?',
-  lo_lead: 'Everything on AgenticCore Estate is free while we launch in Islamabad and Rawalpindi. There is nothing to buy here yet.',
+  lo_lead: 'Everything on AgenticCore Estate is free during our launch in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad. There is nothing to buy here yet.',
   lo_free_h: 'Free right now', lo_free_props: 'Sale and rental listings with photos, AI-assisted drafting, quality score and share cards.',
   lo_free_projects: 'Project pages for approved developer accounts.', lo_free_pros: 'A public professional profile, with or without listings.',
   lo_free_agencies: 'An agency profile with team and listings.', lo_free_builders: 'A company profile with services, rates and projects.',
@@ -841,8 +843,8 @@ Object.assign(AC_I18N.en, {
   lo_projects_body: 'Project listing is free during launch. Project accounts are reviewed by our team before projects can be posted. The earlier developer package prices are no longer offered; marketplace packages are planned from 1 November 2026.',
   lo_pk_h: 'Marketing services are separate',
   lo_pk_body: 'AgenticCore Pakistan creates and promotes marketing material — posts, flyers, reels, brochures and automation — as paid services with published prices. Using them is optional and is not required to list on Estate.',
-  mk_dir_buy_h: 'Property for sale', mk_dir_buy_sub: 'Houses, flats, plots and commercial property for sale in Islamabad and Rawalpindi.',
-  mk_dir_rent_h: 'Property for rent', mk_dir_rent_sub: 'Homes, portions, flats and commercial space for rent in Islamabad and Rawalpindi.',
+  mk_dir_buy_h: 'Property for sale', mk_dir_buy_sub: 'Houses, flats, plots and commercial property for sale in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad.',
+  mk_dir_rent_h: 'Property for rent', mk_dir_rent_sub: 'Homes, portions, flats and commercial space for rent in Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad.',
   mk_beds: 'Bedrooms', mk_baths: 'Bathrooms', mk_description: 'Description', mk_illustrative: 'illustrative',
   mk_listed_by: 'Listed by', mk_individual: 'Individual listing',
   mk_flash_posted: 'Your listing is live.', mk_flash_saved: 'Your changes are saved.',
@@ -931,7 +933,7 @@ Object.assign(AC_I18N.ur, {
   dc_see_builders: 'بلڈرز و ڈویلپرز دیکھیں ←', dc_pk_h: 'اپنے پروجیکٹ کے لیے مارکیٹنگ چاہیے؟',
   dc_pk: 'بروشرز، سوشل ڈیزائنز، ریلز، واٹس ایپ کیٹلاگ اور ویب سائٹس AgenticCore Pakistan الگ، معاوضے والی خدمات کے طور پر بناتا ہے۔ یہ Estate لسٹنگ میں شامل نہیں۔',
   dc_final: 'اپنا پروجیکٹ لسٹ کرنے کے لیے تیار ہیں؟',
-  lo_lead: 'اسلام آباد اور راولپنڈی میں لانچ کے دوران AgenticCore Estate پر سب کچھ مفت ہے۔ یہاں ابھی خریدنے کو کچھ نہیں۔',
+  lo_lead: 'اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں لانچ کے دوران AgenticCore Estate پر سب کچھ مفت ہے۔ یہاں ابھی خریدنے کو کچھ نہیں۔',
   lo_free_h: 'ابھی مفت', lo_free_props: 'تصاویر کے ساتھ فروخت اور کرایے کی لسٹنگز، AI کی مدد سے مسودہ، کوالٹی اسکور اور شیئر کارڈز۔',
   lo_free_projects: 'منظور شدہ ڈویلپر اکاؤنٹس کے لیے پروجیکٹ صفحات۔', lo_free_pros: 'لسٹنگ کے ساتھ یا بغیر عوامی پروفیشنل پروفائل۔',
   lo_free_agencies: 'ٹیم اور لسٹنگز کے ساتھ ایجنسی پروفائل۔', lo_free_builders: 'خدمات، ریٹس اور پروجیکٹس کے ساتھ کمپنی پروفائل۔',
@@ -941,8 +943,8 @@ Object.assign(AC_I18N.ur, {
   lo_projects_body: 'لانچ کے دوران پروجیکٹ لسٹنگ مفت ہے۔ پروجیکٹ پوسٹ کرنے سے پہلے ہماری ٹیم پروجیکٹ اکاؤنٹس کا جائزہ لیتی ہے۔ ڈویلپرز کے پرانے پیکج ریٹس اب پیش نہیں کیے جاتے؛ مارکیٹ پلیس پیکجز 1 نومبر 2026 سے متوقع ہیں۔',
   lo_pk_h: 'مارکیٹنگ خدمات الگ ہیں',
   lo_pk_body: 'AgenticCore Pakistan مارکیٹنگ مواد — پوسٹس، فلائرز، ریلز، بروشرز اور آٹومیشن — شائع شدہ قیمتوں والی معاوضہ خدمات کے طور پر بناتا اور پروموٹ کرتا ہے۔ ان کا استعمال اختیاری ہے اور Estate پر لسٹنگ کے لیے ضروری نہیں۔',
-  mk_dir_buy_h: 'فروخت کے لیے پراپرٹی', mk_dir_buy_sub: 'اسلام آباد اور راولپنڈی میں فروخت کے لیے گھر، فلیٹ، پلاٹ اور کمرشل پراپرٹی۔',
-  mk_dir_rent_h: 'کرایے کے لیے پراپرٹی', mk_dir_rent_sub: 'اسلام آباد اور راولپنڈی میں کرایے کے لیے گھر، پورشن، فلیٹ اور کمرشل جگہیں۔',
+  mk_dir_buy_h: 'فروخت کے لیے پراپرٹی', mk_dir_buy_sub: 'اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں فروخت کے لیے گھر، فلیٹ، پلاٹ اور کمرشل پراپرٹی۔',
+  mk_dir_rent_h: 'کرایے کے لیے پراپرٹی', mk_dir_rent_sub: 'اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں کرایے کے لیے گھر، پورشن، فلیٹ اور کمرشل جگہیں۔',
   mk_beds: 'بیڈرومز', mk_baths: 'باتھ رومز', mk_description: 'تفصیل', mk_illustrative: 'صرف مثال',
   mk_listed_by: 'لسٹ کرنے والا', mk_individual: 'انفرادی لسٹنگ',
   mk_flash_posted: 'آپ کی لسٹنگ شائع ہو گئی ہے۔', mk_flash_saved: 'آپ کی تبدیلیاں محفوظ ہو گئیں۔',
@@ -1219,6 +1221,47 @@ Object.assign(AC_I18N.ur, {
   amaan_from_chat: 'یہ معلومات امان کے ساتھ آپ کی گفتگو سے بھری گئی ہیں۔ ہر تفصیل چیک کریں، تصاویر لگائیں، پھر شائع کریں — آپ کے جمع کرائے بغیر کچھ شائع نہیں ہوتا۔'
 });
 
+
+// Six cities: launch announcement (the *_live texts take over automatically at
+// 00:00 PKT on 6 October 2026 — see acApplyLaunchCopy in ac-cities.js).
+Object.assign(AC_I18N.en, {
+  nc_badge: 'New cities · Tuesday 6 October 2026',
+  nc_badge_live: 'New cities · now live',
+  nc_title: 'Coming to Lahore, Karachi, Sialkot and Faisalabad on Tuesday 6 October 2026.',
+  nc_title_live: 'Now in Lahore, Karachi, Sialkot and Faisalabad.',
+  nc_sub: 'From 6 October you can list your property free and use our marketing services in these cities.',
+  nc_sub_live: 'List your property free and use our marketing services in all six cities: Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad.',
+  nc_ro: '6 October 2026 se Lahore, Karachi, Sialkot aur Faisalabad mein: apni property free list karein aur hamari marketing services use karein.',
+  nc_ro_live: 'Ab Lahore, Karachi, Sialkot aur Faisalabad mein bhi: apni property free list karein aur hamari marketing services use karein.',
+  nc_now: 'Sign-ups and listings are open today — listings in these cities show from launch day.',
+  nc_cta_list: 'List your property free', nc_cta_pk: 'Marketing services', nc_cta_tg: 'List in Telegram',
+  nc_serving: 'Serving 6 cities across Pakistan',
+  city_launching_note: 'Lahore, Karachi, Sialkot and Faisalabad open on 6 October 2026. You can sign up and save your listing now; it shows publicly from launch day.',
+  city_saved_prelaunch: 'Saved ✓ We launch in {city} on 6 October — your listing shows publicly from launch day. Until then only you can see it.',
+  city_area_other: 'Other / type your area',
+  city_shows_from: 'Shows from 6 Oct'
+});
+Object.assign(AC_I18N.ur, {
+  nc_badge: 'نئے شہر · منگل 6 اکتوبر 2026',
+  nc_badge_live: 'نئے شہر · اب دستیاب',
+  nc_title: 'منگل 6 اکتوبر 2026 کو لاہور، کراچی، سیالکوٹ اور فیصل آباد میں آ رہے ہیں۔',
+  nc_title_live: 'اب لاہور، کراچی، سیالکوٹ اور فیصل آباد میں بھی۔',
+  nc_sub: '6 اکتوبر سے آپ ان شہروں میں اپنی پراپرٹی مفت لسٹ کر سکیں گے اور ہماری مارکیٹنگ سروسز استعمال کر سکیں گے۔',
+  nc_sub_live: 'تمام 6 شہروں — اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد — میں اپنی پراپرٹی مفت لسٹ کریں اور ہماری مارکیٹنگ سروسز استعمال کریں۔',
+  nc_ro: '6 October 2026 se Lahore, Karachi, Sialkot aur Faisalabad mein: apni property free list karein aur hamari marketing services use karein.',
+  nc_ro_live: 'Ab Lahore, Karachi, Sialkot aur Faisalabad mein bhi: apni property free list karein aur hamari marketing services use karein.',
+  nc_now: 'سائن اپ اور لسٹنگ آج سے کھلی ہیں — ان شہروں کی لسٹنگز لانچ کے دن سے نظر آئیں گی۔',
+  nc_cta_list: 'اپنی پراپرٹی مفت لسٹ کریں', nc_cta_pk: 'مارکیٹنگ سروسز', nc_cta_tg: 'ٹیلی گرام میں لسٹ کریں',
+  nc_serving: 'پاکستان کے 6 شہروں میں خدمات',
+  city_launching_note: 'لاہور، کراچی، سیالکوٹ اور فیصل آباد 6 اکتوبر 2026 سے کھلیں گے۔ آپ ابھی سائن اپ کر کے لسٹنگ محفوظ کر سکتے ہیں؛ یہ لانچ کے دن سے سب کو نظر آئے گی۔',
+  city_saved_prelaunch: 'محفوظ ہو گئی ✓ ہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں — آپ کی لسٹنگ لانچ کے دن سے سب کو نظر آئے گی۔ تب تک صرف آپ اسے دیکھ سکتے ہیں۔',
+  city_area_other: 'دیگر / اپنا علاقہ لکھیں',
+  city_shows_from: '6 اکتوبر سے نظر آئے گی'
+});
+
+// Launch-dependent copy (no-op once every city is live)
+if (typeof acApplyLaunchCopy === 'function') { acApplyLaunchCopy(AC_I18N.en); acApplyLaunchCopy(AC_I18N.ur); }
+
 function acApplyLanguage(lang) {
   lang = (lang === 'ur') ? 'ur' : 'en';
   document.documentElement.setAttribute('lang', lang);
@@ -1247,6 +1290,7 @@ function acApplyLanguage(lang) {
   });
 
   document.documentElement.classList.remove('ac-ur-pending');
+  if (typeof acRefreshLaunchLabels === 'function') acRefreshLaunchLabels();
   if (typeof window.acOnLanguageChange === 'function') window.acOnLanguageChange();
 }
 

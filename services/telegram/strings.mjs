@@ -123,6 +123,11 @@ export const S = {
     ur: 'آپ کی لسٹنگ شائع ہو گئی:\n{url}\n\nلسٹنگ کوالٹی: {score}/100۔{tips}\n\nخریداروں تک پہنچنے کے لیے لنک واٹس ایپ اور فیس بک پر شیئر کریں۔',
     ro: 'Aap ki listing publish ho gayi:\n{url}\n\nListing quality: {score}/100.{tips}\n\nKhareedaron tak pohanchne ke liye link WhatsApp aur Facebook par share karein.'
   },
+  published_prelaunch: {
+    en: 'Your listing is saved ✓\n{url}\n\nWe launch in {city} on 6 October — the listing will show to buyers from launch day. Until then only you can see it.\n\nListing quality: {score}/100.{tips}',
+    ur: 'آپ کی لسٹنگ محفوظ ہو گئی ✓\n{url}\n\nہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں — لسٹنگ لانچ کے دن سے خریداروں کو نظر آئے گی۔ تب تک صرف آپ اسے دیکھ سکتے ہیں۔\n\nلسٹنگ کوالٹی: {score}/100۔{tips}',
+    ro: 'Aap ki listing save ho gayi ✓\n{url}\n\nHum 6 October ko {city} mein launch kar rahe hain — listing launch ke din se khareedaron ko show hogi. Tab tak sirf aap isay dekh sakte hain.\n\nListing quality: {score}/100.{tips}'
+  },
   photos_failed: { en: 'Note: {n} photo(s) could not be saved. You can add photos later from your Dashboard on the website.', ur: 'نوٹ: {n} تصویر محفوظ نہیں ہو سکی۔ آپ بعد میں ویب سائٹ کے ڈیش بورڈ سے تصاویر شامل کر سکتے ہیں۔', ro: 'Note: {n} tasveer mehfooz nahin ho saki. Aap baad mein website ke Dashboard se tasveerein shamil kar sakte hain.' },
   check_failed: { en: 'I can\'t publish this yet: {reason}', ur: 'میں ابھی یہ شائع نہیں کر سکتا: {reason}', ro: 'Main abhi yeh publish nahin kar sakta: {reason}' },
   why_city: { en: 'we currently list in {cities} only.', ur: 'ہم فی الحال صرف {cities} میں لسٹ کرتے ہیں۔', ro: 'hum filhaal sirf {cities} mein list karte hain.' },

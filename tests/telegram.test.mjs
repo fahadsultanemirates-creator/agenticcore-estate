@@ -356,3 +356,49 @@ test('general questions: AI wording capped at 20 answers per chat per day', asyn
   assert.equal(aiCalls, 20);
   assert.match(lastText(tg), /verif|check/i, 'answers still come from the knowledge base after the cap');
 });
+
+// ---------- six cities (Lahore, Karachi, Sialkot, Faisalabad from 6 Oct 2026, 00:00 PKT) ----------
+const SIX = ['Islamabad', 'Rawalpindi', 'Lahore', 'Karachi', 'Sialkot', 'Faisalabad'];
+const BEFORE = () => new Date('2026-10-05T23:59:00+05:00');
+const AFTER = () => new Date('2026-10-06T00:00:00+05:00');
+const NEW_CITY_LISTINGS = [
+  ['Lahore', '5 marla house for sale in Johar Town Lahore demand 2.5 crore', 'Johar Town'],
+  ['Karachi', '240 sq yd house for sale in Clifton Karachi demand 9 crore', 'Clifton'],
+  ['Sialkot', '10 marla house for sale in Cantonment Sialkot demand 4 crore', 'Cantonment'],
+  ['Faisalabad', '7 marla house for sale in Eden Valley Faisalabad demand 3 crore', 'Eden Valley']
+];
+
+test('new cities before 6 October: sign up and list now, launch message once, listing saved (shows from launch day)', async () => {
+  for (const [city, desc, area] of NEW_CITY_LISTINGS) {
+    const { store, tg, d } = await signedUp();
+    d.now = BEFORE; store.activeCities = async () => SIX;
+    await run(d, press('m:list'), text(desc));
+    const said = tg.sent.filter((m) => m.chat === ME).map((m) => m.text);
+    assert.ok(said.includes('Hum 6 October ko ' + city + ' mein launch kar rahe hain. Aap abhi account bana kar property list kar sakte hain, listing launch ke din se show hogi.') ||
+      said.includes('We launch in ' + city + ' on 6 October. You can create your account and list your property now; the listing will show from launch day.'), city + ' launch message');
+    await run(d, text('3 bedrooms 3 bathrooms'));
+    assert.equal(tg.sent.filter((m) => /launch/.test(m.text || '')).length, 1, 'said once only');
+    await run(d, photo(), press('l:done'), press('l:publish'));
+    assert.equal(store.db.listings.length, 1, city + ' listing saved');
+    assert.equal(store.db.listings[0].city, city); assert.equal(store.db.listings[0].area, area);
+    assert.match(lastText(tg), new RegExp('saved ✓[\\s\\S]*We launch in ' + city + ' on 6 October'));
+  }
+});
+
+test('new cities from 6 October 00:00 PKT: exactly like Islamabad and Rawalpindi', async () => {
+  const { store, tg, d } = await signedUp();
+  d.now = AFTER; store.activeCities = async () => SIX;
+  await run(d, press('m:list'), text(NEW_CITY_LISTINGS[0][1]), text('3 bedrooms 3 bathrooms'), photo(), press('l:done'), press('l:publish'));
+  assert.ok(!tg.sent.some((m) => /launch/i.test(m.text || '')), 'no launch message');
+  assert.match(lastText(tg), /Your listing is live/);
+});
+
+test('Amaan knows which city an area is in (G-10 → Islamabad) and asks when an area is in two cities', async () => {
+  const { store, tg, d } = await signedUp();
+  await run(d, press('m:list'), text('mujhe apna 10 marla ghar bechna hai G-10 mein, demand 6 crore'));
+  assert.match(lastText(tg), /G-10, Islamabad/);
+  await run(d, text('/cancel'), press('m:list'), text('7 marla house for sale in Bahria Town Phase 7 demand 3 crore'));
+  assert.match(lastText(tg), /Bahria Town Phase 7 — is that in Rawalpindi or Islamabad\?/);
+  await run(d, text('Rawalpindi'));
+  assert.doesNotMatch(lastText(tg), /which city|is that in/i);
+});

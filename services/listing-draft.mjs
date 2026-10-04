@@ -14,7 +14,9 @@ export function extractFacts(text, areaNames) {
   const facts = {
     purpose: c.purpose === 'rent' ? 'rent' : (c.purpose === 'buy' || /demand|sale|sell|for sale/i.test(text) ? 'buy' : null),
     property_type: c.property_types.length === 1 ? c.property_types[0] : (c.property_types.includes('house') ? 'house' : null),
-    city: c.city,
+    // the named city, else the city the area belongs to ("G-10" → Islamabad)
+    city: c.city || c.implied_city || null,
+    city_options: !c.city && c.implied_cities ? c.implied_cities.slice() : null,
     area: null,
     price: c.price_max || c.price_min || null,
     size_value: c.size ? c.size.value : null,
@@ -34,7 +36,7 @@ export function missingChecklist(f) {
   const m = [];
   if (!f.purpose) m.push({ field: 'purpose', label: 'For sale or for rent?' });
   if (!f.property_type) m.push({ field: 'property_type', label: 'Property type (house, flat, plot, shop…)' });
-  if (!f.city) m.push({ field: 'city', label: 'City (Islamabad or Rawalpindi)' });
+  if (!f.city) m.push({ field: 'city', label: 'City (Islamabad, Rawalpindi, Lahore, Karachi, Sialkot or Faisalabad)' });
   if (!f.area) m.push({ field: 'area', label: 'Exact area — society, phase, block or sector' });
   if (!f.price) m.push({ field: 'price', label: f.purpose === 'rent' ? 'Monthly rent' : 'Demand price' });
   if (!f.size_value) m.push({ field: 'size', label: 'Size (marla, kanal or sq ft)' });
@@ -87,7 +89,7 @@ export async function draftListing(rawText, areaNames) {
   const ai = await completeJSON({
     task: 'draft', maxTokens: 700,
     schema: DRAFT_SCHEMA,
-    system: 'You write Pakistani real-estate listings for AgenticCore Estate (Islamabad & Rawalpindi). ' +
+    system: 'You write Pakistani real-estate listings for AgenticCore Estate (Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad). ' +
       'Use ONLY facts present in the owner notes and the extracted facts. Never invent prices, sizes, room counts, ' +
       'features, approvals, NOC status, ownership or nearby places. If something is unknown, leave it out. ' +
       'Plain, professional English; no superlatives such as "best" or "guaranteed". ' +

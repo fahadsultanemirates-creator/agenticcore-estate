@@ -8,6 +8,7 @@
 // links) and a deterministic answer is used whenever Claude is unavailable,
 // slow, or fails a check.
 
+import { isLaunched, findPlace } from './places.mjs';
 import { KNOWLEDGE, ACTIONS, TOPICS, ANSWERS, AMAAN } from './assistant-knowledge.mjs';
 import { extractFacts } from './listing-draft.mjs';
 import { parseCriteria, criteriaStrength } from './criteria.mjs';
@@ -67,6 +68,8 @@ function hits(text, words) {
 export function topicOf(text) {
   let best = null, score = 0;
   TOPICS.forEach((tp) => { const s = hits(text, tp.words); if (s > score) { best = tp.id; score = s; } });
+  // a stated wish to sell or let ("ghar bechna hai") is a listing, however many property words come with it
+  if (best === 'find' && hits(text, TOPICS.find((tp) => tp.id === 'list').words) > 0) best = 'list';
   // a search with concrete criteria beats a stray keyword
   if (best !== 'list' && criteriaStrength(parseCriteria(toSearchText(text), [])) >= 2) return 'find';
   return best;
@@ -193,6 +196,27 @@ async function amaanFind(ctx, deps) {
 
 // ---------- Amaan: list ----------
 const REQUIRED = ['purpose', 'property_type', 'city', 'area', 'price', 'size', 'beds', 'baths'];
+const joinOr = (list, lang) => list.slice(0, -1).join(', ') + (lang === 'ur' ? ' یا ' : lang === 'ro' ? ' ya ' : ' or ') + list[list.length - 1];
+// The question for a missing fact; for the city, name the cities the area
+// is found in when it is in more than one ("Bahria Town Phase 7 — Rawalpindi or Islamabad?").
+export function askFor(field, f, lang) {
+  if (field === 'city' && f.area && f.city_options && f.city_options.length > 1) return AMAAN.city_which[lang].replace('{area}', f.area).replace('{options}', joinOr(f.city_options, lang));
+  return AMAAN.ask[field][lang];
+}
+// Said once, when a city that opens on 6 October first comes up (before that date only).
+export function launchNotice(prev, f, lang, now) {
+  if (!f.city || isLaunched(f.city, now) || (prev && prev.city === f.city)) return '';
+  return AMAAN.launching[lang].replace('{city}', f.city);
+}
+// "Where is G-10?" / "G-10 kis shehar mein hai?"
+const PLACE_Q = /\b(where is|which city|kis shehar|kahan hai|kahaan hai|kidhar hai)\b|کس شہر|کہاں ہے/i;
+export function placeAnswer(text, lang) {
+  if (!PLACE_Q.test(text)) return null;
+  const p = findPlace(toSearchText(text));
+  if (!p.area) return null;
+  if (p.ambiguous) return AMAAN.place_both[lang].replace('{area}', p.area).replace('{options}', joinOr(p.cities, lang));
+  return AMAAN.place[lang].replace('{area}', p.area).replace('{city}', p.city);
+}
 const BUILT = ['house', 'flat', 'upper_portion', 'lower_portion', 'room', 'farm_house'];
 function missingRequired(f) {
   const miss = [];
@@ -238,6 +262,8 @@ async function amaanList(ctx, deps) {
   if (last && ctx.quick !== 'amaan_list') notes.push(contextualise(last.text, ctx.asked));
   const latestFirst = notes.slice().reverse().join('. ');
   const facts = extractFacts(latestFirst, deps.areaNames || []);
+  const prev = notes.length > 1 ? extractFacts(notes.slice(0, -1).reverse().join('. '), deps.areaNames || []) : null;
+  const notice = launchNotice(prev, facts, ctx.lang, deps.now);
   const miss = missingRequired(facts);
   const summary = factsSummary(facts);
   if (!notes.length) {
@@ -245,13 +271,15 @@ async function amaanList(ctx, deps) {
   }
   if (miss.length) {
     const next = miss[0];
-    const data = { known_facts: summary || 'nothing yet', next_question: AMAAN.ask[next].en };
-    const base = (summary ? summary + '\n' : '') + AMAAN.ask[next][ctx.lang];
+    const data = { known_facts: summary || 'nothing yet', next_question: askFor(next, facts, 'en') };
+    const base = (notice ? notice + '\n' : '') + (summary ? summary + '\n' : '') + askFor(next, facts, ctx.lang);
+    if (notice) return Object.assign({ reply: base, actions: [] }, { mode: 'list', notes, asked: next, facts_summary: summary });
     const worded = await phrase(deps, Object.assign({}, ctx, { mode: 'list', data }), { reply: base, actions: [] });
     return Object.assign(worded, { mode: 'list', notes, asked: next, facts_summary: summary });
   }
   const worded = await phrase(deps, Object.assign({}, ctx, { mode: 'list', data: { known_facts: summary, status: 'ready for the owner to review in the listing form' } }),
     { reply: summary + '\n' + AMAAN.list_ready[ctx.lang], actions: ['estate_list'] });
+  if (notice) worded.reply = notice + '\n' + worded.reply;          // fixed wording, never re-phrased
   return Object.assign(worded, { mode: 'list', notes, asked: null, ready: true, facts_summary: summary, actions: ['estate_list'] });
 }
 
@@ -267,6 +295,9 @@ export async function handleTurn(body, deps) {
   ctx.lang = users.reduce((lang, m) => detectLang(m.text, lang), ctx.convLang || (ctx.uiLang === 'ur' ? 'ur' : 'en'));
   ctx.topic = last ? topicOf(last.text) : null;
   let out;
+
+  const place = last && !(ctx.bot === 'amaan' && ctx.mode === 'list') ? placeAnswer(last.text, ctx.lang) : null;
+  if (place) return { bot: ctx.bot, lang: ctx.lang, reply: place, actions: ['estate_properties'], mode: ctx.mode };
 
   if (ctx.bot === 'guide') {
     if (ctx.quick && ANSWERS[ctx.quick]) out = answer(ctx.quick, ctx.lang);      // buttons: instant, deterministic

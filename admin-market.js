@@ -167,9 +167,9 @@
 
   async function renderCities() {
     const box = document.getElementById('admCities');
-    const { data } = await supabaseClient.from('cities').select('name,active').order('sort_order');
+    const { data } = await supabaseClient.from('cities').select('name,active,launch_at').order('sort_order');
     box.innerHTML = '<ul class="my-list">' + (data || []).map(function (c) {
-      return '<li><span>' + esc(c.name) + ' — ' + (c.active ? 'active' : 'coming later') + '</span><button class="btn btn-secondary btn-sm" data-city="' + esc(c.name) + '" data-a="' + (!c.active) + '">' + (c.active ? 'Deactivate' : 'Activate') + '</button></li>';
+      return '<li><span>' + esc(c.name) + ' — ' + (c.active ? (c.launch_at && new Date(c.launch_at) > new Date() ? 'open for sign-ups and listings; public from ' + new Date(c.launch_at).toLocaleString('en-GB', { timeZone: 'Asia/Karachi', dateStyle: 'medium', timeStyle: 'short' }) + ' PKT' : 'active') : 'coming later') + '</span><button class="btn btn-secondary btn-sm" data-city="' + esc(c.name) + '" data-a="' + (!c.active) + '">' + (c.active ? 'Deactivate' : 'Activate') + '</button></li>';
     }).join('') + '</ul>' +
       '<form id="admArea" class="my-inline"><label>Add an area: <select id="admAreaCity">' + (data || []).map(function (c) { return '<option>' + esc(c.name) + '</option>'; }).join('') + '</select></label>' +
       '<input id="admAreaName" type="text" maxlength="80" placeholder="Area / society name"><button class="btn btn-secondary btn-sm" type="submit">Add area</button></form>';

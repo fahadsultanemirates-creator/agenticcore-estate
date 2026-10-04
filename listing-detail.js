@@ -91,7 +91,7 @@ if (detailRoot) {
     }
 
     const params = new URLSearchParams(window.location.search);
-    const flash = params.get('posted') ? acT('mk_flash_posted') : params.get('saved') ? acT('mk_flash_saved') : '';
+    const flash = params.get('prelaunch') ? acT('city_saved_prelaunch').replace('{city}', listing.city) : params.get('posted') ? acT('mk_flash_posted') : params.get('saved') ? acT('mk_flash_saved') : '';
 
     window.acOnLanguageChange = render;
     render();
