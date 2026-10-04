@@ -208,8 +208,8 @@ async function acFillAreas(select, city) {
   select.innerHTML = '<option value="">' + acEsc(acT('mk_any_area')) + '</option>';
   if (!city) return;
   const areas = await AcDB.getAreasForCity(city);
-  select.insertAdjacentHTML('beforeend', areas.map(function (a) { return '<option value="' + acEsc(a) + '">' + acEsc(a) + '</option>'; }).join(''));
-  if (keep && areas.indexOf(keep) >= 0) select.value = keep;
+  select.insertAdjacentHTML('beforeend', acAreaOptions(areas));
+  if (keep && (areas.indexOf(keep) >= 0 || (areas.more || []).indexOf(keep) >= 0)) select.value = keep;
 }
 
 function acInitMarketDirectory(cat, fixed) {

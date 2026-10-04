@@ -68,7 +68,7 @@ if (projectForm) {
         areaSelect.innerHTML = '<option value="">Loading…</option>';
         const areas = await AcDB.getAreasForCity(citySelect.value);
         areaSelect.innerHTML = '<option value="">Select an area</option>' +
-          areas.map(function (a) { return '<option value="' + acEscHTML(a) + '">' + acEscHTML(a) + '</option>'; }).join('') +
+          acAreaOptions(areas) +
           '<option value="' + MANUAL_AREA_VALUE + '">' + acEscHTML(acT('city_area_other')) + '</option>';
         toggleManualArea();
       });
