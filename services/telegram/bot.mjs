@@ -21,6 +21,7 @@ import { buttons, contactKeyboard, removeKeyboard } from './tg-api.mjs';
 import { detectLang, contextualise, factsSummary, askFor, launchNotice } from '../assistant-service.mjs';
 import { isLaunched, placeOf } from '../places.mjs';
 import { observe, remember, recall, recallLine, pendingFacts, factLine } from '../memory.mjs';
+import { replyToRequest } from '../amaan-handoff.mjs';
 import { AMAAN } from '../assistant-knowledge.mjs';
 import { extractFacts, templateDraft } from '../listing-draft.mjs';
 import { PROPERTY_TYPES } from '../util.mjs';
@@ -221,6 +222,12 @@ async function onMessage(ctx, msg) {
     if (name === 'deliver' && isOwner(ctx)) return ownerDeliverStart(ctx, arg);
     if (name === 'jobs' && isOwner(ctx)) return ownerJobs(ctx);
     if (name === 'learn' && isOwner(ctx)) return ownerLearn(ctx);
+    if (name === 'reply' && isOwner(ctx)) {
+      const mm = String(arg || '').match(/^(AR-[A-Z0-9]{4,8})\s+([\s\S]+)$/i);
+      if (!mm) return ctx.raw('Use: /reply AR-XXXXXX your message');
+      const r = await replyToRequest(ctx.deps, mm[1].toUpperCase(), mm[2]);
+      return ctx.raw(r.ok ? '✓ Sent to the client.' : r.reason === 'no_telegram' ? 'This client has not connected Telegram (AC-' + r.member_no + '). Reply by WhatsApp or email from the admin page.' : 'No request ' + mm[1] + ' found.');
+    }
     if (name === 'msg' && isOwner(ctx)) { const mm = String(arg || '').match(/^(ACPK-\d+)\s+([\s\S]+)$/i); return ownerMessage(ctx, mm && mm[1], mm && mm[2]); }
     return showMenu(ctx);
   }
