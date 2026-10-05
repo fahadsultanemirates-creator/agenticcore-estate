@@ -74,6 +74,10 @@
           <div class="form-field">
             <label for="sellPrice">Price (PKR)</label>
             <input type="number" id="sellPrice" required min="1">
+            <div role="radiogroup" aria-label="Price" style="display:flex;flex-wrap:wrap;gap:.3rem 1rem;margin-top:.4rem;">
+              <label style="display:flex;gap:.35rem;align-items:center;font-weight:400;"><input type="radio" name="sellPriceMode" value="show" checked style="width:auto;"> Show the price</label>
+              <label style="display:flex;gap:.35rem;align-items:center;font-weight:400;"><input type="radio" name="sellPriceMode" value="ask" id="sellPriceOnRequest" style="width:auto;"> Ask the seller (no price shown)</label>
+            </div>
           </div>
           <div class="form-field">
             <label for="sellSize">Size</label>

@@ -251,7 +251,7 @@ export const AMAAN = {
     property_type: { en: 'What type of property is it — house, flat, plot, shop or something else?', ur: 'پراپرٹی کس قسم کی ہے — گھر، فلیٹ، پلاٹ، دکان یا کچھ اور؟', ro: 'Property kis qisam ki hai — ghar, flat, plot, dukaan ya kuch aur?' },
     city: { en: 'Which city is it in — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot or Faisalabad?', ur: 'یہ کس شہر میں ہے — اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ یا فیصل آباد؟', ro: 'Yeh kis shehar mein hai — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot ya Faisalabad?' },
     area: { en: 'Which area exactly — society, phase, block or sector?', ur: 'بالکل کون سا علاقہ — سوسائٹی، فیز، بلاک یا سیکٹر؟', ro: 'Bilkul kaunsa area — society, phase, block ya sector?' },
-    price: { en: 'What is your asking price (or monthly rent)?', ur: 'آپ کی مانگی گئی قیمت (یا ماہانہ کرایہ) کیا ہے؟', ro: 'Aap ki demand (ya mahana kiraya) kya hai?' },
+    price: { en: 'What is your asking price (or monthly rent)? If you don\'t want a price shown, just say "ask seller".', ur: 'آپ کی مانگی گئی قیمت (یا ماہانہ کرایہ) کیا ہے؟ اگر قیمت نہیں دکھانی تو بس لکھیں "مالک سے پوچھیں"۔', ro: 'Aap ki demand (ya mahana kiraya) kya hai? Agar qeemat nahi dikhani to bas likhein "ask seller".' },
     size: { en: 'What is the size — in marla, kanal or square feet?', ur: 'سائز کیا ہے — مرلہ، کنال یا مربع فٹ میں؟', ro: 'Size kya hai — marla, kanal ya square feet mein?' },
     beds: { en: 'How many bedrooms does it have?', ur: 'اس میں کتنے بیڈ روم ہیں؟', ro: 'Is mein kitne bedroom hain?' },
     baths: { en: 'And how many bathrooms?', ur: 'اور کتنے باتھ روم؟', ro: 'Aur kitne bathroom?' }

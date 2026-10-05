@@ -81,7 +81,7 @@ function acPropertyCard(l, s) {
       '<span class="mk-purpose ' + (l.type === 'rent' ? 'rent' : 'buy') + '">' + acEsc(acPurposeLabel(l.type)) + '</span>' +
       (l.is_sample ? acSampleBadge('listing') : acPromoBadge(l, s)) + '</div>' +
     '<div class="mk-body">' +
-      '<div class="mk-price">' + acFormatPKR(l.price) + (l.type === 'rent' ? '<span class="period">' + acEsc(acT('listing_month')) + '</span>' : '') + '</div>' +
+      '<div class="mk-price">' + acFormatPKR(l.price) + (l.type === 'rent' && l.price > 0 ? '<span class="period">' + acEsc(acT('listing_month')) + '</span>' : '') + '</div>' +
       '<h3 class="mk-title">' + acEsc(l.title) + '</h3>' +
       '<p class="mk-meta">' + acEsc(acTypeLabel(l.property_type)) + ' · ' + acEsc(l.area) + ', ' + acEsc(l.city) + '</p>' +
       '<p class="mk-specs">' + (l.beds ? '<span>' + l.beds + ' ' + acEsc(acT('listing_beds')) + '</span>' : '') + (l.baths ? '<span>' + l.baths + ' ' + acEsc(acT('listing_baths')) + '</span>' : '') +

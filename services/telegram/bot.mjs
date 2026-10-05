@@ -70,7 +70,7 @@ function missingFacts(f) {
   if (!f.property_type) m.push('property_type');
   if (!f.city) m.push('city');
   if (!f.area) m.push('area');
-  if (!f.price) m.push('price');
+  if (!f.price && !f.price_ask) m.push('price');
   if (!f.size_value) m.push('size');
   if (BUILT.includes(f.property_type)) { if (!f.beds) m.push('beds'); if (!f.baths) m.push('baths'); }
   return m;
@@ -84,7 +84,7 @@ export function listingRow(f, ownerId, cityName, extra) {
   const description = (own ? own + '\n\n' : '') + d.description;
   return {
     owner_id: ownerId, title: d.title.slice(0, 120), type: f.purpose === 'rent' ? 'rent' : 'buy', property_type: f.property_type,
-    city: cityName, area: String(f.area).slice(0, 80), price: Math.round(f.price), beds: f.beds || 0, baths: f.baths || 0,
+    city: cityName, area: String(f.area).slice(0, 80), price: f.price ? Math.round(f.price) : null, beds: f.beds || 0, baths: f.baths || 0,
     size_marla: f.size_value || 0, size_unit: ['marla', 'kanal', 'sqft', 'sqyd'].includes(f.size_unit) ? f.size_unit : 'marla',
     description: description.slice(0, 3000), last_confirmed_at: new Date().toISOString()
   };
@@ -583,11 +583,11 @@ export async function publishChecks(f, account, store, L) {
   const city = cities.find((c) => c.toLowerCase() === String(f.city).toLowerCase());
   if (!city) return { reason: t('why_city', L, { cities: cities.join(', ') }) };
   const rent = f.purpose === 'rent';
-  if (!(f.price >= (rent ? 1000 : 100000) && f.price <= (rent ? 5e7 : 5e10))) return { reason: t('why_price', L) };
+  if (!(f.price_ask && !f.price) && !(f.price >= (rent ? 1000 : 100000) && f.price <= (rent ? 5e7 : 5e10))) return { reason: t('why_price', L) };
   const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
   if ((await store.countActivity(account.id, 'listing_published', since)) >= LIMITS.listingsPerDay) return { reason: t('why_daily', L, { n: LIMITS.listingsPerDay }) };
   const own = await store.ownListings(account.id);
-  const dup = own.find((l) => Number(l.price) === Math.round(f.price) && l.property_type === f.property_type &&
+  const dup = own.find((l) => (Number(l.price) || 0) === (f.price ? Math.round(f.price) : 0) && l.property_type === f.property_type &&
     String(l.area).toLowerCase() === String(f.area).toLowerCase() && Number(l.size_marla) === Number(f.size_value));
   if (dup) return { reason: t('why_duplicate', L) };
   return { city };

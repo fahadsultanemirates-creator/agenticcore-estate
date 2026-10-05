@@ -26,7 +26,7 @@
     '<div class="sh-top"><div class="sh-brand"><img src="images/agenticcore-icon.png" alt="">AgenticCore <span>Estate</span></div>' +
       '<div class="sh-purpose">' + esc(l.type === 'rent' ? 'FOR RENT' : 'FOR SALE') + '</div></div>' +
     '<h1>' + esc(l.title) + '</h1><p class="sh-loc">' + esc(l.area) + ', ' + esc(l.city) + '</p>' +
-    '<p class="sh-price">' + esc(acFormatPKR(l.price)) + (l.type === 'rent' ? ' / month' : '') + '</p>' +
+    '<p class="sh-price">' + esc(acFormatPKR(l.price)) + (l.type === 'rent' && l.price > 0 ? ' / month' : '') + '</p>' +
     (photos.length ? '<div class="sh-photos' + (photos.length === 1 ? ' one' : '') + '">' + photos.map(function (p, i) { return '<img class="' + (i === 0 ? 'main' : 'side') + '" src="' + esc(p) + '" alt="">'; }).join('') + '</div>' : '') +
     '<ul class="sh-facts">' + facts.map(function (f) { return '<li><b>' + esc(f[0]) + '</b>' + esc(String(f[1])) + '</li>'; }).join('') + '</ul>' +
     (l.description ? '<p class="sh-desc">' + esc(String(l.description).slice(0, 1200)) + '</p>' : '') +

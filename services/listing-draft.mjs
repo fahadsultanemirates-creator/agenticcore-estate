@@ -7,6 +7,8 @@ import { PROPERTY_TYPES, UNIT_LABEL, formatPKR, redactPII, norm } from './util.m
 import { completeJSON } from './ai.mjs';
 
 const BUILT = ['house', 'flat', 'upper_portion', 'lower_portion', 'room', 'farm_house'];
+// The owner doesn't want a price shown: buyers ask the seller.
+export const ASK_SELLER = /\b(ask (the )?(seller|owner)|price on (request|call|demand)|call for (the )?price|demand on call|price (on|at) call|no price|don'?t (show|mention) (the )?price|not (show|mention) (the )?price|qeem?at (call|rabta|raabta) par|price call par|demand call par|price (nahi|nahin) (batani|dikhani|likhni)|qeem?at (nahi|nahin) (batani|dikhani|likhni))\b|قیمت (کال|رابطہ)|مالک سے (پوچھ|قیمت)|قیمت (نہیں|نہ) (بتا|دکھا|لکھ)/i;
 
 // Facts the owner actually stated. Only these may appear in generated text.
 export function extractFacts(text, areaNames) {
@@ -19,12 +21,14 @@ export function extractFacts(text, areaNames) {
     city_options: !c.city && c.implied_cities ? c.implied_cities.slice() : null,
     area: null,
     price: c.price_max || c.price_min || null,
+    price_ask: false,
     size_value: c.size ? c.size.value : null,
     size_unit: c.size ? c.size.unit : null,
     beds: c.beds_min || null,
     baths: c.baths_min || null,
     features: c.preferences.filter((p) => p !== 'investment')
   };
+  if (!facts.price && ASK_SELLER.test(text)) facts.price_ask = true;
   // "area: …" = the owner's own answer to the area question (newest first wins)
   const said = String(text).match(/\barea:\s*([^.\n]{2,80})/i);
   // Prefer a known area name from the database; else the society label.
@@ -46,7 +50,7 @@ export function missingChecklist(f) {
   if (!f.property_type) m.push({ field: 'property_type', label: 'Property type (house, flat, plot, shop…)' });
   if (!f.city) m.push({ field: 'city', label: 'City (Islamabad, Rawalpindi, Lahore, Karachi, Sialkot or Faisalabad)' });
   if (!f.area) m.push({ field: 'area', label: 'Exact area — society, phase, block or sector' });
-  if (!f.price) m.push({ field: 'price', label: f.purpose === 'rent' ? 'Monthly rent' : 'Demand price' });
+  if (!f.price && !f.price_ask) m.push({ field: 'price', label: f.purpose === 'rent' ? 'Monthly rent' : 'Demand price' });
   if (!f.size_value) m.push({ field: 'size', label: 'Size (marla, kanal or sq ft)' });
   if (BUILT.includes(f.property_type)) {
     if (!f.beds) m.push({ field: 'beds', label: 'Number of bedrooms' });
@@ -70,6 +74,7 @@ export function templateDraft(f) {
   if (f.baths) bullets.push(f.baths + ' bathrooms');
   f.features.forEach((x) => bullets.push(x.charAt(0).toUpperCase() + x.slice(1)));
   if (f.price) bullets.push((f.purpose === 'rent' ? 'Rent: ' : 'Demand: ') + formatPKR(f.price) + (f.purpose === 'rent' ? ' per month' : ''));
+  else if (f.price_ask) bullets.push((f.purpose === 'rent' ? 'Rent' : 'Price') + ': ask the seller');
   const description = [
     (size + typeLabel.toLowerCase()).trim().replace(/^./, (x) => x.toUpperCase()) + (where ? ' in ' + where : '') + (f.purpose === 'rent' ? ', available for rent.' : f.purpose === 'buy' ? ', available for sale.' : '.'),
     bullets.length ? 'Key details: ' + bullets.join('; ') + '.' : ''

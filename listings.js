@@ -18,6 +18,8 @@ function acSafeUrl(u) { return /^https?:\/\//i.test(String(u || '')) || /^images
 
 function acFormatPKR(n) {
   n = Number(n) || 0;
+  // listings may have no price (owner says "price on request")
+  if (n <= 0) return typeof acT === 'function' && acT('price_on_request') !== 'price_on_request' ? acT('price_on_request') : 'Ask the seller';
   if (n >= 10000000) return '₨ ' + (n / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
   if (n >= 100000) return '₨ ' + (n / 100000).toFixed(2).replace(/\.00$/, '') + ' Lac';
   return '₨ ' + n.toLocaleString('en-PK');
@@ -47,7 +49,7 @@ function acTrustBadges(l, owner) {
 function acListingCardHTML(l) {
   const lang = localStorage.getItem('acLang') === 'ur' ? 'ur' : 'en';
   const dict = AC_I18N[lang];
-  const priceSuffix = l.type === 'rent' ? '<span class="period">' + dict.listing_month + '</span>' : '';
+  const priceSuffix = l.type === 'rent' && l.price > 0 ? '<span class="period">' + dict.listing_month + '</span>' : '';
   const checkedTip = typeof acT === 'function' ? acT('badge_checked_tip') : '';
   const verifiedBadge = l.verified ? '<span class="listing-badge verified" title="' + acEsc(checkedTip) + '" aria-label="' + acEsc(checkedTip) + '">✓</span>' : '';
   const agencyLogoHTML = l.agencyLogo ?

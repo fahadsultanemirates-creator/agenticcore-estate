@@ -64,7 +64,7 @@ if (detailRoot) {
         '<div class="mk-detail-grid"><div class="mk-detail-main">' +
           '<h1 class="mk-listing-title">' + acEsc(listing.title) + '</h1>' +
           '<p class="mk-sub">' + acEsc(acPropertyTypeLabel(listing.property_type)) + ' · ' + acEsc(listing.area) + ', ' + acEsc(listing.city) + '</p>' +
-          '<div class="mk-price mk-price-big">' + acFormatPKR(listing.price) + (listing.type === 'rent' ? '<span class="period">' + acEsc(acT('listing_month')) + '</span>' : '') +
+          '<div class="mk-price mk-price-big">' + acFormatPKR(listing.price) + (listing.type === 'rent' && listing.price > 0 ? '<span class="period">' + acEsc(acT('listing_month')) + '</span>' : '') +
             (listing.is_sample ? ' <span class="mk-self">(' + acEsc(acT('mk_illustrative')) + ')</span>' : '') + '</div>' +
           '<dl class="mk-facts">' +
             (listing.beds ? '<div class="mk-fact"><dt>' + acEsc(acT('mk_beds')) + '</dt><dd>' + listing.beds + '</dd></div>' : '') +
