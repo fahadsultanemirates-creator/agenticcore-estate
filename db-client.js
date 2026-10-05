@@ -17,6 +17,9 @@ function acEscHTML(s) {
 
 // Upload rules — mirror the storage bucket limits set in migration 0017, so a
 // rejected file gets a clear message instead of silently disappearing.
+// Most photos one property listing can have (website, account page and Telegram).
+const AC_MAX_PHOTOS = 15;
+
 const AC_UPLOAD_RULES = {
   photo: { types: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxMB: 10, label: 'JPG, PNG, WebP or GIF image' },
   logo: { types: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxMB: 5, label: 'JPG, PNG, WebP or GIF image' },
@@ -309,7 +312,7 @@ const AcDB = (function () {
   }
 
   // Edit an existing listing (RLS lets only the owner or an admin update it).
-  // New photos are appended to the existing ones, up to 8 in total.
+  // New photos are appended to the existing ones, up to AC_MAX_PHOTOS in total.
   async function updateListing(id, ownerId, payload) {
     const photoError = acCheckUploads(payload.photoFiles, 'photo');
     if (photoError) return { error: photoError };
@@ -327,7 +330,7 @@ const AcDB = (function () {
     const existing = listing.photos || [];
     // older listings have no thumbnails: reuse the photo itself for those slots
     const existingThumbs = existing.map(function (u, i) { return (listing.thumbs || [])[i] || u; });
-    const files = (payload.photoFiles || []).slice(0, Math.max(0, 8 - existing.length));
+    const files = (payload.photoFiles || []).slice(0, Math.max(0, AC_MAX_PHOTOS - existing.length));
     if (files.length) {
       const urls = existing.slice(), thumbs = existingThumbs.slice();
       for (let i = 0; i < files.length; i++) {

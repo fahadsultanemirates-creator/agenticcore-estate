@@ -98,12 +98,12 @@ export const S = {
 
   // ---- listing ----
   photos_ask: {
-    en: 'Great — I have the details. Now send photos of the property (up to 8): front elevation first, then the rooms. When you\'ve sent them all, tap "Done".',
-    ur: 'بہت خوب — تفصیلات مل گئیں۔ اب پراپرٹی کی تصاویر بھیجیں (زیادہ سے زیادہ 8): پہلے سامنے کا منظر، پھر کمرے۔ سب بھیجنے کے بعد "ہو گیا" دبائیں۔',
-    ro: 'Bohat khoob — tafseelat mil gayin. Ab property ki tasveerein bhejein (zyada se zyada 8): pehle samne ka manzar, phir kamre. Sab bhejne ke baad "Ho gaya" dabayein.'
+    en: 'Great — I have the details. Now send photos of the property (up to 15): front elevation first, then the rooms. When you\'ve sent them all, tap "Done".',
+    ur: 'بہت خوب — تفصیلات مل گئیں۔ اب پراپرٹی کی تصاویر بھیجیں (زیادہ سے زیادہ 15): پہلے سامنے کا منظر، پھر کمرے۔ سب بھیجنے کے بعد "ہو گیا" دبائیں۔',
+    ro: 'Bohat khoob — tafseelat mil gayin. Ab property ki tasveerein bhejein (zyada se zyada 15): pehle samne ka manzar, phir kamre. Sab bhejne ke baad "Ho gaya" dabayein.'
   },
   photo_got: { en: 'Photo {n} received.', ur: 'تصویر {n} مل گئی۔', ro: 'Tasveer {n} mil gayi.' },
-  photo_max: { en: 'That\'s 8 photos — the maximum. Tap "Done" to continue.', ur: '8 تصاویر ہو گئیں — یہ زیادہ سے زیادہ ہیں۔ آگے بڑھنے کے لیے "ہو گیا" دبائیں۔', ro: '8 tasveerein ho gayin — yeh zyada se zyada hain. Aage barhne ke liye "Ho gaya" dabayein.' },
+  photo_max: { en: 'That\'s 15 photos — the maximum. Tap "Done" to continue.', ur: '15 تصاویر ہو گئیں — یہ زیادہ سے زیادہ ہیں۔ آگے بڑھنے کے لیے "ہو گیا" دبائیں۔', ro: '15 tasveerein ho gayin — yeh zyada se zyada hain. Aage barhne ke liye "Ho gaya" dabayein.' },
   photo_as_file: { en: 'Please send photos as normal photos (not as a file or document).', ur: 'براہِ کرم تصاویر عام تصویر کے طور پر بھیجیں (فائل یا ڈاکیومنٹ کے طور پر نہیں)۔', ro: 'Barah-e-karam tasveerein aam tasveer ke taur par bhejein (file ya document ke taur par nahin).' },
   need_photo: { en: 'Please send at least one photo first — buyers rarely open listings without photos.', ur: 'براہِ کرم پہلے کم از کم ایک تصویر بھیجیں — خریدار بغیر تصویر والی لسٹنگ کم ہی کھولتے ہیں۔', ro: 'Barah-e-karam pehle kam az kam ek tasveer bhejein — khareedar baghair tasveer wali listing kam hi kholte hain.' },
   button_old: {
