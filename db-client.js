@@ -363,9 +363,32 @@ const AcDB = (function () {
     return { contact: (data || [])[0] || null };
   }
 
+  // Master accounts (migration 0026) list for owners who have no account:
+  // each listing can carry that owner's number. Kept in entity_public_phones,
+  // so it is shown only to signed-in visitors, like every other number.
+  async function isMaster() {
+    const { data, error } = await supabaseClient.rpc('is_master');
+    return !error && data === true;
+  }
+  async function getListingPhone(listingId) {
+    const { data } = await supabaseClient.from('entity_public_phones').select('phone').eq('entity_type', 'listing').eq('entity_id', listingId).maybeSingle();
+    return (data && data.phone) || '';
+  }
+  async function setListingPhone(listingId, phone) {
+    const { error } = await supabaseClient.rpc('set_listing_contact_phone', { p_listing: listingId, p_phone: phone || null });
+    return { error: error ? error.message : null };
+  }
+
   async function getListingsByOwner(ownerId) {
     const { data } = await supabaseClient.from('listings').select('*').eq('owner_id', ownerId).order('created_at', { ascending: false });
     (data || []).forEach(function (l) { l.sizeMarla = l.size_marla; l.sizeUnit = l.size_unit; });
+    // a master account's per-listing contact numbers (own rows only, by RLS)
+    if ((data || []).length) {
+      const { data: ph } = await supabaseClient.from('entity_public_phones').select('entity_id, phone').eq('entity_type', 'listing').eq('owner_id', ownerId);
+      const byId = {};
+      (ph || []).forEach(function (r) { byId[r.entity_id] = r.phone; });
+      data.forEach(function (l) { l.contact_phone = byId[l.id] || ''; });
+    }
     return data || [];
   }
 
@@ -522,6 +545,7 @@ const AcDB = (function () {
     getSignedDocUrl: getSignedDocUrl, decideApplication: decideApplication,
     addListing: addListing, getListings: getListings, getListing: getListing, getListingsByOwner: getListingsByOwner,
     updateListing: updateListing, deleteListing: deleteListing, getListingContact: getListingContact,
+    isMaster: isMaster, getListingPhone: getListingPhone, setListingPhone: setListingPhone,
     getDirectReferrals: getDirectReferrals, joinReferralProgram: joinReferralProgram,
     updateAgencyProfile: updateAgencyProfile, updateBuilderProfile: updateBuilderProfile,
     addProject: addProject, updateProject: updateProject, getProjects: getProjects, getProject: getProject, getProjectsByOwner: getProjectsByOwner

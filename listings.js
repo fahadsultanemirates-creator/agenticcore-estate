@@ -157,7 +157,7 @@ function acMyListingsRowsHTML(list) {
   const t = typeof acT === 'function' ? acT : function (k) { return k; };
   if (!list.length) return '<tr><td colspan="6" style="color:var(--text-tertiary);">' + acEsc(t('my_no_listings')) + ' <a href="sell.html" style="color:var(--accent-gold-bright);">' + acEsc(t('mk_cta_properties')) + ' →</a></td></tr>';
   return list.map(function (l) {
-    return '<tr><td>' + acEsc(l.title) + (l.moderation_status === 'hidden' ? ' <span class="badge badge-pending">' + acEsc(t('my_hidden')) + '</span>' : '') + '</td>' +
+    return '<tr><td>' + acEsc(l.title) + (l.contact_phone ? '<br><small class="mk-fine">📞 ' + acEsc(l.contact_phone) + '</small>' : '') + (l.moderation_status === 'hidden' ? ' <span class="badge badge-pending">' + acEsc(t('my_hidden')) + '</span>' : '') + '</td>' +
       '<td>' + acEsc(t(l.type === 'rent' ? 'mk_purpose_rent' : 'mk_purpose_sale')) + '</td><td>' + acFormatPKR(l.price) + '</td>' +
       '<td>' + (l.verified ? '<span class="badge badge-emerald">' + acEsc(t('badge_checked')) + '</span>' : '<span class="badge badge-muted">' + acEsc(t('my_not_checked')) + '</span>') + '</td>' +
       '<td>' + (typeof acQualityPillHTML === 'function' ? acQualityPillHTML(l) : '—') + '</td>' +

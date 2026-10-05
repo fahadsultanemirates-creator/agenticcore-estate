@@ -102,6 +102,7 @@ if (detailRoot) {
     if (viewer && !listing.is_sample && (viewer.id === listing.owner_id || viewer.role === 'admin')) {
       isOwner = viewer.id === listing.owner_id;
       renderOwnerTools();
+      const listingPhone = isOwner ? await AcDB.getListingPhone(listing.id).catch(function () { return ''; }) : '';
       if (window.location.hash === '#quality') { const q = document.getElementById('quality'); if (q) q.scrollIntoView({ block: 'start' }); }
       // The PK handoff carries only the listing id; AgenticCore Pakistan checks
       // ownership again after login (pk_0003) — the link itself proves nothing.
@@ -114,7 +115,7 @@ if (detailRoot) {
             ' <a class="btn btn-primary btn-sm" href="' + acPkUrl('promote', 'property', listing.id, '') + '" rel="noopener" data-track="promote_property_click" data-intent="promote" data-entity="property">' + acEsc(acT('mk_promote_pk')) + '</a>' : '') +
           '</span>' +
           // No public number anywhere on this listing: tell the owner where to add one (the login phone is never shown).
-          (isOwner && !viewer.public_phone && !listing.agency && !listing.professional
+          (isOwner && !listingPhone && !viewer.public_phone && !listing.agency && !listing.professional
             ? '<p class="mk-fine">' + acEsc(acT('own_no_public_phone')) + ' <a href="my.html#account">' + acEsc(acT('own_add_phone')) + '</a></p>' : '') +
           '</div>' + (isOwner ? acPkPathwaysHTML('property', listing.id, 'promote') : ''));
     }

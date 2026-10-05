@@ -120,6 +120,16 @@ if (sellForm) {
 
     loadLinks(editing).catch(function () {});
 
+    // ---------- master accounts: a contact number per listing ----------
+    const listingPhoneField = document.getElementById('listingPhoneField');
+    const listingPhoneInput = document.getElementById('sellListingPhone');
+    const master = await AcDB.isMaster().catch(function () { return false; });
+    if (master && listingPhoneField) {
+      listingPhoneField.hidden = false;
+      listingPhoneInput.required = true;
+      if (editing) listingPhoneInput.value = await AcDB.getListingPhone(editing.id).catch(function () { return ''; });
+    }
+
     // ---------- live listing quality (deterministic, see listing-quality.js) ----------
     const qualitySlot = document.getElementById('sellQuality');
     const photoInputEl = document.getElementById('sellPhotos');
@@ -321,6 +331,14 @@ if (sellForm) {
         return;
       }
 
+      const listingPhone = master && listingPhoneInput ? listingPhoneInput.value.trim() : '';
+      if (master && !/^\+?[0-9][0-9 ()-]{6,19}$/.test(listingPhone)) {
+        errorEl.textContent = 'Please enter the property owner\'s contact number (e.g. +92 300 1234567).';
+        errorEl.style.display = 'block';
+        listingPhoneInput.focus();
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.textContent = photoFiles.length ? 'Uploading photos…' : 'Posting…';
 
@@ -362,6 +380,19 @@ if (sellForm) {
         submitBtn.disabled = false;
         submitBtn.textContent = editing ? 'Save changes' : 'Post listing';
         return;
+      }
+
+      if (master) {
+        const saved = await AcDB.setListingPhone(result.listing.id, listingPhone);
+        if (saved.error) {
+          // the listing exists now: keep the person on it in edit mode to fix the number
+          errorEl.textContent = 'The listing was saved, but its contact number was not: ' + saved.error;
+          errorEl.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save changes';
+          if (!editing) window.location.href = 'sell.html?edit=' + encodeURIComponent(result.listing.id);
+          return;
+        }
       }
 
       const pre = typeof acCityLaunching === 'function' && acCityLaunching(payload.city);

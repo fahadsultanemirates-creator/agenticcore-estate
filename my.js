@@ -261,7 +261,7 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
     if (hidden) add(1, 'na_hidden', { name: hidden[0].title || hidden[0].name || hidden[0].display_name || '' }, hidden[1], 'na_btn_open');
     if (listings.length) {
       // 3 — buyers cannot call: no account number and no linked profile number
-      const callable = listings.some(function (l) { return (l.professional_id && ov.phones['professional:' + l.professional_id]) || (l.agency_id && ov.phones['agency:' + l.agency_id]); });
+      const callable = listings.some(function (l) { return l.contact_phone || (l.professional_id && ov.phones['professional:' + l.professional_id]) || (l.agency_id && ov.phones['agency:' + l.agency_id]); });
       if (!user.public_phone && !callable) add(3, 'na_phone_account', {}, '#account', 'na_btn_edit');
       if (window.AcListingQuality) {
         const weakest = listings.map(function (l) { return { l: l, q: AcListingQuality.score(l).score }; }).sort(function (a, b) { return a.q - b.q; })[0];
