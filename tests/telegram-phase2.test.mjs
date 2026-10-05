@@ -244,10 +244,14 @@ test('changes requested go back to the owner with the start choices; redo and re
   assert.equal(store.db.jobs[1].status, 'queued', 'redo queued');
   await runWorkers(Object.assign({}, d, { fetch: fakeXai() }));
   await run(d, press('d:' + store.db.jobs[1].id, Number(OWNER)));
-  await run(d, press('cc:' + task.id), text('Please use a blue background'));
+  await run(d, press('cc:' + task.id), photo());
+  assert.match(lastMe(tg), /Got the file — it goes with your change request/);
+  await run(d, text('Please use a blue background'));
   assert.equal(task.status, 'changes_requested');
+  assert.ok(store.db.rpc.find((r) => r.body.p_action === 'changes').body.p_path, 'marked-up photo kept with the change request');
   assert.match(lastMe(tg), /change round 1 of 2/);
   const alert = toOwner(tg).find((m) => /Changes requested \(round 1 of 2\) — "Please use a blue background"/.test(m.text));
+  assert.match(alert.text, /marked-up file \(7-day link\): https:\/\/signed\.example\/pk-attachments\//);
   assert.ok(alert && btns(alert).some((b) => b.startsWith('w:' + task.id)));
 });
 
@@ -360,4 +364,25 @@ test('Grok image instructions: only the client\'s own words, no invented logo or
   assert.match(p, /Noor Estate/);
   assert.match(p, /no slogans, taglines/);
   assert.match(p, /Do not invent a logo/);
+});
+
+const media = (extra, from) => ({ update_id: uid++, message: Object.assign({ message_id: uid, from: { id: from || ME }, chat: { id: from || ME, type: 'private' } }, extra) });
+
+test('videos and other media in Telegram: added to orders up to 20 MB, otherwise a clear reply — never silence', async () => {
+  const store = fakeStore(), tg = fakeTg(), d = deps(store, tg);
+  await run(d, text('I need a WhatsApp card for my house'), press('o:s:p-wa-card'), press('o:q:1'));
+  await run(d, text('My number 0300 1234567'));
+  const before = store.db.uploads.length;
+  await run(d, media({ video: { file_id: 'v-small', file_size: 8 * 1048576, mime_type: 'video/mp4' } }));
+  assert.equal(store.db.uploads.length, before + 1, 'short video stored with the order');
+  assert.match(store.db.uploads.slice(-1)[0], /^pk-attachments\/.+\.mp4$/);
+  await run(d, media({ video: { file_id: 'v-big', file_size: 60 * 1048576, mime_type: 'video/mp4' } }));
+  assert.equal(store.db.uploads.length, before + 1, 'big video not downloaded');
+  assert.match(lastMe(tg), /60 MB — Telegram only lets me receive files up to 20 MB[\s\S]*agenticcorepk\.com[\s\S]*45 MB/);
+  await run(d, press('l:cancel'));
+
+  await run(d, media({ video: { file_id: 'v-x', file_size: 1000 } }));
+  assert.match(lastMe(tg), /can't use a video here[\s\S]*\/order/);
+  await run(d, media({ sticker: { file_id: 'st' } }));
+  assert.match(lastMe(tg), /can't read that kind of message/);
 });
