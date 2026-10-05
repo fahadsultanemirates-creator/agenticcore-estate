@@ -113,7 +113,7 @@ if (sellForm) {
         else { areaSelect.value = MANUAL_AREA_VALUE; areaManual.value = editing.area; }
         toggleManualArea();
         const count = (editing.photos || []).length;
-        document.querySelector('label[for="sellPhotos"]').textContent = 'Add more photos (' + count + ' of 8 used)';
+        document.querySelector('label[for="sellPhotos"]').textContent = 'Add more photos (' + count + ' of ' + AC_MAX_PHOTOS + ' used)';
         sellForm.querySelector('button[type="submit"]').textContent = 'Save changes';
       }
     }
@@ -124,7 +124,7 @@ if (sellForm) {
     const qualitySlot = document.getElementById('sellQuality');
     const photoInputEl = document.getElementById('sellPhotos');
     function formListing() {
-      const selected = photoInputEl && photoInputEl.files ? Math.min(photoInputEl.files.length, 8) : 0;
+      const selected = photoInputEl && photoInputEl.files ? Math.min(photoInputEl.files.length, AC_MAX_PHOTOS) : 0;
       const existing = editing ? (editing.photos || []).length : 0;
       return {
         title: document.getElementById('sellTitle').value,
@@ -136,7 +136,7 @@ if (sellForm) {
         size_marla: Number(document.getElementById('sellSize').value) || 0,
         beds: Number(document.getElementById('sellBeds').value) || 0,
         baths: Number(document.getElementById('sellBaths').value) || 0,
-        photos: new Array(Math.min(existing + selected, 8)).fill('x'),
+        photos: new Array(Math.min(existing + selected, AC_MAX_PHOTOS)).fill('x'),
         verified: editing ? editing.verified : false,
         created_at: new Date().toISOString()
       };
@@ -311,7 +311,15 @@ if (sellForm) {
       }
 
       const photoInput = document.getElementById('sellPhotos');
-      const photoFiles = photoInput && photoInput.files ? Array.from(photoInput.files).slice(0, 8) : [];
+      const photoFiles = photoInput && photoInput.files ? Array.from(photoInput.files) : [];
+      // never drop photos silently: say how many fit
+      const room = AC_MAX_PHOTOS - (editing ? (editing.photos || []).length : 0);
+      if (photoFiles.length > room) {
+        errorEl.textContent = 'You picked ' + photoFiles.length + ' photos, but ' + (editing ? 'this listing has room for ' + Math.max(room, 0) + ' more' : 'a listing can have up to ' + AC_MAX_PHOTOS) + '. Please choose your best ' + Math.max(room, 0) + ' (front of the property first).';
+        errorEl.style.display = 'block';
+        photoInput.focus();
+        return;
+      }
 
       submitBtn.disabled = true;
       submitBtn.textContent = photoFiles.length ? 'Uploading photos…' : 'Posting…';

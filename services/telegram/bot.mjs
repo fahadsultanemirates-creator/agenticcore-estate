@@ -28,7 +28,7 @@ import { PROPERTY_TYPES, redactPII } from '../util.mjs';
 import { pkMenu, startOrder, myOrders, onPkCallback, onPkInput, ownerDeliverStart, ownerMessage, ownerJobs } from './pk-orders.mjs';
 import { looksLikeSearch, findProperty, startEnquiry, sendEnquiry } from './find.mjs';
 
-export const LIMITS = { photos: 8, listingsPerDay: 5, loginLinksPerHour: 3, msgsPer10Min: 40, aiAnswersPerDay: 20 };
+export const LIMITS = { photos: 15, listingsPerDay: 5, loginLinksPerHour: 3, msgsPer10Min: 40, aiAnswersPerDay: 20 };
 const BUILT = ['house', 'flat', 'upper_portion', 'lower_portion', 'room', 'farm_house'];
 const VALID_TYPES = Object.keys(PROPERTY_TYPES);
 const PHOTO_MAX_BYTES = 10 * 1024 * 1024;
