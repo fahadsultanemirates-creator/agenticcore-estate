@@ -6,6 +6,8 @@ import crypto from 'node:crypto';
 
 export function botToken() { return (process.env.TELEGRAM_BOT_TOKEN || '').trim(); }
 export function botConfigured() { return Boolean(botToken()); }
+// AgenticCore Dealer AI: a second, separate bot (DEALER_BOT_TOKEN).
+export function dealerToken() { return (process.env.DEALER_BOT_TOKEN || '').trim(); }
 
 // The webhook secret is derived from the bot token, so there is no second
 // secret to manage: Telegram sends it back on every update and only
@@ -15,10 +17,12 @@ export function webhookSecret(token) {
   return t ? crypto.createHash('sha256').update('agenticcore-telegram-webhook:' + t).digest('hex').slice(0, 48) : '';
 }
 
-export function makeTelegram(fetchImpl) {
+// tokenFn: which bot to speak as (default: the main AgenticCore bot).
+export function makeTelegram(fetchImpl, tokenFn) {
   const f = fetchImpl || globalThis.fetch;
+  const tokenOf = tokenFn || botToken;
   async function call(method, payload, timeoutMs) {
-    const token = botToken();
+    const token = tokenOf();
     if (!token) throw new Error('telegram_not_configured');
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), timeoutMs || 8000);
@@ -54,7 +58,7 @@ export function makeTelegram(fetchImpl) {
       const file = await call('getFile', { file_id: fileId });
       if (!file || !file.file_path) throw new Error('telegram_file_missing');
       if (maxBytes && file.file_size && file.file_size > maxBytes) throw new Error('telegram_file_too_large');
-      const res = await f('https://api.telegram.org/file/bot' + botToken() + '/' + file.file_path);
+      const res = await f('https://api.telegram.org/file/bot' + tokenOf() + '/' + file.file_path);
       if (!res.ok) throw new Error('telegram_file_' + res.status);
       const bytes = Buffer.from(await res.arrayBuffer());
       if (maxBytes && bytes.length > maxBytes) throw new Error('telegram_file_too_large');
