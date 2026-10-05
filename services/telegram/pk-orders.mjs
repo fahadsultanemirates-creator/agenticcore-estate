@@ -190,11 +190,30 @@ export async function alertNewOrder(deps, taskId, account, heading) {
     (task.details && task.details.brief ? 'Brief: ' + String(task.details.brief).slice(0, 700) + '\n' : '') +
     (task.details && task.details.estate_listing_id ? 'Estate listing: ' + 'https://agenticcore.estate/listing.html?id=' + task.details.estate_listing_id + '\n' : '') +
     (links.length ? 'Files (7-day links):\n' + links.join('\n') + '\n' : '') + '\nWho should do it?';
-  await deps.tg.send(deps.ownerId, text, buttons([
-    [['▶ Grok image', 'w:' + task.id + ':grok_image'], ['▶ Grok video', 'w:' + task.id + ':grok_video']],
-    [['▶ Grok agent', 'w:' + task.id + ':grok_agent'], ['▶ Team (me)', 'w:' + task.id + ':team']],
-    [['✖ Decline', 'x:' + task.id]]
-  ])).catch(() => null);
+  await deps.tg.send(deps.ownerId, text, buttons(workerRows(task))).catch(() => null);
+}
+
+// Who can do an order. The team (you, the Grok bot, Claude) comes first and
+// fits every order; the Grok image/video APIs are offered only for the small
+// visual items they can draft (cards, posts, flyers, reels), never for
+// websites, brochures, PDFs, presentations or logos.
+const NOT_FOR_API = /website|web ?site|landing|brochure|pdf|presentation|deck|logo|brand|google|seo|automation|chatbot|\bbot\b|plan|copy|content|ads?\b|campaign|management|system|script|progress|presenter/i;
+export function workerChoices(title) {
+  const t = String(title || '');
+  const out = ['team'];
+  if (!NOT_FOR_API.test(t) && /card|post|flyer|story|banner|poster|thumbnail|cover|graphic|creative|image/i.test(t)) out.push('grok_image');
+  if (!NOT_FOR_API.test(t) && /reel|video|walk-?through|animation/i.test(t)) out.push('grok_video');
+  out.push('grok_agent');
+  return out;
+}
+export function workerRows(task) {
+  const ws = workerChoices(task.title);
+  const label = { team: '▶ Team (me) — recommended', grok_image: '▶ Grok image', grok_video: '▶ Grok video', grok_agent: '▶ Grok agent' };
+  const rows = [[[label.team, 'w:' + task.id + ':team']]];
+  const rest = ws.filter((w) => w !== 'team').map((w) => [label[w], 'w:' + task.id + ':' + w]);
+  for (let i = 0; i < rest.length; i += 2) rows.push(rest.slice(i, i + 2));
+  rows.push([['✖ Decline', 'x:' + task.id]]);
+  return rows;
 }
 
 export async function myOrders(ctx) {
@@ -223,9 +242,10 @@ async function ownerStart(ctx, taskId, worker) {
     grok_image: 'Grok image drafts arrive here within about 10 minutes for your approval.',
     grok_video: 'Grok video is rendering; the draft arrives here for your approval (usually 10–20 minutes).',
     grok_agent: 'Waiting in the work inbox (/api/work) for the Grok agent. Its result comes here for your approval.',
-    team: 'Deliver it yourself: send /deliver ' + task.public_id + ' then the files (photos, documents, videos or links).'
+    team: 'When the work is ready (made by you, the Grok bot or Claude), tap "Upload finished work" below — or send /deliver ' + task.public_id + ' — then send the files (photos, PDFs, videos or links). You check them once more before the client gets them.'
   }[worker];
-  return ctx.raw('▶ ' + task.public_id + ' confirmed and started — ' + WORKERS[worker] + '.\n' + how + '\nJob ' + job.id.slice(0, 8));
+  return ctx.raw('▶ ' + task.public_id + ' confirmed and started — ' + WORKERS[worker] + '.\n' + how + '\nJob ' + job.id.slice(0, 8),
+    worker === 'team' ? buttons([[['📤 Upload finished work', 'dv:s:' + task.id]]]) : undefined);
 }
 
 async function ownerDecline(ctx, taskId) {
@@ -290,8 +310,8 @@ export async function flushClientNotes(deps, clientId, skipKinds) {
 }
 
 // Owner delivers by hand: /deliver ACPK-0001, then files or links, then Done.
-export async function ownerDeliverStart(ctx, publicId) {
-  const task = await ctx.deps.store.pkTaskByPublicId(String(publicId || '').toUpperCase());
+export async function ownerDeliverStart(ctx, publicId, taskId) {
+  const task = taskId ? await ctx.deps.store.pkTask(taskId) : await ctx.deps.store.pkTaskByPublicId(String(publicId || '').toUpperCase());
   if (!task) return ctx.raw('No order ' + publicId + '. Use the ACPK number, e.g. /deliver ACPK-0042');
   if (['delivered', 'cancelled'].includes(task.status)) return ctx.raw(task.public_id + ' is already ' + task.status + '.');
   ctx.session.state = { rl: ctx.session.state.rl, flow: 'deliver', task: task.id, publicId: task.public_id, client: task.client_id, outputs: [] };
@@ -428,6 +448,7 @@ export async function onPkCallback(ctx, data, msgId) {
       return true;
     }
     if (data === 'dv:done' && s.flow === 'deliver') { await ownerDeliverDone(ctx); return true; }
+    if ((m = data.match(/^dv:s:([0-9a-f-]{36})$/))) { await ownerDeliverStart(ctx, null, m[1]); return true; }
     return true;
   }
   return false;

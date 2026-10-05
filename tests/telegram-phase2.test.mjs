@@ -194,7 +194,7 @@ test('order in Telegram: service → quantity → brief, listing, photo → revi
   const alert = toOwner(tg).find((m) => /New order ACPK-0001 from AC-100005/.test(m.text));
   assert.ok(alert, 'owner alerted');
   assert.match(alert.text, /Rs 1,998/);
-  assert.deepEqual(btns(alert).filter((b) => b.startsWith('w:')).map((b) => b.split(':')[2]), ['grok_image', 'grok_video', 'grok_agent', 'team']);
+  assert.deepEqual(btns(alert).filter((b) => b.startsWith('w:')).map((b) => b.split(':')[2]), ['team', 'grok_image', 'grok_agent'], 'team first; Grok image fits a card, Grok video does not');
   assert.ok(btns(alert).some((b) => b.startsWith('x:')));
 });
 
@@ -256,8 +256,10 @@ test('owner delivers by hand with /deliver; owner messages the client with /msg'
   await run(d, press('o:place'));
   const task = store.db.tasks[0];
   await run(d, press('w:' + task.id + ':team', Number(OWNER)));
-  assert.match(toOwner(tg).slice(-1)[0].text, /\/deliver ACPK-0001/);
-  await run(d, text('/deliver ACPK-0001', Number(OWNER)), photo(Number(OWNER)), text('https://drive.example.com/folder', Number(OWNER)), press('dv:done', Number(OWNER)));
+  const started = toOwner(tg).slice(-1)[0];
+  assert.match(started.text, /\/deliver ACPK-0001/);
+  assert.ok(btns(started).includes('dv:s:' + task.id), 'one-tap "Upload finished work"');
+  await run(d, press('dv:s:' + task.id, Number(OWNER)), photo(Number(OWNER)), text('https://drive.example.com/folder', Number(OWNER)), press('dv:done', Number(OWNER)));
   assert.equal(task.status, 'ready_for_review');
   assert.ok(tg.files.some((f) => f.chat === String(ME) && f.kind === 'photo'));
   assert.ok(toMe(tg).some((m) => /drive\.example\.com/.test(m.text)), 'links delivered as text');
@@ -342,4 +344,20 @@ test('Phase 3: property search is off until BOT_PROPERTY_SEARCH=on; then account
     await run(d, text('looking for a flat in G-13'));
     assert.match(lastMe(tg), /need an AgenticCore account first/);
   } finally { delete process.env.BOT_PROPERTY_SEARCH; }
+});
+
+test('who does an order: team first everywhere; Grok APIs only for cards, posts, flyers and reels', async () => {
+  const { workerChoices } = await import('../services/telegram/pk-orders.mjs');
+  assert.deepEqual(workerChoices('Property WhatsApp Card'), ['team', 'grok_image', 'grok_agent']);
+  assert.deepEqual(workerChoices('Property Promo Reel'), ['team', 'grok_video', 'grok_agent']);
+  for (const t of ['Agency Website', 'Project Brochure (PDF)', 'Logo Design', 'Video Script', 'Automatic Property Posting System', 'Sales Presentation'])
+    assert.deepEqual(workerChoices(t), ['team', 'grok_agent'], t);
+});
+
+test('Grok image instructions: only the client\'s own words, no invented logo or slogans', async () => {
+  const { jobPrompt } = await import('../services/telegram/workers.mjs');
+  const p = jobPrompt({ title: 'Property WhatsApp Card', details: { brief: 'Business name: Noor Estate; phone: 0300 1234567' } }, 'image');
+  assert.match(p, /Noor Estate/);
+  assert.match(p, /no slogans, taglines/);
+  assert.match(p, /Do not invent a logo/);
 });

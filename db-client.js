@@ -562,6 +562,8 @@ function acAreaOptions(areas, selected) {
   var html = areas.map(opt).join('');
   if (areas.more && areas.more.length) {
     var label = (typeof acT === 'function' && acT('city_area_all') && acT('city_area_all') !== 'city_area_all') ? acT('city_area_all') : 'All areas A–Z';
+    // a visible divider too: some phones and browsers hide optgroup labels
+    html += '<option value="" disabled>── ' + esc(label) + ' ──</option>';
     html += '<optgroup label="' + esc(label) + '">' + areas.more.map(opt).join('') + '</optgroup>';
   }
   return html;
