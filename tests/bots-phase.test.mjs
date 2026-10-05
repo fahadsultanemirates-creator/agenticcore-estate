@@ -185,6 +185,6 @@ test('price on request: a listing with no price is shown as such, never as "Rs 0
   const row = { id: 'x1', owner_id: 'o', title: '1 Kanal House, F-7', type: 'buy', city: 'Islamabad', area: 'F-7', price: null, property_type: 'house', size_marla: 1, size_unit: 'kanal', beds: 0, baths: 0, photos: [], created_at: new Date().toISOString() };
   const r = rankListings([row], { purpose: 'buy', city: 'Islamabad', property_types: ['house'], price_max: 50000000, locations: [], keywords: [], preferences: [] });
   const card = r.matches.concat(r.closest)[0];
-  assert.equal(card.price_text, 'Price on request');
+  assert.equal(card.price_text, 'Price: ask the seller');
   assert.doesNotMatch(JSON.stringify(card), /Rs 0\b/);
 });

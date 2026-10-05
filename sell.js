@@ -136,7 +136,8 @@ if (sellForm) {
     const porBox = document.getElementById('sellPriceOnRequest');
     function priceOnRequest() { return Boolean(porBox && porBox.checked); }
     function syncPrice() { priceInput.required = !priceOnRequest(); priceInput.disabled = priceOnRequest(); if (priceOnRequest()) priceInput.value = ''; }
-    if (porBox) { porBox.addEventListener('change', syncPrice); syncPrice(); }
+    document.querySelectorAll('input[name="sellPriceMode"]').forEach(function (r) { r.addEventListener('change', syncPrice); });
+    if (porBox) syncPrice();
 
     // ---------- live listing quality (deterministic, see listing-quality.js) ----------
     const qualitySlot = document.getElementById('sellQuality');
@@ -260,6 +261,7 @@ if (sellForm) {
       // The basic (non-AI) draft already lists the key details in its description.
       set('sellDescription', [d.description, lastDraft.ai_used ? (d.bullets || []).map(function (b) { return '• ' + b; }).join('\n') : ''].filter(Boolean).join('\n\n'));
       set('sellPrice', f.price);
+      if (f.price_ask && !f.price && porBox) { porBox.checked = true; syncPrice(); }
       set('sellSize', f.size_value);
       set('sellBeds', f.beds);
       set('sellBaths', f.baths);

@@ -10,7 +10,7 @@
 
 import { isLaunched, findPlace } from './places.mjs';
 import { KNOWLEDGE, ACTIONS, TOPICS, ANSWERS, AMAAN } from './assistant-knowledge.mjs';
-import { extractFacts } from './listing-draft.mjs';
+import { extractFacts, ASK_SELLER } from './listing-draft.mjs';
 import { parseCriteria, criteriaStrength } from './criteria.mjs';
 import { redactPII, formatPKR, PROPERTY_TYPES, UNIT_LABEL } from './util.mjs';
 import { bundledCatalog, matchServices, servicesAnswer, packagesAnswer, asksPackages } from './pk-catalog.mjs';
@@ -243,7 +243,7 @@ function missingRequired(f) {
   if (!f.property_type) miss.push('property_type');
   if (!f.city) miss.push('city');
   if (!f.area) miss.push('area');
-  if (!f.price) miss.push('price');
+  if (!f.price && !f.price_ask) miss.push('price');
   if (!f.size_value) miss.push('size');
   if (BUILT.indexOf(f.property_type) >= 0) { if (!f.beds) miss.push('beds'); if (!f.baths) miss.push('baths'); }
   return miss.filter((m) => REQUIRED.indexOf(m) >= 0);
@@ -265,6 +265,8 @@ export function plainMoney(text, asked) {
   return t.replace(m[0], ' ' + (n >= 1e7 ? n / 1e7 + ' crore' : n >= 1e5 ? n / 1e5 + ' lakh' : n / 1e3 + ' thousand') + ' ' + (/(per month|a month|monthly|mahana|mahina)/i.test(m[0]) ? 'per month ' : ''));
 }
 export function contextualise(text, asked) {
+  // "ask seller" (any language) as the answer to the price question
+  if (asked === 'price' && ASK_SELLER.test(String(text || ''))) return 'ask seller';
   // Roman Urdu sale/rent phrasing → words the facts extractor knows
   const t = plainMoney(toSearchText(text), asked).trim()
     .replace(/\b(bechna|bechni|bechne|bechna chahta|farokht karna|sell karna)\b/gi, 'for sale')
@@ -285,7 +287,7 @@ export function factsSummary(f) {
     f.property_type ? (PROPERTY_TYPES[f.property_type] || f.property_type) : null,
     f.size_value ? f.size_value + ' ' + (UNIT_LABEL[f.size_unit] || 'Marla') : null,
     [f.area, f.city].filter(Boolean).join(', ') || null,
-    f.price ? formatPKR(f.price) + (f.purpose === 'rent' ? ' / month' : '') : null,
+    f.price ? formatPKR(f.price) + (f.purpose === 'rent' ? ' / month' : '') : f.price_ask ? 'Price: ask the seller' : null,
     f.beds ? f.beds + ' bed' : null, f.baths ? f.baths + ' bath' : null
   ].filter(Boolean).join(' · ');
 }

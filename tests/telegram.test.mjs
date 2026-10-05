@@ -502,3 +502,18 @@ test('buttons are never silent: an old or out-of-step button always gets a reply
   }
   assert.match(lastText(tg), /earlier step|no longer open/);
 });
+
+test('price: the owner can say "ask seller" instead of a price (English, Roman Urdu, Urdu)', async () => {
+  for (const said of ['ask seller', 'qeemat call par', 'مالک سے پوچھیں']) {
+    const { store, tg, d } = await signedUp();
+    await run(d, press('m:list'), text('1 kanal house for sale in F-7 Islamabad'));
+    assert.match(lastText(tg), /ask seller|مالک سے پوچھیں/, 'the price question offers the option');
+    await run(d, text(said));
+    assert.match(lastText(tg), /bedrooms|بیڈ روم/i, said + ': moves on to the next question');
+    await run(d, text('5'), text('6'), press('l:skip'), photo(), press('l:done'));
+    assert.match(lastText(tg), /ask the seller/i, said + ': review says so');
+    await run(d, press('l:publish'));
+    assert.equal(store.db.listings.length, 1, said);
+    assert.equal(store.db.listings[0].price, null, said + ': no price saved');
+  }
+});

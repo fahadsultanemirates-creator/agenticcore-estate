@@ -19,7 +19,7 @@ function acSafeUrl(u) { return /^https?:\/\//i.test(String(u || '')) || /^images
 function acFormatPKR(n) {
   n = Number(n) || 0;
   // listings may have no price (owner says "price on request")
-  if (n <= 0) return typeof acT === 'function' && acT('price_on_request') !== 'price_on_request' ? acT('price_on_request') : 'Price on request';
+  if (n <= 0) return typeof acT === 'function' && acT('price_on_request') !== 'price_on_request' ? acT('price_on_request') : 'Ask the seller';
   if (n >= 10000000) return '₨ ' + (n / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
   if (n >= 100000) return '₨ ' + (n / 100000).toFixed(2).replace(/\.00$/, '') + ' Lac';
   return '₨ ' + n.toLocaleString('en-PK');

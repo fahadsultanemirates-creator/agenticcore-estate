@@ -74,7 +74,7 @@ function publicCard(l, checks) {
     purpose: l.type,
     property_type: PROPERTY_TYPES[l.property_type] || l.property_type,
     city: l.city, area: l.area,
-    price: Number(l.price) || null, price_text: Number(l.price) > 0 ? formatPKR(l.price) + (l.type === 'rent' ? ' / month' : '') : 'Price on request',
+    price: Number(l.price) || null, price_text: Number(l.price) > 0 ? formatPKR(l.price) + (l.type === 'rent' ? ' / month' : '') : 'Price: ask the seller',
     size_text: formatSize(l.size_marla, l.size_unit),
     beds: l.beds || null, baths: l.baths || null,
     photo: (l.photos && l.photos[0]) || null,
