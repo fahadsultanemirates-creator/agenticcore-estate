@@ -42,6 +42,7 @@ const AC_I18N = {
     listing_view: 'View details',
     listing_beds: 'beds', listing_baths: 'baths',
     listing_month: '/mo',
+    price_on_request: 'Price on request',
 
     section_devcorner_eyebrow: 'For builders & agencies',
     section_devcorner_title: 'The Developer Corner',
@@ -171,6 +172,7 @@ const AC_I18N = {
     listing_view: 'تفصیل دیکھیں',
     listing_beds: 'بیڈ', listing_baths: 'باتھ',
     listing_month: '/ماہ',
+    price_on_request: 'قیمت رابطہ کرنے پر',
 
     section_devcorner_eyebrow: 'بلڈرز اور ایجنسیوں کے لیے',
     section_devcorner_title: 'ڈویلپر کارنر',

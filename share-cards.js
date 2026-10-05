@@ -81,7 +81,7 @@ const AcShareCards = (function () {
     while (text.length > 1 && ctx.measureText(text + '…').width > max) text = text.slice(0, -1);
     return text + '…';
   }
-  function price(l) { return acFormatPKR(l.price) + (l.type === 'rent' ? ' / month' : ''); }
+  function price(l) { return acFormatPKR(l.price) + (l.type === 'rent' && l.price > 0 ? ' / month' : ''); }
   function specs(l) {
     const s = [];
     if (Number(l.size_marla) > 0) s.push(l.size_marla + ' ' + acSizeUnitLabel(l.size_unit || 'marla'));

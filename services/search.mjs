@@ -26,12 +26,12 @@ function checkListing(l, c) {
     add(Boolean(hit), 'In ' + l.area + ', ' + l.city + (hit ? ' — matches "' + hit.label + '"' : ''),
       'In ' + l.area + ', ' + l.city + ' — not in ' + c.locations.map((x) => x.label).join(' or '), 3);
   }
-  if (c.price_max) {
+  if (c.price_max && Number(l.price) > 0) {
     const over = l.price - c.price_max;
     add(over <= 0, formatPKR(l.price) + ' — within your ' + formatPKR(c.price_max) + ' budget',
       formatPKR(l.price) + ' — ' + formatPKR(over) + ' above your ' + formatPKR(c.price_max) + ' budget', 3);
   }
-  if (c.price_min) {
+  if (c.price_min && Number(l.price) > 0) {
     add(l.price >= c.price_min, formatPKR(l.price) + ' — above your ' + formatPKR(c.price_min) + ' minimum',
       formatPKR(l.price) + ' — below the ' + formatPKR(c.price_min) + ' you mentioned', 1);
   }
@@ -74,7 +74,7 @@ function publicCard(l, checks) {
     purpose: l.type,
     property_type: PROPERTY_TYPES[l.property_type] || l.property_type,
     city: l.city, area: l.area,
-    price: Number(l.price), price_text: formatPKR(l.price) + (l.type === 'rent' ? ' / month' : ''),
+    price: Number(l.price) || null, price_text: Number(l.price) > 0 ? formatPKR(l.price) + (l.type === 'rent' ? ' / month' : '') : 'Price on request',
     size_text: formatSize(l.size_marla, l.size_unit),
     beds: l.beds || null, baths: l.baths || null,
     photo: (l.photos && l.photos[0]) || null,

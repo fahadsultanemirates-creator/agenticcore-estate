@@ -102,7 +102,8 @@ if (sellForm) {
         typeSelect.value = editing.property_type;
         sizeUnitSelect.innerHTML = acSizeUnitOptionsHTML(editing.size_unit || AC_DEFAULT_SIZE_UNIT[typeSelect.value]);
         document.getElementById('sellTitle').value = editing.title;
-        document.getElementById('sellPrice').value = editing.price;
+        document.getElementById('sellPrice').value = editing.price > 0 ? editing.price : '';
+        if (!(editing.price > 0)) document.getElementById('sellPriceOnRequest').checked = true;
         document.getElementById('sellSize').value = editing.size_marla;
         document.getElementById('sellBeds').value = editing.beds || '';
         document.getElementById('sellBaths').value = editing.baths || '';
@@ -130,6 +131,13 @@ if (sellForm) {
       if (editing) listingPhoneInput.value = await AcDB.getListingPhone(editing.id).catch(function () { return ''; });
     }
 
+    // ---------- price on request: no price instead of a made-up one ----------
+    const priceInput = document.getElementById('sellPrice');
+    const porBox = document.getElementById('sellPriceOnRequest');
+    function priceOnRequest() { return Boolean(porBox && porBox.checked); }
+    function syncPrice() { priceInput.required = !priceOnRequest(); priceInput.disabled = priceOnRequest(); if (priceOnRequest()) priceInput.value = ''; }
+    if (porBox) { porBox.addEventListener('change', syncPrice); syncPrice(); }
+
     // ---------- live listing quality (deterministic, see listing-quality.js) ----------
     const qualitySlot = document.getElementById('sellQuality');
     const photoInputEl = document.getElementById('sellPhotos');
@@ -139,7 +147,7 @@ if (sellForm) {
       return {
         title: document.getElementById('sellTitle').value,
         description: document.getElementById('sellDescription').value,
-        price: Number(document.getElementById('sellPrice').value) || 0,
+        price: priceOnRequest() ? 0 : Number(document.getElementById('sellPrice').value) || 0,
         area: areaSelect.value === MANUAL_AREA_VALUE ? areaManual.value : areaSelect.value,
         city: citySelect.value,
         property_type: typeSelect.value,
@@ -349,7 +357,7 @@ if (sellForm) {
         propertyType: propertyType,
         city: city,
         area: area,
-        price: Number(document.getElementById('sellPrice').value),
+        price: priceOnRequest() ? null : Number(document.getElementById('sellPrice').value),
         beds: Number(document.getElementById('sellBeds').value) || 0,
         baths: Number(document.getElementById('sellBaths').value) || 0,
         sizeMarla: Number(document.getElementById('sellSize').value) || 0,
