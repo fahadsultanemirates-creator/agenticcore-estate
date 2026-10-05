@@ -31,12 +31,17 @@ export const S_PK = {
   pk_qty: { en: '{service} — {price}.\nHow many?', ur: '{service} — {price}۔\nکتنے چاہییں؟', ro: '{service} — {price}.\nKitne chahiyein?' },
   pk_qty_bad: { en: 'Please send a number from 1 to 20.', ur: 'براہِ کرم 1 سے 20 تک کوئی نمبر بھیجیں۔', ro: 'Barah-e-karam 1 se 20 tak koi number bhejein.' },
   pk_brief: {
-    en: 'Now the details: which property or project, the price and facts to show, your contact for the design. Send photos or your logo too. Tap "Done" when finished.',
-    ur: 'اب تفصیلات: کون سی پراپرٹی یا پروجیکٹ، دکھانے کے لیے قیمت اور اہم باتیں، ڈیزائن پر آپ کا رابطہ۔ تصاویر یا لوگو بھی بھیجیں۔ مکمل ہونے پر "ہو گیا" دبائیں۔',
-    ro: 'Ab tafseelat: kaun si property ya project, dikhane ke liye qeemat aur ahem baatein, design par aap ka raabta. Tasveerein ya logo bhi bhejein. Mukammal hone par "Ho gaya" dabayein.'
+    en: 'Now the details: which property or project, the price and facts to show, your contact for the design. Send photos, a short video (up to 20 MB), a PDF or your logo too. Tap "Done" when finished.',
+    ur: 'اب تفصیلات: کون سی پراپرٹی یا پروجیکٹ، دکھانے کے لیے قیمت اور اہم باتیں، ڈیزائن پر آپ کا رابطہ۔ تصاویر، مختصر ویڈیو (20 MB تک)، PDF یا لوگو بھی بھیجیں۔ مکمل ہونے پر "ہو گیا" دبائیں۔',
+    ro: 'Ab tafseelat: kaun si property ya project, dikhane ke liye qeemat aur ahem baatein, design par aap ka raabta. Tasveerein, chhoti video (20 MB tak), PDF ya logo bhi bhejein. Mukammal hone par "Ho gaya" dabayein.'
   },
   pk_pick_listing: { en: 'Is it for one of your AgenticCore Estate listings? Tap it to attach its details:', ur: 'کیا یہ آپ کی AgenticCore Estate لسٹنگ کے لیے ہے؟ اس کی تفصیلات شامل کرنے کے لیے اسے دبائیں:', ro: 'Kya yeh aap ki AgenticCore Estate listing ke liye hai? Us ki tafseelat shamil karne ke liye usay dabayein:' },
   pk_listing_set: { en: 'Attached: {title}', ur: 'شامل کر دی: {title}', ro: 'Shamil kar di: {title}' },
+  pk_file_big: {
+    en: 'That file is {mb} MB — Telegram only lets me receive files up to 20 MB. Send a shorter or compressed video, or upload the full video on agenticcorepk.com: open the Amaan chat (videos up to 45 MB) or add it to your order on the dashboard. A Google Drive or YouTube link also works — just paste it here.',
+    ur: 'یہ فائل {mb} MB کی ہے — ٹیلیگرام پر میں صرف 20 MB تک کی فائل لے سکتا ہوں۔ چھوٹی یا کمپریس کی ہوئی ویڈیو بھیجیں، یا پوری ویڈیو agenticcorepk.com پر اپ لوڈ کریں: Amaan چیٹ کھولیں (45 MB تک ویڈیو) یا ڈیش بورڈ پر اپنے آرڈر میں شامل کریں۔ گوگل ڈرائیو یا یوٹیوب کا لنک بھی یہاں پیسٹ کر سکتے ہیں۔',
+    ro: 'Yeh file {mb} MB ki hai — Telegram par main sirf 20 MB tak ki file le sakta hoon. Chhoti ya compress ki hui video bhejein, ya poori video agenticcorepk.com par upload karein: Amaan chat kholein (45 MB tak video) ya dashboard par apne order mein shamil karein. Google Drive ya YouTube ka link bhi yahan paste kar sakte hain.'
+  },
   pk_file_got: { en: 'File {n} added.', ur: 'فائل {n} شامل ہو گئی۔', ro: 'File {n} shamil ho gayi.' },
   pk_note_got: { en: 'Noted. Add more, or tap "Done".', ur: 'نوٹ کر لیا۔ مزید بتائیں یا "ہو گیا" دبائیں۔', ro: 'Note kar liya. Mazeed batayein ya "Ho gaya" dabayein.' },
   pk_need_brief: { en: 'Please send a short description or a photo first.', ur: 'براہِ کرم پہلے مختصر تفصیل یا ایک تصویر بھیجیں۔', ro: 'Barah-e-karam pehle mukhtasar tafseel ya ek tasveer bhejein.' },
@@ -58,6 +63,7 @@ export const S_PK = {
   btn_pk_changes: { en: 'Ask for changes', ur: 'تبدیلی کہیں', ro: 'Tabdeeli kahein' },
   pk_approved: { en: 'Thank you — {id} is marked as delivered.', ur: 'شکریہ — {id} مکمل درج کر دیا گیا۔', ro: 'Shukriya — {id} mukammal darj kar diya gaya.' },
   pk_changes_ask: { en: 'Tell me what to change on {id}. Two rounds of changes are included.', ur: 'بتائیں {id} میں کیا تبدیل کرنا ہے۔ دو بار تبدیلی شامل ہے۔', ro: 'Batayein {id} mein kya tabdeel karna hai. Do baar tabdeeli shamil hai.' },
+  pk_changes_file: { en: 'Got the file — it goes with your change request. Now type what to change.', ur: 'فائل مل گئی — یہ آپ کی تبدیلی کی درخواست کے ساتھ جائے گی۔ اب لکھیں کہ کیا تبدیل کرنا ہے۔', ro: 'File mil gayi — yeh aap ki tabdeeli ki darkhwast ke saath jayegi. Ab likhein ke kya tabdeel karna hai.' },
   pk_changes_sent: { en: 'Sent to the team — {id}, change round {round} of 2.', ur: 'ٹیم کو بھیج دیا — {id}، تبدیلی کا {round} واں دور (2 میں سے)۔', ro: 'Team ko bhej diya — {id}, tabdeeli ka round {round} (2 mein se).' },
   pk_failed: { en: 'That didn\'t work: {reason}', ur: 'یہ نہیں ہو سکا: {reason}', ro: 'Yeh nahin ho saka: {reason}' },
   pk_team_message: { en: 'Message from the AgenticCore team about {id}:\n\n{text}', ur: '{id} کے بارے میں AgenticCore ٹیم کا پیغام:\n\n{text}', ro: '{id} ke baare mein AgenticCore team ka paigham:\n\n{text}' },

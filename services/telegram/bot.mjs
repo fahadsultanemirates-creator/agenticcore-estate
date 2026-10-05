@@ -244,7 +244,9 @@ async function onMessage(ctx, msg) {
     if (s.flow === 'list' && s.step === 'photos') return ctx.say('photo_as_file');
     return ctx.say('photo_not_now');
   }
-  if (!text) return;
+  // nothing a client sends goes unanswered
+  if (msg.video || msg.video_note || msg.animation) return ctx.say(s.flow === 'list' ? 'video_listing' : 'media_video');
+  if (!text) return msg.sticker || msg.location || msg.venue || msg.poll || msg.dice || msg.game ? ctx.say('media_other') : undefined;
 
   // commands
   const cmd = text.match(/^\/(\w+)(?:@\w+)?(?:\s+(.+))?$/);

@@ -20,7 +20,7 @@ import { formatPKR } from '../util.mjs';
 export const PK_DASHBOARD = 'https://agenticcorepk.com/dashboard.html';
 export const WORKERS = { grok_image: 'Grok image', grok_video: 'Grok video', grok_agent: 'Grok agent', team: 'Team (you)' };
 const LIMIT_FILES = 8;
-const FILE_MAX = 10 * 1024 * 1024;
+const FILE_MAX = 20 * 1024 * 1024;   // the most a Telegram bot can download
 
 // ---------- catalogue matching ----------
 const SYNONYMS = [
@@ -124,13 +124,18 @@ export async function orderFile(ctx, msg) {
   const s = ctx.session.state, o = s.order;
   if (!(s.step === 'brief' || s.step === 'review')) return ctx.say('pk_brief');
   if ((o.files || []).length >= LIMIT_FILES) return ctx.say('photo_max', {}, buttons([[[t('btn_done_photos', ctx.lang), 'o:done']]]));
-  let fileId, name, type;
-  if (msg.photo) { const big = msg.photo.slice().sort((a, b) => (a.width * a.height) - (b.width * b.height)).pop(); fileId = big.file_id; name = 'photo.jpg'; type = 'image/jpeg'; }
-  else if (msg.document) { fileId = msg.document.file_id; name = String(msg.document.file_name || 'file').replace(/[^\w.\- ]/g, '').slice(0, 80) || 'file'; type = msg.document.mime_type || 'application/octet-stream'; }
+  let fileId, name, type, size = 0;
+  const vid = msg.video || msg.video_note || msg.animation;
+  if (msg.photo) { const big = msg.photo.slice().sort((a, b) => (a.width * a.height) - (b.width * b.height)).pop(); fileId = big.file_id; name = 'photo.jpg'; type = 'image/jpeg'; size = big.file_size || 0; }
+  else if (vid) { fileId = vid.file_id; type = vid.mime_type || 'video/mp4'; name = String(vid.file_name || 'video.' + (/quicktime/.test(type) ? 'mov' : 'mp4')).replace(/[^\w.\- ]/g, '').slice(0, 80); size = vid.file_size || 0; }
+  else if (msg.document) { fileId = msg.document.file_id; name = String(msg.document.file_name || 'file').replace(/[^\w.\- ]/g, '').slice(0, 80) || 'file'; type = msg.document.mime_type || 'application/octet-stream'; size = msg.document.file_size || 0; }
   if (!fileId) return;
+  if (size > FILE_MAX) return ctx.say('pk_file_big', { mb: Math.ceil(size / 1048576) }, buttons([[[t('btn_done_photos', ctx.lang), 'o:done']]]));
   const n = (o.files || []).length + 1;
   const path = ctx.account.id + '/tg-' + Date.now() + '/' + n + '-' + name.replace(/\s+/g, '_');
-  const f = await ctx.deps.tg.download(fileId, FILE_MAX);
+  let f;
+  try { f = await ctx.deps.tg.download(fileId, FILE_MAX); }
+  catch (e) { return ctx.say('pk_file_big', { mb: size ? Math.ceil(size / 1048576) : '20+' }, buttons([[[t('btn_done_photos', ctx.lang), 'o:done']]])); }
   await ctx.deps.store.uploadObject('pk-attachments', path, f.bytes, type);
   o.files = (o.files || []).concat({ path, name });
   return ctx.say('pk_file_got', { n }, buttons([[[t('btn_done_photos', ctx.lang), 'o:done']]]));
@@ -328,7 +333,9 @@ export async function ownerDeliverInput(ctx, msg, text) {
   else if (text && /^(done)$/i.test(text.trim())) return ownerDeliverDone(ctx);
   else return ctx.raw('Send a photo, document, video or an https link — or tap Done.');
   if (fileId) {
-    const f = await ctx.deps.tg.download(fileId, 20 * 1024 * 1024);
+    let f;
+    try { f = await ctx.deps.tg.download(fileId, 20 * 1024 * 1024); }
+    catch (e) { return ctx.raw('That file is over 20 MB, the most Telegram lets the bot receive. Send it as a Google Drive / Dropbox / YouTube https link instead — the client gets the link.', buttons([[['Done', 'dv:done']]])); }
     const path = s.client + '/' + s.publicId + '/' + Date.now() + '-' + name.replace(/\s+/g, '_');
     await ctx.deps.store.uploadObject('pk-deliverables', path, f.bytes, type);
     s.outputs.push({ path, kind, label: name });
@@ -375,16 +382,36 @@ async function clientApprove(ctx, taskId, msgId) {
   return ctx.say('pk_approved', { id: task.public_id });
 }
 
+// A marked-up photo, video or PDF sent while asking for changes: kept with
+// the change request (one file), then the client types what to change.
+async function clientChangesFile(ctx, msg) {
+  const s = ctx.session.state;
+  const vid = msg.video || msg.video_note || msg.animation;
+  const big = msg.photo ? msg.photo.slice().sort((a, b) => (a.width * a.height) - (b.width * b.height)).pop() : null;
+  const src = big || vid || msg.document;
+  if (!src) return;
+  if ((src.file_size || 0) > FILE_MAX) return ctx.say('pk_file_big', { mb: Math.ceil(src.file_size / 1048576) });
+  const type = big ? 'image/jpeg' : src.mime_type || (vid ? 'video/mp4' : 'application/octet-stream');
+  const name = String(src.file_name || (big ? 'markup.jpg' : vid ? 'markup.mp4' : 'markup')).replace(/[^\w.\- ]/g, '').slice(0, 80);
+  let f;
+  try { f = await ctx.deps.tg.download(src.file_id, FILE_MAX); } catch (e) { return ctx.say('pk_file_big', { mb: '20+' }); }
+  const path = ctx.account.id + '/tg-changes-' + Date.now() + '/' + name.replace(/\s+/g, '_');
+  await ctx.deps.store.uploadObject('pk-attachments', path, f.bytes, type);
+  s.changeFile = path;
+  return ctx.say('pk_changes_file');
+}
+
 async function clientChangesNote(ctx, text) {
   const s = ctx.session.state;
   let r;
-  try { r = await ctx.deps.store.rpc('pk_tg_client', { p_client: ctx.account.id, p_action: 'changes', p_task: s.task, p_note: text.slice(0, 2000) }); }
+  try { r = await ctx.deps.store.rpc('pk_tg_client', { p_client: ctx.account.id, p_action: 'changes', p_task: s.task, p_note: text.slice(0, 2000), p_path: s.changeFile || null }); }
   catch (e) { ctx.session.state = { rl: s.rl }; return ctx.say('pk_failed', { reason: cleanErr(e) }); }
   ctx.session.state = { rl: s.rl };
   const task = await ctx.deps.store.pkTask(s.task);
+  const fileUrl = s.changeFile ? await ctx.deps.store.signedUrl('pk-attachments', s.changeFile, 7 * 86400).catch(() => null) : null;
   await ctx.log('pk_changes_requested', { task: task.public_id, round: r && r.round });
   await ctx.say('pk_changes_sent', { id: task.public_id, round: (r && r.round) || task.revisions_used });
-  return alertNewOrder(ctx.deps, task.id, ctx.account, '✏️ Changes requested (round ' + task.revisions_used + ' of 2) — "' + text.slice(0, 300) + '" —');
+  return alertNewOrder(ctx.deps, task.id, ctx.account, '✏️ Changes requested (round ' + task.revisions_used + ' of 2) — "' + text.slice(0, 300) + '"' + (fileUrl ? '\nTheir marked-up file (7-day link): ' + fileUrl + '\n' : ' ') + '—');
 }
 
 // ---------- routing ----------
@@ -458,11 +485,12 @@ export async function onPkCallback(ctx, data, msgId) {
 export async function onPkInput(ctx, msg, text) {
   const s = ctx.session.state;
   if (s.flow === 'order') {
-    if (msg && (msg.photo || msg.document)) { await orderFile(ctx, msg); return true; }
+    if (msg && (msg.photo || msg.document || msg.video || msg.video_note || msg.animation)) { await orderFile(ctx, msg); return true; }
     if (text) { await orderText(ctx, text); return true; }
     return true;
   }
   if (s.flow === 'changes' && text) { await clientChangesNote(ctx, text); return true; }
+  if (s.flow === 'changes' && msg && (msg.photo || msg.document || msg.video || msg.video_note || msg.animation)) { await clientChangesFile(ctx, msg); return true; }
   if (s.flow === 'deliver' && ctx.isOwner()) { await ownerDeliverInput(ctx, msg, text); return true; }
   return false;
 }
