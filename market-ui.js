@@ -195,10 +195,10 @@ function acDirFilterValues(form) {
   return f;
 }
 
-async function acFillCities(select) {
+async function acFillCities(select, cat) {
   if (!select || select.dataset.filled) return;
-  const cities = await AcDB.getActiveCities();
-  select.insertAdjacentHTML('beforeend', cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc((typeof acCityLabel === 'function' ? acCityLabel(c, acUiLang()) : c)) + '</option>'; }).join(''));
+  // the projects directory also lists the projects-only places
+  select.insertAdjacentHTML('beforeend', acPlaceOptionsHTML(await AcDB.getActiveCityRows(cat === 'projects')));
   select.dataset.filled = '1';
   select.setAttribute('data-city-select', '');
 }
@@ -224,7 +224,7 @@ function acInitMarketDirectory(cat, fixed) {
 
   const params = new URLSearchParams(location.search);
   (async function () {
-    await acFillCities(form.querySelector('[name="city"]'));
+    await acFillCities(form.querySelector('[name="city"]'), cat);
     const typeSel = form.querySelector('[name="propertyType"]');
     if (typeSel && typeof acPropertyTypeOptionsHTML === 'function' && !typeSel.dataset.filled) { typeSel.insertAdjacentHTML('beforeend', acPropertyTypeOptionsHTML()); typeSel.dataset.filled = '1'; }
     form.querySelectorAll('[name]').forEach(function (el) { if (params.get(el.name)) el.value = params.get(el.name); });

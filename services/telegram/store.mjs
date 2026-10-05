@@ -126,8 +126,8 @@ export function makeStore(fetchImpl) {
     },
     // ---- listings ----
     async activeCities() {
-      const rows = await rest('cities?active=eq.true&select=name');
-      return (rows || []).map((r) => r.name);
+      const rows = await rest('cities?active=eq.true&select=*');
+      return (rows || []).filter((r) => r.projects_only !== true).map((r) => r.name);   // listings: main cities only
     },
     async ownListings(userId) {
       return (await rest('listings?owner_id=eq.' + userId + '&is_sample=eq.false&select=id,title,price,area,city,size_marla,size_unit,property_type,type,moderation_status,last_confirmed_at,created_at&order=created_at.desc&limit=20')) || [];
