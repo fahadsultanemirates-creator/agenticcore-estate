@@ -148,9 +148,14 @@ const AcDB = (function () {
   }
 
   // ---------- reference data ----------
-  async function getActiveCities() {
-    const { data } = await supabaseClient.from('cities').select('name').eq('active', true).order('sort_order');
-    return (data || []).map(function (c) { return c.name; });
+  // Property listings use the main cities; projects may also use the
+  // projects-only places (Murree, Galiyat, Gilgit-Baltistan, … — migration 0028).
+  async function getActiveCityRows(forProjects) {
+    const { data } = await supabaseClient.from('cities').select('*').eq('active', true).order('sort_order');
+    return (data || []).filter(function (c) { return forProjects || c.projects_only !== true; });
+  }
+  async function getActiveCities(forProjects) {
+    return (await getActiveCityRows(forProjects)).map(function (c) { return c.name; });
   }
 
   async function getAreasForCity(cityName) {
@@ -539,7 +544,7 @@ const AcDB = (function () {
     currentUser: currentUser,
     signUp: signUp, logIn: logIn, logOut: logOut, updateUser: updateUser,
     getUser: getUser, listUsers: listUsers,
-    getActiveCities: getActiveCities, getAreasForCity: getAreasForCity,
+    getActiveCities: getActiveCities, getActiveCityRows: getActiveCityRows, getAreasForCity: getAreasForCity,
     submitDeveloperApplication: submitDeveloperApplication, listApplications: listApplications,
     getApplication: getApplication, getApplicationForUser: getApplicationForUser,
     getSignedDocUrl: getSignedDocUrl, decideApplication: decideApplication,
@@ -583,6 +588,23 @@ async function requireAuth(roles) {
 }
 
 // <option>s for an area dropdown: the popular areas, then "All areas A–Z".
+// <option>s for a city select: the main cities first, then (projects only)
+// the other places grouped by province.
+function acPlaceOptionsHTML(rows) {
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function label(n) { return typeof acCityLabel === 'function' && typeof acUiLang === 'function' ? acCityLabel(n, acUiLang()) : n; }
+  const main = rows.filter(function (c) { return c.projects_only !== true; });
+  const more = rows.filter(function (c) { return c.projects_only === true; });
+  let html = main.map(function (c) { return '<option value="' + esc(c.name) + '">' + esc(label(c.name)) + '</option>'; }).join('');
+  const regions = [];
+  more.forEach(function (c) { const r = c.region || 'Other'; if (regions.indexOf(r) < 0) regions.push(r); });
+  regions.forEach(function (r) {
+    html += '<optgroup label="' + esc(r + ' — projects') + '">' + more.filter(function (c) { return (c.region || 'Other') === r; })
+      .map(function (c) { return '<option value="' + esc(c.name) + '">' + esc(c.name) + '</option>'; }).join('') + '</optgroup>';
+  });
+  return html;
+}
+
 function acAreaOptions(areas, selected) {
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
   function opt(a) { return '<option value="' + esc(a) + '"' + (a === selected ? ' selected' : '') + '>' + esc(a) + '</option>'; }

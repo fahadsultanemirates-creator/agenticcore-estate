@@ -59,9 +59,8 @@ if (projectForm) {
     }
 
     if (citySelect) {
-      const cities = await AcDB.getActiveCities();
-      citySelect.innerHTML = '<option value="">Select a city</option>' +
-        cities.map(function (c) { return '<option value="' + acEscHTML(c) + '">' + acEscHTML((typeof acCityLabel === 'function' ? acCityLabel(c, acUiLang()) : c)) + '</option>'; }).join('');
+      // projects can also be in Murree, the Galiyat, Gilgit-Baltistan, … (grouped by province)
+      citySelect.innerHTML = '<option value="">Select a city or place</option>' + acPlaceOptionsHTML(await AcDB.getActiveCityRows(true));
       citySelect.setAttribute('data-city-select', '');
       citySelect.addEventListener('change', async function () {
         if (!citySelect.value) { areaSelect.innerHTML = '<option value="">Select a city first</option>'; return; }
