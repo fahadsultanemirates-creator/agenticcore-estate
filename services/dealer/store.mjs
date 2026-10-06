@@ -4,11 +4,15 @@
 // act on someone else's entry by guessing an id.
 
 import { makeStore } from '../telegram/store.mjs';
+import { fromSite } from './sources.mjs';
 
 const enc = encodeURIComponent;
 const inList = (ids) => '(' + ids.map((x) => enc(x)).join(',') + ')';
 const ACCOUNT_COLS = 'id,tg_user_id,chat_id,name,phone,role,lang,status,reveal_limit';
-const LISTING_COLS = 'id,ref,account_id,purpose,property_type,city,area,address,size_value,size_unit,size_marla,price,beds,baths,notes,status,expires_at,created_at,feed_accounts(role)';
+// feed_listings ↔ feed_accounts are linked three ways (poster, reveals, reports),
+// so the poster embed must name its foreign key or PostgREST refuses it.
+const BASE_COLS = 'id,ref,account_id,purpose,property_type,city,area,address,size_value,size_unit,size_marla,price,beds,baths,notes,status,expires_at,created_at';
+export const LISTING_COLS = BASE_COLS + ',feed_accounts!feed_listings_account_id_fkey(role)';
 
 function withRole(rows) {
   return (rows || []).map((r) => {
@@ -67,7 +71,7 @@ export function makeDealerStore(fetchImpl) {
       return one(rows);
     },
     async myListings(accountId) {
-      return rest('feed_listings?account_id=eq.' + enc(accountId) + '&status=neq.removed&order=created_at.desc&limit=10&select=' + LISTING_COLS.replace(',feed_accounts(role)', ''));
+      return rest('feed_listings?account_id=eq.' + enc(accountId) + '&status=neq.removed&order=created_at.desc&limit=10&select=' + BASE_COLS);
     },
     // Live entries for a search: coarse filter here, fine matching in feed.mjs
     async liveListings({ purpose, city, types }, now) {
@@ -76,6 +80,16 @@ export function makeDealerStore(fetchImpl) {
       if (city) q += '&city=eq.' + enc(city);
       if (types && types.length) q += '&property_type=in.' + inList(types);
       return withRole(await rest(q + '&order=created_at.desc&limit=300&select=' + LISTING_COLS));
+    },
+
+    // Live AgenticCore Estate website listings (public fields only, no contact)
+    async siteListings({ purpose, city, types }) {
+      let q = 'listings?is_sample=eq.false&moderation_status=eq.active';
+      if (purpose) q += '&type=eq.' + (purpose === 'rent' ? 'rent' : 'buy');
+      if (city) q += '&city=eq.' + enc(city);
+      if (types && types.length) q += '&property_type=in.' + inList(types);
+      const rows = await rest(q + '&order=created_at.desc&limit=300&select=id,type,property_type,city,area,price,beds,baths,size_marla,size_unit,created_at');
+      return (rows || []).map((r) => fromSite(r));
     },
 
     // ---- requests ----
@@ -108,6 +122,13 @@ export function makeDealerStore(fetchImpl) {
       const rows = await rest('feed_matches?on_conflict=request_id,listing_id',
         json('POST', listingIds.map((l) => ({ request_id: requestId, listing_id: l, notified_at: new Date().toISOString() })), 'resolution=ignore-duplicates,return=representation'));
       return (rows || []).map((r) => r.listing_id);
+    },
+    async matchedIds(requestId) { return ((await rest('feed_matches?request_id=eq.' + enc(requestId) + '&select=listing_id')) || []).map((r) => r.listing_id); },
+    // Requests whose website / partner results were last looked at over an hour ago
+    async toRecheck(now) {
+      const at = new Date(now);
+      return rest('feed_requests?status=in.(open,answered)&deadline_at=gt.' + enc(at.toISOString()) +
+        '&or=(checked_at.is.null,checked_at.lt.' + enc(new Date(now - 3600000).toISOString()) + ')&order=checked_at.asc.nullsfirst&limit=50&select=*');
     },
     async matchCount(requestId) { return ((await rest('feed_matches?request_id=eq.' + enc(requestId) + '&select=listing_id')) || []).length; },
 

@@ -6,6 +6,7 @@ import * as F from '../services/dealer/feed.mjs';
 import { handleUpdate, resetPlaceCache } from '../services/dealer/bot.mjs';
 import { runDealerJobs } from '../services/dealer/cron.mjs';
 import { t } from '../services/dealer/strings.mjs';
+import { searchAll, bestPrice, fromSite, fromPartner, makePartnerSearch } from '../services/dealer/sources.mjs';
 
 const CITIES = ['Islamabad', 'Rawalpindi', 'Lahore', 'Karachi', 'Murree', 'Galiyat (Nathia Gali / Ayubia)'];
 const H = 3600000, DAY = 24 * H;
@@ -15,7 +16,7 @@ const OWNER = 999;
 function fakeStore() {
   let n = 0;
   const id = () => 'id-' + (++n).toString().padStart(4, '0') + '-0000-0000-000000000000';
-  const db = { accounts: [], listings: [], requests: [], matches: [], reveals: [], reports: [], blocks: [], sessions: {}, seen: new Set() };
+  const db = { site: [], accounts: [], listings: [], requests: [], matches: [], reveals: [], reports: [], blocks: [], sessions: {}, seen: new Set() };
   const now = () => Date.now();
   const withRole = (l) => (l ? Object.assign({}, l, { poster_role: (db.accounts.find((a) => a.id === l.account_id) || {}).role }) : null);
   const conflict = () => { const e = new Error('duplicate'); e.status = 409; e.code = '23505'; return e; };
@@ -62,6 +63,15 @@ function fakeStore() {
       const fresh = ids.filter((l) => !db.matches.some((m) => m.request_id === req && m.listing_id === l));
       fresh.forEach((l) => db.matches.push({ request_id: req, listing_id: l })); return fresh;
     },
+    async siteListings({ purpose, city, types }) {
+      return db.site.filter((r) => (!purpose || r.type === (purpose === 'rent' ? 'rent' : 'buy')) && (!city || r.city === city) &&
+        (!types || !types.length || types.includes(r.property_type))).map((r) => fromSite(r));
+    },
+    async matchedIds(req) { return db.matches.filter((m) => m.request_id === req).map((m) => m.listing_id); },
+    async toRecheck(at) {
+      return db.requests.filter((r) => ['open', 'answered'].includes(r.status) && new Date(r.deadline_at).getTime() > at &&
+        (!r.checked_at || new Date(r.checked_at).getTime() < at - H));
+    },
     async matchCount(req) { return db.matches.filter((m) => m.request_id === req).length; },
     async revealsToday(v) { return db.reveals.filter((r) => r.viewer_id === v).length; },
     async hasRevealed(v, l) { return db.reveals.some((r) => r.viewer_id === v && r.listing_id === l); },
@@ -100,7 +110,7 @@ function fakeTg() {
 }
 function setup(opts) {
   resetPlaceCache();
-  const deps = { tg: fakeTg(), store: fakeStore(), ownerId: String(OWNER), voice: { configured: () => true, transcribe: async () => (opts && opts.heard) || '' } };
+  const deps = { tg: fakeTg(), store: fakeStore(), ownerId: String(OWNER), partner: (opts && opts.partner) || null, voice: { configured: () => true, transcribe: async () => (opts && opts.heard) || '' } };
   let u = 0;
   const msg = (from, m) => handleUpdate({ update_id: ++u, message: Object.assign({ message_id: u, chat: { id: from, type: 'private' }, from: { id: from } }, m) }, deps);
   const text = (from, s) => msg(from, { text: s });
@@ -433,4 +443,123 @@ test('webhook refuses requests without the secret', async () => {
   assert.equal(res.status, 403);
   delete process.env.DEALER_BOT_TOKEN;
   delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+});
+
+// ---------- three sources, best 3 ----------
+const siteRow = (o) => Object.assign({ id: 'site-' + Math.random().toString(36).slice(2, 8), type: 'buy', property_type: 'house', city: 'Islamabad',
+  area: 'G-13/3', price: 23000000, beds: 3, baths: 3, size_marla: 5, size_unit: 'marla', created_at: new Date().toISOString() }, o);
+
+test('sources: best price per marla first, ask-the-seller last, max 3, one copy per property', async () => {
+  const q = F.parseQuery('5 marla house G-13 under 2.5 crore', [], CITIES);
+  const feed = [
+    { id: 'f1', account_id: 'a', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13/2', price: 24000000, size_marla: 5, created_at: '2026-10-01' },
+    { id: 'f2', account_id: 'a', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13/1', price: null, size_marla: 5, created_at: '2026-10-02' },
+    { id: 'f3', account_id: 'a', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13/4', price: 22000000, size_marla: 5, created_at: '2026-10-03' }
+  ];
+  const site = [fromSite(siteRow({ id: 's1', area: 'G-13/4', price: 22000000 })), fromSite(siteRow({ id: 's2', price: 21000000 }))];
+  const partner = async () => [fromPartner({ id: 'p1', ref: 'PX-1', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13', size_value: 5, size_unit: 'marla', price: 20000000, url: 'https://partner.example/p1' }, 'PartnerX')];
+  const out = await searchAll(q, { feed: () => feed, site: () => site, partner }, { now: Date.parse('2026-10-06') });
+  assert.equal(out.length, 3);
+  assert.deepEqual(out.map((l) => l.source + ':' + l.id), ['partner:p1', 'site:s2', 'feed:f3'], 'cheapest first; G-13/4 at 2.2 crore kept once, as the Dealer AI copy');
+  const fewer = await searchAll(q, { feed: () => feed.slice(1, 2) }, {});
+  assert.equal(fewer[0].id, 'f2', 'ask-the-seller still shown when nothing else');
+  assert.equal(bestPrice([{ price: null }, { price: 5, size_marla: 1 }])[0].price, 5);
+});
+
+test('sources: a slow, broken or hostile partner never breaks the search', async () => {
+  const q = F.parseQuery('5 marla house G-13 under 2.5 crore', [], CITIES);
+  const feed = () => [{ id: 'f1', account_id: 'a', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13', price: 24000000, size_marla: 5 }];
+  const broken = async () => { throw new Error('down'); };
+  assert.equal((await searchAll(q, { feed, partner: broken, site: () => { throw new Error('db'); } })).length, 1);
+  // bad rows are dropped; non-https links removed
+  assert.equal(fromPartner({ purpose: 'sale', property_type: 'castle', city: 'Islamabad', area: 'G-13' }), null);
+  assert.equal(fromPartner({ purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13', url: 'javascript:alert(1)' }).url, null);
+  // HTTP client: secret sent as a header, results capped at 10, errors → []
+  let seen = null;
+  const fetchOk = async (url, init) => { seen = init; return { ok: true, json: async () => ({ results: Array.from({ length: 15 }, (_, i) => ({ id: 'p' + i, purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13', price: 1e7 })) }) }; };
+  const search = makePartnerSearch(fetchOk, { url: 'https://partner.example/search', secret: 's3cret', name: 'PartnerX' });
+  const rows = await search(q);
+  assert.equal(rows.length, 10);
+  assert.equal(seen.headers.Authorization, 'Bearer s3cret');
+  assert.ok(!JSON.stringify(JSON.parse(seen.body)).includes('s3cret'));
+  assert.deepEqual(await makePartnerSearch(async () => ({ ok: false }), { url: 'https://p', secret: 'x', name: 'P' })(q), []);
+  assert.equal(makePartnerSearch(fetchOk, null), null, 'off until configured');
+});
+
+test('search: at most 3 results across the bot, the website and a partner, each labelled with its source', async () => {
+  const partner = async () => [fromPartner({ id: 'p1', purpose: 'sale', property_type: 'house', city: 'Islamabad', area: 'G-13/2', size_value: 5, size_unit: 'marla', price: 19500000, url: 'https://partner.example/p1' }, 'PartnerX')];
+  const h = setup({ partner });
+  h.deps.store.db.site.push(siteRow({ id: 's1', price: 21000000 }), siteRow({ id: 's2', price: 30000000 }), siteRow({ id: 's3', city: 'Lahore', area: 'DHA' }));
+  await register(h, 1, 'Ali', 'dealer');
+  for (const p of ['2.4', '2.3', '2.2']) await postFull(h, 1, 'House for sale G-13/2 Islamabad 5 marla 3 bed demand ' + p + ' crore', ['4']);
+  await register(h, 2, 'Bilal', 'buyer');
+  await h.text(2, '5 marla house G-13 under 2.5 crore');
+  const results = h.all(2).filter((m) => /Source:/.test(m.text));
+  assert.equal(results.length, 3);
+  assert.match(results[0].text, /Source: PartnerX/);
+  assert.equal(results[0].extra.reply_markup.inline_keyboard[0][0].url, 'https://partner.example/p1');
+  assert.match(results[1].text, /AgenticCore Estate website/);
+  assert.equal(results[1].extra.reply_markup.inline_keyboard[0][0].url, 'https://agenticcore.estate/listing.html?id=s1');
+  assert.ok(!/\+92/.test(results[1].text), 'website numbers stay on the website');
+  assert.match(results[2].text, /Source: Dealer AI/);
+  assert.match(results[2].text, /2.2 crore/);
+  assert.ok(h.btns(results[2]).some((b) => b.startsWith('rv:')));
+  results.forEach((m) => assert.match(m.text, /not verified/));
+});
+
+test('24-hour request: a website listing added later is sent once by the hourly check', async () => {
+  const h = setup();
+  await register(h, 2, 'Bilal', 'buyer');
+  await h.text(2, '5 marla house G-13 under 2.5 crore');
+  const r = h.deps.store.db.requests[0];
+  assert.equal(r.status, 'open');
+  h.deps.store.db.site.push(siteRow({ id: 'late' }));
+  await runDealerJobs({ tg: h.deps.tg, store: h.deps.store, now: Date.now() + 2 * H });
+  assert.match(h.last(2).text, /New match/);
+  assert.match(h.last(2).text, /AgenticCore Estate website/);
+  assert.equal(r.status, 'answered');
+  assert.deepEqual(r.sent_refs, ['site:late']);
+  const count = h.all(2).length;
+  await runDealerJobs({ tg: h.deps.tg, store: h.deps.store, now: Date.now() + 4 * H });
+  assert.equal(h.all(2).length, count, 'not sent twice');
+  await runDealerJobs({ tg: h.deps.tg, store: h.deps.store, now: Date.now() + 25 * H });
+  assert.match(h.last(2).text, /we sent you 1 match/);
+});
+
+// ---------- fixes after the first live test ----------
+test('store: the poster embed names its foreign key (feed_listings ↔ feed_accounts is linked three ways)', async () => {
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'sb_secret_test';
+  const { makeDealerStore, LISTING_COLS } = await import('../services/dealer/store.mjs');
+  const urls = [];
+  const store = makeDealerStore(async (url) => { urls.push(decodeURIComponent(url)); return { ok: true, status: 200, text: async () => '[]' }; });
+  await store.liveListings({ purpose: 'sale', city: 'Islamabad', types: ['house'] }, Date.now());
+  await store.listingById('00000000-0000-0000-0000-000000000000');
+  await store.myListings('00000000-0000-0000-0000-000000000000');
+  assert.match(LISTING_COLS, /feed_accounts!feed_listings_account_id_fkey\(role\)/);
+  urls.slice(0, 2).forEach((u) => assert.match(u, /feed_accounts!feed_listings_account_id_fkey\(role\)/));
+  urls.forEach((u) => assert.doesNotMatch(u, /[,=]feed_accounts\(role\)/));
+  delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+});
+
+test('a database error mid-search is never silent: the user hears back, the team gets the error', async () => {
+  const h = setup();
+  await register(h, OWNER, 'Fahad', 'owner');
+  await register(h, 2, 'Bilal', 'buyer');
+  h.deps.store.liveListings = async () => { throw new Error('more than one relationship was found'); };
+  h.deps.store.myRequests = async () => { throw new Error('more than one relationship was found'); };
+  await h.text(2, '5 marla house G-13 under 2.5 crore');
+  assert.equal(h.last(2).text, t('en', 'save_failed'));
+  assert.match(h.last(OWNER).text, /Dealer AI error: more than one relationship/);
+});
+
+test('posting keeps the sub-sector; /name changes the name', async () => {
+  const h = setup();
+  await register(h, 1, 'Grok Test', 'dealer');
+  await postFull(h, 1, 'House for sale G-13/2 Islamabad 5 marla 3 bed demand 2.4 crore', ['4']);
+  assert.equal(h.deps.store.db.listings[0].area, 'G-13/2');
+  await h.text(1, '/name');
+  assert.match(h.last(1).text, /Grok Test/);
+  await h.text(1, 'Fahad Sultan');
+  assert.equal(h.deps.store.db.accounts[0].name, 'Fahad Sultan');
+  assert.equal(h.last(1).text, t('en', 'name_changed', { name: 'Fahad Sultan' }));
 });

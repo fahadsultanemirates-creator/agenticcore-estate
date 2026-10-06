@@ -102,6 +102,9 @@ export function draftFromText(text, areaNames, cities) {
   const city = f.city && matchCity(f.city, cities);
   if (city) d.city = city;
   if (f.area) d.area = String(f.area).slice(0, 120);
+  // keep the sub-sector people typed: "G-13/2", not just "G-13"
+  const sub = normaliseText(text).match(/\b([b-i])\s?-?\s?(\d{1,2})\s?\/\s?(\d)\b/i);
+  if (sub && d.area && norm(d.area) === norm(sub[1] + '-' + sub[2])) d.area = sub[1].toUpperCase() + '-' + sub[2] + '/' + sub[3];
   if (f.size_value) { d.size_value = f.size_value; d.size_unit = f.size_unit || 'marla'; }
   if (f.price_ask) d.price_ask = true;
   else if (f.price) d.price = f.price;

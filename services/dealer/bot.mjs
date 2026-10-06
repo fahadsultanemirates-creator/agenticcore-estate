@@ -15,11 +15,12 @@ import { detectLang } from '../assistant-service.mjs';
 import { parseCriteria } from '../criteria.mjs';
 import {
   FEED_TYPES, BUILT, LISTING_DAYS, REQUEST_HOURS, KEEP_DAYS, normaliseText, guessIntent, parseSize, parsePrice, parseCount, normPhone,
-  matchCity, draftFromText, nextListingStep, listingRow, hasContactInfo, parseQuery, queryUsable, matches, rank, makeRef, card, typeLabel,
+  matchCity, draftFromText, nextListingStep, listingRow, hasContactInfo, parseQuery, queryUsable, matches, makeRef, card, typeLabel,
   describeQuery, requestQuery
 } from './feed.mjs';
+import { searchAll, resultKey, MAX_RESULTS } from './sources.mjs';
 
-export const DEFAULT_LIMITS = { reveals: 10, listingsPerDay: 20, msgsPer10Min: 30, openRequests: 5, results: 5 };
+export const DEFAULT_LIMITS = { reveals: 10, listingsPerDay: 20, msgsPer10Min: 30, openRequests: 5, results: 3 };
 const DAY = 86400000;
 const iso = (ms) => new Date(ms).toISOString();
 const dateText = (v, lang) => new Date(v).toLocaleDateString(lang === 'ur' ? 'ur-PK' : 'en-GB', { day: 'numeric', month: 'short', timeZone: 'Asia/Karachi' });
@@ -36,6 +37,11 @@ export async function handleUpdate(update, deps) {
   try {
     if (update.callback_query) await onCallback(ctx, update.callback_query);
     else await onMessage(ctx, update.message);
+  } catch (e) {
+    // never leave someone waiting in silence: say sorry, tell the team what broke
+    console.error('[dealer] update failed:', e && e.message);
+    await ctx.say('save_failed').catch(() => null);
+    if (deps.ownerId) await deps.tg.send(deps.ownerId, '⚠️ Dealer AI error: ' + String((e && e.message) || e).slice(0, 200)).catch(() => null);
   } finally {
     await deps.store.saveSession(ctx.chatId, ctx.state, ctx.lang).catch(() => null);
   }
@@ -107,6 +113,14 @@ async function onMessage(ctx, msg) {
   const st = ctx.state;
   if (st.step === 'listing' && st.field) return onListingAnswer(ctx, text);
   if (st.step === 's_query') { ctx.state = {}; return doSearch(ctx, text); }
+  if (st.step === 'rename') {
+    const name = text.replace(/\s+/g, ' ').trim();
+    if (name.length < 2 || name.length > 80 || /\d{4,}|https?:|@/.test(name)) return ctx.say('bad_name');
+    await ctx.deps.store.updateAccount(ctx.account.id, { name });
+    ctx.account.name = name;
+    ctx.state = {};
+    return ctx.say('name_changed', { name });
+  }
 
   // free text: a listing or a search?
   const guess = guessIntent(text);
@@ -129,6 +143,7 @@ async function onCommand(ctx, cmd) {
   if (cmd === 'post' || cmd === 'new') return startListing(ctx);
   if (cmd === 'search') { ctx.state = { step: 's_query' }; return ctx.say('s_start'); }
   if (cmd === 'mine') return showMine(ctx);
+  if (cmd === 'name') { ctx.state = { step: 'rename' }; return ctx.say('ask_new_name', { name: ctx.account.name }); }
   if (cmd === 'requests') return showRequests(ctx);
   if (cmd === 'stats' && ctx.isOwner) {
     const s = await ctx.deps.store.stats();
@@ -395,7 +410,8 @@ export async function alertBuyers(deps, listing, now) {
     if (!fresh.length) continue;
     const L = acc.lang || 'en';
     try {
-      await deps.tg.send(acc.chat_id, t(L, 'alert_new', { ref: r.ref, q: r.query.slice(0, 80) }) + '\n\n' + card(listing, L), resultButtons(L, listing.id));
+      const m = resultMessage(Object.assign({ source: 'feed' }, listing), L);
+      await deps.tg.send(acc.chat_id, t(L, 'alert_new', { ref: r.ref, q: r.query.slice(0, 80) }) + '\n\n' + m.text, m.extra);
       sent++;
     } catch (e) { /* the buyer may have stopped the bot */ }
     if (r.status === 'open') await store.updateRequest(r.id, { status: 'answered', answered_at: iso(now) }).catch(() => null);
@@ -403,9 +419,34 @@ export async function alertBuyers(deps, listing, now) {
   return sent;
 }
 
-// ---------- search ----------
+// ---------- search (three sources, best 3) ----------
 function resultButtons(L, listingId) {
   return buttons([[[t(L, 'btn_contact'), 'rv:' + listingId], [t(L, 'btn_report'), 'rp:' + listingId]]]);
+}
+// One result → message text + buttons, by source. Dealer AI entries: contact
+// through the bot (daily limit). Website listings: the listing page (numbers
+// there are for signed-in visitors). Partner: its own link, if any.
+export function resultMessage(l, L) {
+  const src = l.source || 'feed';
+  if (src === 'feed') return { text: card(l, L) + '\n' + t(L, 'src_feed'), extra: resultButtons(L, l.id) };
+  const body = card(Object.assign({}, l, { ref: src === 'site' ? 'AgenticCore Estate' : l.ref }), L) + '\n' +
+    (src === 'site' ? t(L, 'src_site') : t(L, 'src_partner', { name: l.partner || 'Partner' }));
+  const label = src === 'site' ? t(L, 'btn_view_site') : t(L, 'btn_view_partner', { name: l.partner || 'Partner' });
+  return { text: body, extra: l.url ? buttons([[[label, l.url]]]) : undefined };
+}
+// Best matches across Dealer AI entries, website listings and the partner.
+// skip: result keys already sent for this request.
+export async function findAll(deps, accountId, q, now, skip, max) {
+  const store = deps.store;
+  const blocked = await store.blockedWith(accountId);
+  return searchAll(q, {
+    feed: () => store.liveListings({ purpose: q.purpose, city: q.city, types: q.property_types }, now),
+    site: () => store.siteListings({ purpose: q.purpose, city: q.city, types: q.property_types }),
+    partner: deps.partner || null
+  }, {
+    max: max || MAX_RESULTS, now, skip: skip || new Set(),
+    exclude: (l) => (l.source || 'feed') === 'feed' && (l.account_id === accountId || blocked.has(l.account_id))
+  });
 }
 
 async function doSearch(ctx, text) {
@@ -414,17 +455,14 @@ async function doSearch(ctx, text) {
   if (!queryUsable(q)) { ctx.state = { step: 's_query' }; return ctx.say('s_need_area'); }
   const L = ctx.L(), store = ctx.deps.store, now = ctx.now();
   await ctx.say('s_understood', { q: describeQuery(q, L) });
-  const [live, blocked] = await Promise.all([
-    store.liveListings({ purpose: q.purpose, city: q.city, types: q.property_types }, now),
-    store.blockedWith(ctx.account.id)
-  ]);
-  const found = rank((live || []).filter((l) => l.account_id !== ctx.account.id && !blocked.has(l.account_id) && matches(l, q))).slice(0, ctx.limits.results);
+  const found = await findAll(ctx.deps, ctx.account.id, q, now, null, ctx.limits.results);
 
   if (found.length) {
     const left = Math.max(0, revealLimit(ctx) - (await store.revealsToday(ctx.account.id, now)));
     await ctx.say('s_found', { n: found.length, left });
-    for (const l of found) await ctx.send(card(l, L), resultButtons(L, l.id));
-    ctx.state = { last: { text: text.slice(0, 600), q, ids: found.map((l) => l.id) } };
+    for (const l of found) { const m = resultMessage(l, L); await ctx.send(m.text, m.extra); }
+    ctx.state = { last: { text: text.slice(0, 600), q, ids: found.filter((l) => (l.source || 'feed') === 'feed').map((l) => l.id),
+      sent: found.filter((l) => l.source && l.source !== 'feed').map(resultKey) } };
     return ctx.say('s_alert_offer', null, buttons([[[t(L, 's_alert_btn'), 'al']]]));
   }
 
@@ -436,7 +474,7 @@ async function doSearch(ctx, text) {
   return notifyTeam(ctx, req, q);
 }
 
-async function createRequest(ctx, text, q, status, lifeMs) {
+async function createRequest(ctx, text, q, status, lifeMs, sentRefs) {
   const store = ctx.deps.store, now = ctx.now();
   const mine = await store.myRequests(ctx.account.id);
   if ((mine || []).filter((r) => r.status !== 'waiting_choice').length >= ctx.limits.openRequests) {
@@ -447,7 +485,7 @@ async function createRequest(ctx, text, q, status, lifeMs) {
   const until = iso(now + lifeMs);
   const row = { account_id: ctx.account.id, query: text.slice(0, 600), purpose: q.purpose, property_types: q.property_types, city: q.city,
     areas: q.areas, price_min: q.price_min, price_max: q.price_max, size_marla: q.size_marla, beds_min: q.beds_min,
-    status, deadline_at: until, active_until: until, answered_at: status === 'answered' ? iso(now) : null };
+    status, deadline_at: until, active_until: until, answered_at: status === 'answered' ? iso(now) : null, sent_refs: sentRefs || [] };
   for (let i = 0; i < 3; i++) {
     try { return await store.insertRequest(Object.assign({ ref: makeRef('BR') }, row)); } catch (e) {
       if (!(e && (e.status === 409 || e.code === '23505'))) { console.error('[dealer] save request:', e && e.message); break; }
@@ -573,7 +611,7 @@ async function manageRequest(ctx, action, id, cb) {
   if (!r || r.account_id !== ctx.account.id || r.status === 'closed' || r.status === 'expired') return ctx.say('not_available');
   if (action === 'keep') {
     const until = iso(now + KEEP_DAYS * DAY);
-    const n = await store.matchCount(r.id);
+    const n = (await store.matchCount(r.id)) + (r.sent_refs || []).length;
     await store.updateRequest(r.id, { status: n > 0 ? 'answered' : 'open', deadline_at: until, active_until: until }, ctx.account.id);
     await ctx.say('req_kept', { ref: r.ref, d: dateText(until, ctx.L()) });
   } else if (action === 'close' || action === 'change') {
@@ -647,7 +685,7 @@ async function onCallback(ctx, cb) {
     case 'al': {
       const last = ctx.state.last;
       if (!last) return ctx.say('s_start');
-      const req = await createRequest(ctx, last.text, last.q, 'answered', KEEP_DAYS * DAY);
+      const req = await createRequest(ctx, last.text, last.q, 'answered', KEEP_DAYS * DAY, last.sent);
       if (!req) return;
       await ctx.deps.store.addMatches(req.id, last.ids || []);
       ctx.state = {};
