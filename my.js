@@ -531,9 +531,11 @@ const AC_MODULES = ['overview', 'properties', 'projects', 'professional', 'agenc
   };
 
   // Telegram: connect with a one-time code (the bot never asks for a password)
+  // Hidden for now: Telegram is not offered publicly (the bot is kept for later).
+  const AC_SHOW_TELEGRAM = false;
   async function renderTelegram() {
     const box = document.getElementById('myTg');
-    if (!box) return;
+    if (!box || !AC_SHOW_TELEGRAM) return;
     const r = await supabaseClient.rpc('my_telegram_link');
     if (r.error) return;                       // bot not set up yet: keep the panel hidden
     box.hidden = false;
