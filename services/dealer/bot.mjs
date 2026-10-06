@@ -137,6 +137,8 @@ async function onCommand(ctx, cmd) {
     return sendMenu(ctx);
   }
   if (cmd === 'language') return chooseLanguage(ctx);
+  // your own Telegram ID (to set DEALER_OWNER_TELEGRAM_ID for team alerts)
+  if (cmd === 'myid') return ctx.say('my_id', { id: ctx.from.id, owner: ctx.isOwner ? '✅' : '—' });
   if (!ctx.account) return chooseLanguage(ctx);
   if (cmd === 'cancel') { ctx.state = {}; await ctx.say('cancelled'); return sendMenu(ctx); }
   if (cmd === 'help') return ctx.say('help', { limit: revealLimit(ctx) });
@@ -342,7 +344,7 @@ async function onListingAnswer(ctx, text) {
 
 function draftCard(ctx) {
   const d = ctx.state.draft;
-  const row = Object.assign(listingRow(d), { ref: '—', created_at: iso(ctx.now()), poster_role: ctx.account.role });
+  const row = Object.assign(listingRow(d), { ref: '', created_at: iso(ctx.now()), poster_role: ctx.account.role });
   let s = card(row, ctx.L(), { own: true });
   if (row.address) s += '\n' + t(ctx.L(), 'summary_addr', { v: row.address });
   return s;

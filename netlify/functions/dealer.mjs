@@ -18,7 +18,8 @@ export function makeDealerDeps(fetchImpl) {
     store: makeDealerStore(fetchImpl),
     partner: makePartnerSearch(fetchImpl),   // null until PARTNER_FEED_URL + PARTNER_FEED_SECRET are set
     voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl) },
-    ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim(),
+    // team alerts: DEALER_OWNER_TELEGRAM_ID if set (Dealer AI only), else the main bot's owner
+    ownerId: (process.env.DEALER_OWNER_TELEGRAM_ID || process.env.OWNER_TELEGRAM_ID || '').trim(),
     limits: reveals > 0 ? { reveals } : {}
   };
 }
