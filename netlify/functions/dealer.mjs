@@ -8,6 +8,7 @@ import { makeDealerStore } from '../../services/dealer/store.mjs';
 import { makeTelegram, dealerToken, webhookSecret } from '../../services/telegram/tg-api.mjs';
 import { storeConfigured } from '../../services/telegram/store.mjs';
 import { voiceConfigured, transcribe } from '../../services/telegram/voice.mjs';
+import { makePartnerSearch } from '../../services/dealer/sources.mjs';
 import crypto from 'node:crypto';
 
 export function makeDealerDeps(fetchImpl) {
@@ -15,6 +16,7 @@ export function makeDealerDeps(fetchImpl) {
   return {
     tg: makeTelegram(fetchImpl, dealerToken),
     store: makeDealerStore(fetchImpl),
+    partner: makePartnerSearch(fetchImpl),   // null until PARTNER_FEED_URL + PARTNER_FEED_SECRET are set
     voice: { configured: voiceConfigured, transcribe: (bytes, name) => transcribe(bytes, name, fetchImpl) },
     ownerId: (process.env.OWNER_TELEGRAM_ID || '').trim(),
     limits: reveals > 0 ? { reveals } : {}

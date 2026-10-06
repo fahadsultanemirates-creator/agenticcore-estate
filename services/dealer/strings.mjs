@@ -243,6 +243,15 @@ const S = {
     ur: 'آپ کی پہلے ہی {n} فعال درخواستیں ہیں۔ پہلے "میری درخواستیں" سے کوئی بند کریں۔',
     ro: 'Aap ki pehle hi {n} active requests hain. Pehle "Meri requests" se koi band karein.'
   },
+  src_feed: { en: 'Source: Dealer AI', ur: 'ذریعہ: Dealer AI', ro: 'Source: Dealer AI' },
+  src_site: {
+    en: 'Source: AgenticCore Estate website (contact number for signed-in visitors)',
+    ur: 'ذریعہ: AgenticCore Estate ویب سائٹ (رابطہ نمبر سائن اِن صارفین کے لیے)',
+    ro: 'Source: AgenticCore Estate website (contact number sign-in walon ke liye)'
+  },
+  src_partner: { en: 'Source: {name}', ur: 'ذریعہ: {name}', ro: 'Source: {name}' },
+  btn_view_site: { en: '🌐 View on AgenticCore Estate', ur: '🌐 AgenticCore Estate پر دیکھیں', ro: '🌐 AgenticCore Estate par dekhein' },
+  btn_view_partner: { en: '🌐 View on {name}', ur: '🌐 {name} پر دیکھیں', ro: '🌐 {name} par dekhein' },
   btn_contact: { en: '📞 Contact', ur: '📞 رابطہ', ro: '📞 Contact' },
   btn_report: { en: '🚩 Report', ur: '🚩 رپورٹ', ro: '🚩 Report' },
   btn_block: { en: '⛔ Block this poster', ur: '⛔ اس پوسٹر کو بلاک کریں', ro: '⛔ Is poster ko block karein' },
