@@ -500,7 +500,8 @@ async function notifyTeam(ctx, req, q) {
   if (!ctx.deps.ownerId) return;
   const text = '🆕 Dealer AI — buyer request ' + req.ref + ' (24 hours)\n"' + req.query.slice(0, 300) + '"\nUnderstood: ' + describeQuery(q, 'en') +
     '\nBuyer: ' + ctx.account.name + ' (' + ctx.account.role + ')\n\nAny matching entry posted in this bot is sent to the buyer automatically. Details: feed_requests in Supabase.';
-  await ctx.deps.tg.send(ctx.deps.ownerId, text).catch(() => null);   // the owner must have pressed Start once
+  // the owner must have pressed Start in this bot once, and OWNER_TELEGRAM_ID must be their Telegram user id
+  await ctx.deps.tg.send(ctx.deps.ownerId, text).catch((e) => console.error('[dealer] team alert failed:', e && e.message, e && e.description));
 }
 
 // ---------- contact reveal / report / block ----------
@@ -518,6 +519,10 @@ async function reveal(ctx, listingId) {
   if (!again) {
     if (used >= limit) return ctx.say('reveal_limit', { n: limit });
     await store.addReveal(ctx.account.id, l.id);
+    // tell the poster someone may call (name and role only, never the viewer's number)
+    const PL = poster.lang || 'en';
+    await ctx.deps.tg.send(poster.chat_id, t(PL, 'viewed_notice', { ref: l.ref, name: ctx.account.name, role: t(PL, 'role_name_' + ctx.account.role) }))
+      .catch((e) => console.error('[dealer] viewed notice failed:', e && e.message));
   }
   const L = ctx.L();
   return ctx.say('reveal', {

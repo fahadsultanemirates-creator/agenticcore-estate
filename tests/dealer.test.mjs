@@ -285,7 +285,11 @@ test('search: matches shown with not-verified label; contact reveal has a daily 
   assert.match(h.last(2).text, /\+923000000001/);
   assert.match(h.last(2).text, /not verified/);
   assert.deepEqual(h.btns(h.last(2)).map((b) => b.split(':')[0]), ['rp', 'bk']);
+  const notice = h.all(1).slice(-1)[0];
+  assert.match(notice.text, /Bilal \(buyer\) has taken your number for DL-/, 'poster told');
+  assert.ok(!/\+92300000000[2-9]/.test(notice.text), 'the buyer\'s number is not shared');
   await h.press(2, 'rv:' + id1);                                                       // again: free
+  assert.equal(h.all(1).slice(-1)[0], notice, 'repeat reveal: no second notice');
   assert.match(h.last(2).text, /\+923000000001/);
   await h.press(2, 'rv:' + id2);
   assert.equal(h.last(2).text, t('en', 'reveal_limit', { n: 1 }));
