@@ -62,6 +62,11 @@ const S = {
     ur: 'AgenticCore Dealer AI\n• پوسٹ: فروخت یا کرایہ، صرف تحریر، 30 دن کے لیے (کسی بھی وقت رینیو کریں)۔\n• تلاش: اپنی ضرورت لکھیں؛ اگر کچھ نہ ملے تو ہم 24 گھنٹے تلاش کر کے نتائج بھیجتے ہیں۔\n• رابطہ نمبر: نتیجے پر "رابطہ" دبائیں (روزانہ {limit})۔\n• یہاں ہر چیز صارفین کی دی ہوئی ہے اور تصدیق شدہ نہیں۔ کوئی بھی رقم دینے سے پہلے ملکیت کے کاغذات، NOC اور منظوری خود چیک کریں۔\n• غلط یا جعلی پوسٹ کی 🚩 سے رپورٹ کریں۔\n\nکمانڈز: /post /search /mine /requests /name /language /cancel',
     ro: 'AgenticCore Dealer AI\n• Post: sale ya rent, sirf text, 30 din ke liye (kabhi bhi renew karein).\n• Search: apni zaroorat likhein; agar kuch na mile to hum 24 ghante dhoond kar results bhejte hain.\n• Contact number: result par "Contact" dabayein (rozana {limit}).\n• Yahan sab kuch users ka diya hua hai aur verified nahi. Koi bhi raqam dene se pehle ownership papers, NOC aur approvals khud check karein.\n• Ghalat ya fake entry ki 🚩 se report karein.\n\nCommands: /post /search /mine /requests /name /language /cancel'
   },
+  my_id: {
+    en: 'Your Telegram ID: {id}\nTeam alerts come to this account: {owner}',
+    ur: 'آپ کی ٹیلیگرام آئی ڈی: {id}\nٹیم الرٹس اس اکاؤنٹ پر آتے ہیں: {owner}',
+    ro: 'Aap ki Telegram ID: {id}\nTeam alerts is account par aate hain: {owner}'
+  },
   ask_new_name: {
     en: 'Your name is now "{name}". Type the new name:',
     ur: 'آپ کا نام ابھی "{name}" ہے۔ نیا نام لکھیں:',

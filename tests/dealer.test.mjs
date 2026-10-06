@@ -567,3 +567,16 @@ test('posting keeps the sub-sector; /name changes the name', async () => {
   assert.equal(h.deps.store.db.accounts[0].name, 'Fahad Sultan');
   assert.equal(h.last(1).text, t('en', 'name_changed', { name: 'Fahad Sultan' }));
 });
+
+test('/myid shows the Telegram ID and whether team alerts come here; draft summary has no placeholder ref', async () => {
+  const h = setup();
+  await register(h, OWNER, 'Fahad', 'owner');
+  await h.text(OWNER, '/myid');
+  assert.match(h.last(OWNER).text, new RegExp('Telegram ID: ' + OWNER + '\\n.*✅'));
+  await register(h, 7, 'Other', 'dealer');
+  await h.text(7, '/myid');
+  assert.match(h.last(7).text, /Telegram ID: 7\n.*—/);
+  await h.text(7, 'Shop for rent Blue Area Islamabad 300 sq ft rent 1.5 lakh');
+  await h.press(7, 'ls:skip'); await h.press(7, 'ls:skip');
+  assert.match(h.last(7).text, /\n🏠 Shop for rent/);
+});

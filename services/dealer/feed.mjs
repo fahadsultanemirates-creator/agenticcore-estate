@@ -238,7 +238,7 @@ export function card(l, lang, opts) {
   const purpose = l.purpose === 'rent'
     ? (lang === 'ur' ? 'کرائے کے لیے' : (lang === 'ro' ? 'kiraye ke liye' : 'for rent'))
     : (lang === 'ur' ? 'برائے فروخت' : (lang === 'ro' ? 'baraye farokht' : 'for sale'));
-  const lines = ['🏠 ' + l.ref + ' · ' + typeLabel(l.property_type, lang) + ' ' + purpose, '📍 ' + l.area + ', ' + l.city];
+  const lines = ['🏠 ' + (l.ref ? l.ref + ' · ' : '') + typeLabel(l.property_type, lang) + ' ' + purpose, '📍 ' + l.area + ', ' + l.city];
   const facts = [];
   if (l.size_value) facts.push('📐 ' + formatSize(l.size_value, l.size_unit));
   if (l.beds != null) facts.push('🛏 ' + l.beds);
