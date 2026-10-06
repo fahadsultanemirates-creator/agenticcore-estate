@@ -23,6 +23,7 @@ export const DEALER_COMMANDS = [
   { command: 'search', description: 'Search entries' },
   { command: 'mine', description: 'My entries' },
   { command: 'requests', description: 'My requests' },
+  { command: 'name', description: 'Change my name' },
   { command: 'language', description: 'English / اردو / Roman Urdu' },
   { command: 'help', description: 'Help' },
   { command: 'cancel', description: 'Stop the current step' }

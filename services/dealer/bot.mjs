@@ -37,6 +37,11 @@ export async function handleUpdate(update, deps) {
   try {
     if (update.callback_query) await onCallback(ctx, update.callback_query);
     else await onMessage(ctx, update.message);
+  } catch (e) {
+    // never leave someone waiting in silence: say sorry, tell the team what broke
+    console.error('[dealer] update failed:', e && e.message);
+    await ctx.say('save_failed').catch(() => null);
+    if (deps.ownerId) await deps.tg.send(deps.ownerId, '⚠️ Dealer AI error: ' + String((e && e.message) || e).slice(0, 200)).catch(() => null);
   } finally {
     await deps.store.saveSession(ctx.chatId, ctx.state, ctx.lang).catch(() => null);
   }
@@ -108,6 +113,14 @@ async function onMessage(ctx, msg) {
   const st = ctx.state;
   if (st.step === 'listing' && st.field) return onListingAnswer(ctx, text);
   if (st.step === 's_query') { ctx.state = {}; return doSearch(ctx, text); }
+  if (st.step === 'rename') {
+    const name = text.replace(/\s+/g, ' ').trim();
+    if (name.length < 2 || name.length > 80 || /\d{4,}|https?:|@/.test(name)) return ctx.say('bad_name');
+    await ctx.deps.store.updateAccount(ctx.account.id, { name });
+    ctx.account.name = name;
+    ctx.state = {};
+    return ctx.say('name_changed', { name });
+  }
 
   // free text: a listing or a search?
   const guess = guessIntent(text);
@@ -130,6 +143,7 @@ async function onCommand(ctx, cmd) {
   if (cmd === 'post' || cmd === 'new') return startListing(ctx);
   if (cmd === 'search') { ctx.state = { step: 's_query' }; return ctx.say('s_start'); }
   if (cmd === 'mine') return showMine(ctx);
+  if (cmd === 'name') { ctx.state = { step: 'rename' }; return ctx.say('ask_new_name', { name: ctx.account.name }); }
   if (cmd === 'requests') return showRequests(ctx);
   if (cmd === 'stats' && ctx.isOwner) {
     const s = await ctx.deps.store.stats();

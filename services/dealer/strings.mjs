@@ -58,10 +58,16 @@ const S = {
   btn_help: { en: '❓ Help', ur: '❓ مدد', ro: '❓ Madad' },
   btn_lang: { en: '🌐 Language', ur: '🌐 زبان', ro: '🌐 Zabaan' },
   help: {
-    en: 'AgenticCore Dealer AI\n• Post: sale or rent, text only, live for 30 days (renew any time).\n• Search: type what you need; if nothing matches we look for 24 hours and send you results.\n• Contact numbers: tap "Contact" on a result ({limit} per day).\n• Everything here is user-submitted and not verified. Always check ownership papers, NOC and approvals yourself before paying anything.\n• Report wrong or fake entries with 🚩.\n\nCommands: /post /search /mine /requests /language /cancel',
-    ur: 'AgenticCore Dealer AI\n• پوسٹ: فروخت یا کرایہ، صرف تحریر، 30 دن کے لیے (کسی بھی وقت رینیو کریں)۔\n• تلاش: اپنی ضرورت لکھیں؛ اگر کچھ نہ ملے تو ہم 24 گھنٹے تلاش کر کے نتائج بھیجتے ہیں۔\n• رابطہ نمبر: نتیجے پر "رابطہ" دبائیں (روزانہ {limit})۔\n• یہاں ہر چیز صارفین کی دی ہوئی ہے اور تصدیق شدہ نہیں۔ کوئی بھی رقم دینے سے پہلے ملکیت کے کاغذات، NOC اور منظوری خود چیک کریں۔\n• غلط یا جعلی پوسٹ کی 🚩 سے رپورٹ کریں۔\n\nکمانڈز: /post /search /mine /requests /language /cancel',
-    ro: 'AgenticCore Dealer AI\n• Post: sale ya rent, sirf text, 30 din ke liye (kabhi bhi renew karein).\n• Search: apni zaroorat likhein; agar kuch na mile to hum 24 ghante dhoond kar results bhejte hain.\n• Contact number: result par "Contact" dabayein (rozana {limit}).\n• Yahan sab kuch users ka diya hua hai aur verified nahi. Koi bhi raqam dene se pehle ownership papers, NOC aur approvals khud check karein.\n• Ghalat ya fake entry ki 🚩 se report karein.\n\nCommands: /post /search /mine /requests /language /cancel'
+    en: 'AgenticCore Dealer AI\n• Post: sale or rent, text only, live for 30 days (renew any time).\n• Search: type what you need; if nothing matches we look for 24 hours and send you results.\n• Contact numbers: tap "Contact" on a result ({limit} per day).\n• Everything here is user-submitted and not verified. Always check ownership papers, NOC and approvals yourself before paying anything.\n• Report wrong or fake entries with 🚩.\n\nCommands: /post /search /mine /requests /name /language /cancel',
+    ur: 'AgenticCore Dealer AI\n• پوسٹ: فروخت یا کرایہ، صرف تحریر، 30 دن کے لیے (کسی بھی وقت رینیو کریں)۔\n• تلاش: اپنی ضرورت لکھیں؛ اگر کچھ نہ ملے تو ہم 24 گھنٹے تلاش کر کے نتائج بھیجتے ہیں۔\n• رابطہ نمبر: نتیجے پر "رابطہ" دبائیں (روزانہ {limit})۔\n• یہاں ہر چیز صارفین کی دی ہوئی ہے اور تصدیق شدہ نہیں۔ کوئی بھی رقم دینے سے پہلے ملکیت کے کاغذات، NOC اور منظوری خود چیک کریں۔\n• غلط یا جعلی پوسٹ کی 🚩 سے رپورٹ کریں۔\n\nکمانڈز: /post /search /mine /requests /name /language /cancel',
+    ro: 'AgenticCore Dealer AI\n• Post: sale ya rent, sirf text, 30 din ke liye (kabhi bhi renew karein).\n• Search: apni zaroorat likhein; agar kuch na mile to hum 24 ghante dhoond kar results bhejte hain.\n• Contact number: result par "Contact" dabayein (rozana {limit}).\n• Yahan sab kuch users ka diya hua hai aur verified nahi. Koi bhi raqam dene se pehle ownership papers, NOC aur approvals khud check karein.\n• Ghalat ya fake entry ki 🚩 se report karein.\n\nCommands: /post /search /mine /requests /name /language /cancel'
   },
+  ask_new_name: {
+    en: 'Your name is now "{name}". Type the new name:',
+    ur: 'آپ کا نام ابھی "{name}" ہے۔ نیا نام لکھیں:',
+    ro: 'Aap ka naam abhi "{name}" hai. Naya naam likhein:'
+  },
+  name_changed: { en: '✅ Name changed to {name}.', ur: '✅ نام بدل کر {name} کر دیا گیا۔', ro: '✅ Naam badal kar {name} kar diya.' },
   cancelled: { en: 'Stopped. Nothing was saved.', ur: 'روک دیا گیا۔ کچھ محفوظ نہیں ہوا۔', ro: 'Rok diya. Kuch save nahi hua.' },
   blocked_account: {
     en: 'This account is paused. Please contact the AgenticCore team.',

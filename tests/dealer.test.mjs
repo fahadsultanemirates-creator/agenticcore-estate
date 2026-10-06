@@ -525,3 +525,41 @@ test('24-hour request: a website listing added later is sent once by the hourly 
   await runDealerJobs({ tg: h.deps.tg, store: h.deps.store, now: Date.now() + 25 * H });
   assert.match(h.last(2).text, /we sent you 1 match/);
 });
+
+// ---------- fixes after the first live test ----------
+test('store: the poster embed names its foreign key (feed_listings ↔ feed_accounts is linked three ways)', async () => {
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'sb_secret_test';
+  const { makeDealerStore, LISTING_COLS } = await import('../services/dealer/store.mjs');
+  const urls = [];
+  const store = makeDealerStore(async (url) => { urls.push(decodeURIComponent(url)); return { ok: true, status: 200, text: async () => '[]' }; });
+  await store.liveListings({ purpose: 'sale', city: 'Islamabad', types: ['house'] }, Date.now());
+  await store.listingById('00000000-0000-0000-0000-000000000000');
+  await store.myListings('00000000-0000-0000-0000-000000000000');
+  assert.match(LISTING_COLS, /feed_accounts!feed_listings_account_id_fkey\(role\)/);
+  urls.slice(0, 2).forEach((u) => assert.match(u, /feed_accounts!feed_listings_account_id_fkey\(role\)/));
+  urls.forEach((u) => assert.doesNotMatch(u, /[,=]feed_accounts\(role\)/));
+  delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+});
+
+test('a database error mid-search is never silent: the user hears back, the team gets the error', async () => {
+  const h = setup();
+  await register(h, OWNER, 'Fahad', 'owner');
+  await register(h, 2, 'Bilal', 'buyer');
+  h.deps.store.liveListings = async () => { throw new Error('more than one relationship was found'); };
+  h.deps.store.myRequests = async () => { throw new Error('more than one relationship was found'); };
+  await h.text(2, '5 marla house G-13 under 2.5 crore');
+  assert.equal(h.last(2).text, t('en', 'save_failed'));
+  assert.match(h.last(OWNER).text, /Dealer AI error: more than one relationship/);
+});
+
+test('posting keeps the sub-sector; /name changes the name', async () => {
+  const h = setup();
+  await register(h, 1, 'Grok Test', 'dealer');
+  await postFull(h, 1, 'House for sale G-13/2 Islamabad 5 marla 3 bed demand 2.4 crore', ['4']);
+  assert.equal(h.deps.store.db.listings[0].area, 'G-13/2');
+  await h.text(1, '/name');
+  assert.match(h.last(1).text, /Grok Test/);
+  await h.text(1, 'Fahad Sultan');
+  assert.equal(h.deps.store.db.accounts[0].name, 'Fahad Sultan');
+  assert.equal(h.last(1).text, t('en', 'name_changed', { name: 'Fahad Sultan' }));
+});

@@ -9,7 +9,10 @@ import { fromSite } from './sources.mjs';
 const enc = encodeURIComponent;
 const inList = (ids) => '(' + ids.map((x) => enc(x)).join(',') + ')';
 const ACCOUNT_COLS = 'id,tg_user_id,chat_id,name,phone,role,lang,status,reveal_limit';
-const LISTING_COLS = 'id,ref,account_id,purpose,property_type,city,area,address,size_value,size_unit,size_marla,price,beds,baths,notes,status,expires_at,created_at,feed_accounts(role)';
+// feed_listings ↔ feed_accounts are linked three ways (poster, reveals, reports),
+// so the poster embed must name its foreign key or PostgREST refuses it.
+const BASE_COLS = 'id,ref,account_id,purpose,property_type,city,area,address,size_value,size_unit,size_marla,price,beds,baths,notes,status,expires_at,created_at';
+export const LISTING_COLS = BASE_COLS + ',feed_accounts!feed_listings_account_id_fkey(role)';
 
 function withRole(rows) {
   return (rows || []).map((r) => {
@@ -68,7 +71,7 @@ export function makeDealerStore(fetchImpl) {
       return one(rows);
     },
     async myListings(accountId) {
-      return rest('feed_listings?account_id=eq.' + enc(accountId) + '&status=neq.removed&order=created_at.desc&limit=10&select=' + LISTING_COLS.replace(',feed_accounts(role)', ''));
+      return rest('feed_listings?account_id=eq.' + enc(accountId) + '&status=neq.removed&order=created_at.desc&limit=10&select=' + BASE_COLS);
     },
     // Live entries for a search: coarse filter here, fine matching in feed.mjs
     async liveListings({ purpose, city, types }, now) {
