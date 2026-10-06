@@ -268,6 +268,11 @@ const S = {
     ro: '📞 {ref} — {name} ({role})\n{phone}{addr}\n\n⚠️ User ki di hui maloomat, verified nahi. Koi bhi raqam dene se pehle ownership papers, NOC aur approvals khud check karein.\nAaj baqi contacts: {left}'
   },
   reveal_addr: { en: '\nAddress: {v}', ur: '\nپتہ: {v}', ro: '\nAddress: {v}' },
+  viewed_notice: {
+    en: '👀 {name} ({role}) has taken your number for {ref}. They may call or message you.',
+    ur: '👀 {name} ({role}) نے {ref} کے لیے آپ کا نمبر لیا ہے۔ وہ آپ کو کال یا میسج کر سکتے ہیں۔',
+    ro: '👀 {name} ({role}) ne {ref} ke liye aap ka number liya hai. Woh aap ko call ya message kar sakte hain.'
+  },
   reveal_limit: {
     en: 'You have used today\'s {n} contacts. More tomorrow.',
     ur: 'آج کے {n} رابطے استعمال ہو چکے۔ کل مزید۔',
