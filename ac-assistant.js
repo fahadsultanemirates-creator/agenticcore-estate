@@ -36,8 +36,8 @@
       files_added: '{n} file(s) added. Tell me what you need, then tap "Send to AgenticCore team".',
       handoff: 'Send to AgenticCore team', h_title: 'Send this to the AgenticCore team', h_summary: 'What you need', h_files: 'Files', h_note: 'Anything else? (optional)',
       h_none: 'No files attached.', h_send: 'Send to the team', h_cancel: 'Cancel', h_sending: 'Sending…',
-      h_info: 'The team receives this conversation summary and your files in Telegram and replies to you. Nothing is published.',
-      h_done: 'Sent ✓ Reference {ref}. The AgenticCore team has your request{files} and will reply to you here in your account, on Telegram or WhatsApp.',
+      h_info: 'The team receives this conversation summary and your files and replies to you. Nothing is published.',
+      h_done: 'Sent ✓ Reference {ref}. The AgenticCore team has your request{files} and will reply to you here in your account or on WhatsApp.',
       h_with_files: ' and {n} file(s)', h_err: 'Could not send right now. Please try again, or WhatsApp our team.', h_limit: 'You\'ve sent several requests today — our team will reply to those first.',
       h_need: 'Tell Amaan a little about what you need first.',
       q: { about: 'What is AgenticCore?', amaan_find: 'Find a property with Amaan', amaan_list: 'List a property with Amaan', professional: 'Professional profile', agency: 'Agency profile', builder: 'Builders & developers', project: 'Publish a project', pk_service: 'Marketing & websites', contact: 'Talk to the team', amaan_order: 'Order marketing with my files' }
@@ -56,8 +56,8 @@
       files_added: '{n} فائل شامل ہو گئی۔ بتائیں آپ کو کیا چاہیے، پھر "AgenticCore ٹیم کو بھیجیں" دبائیں۔',
       handoff: 'AgenticCore ٹیم کو بھیجیں', h_title: 'یہ AgenticCore ٹیم کو بھیجیں', h_summary: 'آپ کو کیا چاہیے', h_files: 'فائلیں', h_note: 'کچھ اور؟ (اختیاری)',
       h_none: 'کوئی فائل نہیں لگی۔', h_send: 'ٹیم کو بھیجیں', h_cancel: 'منسوخ', h_sending: 'بھیجا جا رہا ہے…',
-      h_info: 'ٹیم کو یہ خلاصہ اور آپ کی فائلیں ٹیلی گرام میں ملیں گی اور وہ آپ کو جواب دیں گے۔ کچھ شائع نہیں ہوتا۔',
-      h_done: 'بھیج دیا ✓ حوالہ {ref}۔ AgenticCore ٹیم کو آپ کی درخواست{files} مل گئی ہے، وہ آپ کو اکاؤنٹ، ٹیلی گرام یا واٹس ایپ پر جواب دیں گے۔',
+      h_info: 'ٹیم کو یہ خلاصہ اور آپ کی فائلیں مل جائیں گی اور وہ آپ کو جواب دیں گے۔ کچھ شائع نہیں ہوتا۔',
+      h_done: 'بھیج دیا ✓ حوالہ {ref}۔ AgenticCore ٹیم کو آپ کی درخواست{files} مل گئی ہے، وہ آپ کو اکاؤنٹ یا واٹس ایپ پر جواب دیں گے۔',
       h_with_files: ' اور {n} فائلیں', h_err: 'ابھی بھیجا نہیں جا سکا۔ دوبارہ کوشش کریں یا ٹیم سے واٹس ایپ پر بات کریں۔', h_limit: 'آپ آج کئی درخواستیں بھیج چکے ہیں — ٹیم پہلے ان کا جواب دے گی۔',
       h_need: 'پہلے امان کو بتائیں کہ آپ کو کیا چاہیے۔',
       q: { about: 'AgenticCore کیا ہے؟', amaan_find: 'امان کے ساتھ پراپرٹی ڈھونڈیں', amaan_list: 'امان کے ساتھ پراپرٹی لسٹ کریں', professional: 'پروفیشنل پروفائل', agency: 'ایجنسی پروفائل', builder: 'بلڈرز اور ڈویلپرز', project: 'پروجیکٹ شائع کریں', pk_service: 'مارکیٹنگ اور ویب سائٹ', contact: 'ٹیم سے بات کریں', amaan_order: 'اپنی فائلوں کے ساتھ مارکیٹنگ آرڈر' }

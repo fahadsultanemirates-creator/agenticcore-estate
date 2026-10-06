@@ -136,13 +136,13 @@ html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 
 .h2-amaan { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 0; }
 .h2-amaan .btn { min-height: 44px; }
 
-/* ---------- AgenticCore in Telegram (homepage) ---------- */
+/* ---------- List through WhatsApp (homepage) ---------- */
 .tgh { padding: 3.2rem 0; background:
   radial-gradient(900px 380px at 85% 20%, rgba(42, 171, 238, 0.10), transparent 70%),
   radial-gradient(700px 320px at 10% 90%, rgba(212, 175, 55, 0.08), transparent 70%); border-top: 1px solid rgba(212, 175, 55, 0.12); border-bottom: 1px solid rgba(212, 175, 55, 0.12); }
 .tgh-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 2.6rem; align-items: center; }
 .tgh-eyebrow { display: inline-flex; align-items: center; gap: .5rem; padding: .3rem .8rem; border-radius: 999px; border: 1px solid rgba(42, 171, 238, 0.45); background: rgba(42, 171, 238, 0.10); color: #7CC8F2; font-size: .82rem; font-weight: 600; letter-spacing: .02em; }
-.tgh-dot { width: 8px; height: 8px; border-radius: 50%; background: #2AABEE; box-shadow: 0 0 0 4px rgba(42, 171, 238, .2); }
+.tgh-dot { width: 8px; height: 8px; border-radius: 50%; background: #25D366; box-shadow: 0 0 0 4px rgba(37, 211, 102, .2); }
 .tgh h2 { font-size: clamp(1.75rem, 3.6vw, 2.6rem); line-height: 1.12; margin: .9rem 0 .7rem; }
 .tgh-sub { color: var(--text-secondary); font-size: 1.04rem; max-width: 36rem; margin: 0 0 1.4rem; }
 .tgh-points { list-style: none; padding: 0; margin: 0 0 1.6rem; display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 1.4rem; }
@@ -151,8 +151,8 @@ html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 
 .tgh-points span:not(.tgh-ico) { color: var(--text-secondary); font-size: .9rem; line-height: 1.45; }
 .tgh-ico { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; color: #071F17; background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-gold)); }
 .tgh-ctas { display: flex; flex-wrap: wrap; gap: .7rem; }
-.tgh-btn { display: inline-flex; align-items: center; gap: .55rem; background: #2AABEE; color: #fff; border: 1px solid #2AABEE; font-weight: 600; min-height: 48px; padding: 0 1.3rem; box-shadow: 0 8px 22px rgba(42, 171, 238, .28); }
-.tgh-btn:hover, .tgh-btn:focus-visible { background: #229ED9; border-color: #229ED9; color: #fff; }
+.tgh-btn { display: inline-flex; align-items: center; gap: .55rem; background: #0F7A6E; color: #fff; border: 1px solid #0F7A6E; font-weight: 600; min-height: 48px; padding: 0 1.3rem; box-shadow: 0 8px 22px rgba(15, 122, 110, .28); }
+.tgh-btn:hover, .tgh-btn:focus-visible { background: #0B5F55; border-color: #0B5F55; color: #fff; }
 .tgh-btn svg { width: 20px; height: 20px; }
 .tgh-ctas .btn-secondary { min-height: 48px; display: inline-flex; align-items: center; }
 .tgh-fine { margin: .9rem 0 0; color: var(--text-tertiary, #6E8F7F); font-size: .82rem; }
@@ -212,8 +212,8 @@ html[dir="rtl"] .nc-badge { text-transform: none; letter-spacing: 0; }
 .nc-cities small[hidden], .h2-city-launch[hidden] { display: none; }
 .nc-ctas { display: flex; flex-wrap: wrap; gap: .55rem; }
 .nc-ctas .btn { min-height: 44px; display: inline-flex; align-items: center; }
-.nc-tg { background: #2AABEE; color: #fff; border: 1px solid #2AABEE; }
-.nc-tg:hover, .nc-tg:focus-visible { background: #229ED9; color: #fff; }
+.nc-tg { background: #0F7A6E; color: #fff; border: 1px solid #0F7A6E; }
+.nc-tg:hover, .nc-tg:focus-visible { background: #0B5F55; color: #fff; }
 @media (max-width: 900px) { .nc-inner { grid-template-columns: 1fr; } }
 @media (max-width: 560px) {
   .nc { padding: calc(66px + .9rem) 0 1.1rem; }
