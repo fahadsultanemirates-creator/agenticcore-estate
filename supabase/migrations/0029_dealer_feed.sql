@@ -3,6 +3,9 @@
 --
 -- A separate bot (@AgenticcoreDealerAIbot) where owners and dealers post
 -- digital listings (no photos) and buyers search them in plain words.
+-- A search returns the best 3 across Dealer AI entries, live website
+-- listings (read only, public fields) and, once connected, a partner
+-- project's search API.
 -- Everything lives in its own feed_ tables:
 --   * nothing here is readable by the website (RLS on, no policies, no
 --     grants to anon/authenticated) — only the bot's server code, with the
@@ -72,6 +75,8 @@ create table if not exists public.feed_requests (
   deadline_at timestamptz not null default now() + interval '24 hours',
   active_until timestamptz not null default now() + interval '24 hours',
   answered_at timestamptz,
+  sent_refs text[] not null default '{}',               -- website / partner results already sent (source:id)
+  checked_at timestamptz,                                -- last hourly look at the website + partner
   created_at timestamptz not null default now()
 );
 create index if not exists feed_requests_open_idx on public.feed_requests (status, deadline_at);

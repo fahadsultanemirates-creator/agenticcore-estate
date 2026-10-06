@@ -1,5 +1,7 @@
 // AgenticCore Dealer AI — scheduled work (every 10 minutes):
 //  * keep the bot's webhook registered;
+//  * open requests: every hour, look at the website listings and the
+//    partner too (new Dealer AI entries are matched the moment they're posted);
 //  * 24-hour requests at their deadline: results recap, or an honest
 //    "no match yet" with Keep 7 days / Change search / Close;
 //  * requests nobody answered for 3 days → expired;
@@ -7,7 +9,9 @@
 
 import { t } from './strings.mjs';
 import { buttons, webhookSecret, dealerToken } from '../telegram/tg-api.mjs';
-import { choiceButtons } from './bot.mjs';
+import { choiceButtons, findAll, resultMessage } from './bot.mjs';
+import { requestQuery } from './feed.mjs';
+import { resultKey } from './sources.mjs';
 
 const DAY = 86400000;
 const iso = (ms) => new Date(ms).toISOString();
@@ -33,18 +37,42 @@ export async function ensureDealerWebhook(tg, siteUrl) {
   return { changed: true };
 }
 
-export async function runDealerJobs({ tg, store, now }) {
+export async function runDealerJobs({ tg, store, now, partner }) {
   const at = now || Date.now();
-  const out = { deadlines: 0, expired_requests: 0, reminders: 0, expired_entries: 0 };
+  const out = { rechecked: 0, sent: 0, deadlines: 0, expired_requests: 0, reminders: 0, expired_entries: 0 };
   const accountsFor = async (rows) => new Map(((await store.accountsByIds([...new Set(rows.map((r) => r.account_id))])) || []).map((a) => [a.id, a]));
   const tell = (acc, text, extra) => (acc && acc.status === 'active' ? tg.send(acc.chat_id, text, extra).catch(() => null) : null);
+
+  // 0. open requests: anything new on the website / partner since the last look?
+  const recheck = (await store.toRecheck(at)) || [];
+  const reAcc = await accountsFor(recheck);
+  for (const r of recheck) {
+    const acc = reAcc.get(r.account_id);
+    await store.updateRequest(r.id, { checked_at: iso(at) });
+    out.rechecked++;
+    if (!acc || acc.status !== 'active') continue;
+    const L = acc.lang || 'en';
+    const skip = new Set((r.sent_refs || []).concat((await store.matchedIds(r.id)).map((id) => 'feed:' + id)));
+    const found = await findAll({ store, partner }, r.account_id, requestQuery(r), at, skip).catch(() => []);
+    if (!found.length) continue;
+    const feedIds = found.filter((l) => (l.source || 'feed') === 'feed').map((l) => l.id);
+    if (feedIds.length) await store.addMatches(r.id, feedIds);
+    const others = found.filter((l) => l.source && l.source !== 'feed').map(resultKey);
+    await store.updateRequest(r.id, Object.assign({ sent_refs: (r.sent_refs || []).concat(others).slice(-200) },
+      r.status === 'open' ? { status: 'answered', answered_at: iso(at) } : {}));
+    for (const l of found) {
+      const m = resultMessage(l, L);
+      await tell(acc, t(L, 'alert_new', { ref: r.ref, q: r.query.slice(0, 80) }) + '\n\n' + m.text, m.extra);
+      out.sent++;
+    }
+  }
 
   // 1. requests at their deadline
   const due = (await store.dueRequests(at)) || [];
   const dueAcc = await accountsFor(due);
   for (const r of due) {
     const acc = dueAcc.get(r.account_id), L = (acc && acc.lang) || 'en';
-    const n = await store.matchCount(r.id);
+    const n = (await store.matchCount(r.id)) + (r.sent_refs || []).length;
     const first = new Date(r.deadline_at).getTime() - new Date(r.created_at).getTime() <= 25 * 3600000;
     const key = !first ? 'week_over' : (n > 0 ? 'deadline_found' : 'deadline_none');
     await store.updateRequest(r.id, { status: 'waiting_choice', active_until: iso(at + 3 * DAY) });
