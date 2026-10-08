@@ -8,7 +8,7 @@
    nav link.
    ============================================ */
 
-const AC_LOGO_SVG = '<img src="images/agenticcore-icon.png" alt="AgenticCore" class="nav-logo-icon">';
+const AC_LOGO_SVG = '<img src="images/agenticcore-logo.png" alt="AgenticCore.estate" class="nav-logo-img" width="187" height="40">';
 
 function acNavLink(href, page, key) {
   const active = document.body.getAttribute('data-page') === page ? ' active' : '';
@@ -36,7 +36,7 @@ async function acRenderHeader() {
   el.innerHTML =
     '<nav class="nav" id="nav">' +
       '<div class="container nav-inner">' +
-        '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
+        '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + '</a>' +
         '<div class="nav-right" id="navRight">' +
           '<div class="nav-links">' +
             // Properties carries Buy / Rent / List free as a submenu (dropdown on
@@ -126,7 +126,7 @@ function acRenderFooter() {
       '<div class="container">' +
         '<div class="footer-top">' +
           '<div class="footer-brand">' +
-            '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + 'AgenticCore<span class="brand-suffix">Estate</span></a>' +
+            '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + '</a>' +
             '<p data-i18n="footer_tagline"></p>' +
           '</div>' +
           '<div class="footer-col">' +
