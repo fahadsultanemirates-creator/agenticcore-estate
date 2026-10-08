@@ -8,7 +8,7 @@
    nav link.
    ============================================ */
 
-// Header (white): the logo on a dark tile + dark name. Footer (dark): the glowing logo.
+// Header and footer (both light): the logo on a dark tile + dark name. AC_LOGO_DARK: the glowing logo for dark backgrounds.
 const AC_LOGO_SVG = '<img src="images/agenticcore-logo-light.png" alt="AgenticCore.estate" class="nav-logo-img" width="187" height="40">';
 const AC_LOGO_DARK = '<img src="images/agenticcore-logo.png" alt="AgenticCore.estate" class="nav-logo-img" width="187" height="40">';
 
@@ -124,11 +124,11 @@ function acRenderFooter() {
   const el = document.getElementById('site-footer');
   if (!el) return;
   el.innerHTML =
-    '<footer class="footer theme-dark">' +
+    '<footer class="footer theme-mint">' +
       '<div class="container">' +
         '<div class="footer-top">' +
           '<div class="footer-brand">' +
-            '<a href="index.html" class="nav-logo">' + AC_LOGO_DARK + '</a>' +
+            '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + '</a>' +
             '<p data-i18n="footer_tagline"></p>' +
           '</div>' +
           '<div class="footer-col">' +
