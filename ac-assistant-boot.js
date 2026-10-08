@@ -10,7 +10,8 @@
     site: me.getAttribute('data-site') === 'pk' ? 'pk' : 'estate',
     endpoint: me.getAttribute('data-endpoint') || '/api/assistant',
     js: me.getAttribute('data-js') || 'ac-assistant.js',
-    css: me.getAttribute('data-css') || 'ac-assistant.css'
+    css: me.getAttribute('data-css') || 'ac-assistant.css',
+    page: me.getAttribute('data-page') === 'amaan'      // amaan.html: Amaan fills the window
   };
   var loading = null;
   function load() {
@@ -36,8 +37,33 @@
     fab.querySelector('.aca-fab-text').textContent = ur() ? 'AI مدد' : 'Ask AI';
     fab.setAttribute('aria-label', ur() ? 'AgenticCore AI اسسٹنٹ کھولیں' : 'Open the AgenticCore AI assistant');
   }
-  var FAB_CSS = '.aca-fab { position: fixed; right: 18px; bottom: 86px; z-index: 95; display: inline-flex; align-items: center; gap: .45rem; min-height: 48px; padding: 0 1rem 0 .85rem; border: 1px solid rgba(212,175,55,.55); border-radius: 999px; cursor: pointer; background: #0C3324; color: #F4EFE0; font: 600 .95rem/1 inherit; box-shadow: 0 10px 28px rgba(0,0,0,.35); } .aca-fab svg { width: 22px; height: 22px; color: #F0CE63; } .aca-fab:hover, .aca-fab:focus-visible { border-color: #F0CE63; } .aca-fab:focus-visible { outline: 3px solid #F0CE63; outline-offset: 3px; } .aca-fab[aria-busy="true"] { opacity: .7; } html[dir="rtl"] .aca-fab { right: auto; left: 18px; padding: 0 .85rem 0 1rem; } .aca-fab-pk { bottom: 94px; } body.aca-open .aca-fab { display: none; } @media (max-width: 600px) { .aca-fab { right: 12px; bottom: 76px; min-height: 46px; padding: 0 .85rem 0 .7rem; } html[dir="rtl"] .aca-fab { left: 12px; } .aca-fab-pk { bottom: calc(var(--mobile-bar-h, 56px) + 12px); } } @media print { .aca-fab { display: none !important; } }';
+  // Amaan's own page: open him straight away (the ?q= quick key from the button that led here).
+  function initPage() {
+    var qk = null;
+    try { qk = new URLSearchParams(location.search).get('q'); } catch (e) { /* old browser */ }
+    if (['amaan_find', 'amaan_list', 'amaan_order', 'amaan_project'].indexOf(qk) < 0) qk = null;
+    if (qk && history.replaceState) history.replaceState(null, '', location.pathname);   // a reload doesn't ask again
+    load().then(function (A) { document.documentElement.classList.add('aca-ready'); A.open(Object.assign({}, cfg, { bot: 'amaan', quick: qk })); })
+      .catch(function () { document.documentElement.classList.add('aca-failed'); });
+  }
+  var FAB_CSS = '.aca-fab { position: fixed; right: 18px; bottom: 86px; z-index: 95; display: inline-flex; align-items: center; gap: .45rem; min-height: 48px; padding: 0 1rem 0 .85rem; border: 1px solid rgba(104,248,48,.6); border-radius: 999px; cursor: pointer; background: #0C3324; color: #F4F7F0; font: 600 .95rem/1 inherit; box-shadow: 0 10px 28px rgba(17,26,16,.25); } .aca-fab svg { width: 22px; height: 22px; color: #68F830; } .aca-fab:hover, .aca-fab:focus-visible { border-color: #68F830; box-shadow: 0 10px 28px rgba(0,0,0,.25), 0 0 18px rgba(104,248,48,.35); } .aca-fab:focus-visible { outline: 3px solid #68F830; outline-offset: 3px; } .aca-fab[aria-busy="true"] { opacity: .7; } html[dir="rtl"] .aca-fab { right: auto; left: 18px; padding: 0 .85rem 0 1rem; } .aca-fab-pk { bottom: 94px; } body.aca-open .aca-fab { display: none; } @media (max-width: 600px) { .aca-fab { right: 12px; bottom: 76px; min-height: 46px; padding: 0 .85rem 0 .7rem; } html[dir="rtl"] .aca-fab { left: 12px; } .aca-fab-pk { bottom: calc(var(--mobile-bar-h, 56px) + 12px); } } @media print { .aca-fab { display: none !important; } }';
   function init() {
+    if (cfg.page) { initPage(); return; }
+    document.body.classList.add('has-aca');
+    // Estate: the floating button is "Amaan" (ac-amaan-float.js, every page), not "Ask AI"
+    if (cfg.site !== 'estate') addFab();
+    // Any page button can open a specific assistant: <button data-aca-open="amaan" data-aca-quick="amaan_find">
+    document.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest && e.target.closest('[data-aca-open]');
+      if (!b) return;
+      e.preventDefault();
+      var bot = b.getAttribute('data-aca-open') === 'amaan' ? 'amaan' : 'guide', quick = b.getAttribute('data-aca-quick') || null;
+      // Estate: Amaan lives on his own page — go straight there (the chat carries over in this tab)
+      if (bot === 'amaan' && cfg.site === 'estate') { location.href = 'amaan.html' + (/^amaan_[a-z]+$/.test(quick || '') ? '?q=' + quick : ''); return; }
+      open({ bot: bot, quick: quick });
+    });
+  }
+  function addFab() {
     var st = document.createElement('style'); st.textContent = FAB_CSS; document.head.appendChild(st);
     var fab = document.createElement('button');
     fab.type = 'button'; fab.id = 'acaFab'; fab.className = 'aca-fab' + (cfg.site === 'pk' ? ' aca-fab-pk' : '');
@@ -46,15 +72,7 @@
     label(fab);
     fab.addEventListener('click', function () { open({}); });
     document.body.appendChild(fab);
-    document.body.classList.add('has-aca');
     new MutationObserver(function () { label(fab); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
-    // Any page button can open a specific assistant: <button data-aca-open="amaan" data-aca-quick="amaan_find">
-    document.addEventListener('click', function (e) {
-      var b = e.target && e.target.closest && e.target.closest('[data-aca-open]');
-      if (!b) return;
-      e.preventDefault();
-      open({ bot: b.getAttribute('data-aca-open') === 'amaan' ? 'amaan' : 'guide', quick: b.getAttribute('data-aca-quick') || null });
-    });
   }
   window.AcAssistantBoot = { open: open };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

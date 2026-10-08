@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#071F17">
+<title>Amaan — AI property assistant | AgenticCore Estate</title>
+<meta name="description" content="Chat with Amaan, AgenticCore Estate's AI property assistant: find a property, list one, publish a project or send your files to the team — in English or Urdu.">
+<link rel="canonical" href="https://agenticcore.estate/amaan.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AgenticCore Estate">
+<meta property="og:title" content="Amaan — AI property assistant">
+<meta property="og:description" content="Find, list or publish with Amaan, in English or Urdu.">
+<meta property="og:url" content="https://agenticcore.estate/amaan.html">
+<meta property="og:image" content="https://agenticcore.estate/images/og-estate.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/agenticcore-icon.png">
+<link rel="stylesheet" href="ac-assistant.css">
+<style>
+  html, body { margin: 0; min-height: 100%; background: #071F17; color: #F4F7F0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .amaan-wait { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem; text-align: center; }
+  .amaan-wait img { width: 64px; height: 64px; border-radius: 16px; }
+  .amaan-wait p { margin: 0; color: #A9C2B4; }
+  .amaan-wait a { color: #8CFF5C; font-weight: 600; }
+  .amaan-fail { display: none; }
+  html.aca-ready .amaan-wait { display: none; }
+  html.aca-failed .amaan-fail { display: block; }
+  html.aca-failed .amaan-loading { display: none; }
+</style>
+<script src="ac-analytics.js"></script>
+</head>
+<body class="aca-page" data-page="amaan" data-no-float>
+
+<main class="amaan-wait">
+  <img src="images/agenticcore-icon.png" alt="" width="64" height="64">
+  <h1 class="aca-sr">Amaan — AI property assistant</h1>
+  <p class="amaan-loading">Opening Amaan…</p>
+  <p class="amaan-fail">Amaan couldn't open just now. Please reload the page, or <a href="index.html">go back to AgenticCore Estate</a>.</p>
+  <noscript><p>Amaan needs JavaScript. <a href="index.html">Back to AgenticCore Estate</a></p></noscript>
+</main>
+
+<script src="ac-cities.js"></script>
+<script src="i18n.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-client.js"></script>
+<script src="ecosystem.js"></script>
+<script src="ac-assistant-boot.js" data-site="estate" data-page="amaan" data-endpoint="/api/assistant" data-js="ac-assistant.js" data-css="ac-assistant.css" defer></script>
+</body>
+</html>

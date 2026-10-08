@@ -40,7 +40,10 @@
       h_done: 'Sent ✓ Reference {ref}. The AgenticCore team has your request{files} and will reply to you here in your account or on WhatsApp.',
       h_with_files: ' and {n} file(s)', h_err: 'Could not send right now. Please try again, or WhatsApp our team.', h_limit: 'You\'ve sent several requests today — our team will reply to those first.',
       h_need: 'Tell Amaan a little about what you need first.',
-      q: { about: 'What is AgenticCore?', amaan_find: 'Find a property with Amaan', amaan_list: 'List a property with Amaan', professional: 'Professional profile', agency: 'Agency profile', builder: 'Builders & developers', project: 'Publish a project', pk_service: 'Marketing & websites', contact: 'Talk to the team', amaan_order: 'Order marketing with my files' }
+      mic: 'Speak your message', mic_stop: 'Stop listening', listening: 'Listening… speak now', mic_err: 'Voice input isn\'t available right now — please type instead.',
+      hint: 'Enter to send · Shift+Enter for a new line',
+      project_reply: 'Happy to help with your project. To publish a project on AgenticCore Estate you need a developer account — the team reviews it first. Already approved? Open the project form. You can also attach brochures, plans, renders and photos here and send them to the team, and they will help you set it up.',
+      q: { about: 'What is AgenticCore?', amaan_find: 'Find a property with Amaan', amaan_list: 'List a property with Amaan', professional: 'Professional profile', agency: 'Agency profile', builder: 'Builders & developers', project: 'Publish a project', pk_service: 'Marketing & websites', contact: 'Talk to the team', amaan_order: 'Order marketing with my files', amaan_project: 'Publish a project' }
     },
     ur: {
       g_title: 'AgenticCore AI', g_sub: 'AgenticCore کے بارے میں فوری جواب — یہ AI ہے، انسان نہیں۔', close: 'بند کریں',
@@ -60,18 +63,21 @@
       h_done: 'بھیج دیا ✓ حوالہ {ref}۔ AgenticCore ٹیم کو آپ کی درخواست{files} مل گئی ہے، وہ آپ کو اکاؤنٹ یا واٹس ایپ پر جواب دیں گے۔',
       h_with_files: ' اور {n} فائلیں', h_err: 'ابھی بھیجا نہیں جا سکا۔ دوبارہ کوشش کریں یا ٹیم سے واٹس ایپ پر بات کریں۔', h_limit: 'آپ آج کئی درخواستیں بھیج چکے ہیں — ٹیم پہلے ان کا جواب دے گی۔',
       h_need: 'پہلے امان کو بتائیں کہ آپ کو کیا چاہیے۔',
-      q: { about: 'AgenticCore کیا ہے؟', amaan_find: 'امان کے ساتھ پراپرٹی ڈھونڈیں', amaan_list: 'امان کے ساتھ پراپرٹی لسٹ کریں', professional: 'پروفیشنل پروفائل', agency: 'ایجنسی پروفائل', builder: 'بلڈرز اور ڈویلپرز', project: 'پروجیکٹ شائع کریں', pk_service: 'مارکیٹنگ اور ویب سائٹ', contact: 'ٹیم سے بات کریں', amaan_order: 'اپنی فائلوں کے ساتھ مارکیٹنگ آرڈر' }
+      mic: 'بول کر پیغام لکھیں', mic_stop: 'سننا بند کریں', listening: 'سن رہا ہوں… بولیں', mic_err: 'ابھی آواز سے لکھنا دستیاب نہیں — براہ کرم ٹائپ کریں۔',
+      hint: 'بھیجنے کے لیے Enter · نئی لائن کے لیے Shift+Enter',
+      project_reply: 'آپ کے پروجیکٹ میں خوشی سے مدد کروں گا۔ AgenticCore Estate پر پروجیکٹ شائع کرنے کے لیے ڈویلپر اکاؤنٹ چاہیے — ٹیم پہلے اس کا جائزہ لیتی ہے۔ منظوری مل چکی ہے؟ پروجیکٹ فارم کھولیں۔ آپ یہاں بروشر، نقشے، رینڈرز اور تصاویر لگا کر ٹیم کو بھیج بھی سکتے ہیں، وہ سیٹ اپ میں مدد کریں گے۔',
+      q: { about: 'AgenticCore کیا ہے؟', amaan_find: 'امان کے ساتھ پراپرٹی ڈھونڈیں', amaan_list: 'امان کے ساتھ پراپرٹی لسٹ کریں', professional: 'پروفیشنل پروفائل', agency: 'ایجنسی پروفائل', builder: 'بلڈرز اور ڈویلپرز', project: 'پروجیکٹ شائع کریں', pk_service: 'مارکیٹنگ اور ویب سائٹ', contact: 'ٹیم سے بات کریں', amaan_order: 'اپنی فائلوں کے ساتھ مارکیٹنگ آرڈر', amaan_project: 'پروجیکٹ شائع کریں' }
     }
   };
   var ACTION_LABEL = {
     en: { amaan_find: 'Find with Amaan', amaan_list: 'List with Amaan', amaan_order: 'Order with Amaan (attach files)', ask_guide: 'Ask AgenticCore AI', estate_home: 'AgenticCore Estate', estate_properties: 'Browse properties', estate_buy: 'Buy', estate_rent: 'Rent',
-      estate_projects: 'Projects', estate_professionals: 'Professionals', estate_agencies: 'Agencies', estate_builders: 'Builders & developers', estate_list: 'Continue to the listing form', estate_pricing: 'Launch & pricing',
+      estate_projects: 'Projects', estate_professionals: 'Professionals', estate_agencies: 'Agencies', estate_builders: 'Builders & developers', estate_list: 'Continue to the listing form', estate_pricing: 'Launch & pricing', estate_post_project: 'Open the project form',
       estate_dashboard: 'My dashboard', estate_signup: 'Create an account', join_professional: 'Create a professional profile', join_agency: 'Add your agency', join_builder: 'Create a company profile', join_developer: 'Apply to publish projects',
       pk_home: 'AgenticCore Pakistan', pk_services: 'PK services', pk_branding: 'Branding', pk_print: 'Flyers & print', pk_websites: 'Websites', pk_video: 'Video', pk_social: 'Social media', pk_campaigns: 'Campaigns', pk_leads: 'AI & automation', pk_local: 'Google Business Profile',
       pk_logo: 'Logo & brand identity', pk_agent_branding: 'Agent branding kit', pk_brochure: 'Brochures', pk_website: 'Agency & developer websites', pk_landing: 'Landing pages', pk_photos: 'Photo enhancement', pk_launch: 'Project launch campaign',
       contact_whatsapp: 'WhatsApp our team', contact_email: 'Email our team', whatsapp_channel: 'Follow our WhatsApp Channel', sign_in: 'Sign in' },
     ur: { amaan_find: 'امان سے ڈھونڈیں', amaan_list: 'امان سے لسٹ کریں', amaan_order: 'امان کے ذریعے آرڈر (فائلیں لگائیں)', ask_guide: 'AgenticCore AI سے پوچھیں', estate_home: 'AgenticCore Estate', estate_properties: 'پراپرٹیز دیکھیں', estate_buy: 'خریدیں', estate_rent: 'کرائے پر',
-      estate_projects: 'پروجیکٹس', estate_professionals: 'پروفیشنلز', estate_agencies: 'ایجنسیاں', estate_builders: 'بلڈرز اور ڈویلپرز', estate_list: 'لسٹنگ فارم پر جائیں', estate_pricing: 'لانچ اور قیمتیں',
+      estate_projects: 'پروجیکٹس', estate_professionals: 'پروفیشنلز', estate_agencies: 'ایجنسیاں', estate_builders: 'بلڈرز اور ڈویلپرز', estate_list: 'لسٹنگ فارم پر جائیں', estate_pricing: 'لانچ اور قیمتیں', estate_post_project: 'پروجیکٹ فارم کھولیں',
       estate_dashboard: 'میرا ڈیش بورڈ', estate_signup: 'اکاؤنٹ بنائیں', join_professional: 'پروفیشنل پروفائل بنائیں', join_agency: 'اپنی ایجنسی شامل کریں', join_builder: 'کمپنی پروفائل بنائیں', join_developer: 'پروجیکٹس شائع کرنے کی درخواست',
       pk_home: 'AgenticCore Pakistan', pk_services: 'PK سروسز', pk_branding: 'برانڈنگ', pk_print: 'فلائرز اور پرنٹ', pk_websites: 'ویب سائٹس', pk_video: 'ویڈیو', pk_social: 'سوشل میڈیا', pk_campaigns: 'کیمپینز', pk_leads: 'AI اور آٹومیشن', pk_local: 'گوگل بزنس پروفائل',
       pk_logo: 'لوگو اور برانڈ', pk_agent_branding: 'ایجنٹ برانڈنگ کٹ', pk_brochure: 'بروشر', pk_website: 'ایجنسی اور ڈویلپر ویب سائٹ', pk_landing: 'لینڈنگ پیجز', pk_photos: 'تصاویر بہتر بنانا', pk_launch: 'پروجیکٹ لانچ کیمپین',
@@ -97,7 +103,7 @@
   // ---------- action keys → URLs (the only links an assistant can produce) ----------
   var EST = { estate_home: ['', 'browse'], estate_properties: ['properties.html', 'browse'], estate_buy: ['buy.html', 'browse'], estate_rent: ['rent.html', 'browse'],
     estate_projects: ['projects.html', 'browse'], estate_professionals: ['professionals.html', 'browse'], estate_agencies: ['agencies.html', 'browse'], estate_builders: ['builders.html', 'browse'],
-    estate_list: ['sell.html', 'list'], estate_pricing: ['pricing.html', 'browse'], estate_dashboard: ['my.html', 'view'], estate_signup: ['signup.html', 'list'],
+    estate_list: ['sell.html', 'list'], estate_pricing: ['pricing.html', 'browse'], estate_post_project: ['post-project.html', 'project'], estate_dashboard: ['my.html', 'view'], estate_signup: ['signup.html', 'list'],
     join_professional: ['signup.html', 'profile', 'professional'], join_agency: ['signup.html', 'agency', 'agency'], join_builder: ['signup.html', 'builder', 'builder'], join_developer: ['signup.html', 'project', 'developer'] };
   var PKP = { pk_home: '', pk_services: 'services.html', pk_branding: 'services.html#service-14', pk_print: 'services.html#service-3', pk_websites: 'services.html#service-16',
     pk_video: 'services.html#service-7', pk_social: 'services.html#property-marketing', pk_campaigns: 'services.html#service-21', pk_leads: 'services.html#ai-automation', pk_local: 'services.html#service-18',
@@ -165,9 +171,18 @@
       '<div class="aca-log" role="log" aria-live="polite" aria-relevant="additions" tabindex="0"></div>' +
       '<div class="aca-quick"></div>' +
       (bot === 'amaan' ? '<div class="aca-tray" hidden></div><div class="aca-handoff-row" hidden><button type="button" class="aca-handoff" data-x="handoff"></button></div>' : '') +
-      '<form class="aca-form" novalidate>' + attach + '<label class="aca-sr"></label>' +
-        '<textarea rows="1" maxlength="600" autocomplete="off"></textarea>' +
-        '<button type="submit" class="aca-send"></button></form>' +
+      (bot === 'amaan'
+        // Amaan: one large message box with attach, voice and send inside it
+        ? '<div class="aca-cwrap"><form class="aca-form aca-compose" novalidate><label class="aca-sr"></label>' +
+            '<textarea rows="2" maxlength="600" autocomplete="off"></textarea>' +
+            '<div class="aca-cbar">' + attach +
+              '<button type="button" class="aca-mic" data-x="mic" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' +
+              '<span class="aca-listen" aria-live="polite"></span>' +
+              '<button type="submit" class="aca-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>' +
+            '</div></form><p class="aca-hint"></p></div>'
+        : '<form class="aca-form" novalidate><label class="aca-sr"></label>' +
+            '<textarea rows="1" maxlength="600" autocomplete="off"></textarea>' +
+            '<button type="submit" class="aca-send"></button></form>') +
       '<div class="aca-foot"><span class="aca-human"></span> <a class="aca-wa" target="_blank" rel="noopener noreferrer"></a> <a class="aca-mail"></a>' +
         '<p class="aca-note"></p></div>' +
       (bot === 'amaan' ? '<div class="aca-sheet" hidden role="dialog" aria-modal="true"></div>' : '');
@@ -176,16 +191,18 @@
     root.addEventListener('click', function (e) {
       var b = e.target.closest('[data-x]'); if (!b) return;
       var x = b.getAttribute('data-x');
-      if (x === 'close') close(bot);
+      if (x === 'close') { if (bot === 'amaan' && cfg.page) leave(); else close(bot); }
+      else if (x === 'mic') mic(view);
       else if (x === 'reset') { state.convs[bot] = freshConv(bot); delete state.langChoice; save(); render(view); greet(view); }
       else if (x === 'amaan') { track('assistant_action', { bot: 'guide', action: 'open_amaan' }); openAmaan(null); }
       else if (x === 'attach') pickFiles(view);
       else if (x === 'handoff') openSheet(view);
     });
     var form = q(view, '.aca-form'), input = q(view, 'textarea');
-    form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value.trim(); if (v) { input.value = ''; send(view, v, null); } });
-    input.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
-    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var sh = q(view, '.aca-sheet'); if (sh && !sh.hidden) closeSheet(view); else close(bot); } });
+    form.addEventListener('submit', function (e) { e.preventDefault(); if (recog) recog.stop(); var v = input.value.trim(); if (v) { input.value = ''; if (bot === 'amaan') grow(input); send(view, v, null); } });
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit(); } });
+    if (bot === 'amaan') input.addEventListener('input', function () { grow(input); });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var sh = q(view, '.aca-sheet'); if (sh && !sh.hidden) closeSheet(view); else if (!(bot === 'amaan' && cfg.page)) close(bot); } });
     q(view, '.aca-wa').addEventListener('click', function () { track('assistant_handoff_whatsapp', { bot: bot }); });
     q(view, '.aca-mail').addEventListener('click', function () { track('assistant_handoff_email', { bot: bot }); });
     if (bot === 'amaan') q(view, '.aca-file').addEventListener('change', function (e) { addFiles(view, Array.prototype.slice.call(e.target.files || [])); e.target.value = ''; });
@@ -199,11 +216,15 @@
     q(view, '.aca-title').textContent = t(bot === 'amaan' ? 'a_title' : 'g_title');
     q(view, '.aca-sub').textContent = t(bot === 'amaan' ? 'a_sub' : 'g_sub');
     q(view, '.aca-reset').textContent = t('reset');
-    if (bot === 'amaan') { q(view, '.aca-back-t').textContent = t('back'); q(view, '.aca-back').setAttribute('aria-label', t('back')); q(view, '.aca-clip').setAttribute('aria-label', t('attach')); q(view, '.aca-clip').title = t('attach'); q(view, '.aca-handoff').textContent = '📤 ' + t('handoff'); }
+    if (bot === 'amaan') {
+      q(view, '.aca-hint').textContent = t('hint');
+      var mb = q(view, '.aca-mic'); mb.hidden = !Speech(); mb.setAttribute('aria-label', t(recog ? 'mic_stop' : 'mic')); mb.title = t(recog ? 'mic_stop' : 'mic');
+      q(view, '.aca-send').setAttribute('aria-label', t('send')); q(view, '.aca-send').title = t('send');
+      q(view, '.aca-back-t').textContent = t('back'); q(view, '.aca-back').setAttribute('aria-label', t('back')); q(view, '.aca-clip').setAttribute('aria-label', t('attach')); q(view, '.aca-clip').title = t('attach'); q(view, '.aca-handoff').textContent = '📤 ' + t('handoff'); }
     else { q(view, '.aca-close').setAttribute('aria-label', t('close')); q(view, '.aca-to-amaan strong').textContent = t('to_amaan'); q(view, '.aca-to-amaan small').textContent = t('to_amaan_sub'); }
     q(view, 'textarea').placeholder = t(bot === 'amaan' ? 'ph_amaan' : 'ph_guide');
     q(view, '.aca-sr').textContent = t('input');
-    q(view, '.aca-send').textContent = t('send');
+    if (bot !== 'amaan') q(view, '.aca-send').textContent = t('send');
     q(view, '.aca-human').textContent = t('human');
     var wa = q(view, '.aca-wa'), mail = q(view, '.aca-mail');
     var hw = hrefFor('contact_whatsapp'), hm = hrefFor('contact_email');
@@ -280,12 +301,13 @@
     var conv = state.convs[view.bot];
     if (!state.langChoice && !conv.messages.length) return;              // language first
     if (conv.messages.some(function (m) { return m.role === 'user'; })) return;
-    var keys = view.bot === 'amaan' ? ['amaan_find', 'amaan_list', 'amaan_order', 'contact'] : ['about', 'professional', 'agency', 'builder', 'project', 'pk_service', 'contact'];
+    var keys = view.bot === 'amaan' ? (cfg.site === 'estate' ? ['amaan_find', 'amaan_list', 'amaan_project', 'amaan_order', 'contact'] : ['amaan_find', 'amaan_list', 'amaan_order', 'contact']) : ['about', 'professional', 'agency', 'builder', 'project', 'pk_service', 'contact'];
     keys.forEach(function (k) {
       var b = el('button', 'aca-chip', T[ui()].q[k]); b.type = 'button';
       b.addEventListener('click', function () {
         track('assistant_action', { bot: view.bot, action: k });
         if (k === 'amaan_order') { send(view, T[ui()].q.amaan_order, null); pickFiles(view); }
+        else if (k === 'amaan_project') project(view);
         else if (view.bot === 'amaan') send(view, null, k);
         else send(view, null, k);
       });
@@ -432,6 +454,39 @@
   }
   function closeSheet(view) { var sh = q(view, '.aca-sheet'); sh.hidden = true; sh.innerHTML = ''; q(view, '.aca-handoff').focus(); }
 
+  // ---------- projects (Amaan): the developer path, answered here ----------
+  function project(view) {
+    var conv = state.convs.amaan;
+    conv.messages.push({ role: 'user', text: T[ui()].q.amaan_project });
+    conv.messages.push({ role: 'assistant', text: t('project_reply'), lang: ui(), actions: ['estate_post_project', 'join_developer', 'amaan_order'] });
+    track('assistant_action', { bot: 'amaan', action: 'project_path' });
+    save(); render(view);
+  }
+
+  // ---------- message box (Amaan): grows with the text; voice typing where the browser has it ----------
+  function grow(input) { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 220) + 'px'; }
+  function Speech() { return window.SpeechRecognition || window.webkitSpeechRecognition || null; }
+  var recog = null;
+  function mic(view) {
+    if (recog) { recog.stop(); return; }
+    var S = Speech(); if (!S) return;
+    var input = q(view, 'textarea'), btn = q(view, '.aca-mic'), note = q(view, '.aca-listen');
+    var base = input.value ? input.value.replace(/\s*$/, ' ') : '';
+    var r = new S();
+    r.lang = ui() === 'ur' ? 'ur-PK' : 'en-PK'; r.interimResults = true; r.continuous = false;
+    r.onresult = function (e) {
+      var said = '';
+      for (var i = 0; i < e.results.length; i++) said += e.results[i][0].transcript;
+      input.value = (base + said).slice(0, 600); grow(input);
+    };
+    r.onerror = function (e) { if (e && e.error !== 'no-speech' && e.error !== 'aborted') note.textContent = t('mic_err'); };
+    r.onend = function () { recog = null; btn.classList.remove('is-on'); btn.setAttribute('aria-pressed', 'false'); btn.setAttribute('aria-label', t('mic')); btn.title = t('mic'); if (note.textContent === t('listening')) note.textContent = ''; input.focus(); };
+    try { r.start(); } catch (err) { note.textContent = t('mic_err'); return; }
+    recog = r; note.textContent = t('listening');
+    btn.classList.add('is-on'); btn.setAttribute('aria-pressed', 'true'); btn.setAttribute('aria-label', t('mic_stop')); btn.title = t('mic_stop');
+    track('assistant_action', { bot: 'amaan', action: 'voice' });
+  }
+
   // ---------- conversation ----------
   function greet(view) { if (!state.convs[view.bot].messages.length && state.langChoice) send(view, null, null, true); }
   // Start of a conversation: English or Urdu.
@@ -498,7 +553,7 @@
   function ensure(opts) { cfg = cfg || opts; state = state || loadState(); }
   function openGuide(quickKey) {
     if (!guide) guide = buildView('guide');
-    if (amaan && !amaan.root.hidden) return;
+    if (amaan && !amaan.root.hidden && !cfg.page) return;
     lastFocus = lastFocus || document.activeElement;
     guide.root.hidden = false;
     var fab = document.getElementById('acaFab'); if (fab) fab.setAttribute('aria-expanded', 'true');
@@ -508,7 +563,16 @@
     if (quickKey) send(guide, null, quickKey); else greet(guide);
     q(guide, 'textarea').focus();
   }
+  // Estate: Amaan has his own page (amaan.html) filling the whole window; the chat
+  // carries over in this tab (sessionStorage). The quick key rides along as ?q=.
+  var PAGE_QUICK = ['amaan_find', 'amaan_list', 'amaan_order', 'amaan_project'];
   function openAmaan(quickKey) {
+    if (cfg.site === 'estate' && !cfg.page) {
+      save();
+      track('assistant_action', { bot: 'amaan', action: 'open_page' });
+      location.href = 'amaan.html' + (PAGE_QUICK.indexOf(quickKey) >= 0 ? '?q=' + quickKey : '');
+      return;
+    }
     if (!amaan) amaan = buildView('amaan');
     if (guide) guide.root.hidden = true;
     lastFocus = lastFocus || document.activeElement;
@@ -517,8 +581,16 @@
     render(amaan);
     track('assistant_opened', { bot: 'amaan' });
     if (quickKey === 'amaan_order') { send(amaan, T[ui()].q.amaan_order, null); }
+    else if (quickKey === 'amaan_project') project(amaan);
     else if (quickKey) send(amaan, null, quickKey); else greet(amaan);
     q(amaan, 'textarea').focus();
+  }
+  // Amaan's page: back goes where the visitor came from on this site, else home.
+  function leave() {
+    if (recog) recog.stop();
+    var r = document.referrer;
+    try { if (r && new URL(r).origin === location.origin && !/\/amaan\.html/.test(new URL(r).pathname) && history.length > 1) { history.back(); return; } } catch (e) { /* fall through */ }
+    location.href = 'index.html';
   }
   function open(opts) {
     ensure(opts);
