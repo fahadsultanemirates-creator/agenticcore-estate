@@ -62,14 +62,14 @@
 .role-option.checked, .role-option:has(input:checked) {
   border-color: var(--accent-gold);
   color: var(--accent-gold-bright);
-  background: rgba(212,175,55,0.08);
+  background: rgba(104, 248, 48, 0.08);
 }
 
 .auth-error {
   display: none;
   background: rgba(226, 114, 107, 0.1);
   border: 1px solid rgba(226, 114, 107, 0.35);
-  color: #F0958E;
+  color: #B3261E;
   font-size: 0.85rem;
   padding: 0.7rem 0.9rem;
   border-radius: var(--radius-sm);
@@ -79,15 +79,15 @@
 .auth-card .btn { width: 100%; padding: 0.85rem; font-size: 0.95rem; }
 
 .auth-footer { text-align: center; margin-top: var(--space-lg); font-size: 0.88rem; color: var(--text-secondary); }
-.auth-footer a { color: var(--accent-gold-bright); border-bottom: 1px solid rgba(212, 175, 55, 0.35); }
+.auth-footer a { color: var(--accent-gold-bright); border-bottom: 1px solid rgba(104, 248, 48, 0.35); }
 
 .auth-card .auth-home-btn { width: auto; display: inline-flex; }
 
 .demo-creds {
   margin-top: var(--space-md);
   padding: 0.7rem 0.9rem;
-  background: rgba(212,175,55,0.06);
-  border: 1px solid rgba(212,175,55,0.25);
+  background: rgba(104, 248, 48, 0.06);
+  border: 1px solid rgba(104, 248, 48, 0.25);
   border-radius: var(--radius-sm);
   font-size: 0.78rem;
   color: var(--text-secondary);
@@ -98,10 +98,10 @@
 .role-choice-intents .role-option { font-size: 0.9rem; line-height: 1.35; padding: 0.65rem 0.8rem; text-align: start; justify-content: flex-start; min-height: 44px; }
 
 /* login page: "New here?" when sent from a page that needs an account */
-.auth-newhere { margin-bottom: var(--space-lg); padding: 0.9rem 1rem; border: 1px solid rgba(212, 175, 55, 0.45); border-radius: var(--radius-md, 12px); background: rgba(212, 175, 55, 0.06); text-align: center; }
+.auth-newhere { margin-bottom: var(--space-lg); padding: 0.9rem 1rem; border: 1px solid rgba(104, 248, 48, 0.45); border-radius: var(--radius-md, 12px); background: rgba(104, 248, 48, 0.06); text-align: center; }
 .auth-newhere[hidden] { display: none; }
 .auth-newhere p { margin: 0 0 0.6rem; font-size: 0.92rem; color: var(--text-secondary); }
 .auth-newhere .btn { width: 100%; min-height: 44px; }
 
 .auth-maillink { background: none; border: 0; padding: .3rem 0; font: inherit; font-size: .88rem; color: var(--accent-gold-bright); text-decoration: underline; cursor: pointer; }
-.auth-error.ok { background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.35); color: var(--accent-gold-bright); }
+.auth-error.ok { background: rgba(104, 248, 48, 0.08); border-color: rgba(104, 248, 48, 0.35); color: var(--accent-gold-bright); }
