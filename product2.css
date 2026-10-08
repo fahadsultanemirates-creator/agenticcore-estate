@@ -4,7 +4,7 @@
 .cp-understood { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
 .cp-understood span { color: var(--accent-gold-bright); font-weight: 600; }
 .cp-msg { font-weight: 600; margin-bottom: 0.6rem; }
-.cp-follow { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; font-size: 0.95rem; }
+.cp-follow { background: rgba(104, 248, 48, 0.08); border: 1px solid rgba(104, 248, 48, 0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; font-size: 0.95rem; }
 .cp-grid { display: grid; gap: 0.8rem; }
 @media (min-width: 720px) { .cp-grid { grid-template-columns: repeat(2, 1fr); } }
 .cp-card { display: grid; grid-template-columns: 110px 1fr; gap: 0.8rem; padding: 0.7rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-primary); color: inherit; text-decoration: none; }
@@ -39,16 +39,16 @@
 .lq-note { font-size: 0.75rem; color: var(--text-tertiary); }
 .lq-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
 .lq-pill { display: inline-block; min-width: 2.6em; text-align: center; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid var(--border-subtle); color: var(--accent-gold-bright); text-decoration: none; }
-.lq-pill.strong { color: var(--accent-emerald); } .lq-pill.weak { color: #F0958E; }
+.lq-pill.strong { color: var(--accent-emerald); } .lq-pill.weak { color: #B3261E; }
 
 /* ---------- Sell form: mode chooser + assist ---------- */
 .sell-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: var(--space-md); }
 .sell-mode { text-align: start; padding: 0.9rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-primary); color: var(--text-primary); cursor: pointer; font: inherit; min-height: 44px; }
 .sell-mode strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
 .sell-mode span { font-size: 0.8rem; color: var(--text-secondary); }
-.sell-mode.active { border-color: var(--accent-gold); background: rgba(212,175,55,0.08); }
+.sell-mode.active { border-color: var(--accent-gold); background: rgba(104, 248, 48, 0.08); }
 @media (max-width: 420px) { .sell-modes { grid-template-columns: 1fr; } }
-.assist-box { border: 1px dashed rgba(212,175,55,0.45); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md); }
+.assist-box { border: 1px dashed rgba(104, 248, 48, 0.45); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md); }
 .assist-box textarea { width: 100%; min-height: 110px; font-size: 16px; }
 .assist-out { margin-top: 0.8rem; display: grid; gap: 0.7rem; font-size: 0.9rem; }
 .assist-out h5 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-gold-bright); margin-bottom: 0.3rem; }
@@ -56,12 +56,12 @@
 .assist-draft { background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.8rem; white-space: pre-line; }
 .assist-draft strong { display: block; margin-bottom: 0.4rem; }
 .assist-missing li { color: var(--text-secondary); }
-.field-filled { box-shadow: 0 0 0 2px rgba(212,175,55,0.55) !important; }
-.sell-warn { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; padding: 0.7rem 0.9rem; font-size: 0.88rem; margin-bottom: 1rem; }
+.field-filled { box-shadow: 0 0 0 2px rgba(104, 248, 48, 0.55) !important; }
+.sell-warn { background: rgba(104, 248, 48, 0.08); border: 1px solid rgba(104, 248, 48, 0.3); border-radius: 8px; padding: 0.7rem 0.9rem; font-size: 0.88rem; margin-bottom: 1rem; }
 
 /* ---------- Copilot floating panel ---------- */
 .cpp-panel { position: fixed; z-index: 95; right: 1rem; bottom: 5.5rem; width: 380px; max-width: calc(100vw - 2rem); max-height: min(70vh, 620px); overflow-y: auto; overscroll-behavior: contain;
-  background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-md); box-shadow: 0 24px 60px -10px rgba(0,0,0,0.7); display: none; }
+  background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-md); box-shadow: 0 24px 60px -10px rgba(17, 26, 16, 0.12); display: none; }
 html[dir="rtl"] .cpp-panel { right: auto; left: 1rem; }
 .cpp-panel.open { display: block; }
 .cpp-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
@@ -69,7 +69,7 @@ html[dir="rtl"] .cpp-panel { right: auto; left: 1rem; }
 .cpp-close { background: none; border: 0; color: var(--text-secondary); font-size: 1.4rem; line-height: 1; width: 44px; height: 44px; cursor: pointer; }
 .cpp-tabs { display: flex; gap: 0.3rem; margin-bottom: 0.7rem; }
 .cpp-tabs button { flex: 1; min-height: 40px; border-radius: 8px; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-.cpp-tabs button.active { border-color: var(--accent-gold); color: var(--accent-gold-bright); background: rgba(212,175,55,0.08); }
+.cpp-tabs button.active { border-color: var(--accent-gold); color: var(--accent-gold-bright); background: rgba(104, 248, 48, 0.08); }
 .cpp-panel textarea, .assist-box textarea { width: 100%; min-height: 72px; font: inherit; font-size: 16px; padding: 0.7rem 0.9rem; border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-subtle); line-height: 1.45; resize: vertical; }
 .cpp-panel textarea:focus, .assist-box textarea:focus { outline: 2px solid var(--accent-gold); outline-offset: 1px; }
 .cpp-panel p { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
@@ -106,11 +106,11 @@ html[dir="rtl"] .cpp-panel { right: auto; left: 1rem; }
 .tk-note { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
 .tk-formats { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
 .tk-formats button { min-height: 40px; padding: 0 0.8rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-.tk-formats button.active { border-color: var(--accent-gold); color: var(--accent-gold-bright); background: rgba(212,175,55,0.08); }
+.tk-formats button.active { border-color: var(--accent-gold); color: var(--accent-gold-bright); background: rgba(104, 248, 48, 0.08); }
 .tk-canvas { background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.6rem; display: flex; justify-content: center; }
 .tk-canvas canvas { width: 100%; max-width: 420px; height: auto; border-radius: 6px; }
 .tk-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin: 0.8rem 0 0.3rem; }
 .tk-cap { width: 100%; font: inherit; font-size: 0.9rem; padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-subtle); resize: vertical; }
-.tk-pk { border-color: rgba(212,175,55,0.35); }
+.tk-pk { border-color: rgba(104, 248, 48, 0.35); }
 .tk-pk-list { padding-inline-start: 1.1rem; font-size: 0.88rem; display: grid; gap: 0.2rem; margin-bottom: 0.8rem; }
 html[dir="rtl"] .tk-cap, html[dir="rtl"] .tk-title { unicode-bidi: plaintext; }

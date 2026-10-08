@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#071f17">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFFFFF">
 <title>List Your Property — AgenticCore Estate</title>
 <meta name="description" content="List your property for sale or rent on AgenticCore Estate.">
 <link rel="stylesheet" href="main.css">
@@ -30,7 +30,7 @@
 <section class="deep-section" style="padding-top:var(--space-lg);">
   <div class="container narrow">
     <div class="panel" style="padding:var(--space-lg);">
-      <div class="auth-error" id="sellError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#F0958E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
+      <div class="auth-error" id="sellError" style="display:none;background:rgba(226,114,107,0.1);border:1px solid rgba(226,114,107,0.35);color:#B3261E;font-size:0.85rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;"></div>
       <div class="sell-modes" role="group" aria-label="How do you want to list?">
         <button type="button" class="sell-mode active" id="modeForm" aria-pressed="true"><strong data-i18n="sell_mode_form">Fill the form myself</strong><span data-i18n="sell_mode_form_sub">The normal listing form.</span></button>
         <button type="button" class="sell-mode" id="modeAssist" aria-pressed="false"><strong data-i18n="sell_mode_assist">✦ Let AgenticCore help me list</strong><span data-i18n="sell_mode_assist_sub">Type rough notes — you review everything before posting.</span></button>
@@ -110,7 +110,7 @@
           <label for="sellPhotos">Photos (up to 15)</label>
           <input type="file" id="sellPhotos" accept="image/*" multiple>
         </div>
-        <div class="form-field" id="sellCnicGroup" style="display:none;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:0.9rem;">
+        <div class="form-field" id="sellCnicGroup" style="display:none;background:rgba(104,248,48,0.08);border:1px solid rgba(35,130,14,0.3);border-radius:8px;padding:0.9rem;">
           <label for="sellCnic">Verify your identity to list a property</label>
           <input type="text" id="sellCnic" placeholder="XXXXX-XXXXXXX-X">
           <span class="hint" style="display:block;margin-top:0.3rem;font-size:0.8rem;color:var(--text-tertiary);">Required once, the first time you post — kept private, never shown publicly. This is how we keep listings accountable to a real person.</span>
@@ -148,5 +148,6 @@
 <script src="partials.js"></script>
 <script src="auth.js"></script>
 <script src="sell.js"></script>
+<script src="ac-amaan-float.js" defer></script>
 </body>
 </html>

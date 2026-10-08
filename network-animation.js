@@ -50,7 +50,7 @@
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < LINK_DIST) {
           const opacity = (1 - dist / LINK_DIST) * 0.18;
-          ctx.strokeStyle = `rgba(212, 175, 55, ${opacity})`;
+          ctx.strokeStyle = `rgba(35, 130, 14, ${opacity * 0.8})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -64,7 +64,7 @@
       const glow = (Math.sin(n.pulse) + 1) / 2;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r + glow * 0.8, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(240, 206, 99, ${0.35 + glow * 0.35})`;
+      ctx.fillStyle = `rgba(104, 248, 48, ${0.45 + glow * 0.4})`;
       ctx.fill();
     }
   }
