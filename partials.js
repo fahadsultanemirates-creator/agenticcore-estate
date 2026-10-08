@@ -38,7 +38,7 @@ async function acRenderHeader() {
   el.innerHTML =
     '<nav class="nav" id="nav">' +
       '<div class="container nav-inner">' +
-        '<a href="index.html" class="nav-logo">' + AC_LOGO_SVG + '</a>' +
+        '<a href="index.html" class="nav-logo nav-logo-slogan">' + AC_LOGO_SVG + '<span class="nav-slogan" data-i18n="h2_slogan">Khwabon se ghar tak</span></a>' +
         '<div class="nav-right" id="navRight">' +
           '<div class="nav-links">' +
             // Properties carries Buy / Rent / List free as a submenu (dropdown on

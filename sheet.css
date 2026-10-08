@@ -10,7 +10,7 @@ body { margin: 0; background: #e9ece9; color: #14261d; font: 15px/1.5 Inter, sys
 .sh-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; }
 .sh-brand img { width: 30px; height: 30px; }
 .sh-brand span { color: #2E8B1F; }   /* the logo's green, dark enough to read on paper */
-.sh-purpose { background: #0c3324; color: #fff; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-size: 13px; letter-spacing: .04em; }
+.sh-purpose { background: #68F830; color: #0A1F05; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-size: 13px; letter-spacing: .04em; }
 h1 { font-size: 24px; line-height: 1.25; margin: 0 0 4px; }
 .sh-loc { color: #4b5f55; margin: 0 0 6px; }
 .sh-price { font-size: 26px; font-weight: 800; color: #0c3324; margin: 0 0 12px; }
