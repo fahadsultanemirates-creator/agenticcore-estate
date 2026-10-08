@@ -24,11 +24,11 @@ html.ac-ur-pending body { visibility: hidden; animation: ac-ur-reveal 0s linear 
 .mk-card:hover { transform: translateY(-2px); border-color: rgba(104, 248, 48, 0.45); }
 .mk-card:focus-visible { outline: 2px solid var(--accent-gold-bright); outline-offset: 2px; }
 .mk-card.is-sample { border-style: dashed; }
-.mk-media { position: relative; aspect-ratio: 4 / 3; background: #0A2A1E; overflow: hidden; }
+.mk-media { position: relative; aspect-ratio: 4 / 3; background: #EEF9E6; overflow: hidden; }
 .mk-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mk-media-icon { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; color: var(--accent-gold); opacity: 0.55; }
 .mk-media-icon svg { width: 42%; height: 42%; }
-.mk-media-logo { aspect-ratio: 2 / 1; background: #06170F; display: flex; align-items: center; justify-content: center; }
+.mk-media-logo { aspect-ratio: 2 / 1; background: #EEF9E6; display: flex; align-items: center; justify-content: center; }
 .mk-logo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .mk-logo img { width: 100%; height: 100%; object-fit: contain; }
 .mk-body { padding: 0.75rem 0.85rem 0.9rem; display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
@@ -62,7 +62,7 @@ html[lang="ur"] .mk-sample { letter-spacing: 0; text-transform: none; font-size:
 
 /* person card */
 .mk-card-person .mk-person-top { position: relative; display: flex; justify-content: center; padding: 1.1rem 0 0.2rem; background: linear-gradient(180deg, rgba(104, 248, 48, 0.10), transparent); }
-.mk-avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(104, 248, 48, 0.5); background: #0A2A1E; }
+.mk-avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(104, 248, 48, 0.5); background: #EEF9E6; }
 .mk-initials { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.6rem; color: var(--accent-gold-bright); font-family: var(--font-display); }
 .mk-card-person .mk-body { text-align: center; align-items: center; }
 .mk-card-person .mk-chips { justify-content: center; }
@@ -122,12 +122,12 @@ html[lang="ur"] .mk-sample { letter-spacing: 0; text-transform: none; font-size:
 
 /* ---------- details ---------- */
 .mk-detail-wrap { padding-top: 5.8rem; padding-bottom: 3rem; }
-.mk-hero { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 8; background: #0A2A1E; margin-bottom: 1rem; }
+.mk-hero { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 8; background: #EEF9E6; margin-bottom: 1rem; }
 .mk-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mk-detail-head { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
 .mk-detail-head h1 { font-size: clamp(1.5rem, 4.6vw, 2.2rem); margin: 0; }
 .mk-detail-head .mk-avatar { width: 120px; height: 120px; }
-.mk-detail-logo { width: 220px; max-width: 100%; aspect-ratio: 2 / 1; border-radius: var(--radius-md); overflow: hidden; background: #06170F; border: 1px solid var(--border-subtle); }
+.mk-detail-logo { width: 220px; max-width: 100%; aspect-ratio: 2 / 1; border-radius: var(--radius-md); overflow: hidden; background: #EEF9E6; border: 1px solid var(--border-subtle); }
 .mk-sub { color: var(--text-secondary); margin: 0.2rem 0 0; }
 .mk-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0; }
 .mk-badges:empty { display: none; }
@@ -221,7 +221,7 @@ html[lang="ur"] .mk-title, html[lang="ur"] .mk-dir-head h1, html[lang="ur"] .mk-
 .my-checks { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; }
 .my-checks label, .my-bool { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: var(--text-primary); min-height: 36px; }
 .my-checks input, .my-bool input { width: 18px; height: 18px; }
-.my-thumb { width: 96px; height: 64px; object-fit: contain; background: #06170F; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 0.3rem; }
+.my-thumb { width: 96px; height: 64px; object-fit: contain; background: #EEF9E6; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 0.3rem; }
 .my-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .my-msg { min-height: 1.2em; font-size: 0.88rem; margin: 0; }
 .my-msg.err { color: var(--danger); }
