@@ -23,7 +23,7 @@
   ].filter(Boolean);
   document.title = l.title + ' — ' + acT('sheet_title');
   root.innerHTML =
-    '<div class="sh-top"><div class="sh-brand"><img src="images/agenticcore-icon.png" alt="">AgenticCore <span>Estate</span></div>' +
+    '<div class="sh-top"><div class="sh-brand"><img src="images/agenticcore-icon.png" alt="">AgenticCore<span>.estate</span></div>' +
       '<div class="sh-purpose">' + esc(l.type === 'rent' ? 'FOR RENT' : 'FOR SALE') + '</div></div>' +
     '<h1>' + esc(l.title) + '</h1><p class="sh-loc">' + esc(l.area) + ', ' + esc(l.city) + '</p>' +
     '<p class="sh-price">' + esc(acFormatPKR(l.price)) + (l.type === 'rent' && l.price > 0 ? ' / month' : '') + '</p>' +
