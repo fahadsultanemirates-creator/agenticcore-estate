@@ -1050,3 +1050,39 @@ section.theme-dark, footer.theme-dark, .theme-dark.h2-section, .theme-dark.tgh {
   background: radial-gradient(ellipse 700px 380px at 85% 0%, rgba(104, 248, 48, 0.10), transparent), linear-gradient(160deg, #0C3324, #071F17) !important;
   border-color: #1D4835;
 }
+
+/* ---------- Two-tone preview: light green blocks instead of dark green ----------
+   theme-mint = light green with black text; theme-lime = logo green with white text. */
+.theme-mint, .theme-lime { color-scheme: light; }
+.theme-mint {
+  --bg-primary: #E6FBDA; --bg-panel: #FFFFFF; --bg-panel-hover: #F3FDEE; --border-subtle: #BCE8A4;
+  --accent-gold: #1F7A0C; --accent-gold-bright: #2E9E14; --accent-emerald: #1F7A0C;
+  --text-primary: #0A1F05; --text-secondary: #2C4723; --text-tertiary: #4C6843;
+  color: var(--text-primary);
+}
+section.theme-mint, footer.theme-mint, .theme-mint.h2-section, .theme-mint.tgh {
+  background: radial-gradient(ellipse 700px 380px at 85% 0%, rgba(255, 255, 255, .7), transparent), linear-gradient(160deg, #EDFCE4, #D3F7BF) !important;
+  border-color: #BCE8A4;
+}
+.theme-lime {
+  --bg-primary: #4FCB1F; --bg-panel: rgba(255, 255, 255, .16); --bg-panel-hover: rgba(255, 255, 255, .24); --border-subtle: rgba(255, 255, 255, .4);
+  --accent-gold: #FFFFFF; --accent-gold-bright: #FFFFFF; --accent-emerald: #FFFFFF;
+  --text-primary: #FFFFFF; --text-secondary: #F3FFEC; --text-tertiary: #E2F8D6;
+  color: var(--text-primary);
+}
+section.theme-lime, footer.theme-lime, .theme-lime.h2-section, .theme-lime.tgh {
+  background: radial-gradient(ellipse 700px 380px at 85% 0%, rgba(255, 255, 255, .22), transparent), linear-gradient(160deg, #5BD62A, #3FB314) !important;
+  border-color: #3FB314;
+}
+.theme-lime h1, .theme-lime h2, .theme-lime h3, .theme-lime p, .theme-lime li, .theme-lime strong { text-shadow: 0 1px 2px rgba(10, 31, 5, .22); }
+.theme-lime .btn-primary { background: #FFFFFF; color: #1B5E0B; box-shadow: 0 6px 18px rgba(10, 31, 5, .2); }
+.theme-lime .btn-primary:hover, .theme-lime .btn-primary:focus-visible { background: #F0FFE8; color: #0A1F05; }
+.theme-lime .btn-secondary { background: transparent; color: #FFFFFF; border-color: rgba(255, 255, 255, .8); }
+.theme-mint .btn-secondary { background: #FFFFFF; color: #0A1F05; border-color: #9FD884; }
+.theme-mint .btn-primary { background: #0A1F05; color: #8CFF5C; box-shadow: 0 6px 18px rgba(10, 31, 5, .2); }
+.theme-mint .btn-primary:hover, .theme-mint .btn-primary:focus-visible { background: #16330C; color: #8CFF5C; }
+/* WhatsApp block details on the light green */
+.theme-mint .tgh-eyebrow { border-color: rgba(31, 122, 12, .45); background: #FFFFFF; color: #1B5E0B; }
+.theme-mint .tgh-ico { background: #0A1F05; color: #8CFF5C; }
+.theme-lime .tgh-eyebrow { border-color: rgba(255, 255, 255, .7); background: rgba(255, 255, 255, .18); color: #FFFFFF; }
+.theme-lime .tgh-ico { background: #FFFFFF; color: #1B5E0B; text-shadow: none; }
