@@ -8,7 +8,7 @@
    nav link.
    ============================================ */
 
-const AC_LOGO_SVG = '<img src="images/agenticcore-logo.png" alt="AgenticCore.estate" class="nav-logo-img" width="196" height="40">';
+const AC_LOGO_SVG = '<img src="images/agenticcore-logo.png" alt="AgenticCore.estate" class="nav-logo-img" width="187" height="40">';
 
 function acNavLink(href, page, key) {
   const active = document.body.getAttribute('data-page') === page ? ' active' : '';
