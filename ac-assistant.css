@@ -49,19 +49,19 @@ html[dir="rtl"] .aca-assistant { align-self: flex-end; }
   box-shadow: 0 24px 60px rgba(17, 26, 16, .28), 0 0 0 4px rgba(104, 248, 48, .16);
 }
 html[dir="rtl"] .aca-panel { right: auto; left: 16px; }
-.aca-head { display: flex; align-items: center; gap: .55rem; padding: .7rem .7rem .7rem .9rem; background: linear-gradient(135deg, #8CFF5C, #68F830); color: #0A1F05; }
+.aca-head { display: flex; align-items: center; gap: .55rem; padding: .7rem .7rem .7rem .9rem; background: #EEF9E6; color: #0A1F05; border-bottom: 1px solid #D3EBC4; }
 .aca-head-t { flex: 1; min-width: 0; }
 .aca-head .aca-sub { color: #1F4A12; }
-.aca-gdot { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #0A1F05; color: #68F830; font-size: 1rem; flex: 0 0 auto; }
+.aca-gdot { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #FFFFFF; color: #23820E; font-size: 1rem; flex: 0 0 auto; }
 .aca-head .aca-reset, .aca-head .aca-close { border: 1px solid rgba(10, 31, 5, .35); color: #0A1F05; }
 .aca-head .aca-reset:hover, .aca-head .aca-close:hover { background: rgba(255, 255, 255, .4); }
 .aca-to-amaan { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 .5rem; margin: .7rem .9rem .2rem; padding: .65rem .85rem; border: 0; border-radius: 14px;
-  background: #071F17; color: #F4F7F0; text-align: start; font: inherit; cursor: pointer; }
+  background: #68F830; color: #0A1F05; text-align: start; font: inherit; cursor: pointer; }
 .aca-to-amaan strong { font-size: .92rem; }
-.aca-to-amaan small { grid-column: 1; color: #A9C2B4; font-size: .75rem; }
-.aca-to-amaan span { grid-row: 1 / span 2; grid-column: 2; font-size: 1.6rem; color: #68F830; }
+.aca-to-amaan small { grid-column: 1; color: #1F4A12; font-size: .75rem; }
+.aca-to-amaan span { grid-row: 1 / span 2; grid-column: 2; font-size: 1.6rem; color: #0A1F05; }
 html[dir="rtl"] .aca-to-amaan span { transform: scaleX(-1); }
-.aca-to-amaan:hover, .aca-to-amaan:focus-visible { background: #0C3324; }
+.aca-to-amaan:hover, .aca-to-amaan:focus-visible { background: #5BEA24; }
 .aca-panel .aca-user .aca-bubble { background: #E6FBDB; color: #111A10; }
 .aca-panel .aca-assistant .aca-bubble { background: #F5F8F3; border: 1px solid #DDE6D9; }
 .aca-panel .aca-act { border: 1px solid #23820E; background: #FFFFFF; color: #1B5E0B; }
@@ -72,7 +72,7 @@ html[dir="rtl"] .aca-to-amaan span { transform: scaleX(-1); }
 .aca-panel .aca-form { border-top: 1px solid #DDE6D9; background: #F5F8F3; }
 .aca-panel .aca-form textarea { border: 1px solid #CFE0C8; background: #FFFFFF; color: #111A10; }
 .aca-panel .aca-form textarea:focus-visible { outline: none; border-color: #23820E; box-shadow: 0 0 0 3px rgba(104, 248, 48, .3); }
-.aca-panel .aca-send { background: #0A1F05; color: #68F830; }
+.aca-panel .aca-send { background: #68F830; color: #0A1F05; }
 .aca-panel .aca-foot { color: #4A5848; background: #F5F8F3; }
 .aca-panel .aca-foot a { color: #23820E; }
 .aca-panel button:focus-visible, .aca-panel a:focus-visible, .aca-panel .aca-log:focus-visible { outline: 3px solid #23820E; outline-offset: 2px; }
@@ -212,6 +212,6 @@ body.aca-full-open .ac-wa-float, body.aca-full-open .wa-float, body.aca-full-ope
 .aca-lp-row { display: flex; gap: .6rem; margin-top: .6rem; flex-wrap: wrap; }
 .aca-lp-btn { flex: 1 1 120px; min-height: 48px; padding: .4rem 1rem; border-radius: 12px; border: 2px solid #68F830; background: #FFFFFF; color: #111A10; font: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
 .aca-lp-btn[lang="ur"] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; font-size: 1.2rem; }
-.aca-lp-btn:hover, .aca-lp-btn:focus-visible { background: #0A1F05; color: #8CFF5C; border-color: #0A1F05; outline: none; }
+.aca-lp-btn:hover, .aca-lp-btn:focus-visible { background: #68F830; color: #0A1F05; border-color: #68F830; outline: none; }
 .aca-full .aca-lp-btn { border-color: #68F830; background: #FFFFFF; color: #111A10; }
 .aca-full .aca-lp-btn:hover, .aca-full .aca-lp-btn:focus-visible { background: #68F830; color: #0A1F05; border-color: #68F830; }

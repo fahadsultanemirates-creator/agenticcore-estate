@@ -1089,3 +1089,19 @@ section.theme-lime, footer.theme-lime, .theme-lime.h2-section, .theme-lime.tgh {
 .h2-benefit .h2-ico, .h2-section .h2-ico { background: var(--brand-glow); color: var(--on-glow); }
 .tgh .tgh-btn { background: var(--brand-glow); color: var(--on-glow); border-color: var(--brand-glow); box-shadow: 0 8px 22px rgba(104, 248, 48, .35); }
 .tgh .tgh-btn:hover, .tgh .tgh-btn:focus-visible { background: #5BEA24; border-color: #5BEA24; color: var(--on-glow); }
+
+/* The slogan, at the top of the home page */
+.h2-slogan { margin: .7rem 0 .2rem; font-family: var(--font-display); font-size: clamp(1.15rem, 2.6vw, 1.5rem); font-weight: 700; letter-spacing: .01em; color: var(--brand-deep); }
+html[lang="ur"] .h2-slogan { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; line-height: 2; }
+
+/* WhatsApp example phone: light, like WhatsApp's light mode, in the site's greens */
+.tgh .tgh-phone { background: #FFFFFF; border: 1px solid #D3EBC4; box-shadow: 0 24px 50px rgba(17, 26, 16, .12); }
+.tgh .tgh-phone-top { color: #111A10; border-bottom-color: #E3F5D7; }
+.tgh .tgh-phone-top small { color: #4A5848; }
+.tgh .tgh-avatar { background: var(--brand-glow); color: var(--on-glow); }
+.tgh .tgh-msg { color: #111A10; }
+.tgh .tgh-msg.bot { background: #EEF9E6; }
+.tgh .tgh-msg.me { background: #D9F7C6; }
+.tgh .tgh-msg.ok { border-color: #68F830; }
+.tgh .tgh-wave { background: repeating-linear-gradient(90deg, #23820E 0 3px, transparent 3px 6px); }
+.tgh .tgh-caption { color: #6F7C6D; }

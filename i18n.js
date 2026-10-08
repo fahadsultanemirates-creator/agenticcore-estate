@@ -271,7 +271,8 @@ const AC_I18N = {
 
 /* ---------- Product 2.0 homepage + Copilot strings ---------- */
 Object.assign(AC_I18N.en, {
- "h2_eyebrow": "Serving 6 cities across Pakistan · Khwabon se ghar tak",
+ "h2_eyebrow": "Serving 6 cities across Pakistan",
+    "h2_slogan": "Khwabon se ghar tak",
  "h2_title": "Find property your way.",
  "h2_sub": "Search Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad normally — or tell AgenticCore exactly what you're looking for.",
  "h2_cta_search": "Search Properties",
@@ -392,7 +393,8 @@ Object.assign(AC_I18N.en, {
  "h2_tk_preview": "Example card, generated from a real listing on this site."
 });
 Object.assign(AC_I18N.ur, {
- "h2_eyebrow": "پاکستان کے 6 شہروں میں · خوابوں سے گھر تک",
+ "h2_eyebrow": "پاکستان کے 6 شہروں میں",
+    "h2_slogan": "خوابوں سے گھر تک",
  "h2_title": "جائیداد اپنے انداز سے تلاش کریں۔",
  "h2_sub": "اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد میں عام طریقے سے تلاش کریں — یا AgenticCore کو بتائیں کہ آپ کو بالکل کیا چاہیے۔",
  "h2_cta_search": "جائیداد تلاش کریں",

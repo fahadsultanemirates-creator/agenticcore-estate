@@ -212,8 +212,8 @@ html[dir="rtl"] .nc-badge { text-transform: none; letter-spacing: 0; }
 .nc-cities small[hidden], .h2-city-launch[hidden] { display: none; }
 .nc-ctas { display: flex; flex-wrap: wrap; gap: .55rem; }
 .nc-ctas .btn { min-height: 44px; display: inline-flex; align-items: center; }
-.nc-tg { background: #0F7A6E; color: #fff; border: 1px solid #0F7A6E; }
-.nc-tg:hover, .nc-tg:focus-visible { background: #0B5F55; color: #fff; }
+.nc-tg { background: #68F830; color: #0A1F05; border: 1px solid #68F830; }
+.nc-tg:hover, .nc-tg:focus-visible { background: #5BEA24; color: #0A1F05; }
 @media (max-width: 900px) { .nc-inner { grid-template-columns: 1fr; } }
 @media (max-width: 560px) {
   .nc { padding: calc(66px + .9rem) 0 1.1rem; }
