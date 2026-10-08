@@ -19,19 +19,16 @@ test('six cities in order; the requested areas are present; "Other" stays possib
   for (const [c, list] of Object.entries(want)) for (const a of list) assert.ok(areasOf(c).includes(a), c + ': ' + a);
 });
 
-test('launch check: 00:00 PKT on Tuesday 6 October 2026, by date only', () => {
-  for (const c of ['Lahore', 'Karachi', 'Sialkot', 'Faisalabad']) {
-    assert.equal(isLaunched(c, new Date('2026-10-05T18:59:59Z')), false);
-    assert.equal(isLaunched(c, new Date('2026-10-05T19:00:00Z')), true);
-  }
-  assert.equal(isLaunched('Islamabad', new Date('2020-01-01')), true);
+test('all of Pakistan: no city has a launch date — every city is open, no "Launching" labels', () => {
+  for (const c of ['Islamabad', 'Rawalpindi', 'Lahore', 'Karachi', 'Sialkot', 'Faisalabad'])
+    assert.equal(isLaunched(c, new Date('2020-01-01')), true, c);
   const ctx = { document: undefined, Date };
   vm.createContext(ctx); vm.runInContext(browserFile(), ctx);
-  assert.equal(vm.runInContext("acCityLabel('Lahore', 'en')", ctx), new Date() < new Date('2026-10-06T00:00:00+05:00') ? 'Lahore · Launching 6 Oct' : 'Lahore');
-  assert.equal(vm.runInContext("acCityLabel('Islamabad', 'en')", ctx), 'Islamabad');
+  for (const c of ['Lahore', 'Karachi', 'Islamabad']) assert.equal(vm.runInContext("acCityLabel('" + c + "', 'en')", ctx), c);
+  assert.equal(vm.runInContext('acAnyCityLaunching()', ctx), false);
   const dict = { t: 'Coming', t_live: 'Now live' };
   vm.runInContext('acApplyLaunchCopy', ctx)(dict);
-  assert.equal(dict.t, new Date() < new Date('2026-10-06T00:00:00+05:00') ? 'Coming' : 'Now live');
+  assert.equal(dict.t, 'Now live');
 });
 
 test('area → city: sectors, societies, Urdu-free text, border societies flagged', () => {

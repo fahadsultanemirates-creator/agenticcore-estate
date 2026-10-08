@@ -7,9 +7,8 @@
 
 export const KNOWLEDGE = `
 AGENTICCORE ESTATE (agenticcore.estate)
-- A property marketplace for Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad ("Serving 6 cities across Pakistan").
-- Lahore, Karachi, Sialkot and Faisalabad open on Tuesday 6 October 2026. Before that date people in those cities can already sign up and list free; their listings show publicly from 6 October. Islamabad and Rawalpindi are live now.
-- AgenticCore Pakistan marketing services are available in all six cities (from 6 October in Lahore, Karachi, Sialkot and Faisalabad).
+- A property marketplace serving all of Pakistan ("Khwabon se ghar tak"). Anyone anywhere in Pakistan can sign up and list; we keep adding cities and areas. Never mention launch dates or say a city is "opening" or "coming soon".
+- AgenticCore Pakistan marketing services are available across Pakistan.
 - Five directories: Properties (to buy or rent), Projects, Property professionals, Agencies, Builders & developers.
 - Listing a property is free during the launch period. Creating a professional, agency or builder/developer profile is free. Project listing is free during launch too (project accounts are reviewed first). There is nothing to buy on Estate yet.
 - Estate marketplace packages are planned from 1 November 2026. They are not available yet and their prices have not been announced — never guess them.
@@ -87,9 +86,9 @@ export const ANSWERS = {
     actions: ['amaan_find', 'amaan_list', 'pk_services']
   },
   about: {
-    en: 'AgenticCore Estate is a property marketplace serving 6 cities across Pakistan — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad (the last four from 6 October 2026): properties to buy or rent, projects, property professionals, agencies and builders. AgenticCore Pakistan is our separate, paid marketing and technology service for property businesses.',
-    ur: 'AgenticCore Estate پاکستان کے 6 شہروں — اسلام آباد، راولپنڈی، لاہور، کراچی، سیالکوٹ اور فیصل آباد (آخری چار 6 اکتوبر 2026 سے) — کی پراپرٹی مارکیٹ پلیس ہے: خریدنے یا کرائے کے لیے پراپرٹی، پروجیکٹس، پراپرٹی پروفیشنلز، ایجنسیاں اور بلڈرز۔ AgenticCore Pakistan ہماری الگ، معاوضے والی مارکیٹنگ اور ٹیکنالوجی سروس ہے۔',
-    ro: 'AgenticCore Estate Pakistan ke 6 shehron — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot aur Faisalabad (aakhri chaar 6 October 2026 se) — ki property marketplace hai: khareedne ya kiraye ke liye property, projects, property professionals, agencies aur builders. AgenticCore Pakistan hamari alag, paid marketing aur technology service hai.',
+    en: 'AgenticCore Estate is a property marketplace serving all of Pakistan: properties to buy or rent, projects, property professionals, agencies and builders. AgenticCore Pakistan is our separate, paid marketing and technology service for property businesses.',
+    ur: 'AgenticCore Estate پورے پاکستان کی پراپرٹی مارکیٹ پلیس ہے: خریدنے یا کرائے کے لیے پراپرٹی، پروجیکٹس، پراپرٹی پروفیشنلز، ایجنسیاں اور بلڈرز۔ AgenticCore Pakistan ہماری الگ، معاوضے والی مارکیٹنگ اور ٹیکنالوجی سروس ہے۔',
+    ro: 'AgenticCore Estate poore Pakistan ki property marketplace hai: khareedne ya kiraye ke liye property, projects, property professionals, agencies aur builders. AgenticCore Pakistan hamari alag, paid marketing aur technology service hai.',
     actions: ['estate_properties', 'amaan_find', 'pk_services']
   },
   pk: {
@@ -235,11 +234,11 @@ export const AMAAN = {
   city_which: {
     en: '{area} — is that in {options}?', ur: '{area} — یہ {options} میں ہے؟', ro: '{area} — yeh {options} mein hai?'
   },
-  // a city that opens on 6 October 2026 (shown only before that date)
+  // only used if a city is ever given a future launch_at in data/cities.json (none are now)
   launching: {
-    en: 'We launch in {city} on 6 October. You can create your account and list your property now; the listing will show from launch day.',
-    ur: 'ہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں۔ آپ ابھی اکاؤنٹ بنا کر پراپرٹی لسٹ کر سکتے ہیں، لسٹنگ لانچ کے دن سے نظر آئے گی۔',
-    ro: 'Hum 6 October ko {city} mein launch kar rahe hain. Aap abhi account bana kar property list kar sakte hain, listing launch ke din se show hogi.'
+    en: 'You can create your account and list your property in {city} now.',
+    ur: 'آپ ابھی {city} میں اکاؤنٹ بنا کر اپنی پراپرٹی لسٹ کر سکتے ہیں۔',
+    ro: 'Aap abhi {city} mein account bana kar apni property list kar sakte hain.'
   },
   place: {
     en: '{area} is in {city}.', ur: '{area} {city} میں ہے۔', ro: '{area} {city} mein hai.'

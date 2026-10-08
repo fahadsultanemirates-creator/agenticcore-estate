@@ -377,20 +377,15 @@ const NEW_CITY_LISTINGS = [
   ['Faisalabad', '7 marla house for sale in Eden Valley Faisalabad demand 3 crore', 'Eden Valley']
 ];
 
-test('new cities before 6 October: sign up and list now, launch message once, listing saved (shows from launch day)', async () => {
+test('every city lists straight away: no launch message, no dates, listing live', async () => {
   for (const [city, desc, area] of NEW_CITY_LISTINGS) {
     const { store, tg, d } = await signedUp();
     d.now = BEFORE; store.activeCities = async () => SIX;
-    await run(d, press('m:list'), text(desc));
-    const said = tg.sent.filter((m) => m.chat === ME).map((m) => m.text);
-    assert.ok(said.includes('Hum 6 October ko ' + city + ' mein launch kar rahe hain. Aap abhi account bana kar property list kar sakte hain, listing launch ke din se show hogi.') ||
-      said.includes('We launch in ' + city + ' on 6 October. You can create your account and list your property now; the listing will show from launch day.'), city + ' launch message');
-    await run(d, text('3 bedrooms 3 bathrooms'));
-    assert.equal(tg.sent.filter((m) => /launch/.test(m.text || '')).length, 1, 'said once only');
-    await run(d, photo(), press('l:done'), press('l:publish'));
+    await run(d, press('m:list'), text(desc), text('3 bedrooms 3 bathrooms'), photo(), press('l:done'), press('l:publish'));
+    assert.ok(!tg.sent.some((m) => /launch|6 October|6 Oct/i.test(m.text || '')), city + ': no launch message');
     assert.equal(store.db.listings.length, 1, city + ' listing saved');
     assert.equal(store.db.listings[0].city, city); assert.equal(store.db.listings[0].area, area);
-    assert.match(lastText(tg), new RegExp('saved ✓[\\s\\S]*We launch in ' + city + ' on 6 October'));
+    assert.match(lastText(tg), /Your listing is live/);
   }
 });
 

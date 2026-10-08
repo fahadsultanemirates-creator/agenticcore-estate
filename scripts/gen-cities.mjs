@@ -13,7 +13,7 @@ const slim = { launch_at: data.launch_at, cities: data.cities.map((c) => ({ name
 export function browserFile() {
   return `// GENERATED from data/cities.json by scripts/gen-cities.mjs — do not edit by hand.
 // Cities we serve, their areas, and the launch date check: a city whose
-// launch_at is still ahead shows a small "Launching 6 Oct" label; from that
+// launch_at is still ahead shows a small "Launching" label (none have one now); from that
 // moment (Pakistan time) the label disappears by itself — no manual switch.
 var AC_CITIES = ${JSON.stringify(slim)};
 function acCityInfo(name) { for (var i = 0; i < AC_CITIES.cities.length; i++) if (AC_CITIES.cities[i].name === name) return AC_CITIES.cities[i]; return null; }

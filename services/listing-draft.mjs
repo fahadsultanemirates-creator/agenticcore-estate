@@ -104,7 +104,7 @@ export async function draftListing(rawText, areaNames) {
   const ai = await completeJSON({
     task: 'draft', maxTokens: 700,
     schema: DRAFT_SCHEMA,
-    system: 'You write Pakistani real-estate listings for AgenticCore Estate (Islamabad, Rawalpindi, Lahore, Karachi, Sialkot & Faisalabad). ' +
+    system: 'You write Pakistani real-estate listings for AgenticCore Estate (all of Pakistan). ' +
       'Use ONLY facts present in the owner notes and the extracted facts. Never invent prices, sizes, room counts, ' +
       'features, approvals, NOC status, ownership or nearby places. If something is unknown, leave it out. ' +
       'Plain, professional English; no superlatives such as "best" or "guaranteed". ' +

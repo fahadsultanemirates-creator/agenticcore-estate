@@ -45,7 +45,7 @@ if (sellForm) {
       citySelect.innerHTML = '<option value="">Select a city</option>' +
         (typeof acCityOptionsHTML === 'function' ? acCityOptionsHTML(cities) : cities.map(function (c) { return '<option value="' + acEsc(c) + '">' + acEsc(c) + '</option>'; }).join(''));
       citySelect.setAttribute('data-city-select', '');
-      // Lahore, Karachi, Sialkot, Faisalabad before 6 Oct: saved now, public from launch day
+      // a city with a future launch_at (none now): saved now, public from that day
       const cityNote = document.createElement('p');
       cityNote.className = 'ac-city-note'; cityNote.hidden = true; cityNote.setAttribute('role', 'status');
       citySelect.insertAdjacentElement('afterend', cityNote);
