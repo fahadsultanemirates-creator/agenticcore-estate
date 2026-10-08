@@ -335,3 +335,7 @@ html[dir="rtl"] .ai-chat-panel { right: auto; left: 1.5rem; }
   .dash-main .data-table td:first-child { font-weight: 600; }
   .dash-main .data-table td:last-child { padding-top: 0.5rem; white-space: normal !important; }
 }
+/* the dashboard focuses its main area on load (for screen readers) — no outline box around the page */
+.dash-main:focus { outline: none; }
+/* the logo fits the sidebar next to the back arrow */
+@media (min-width: 901px) { .dash-sidebar .nav-logo-img { height: 32px; max-width: 160px; } }

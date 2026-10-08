@@ -30,22 +30,22 @@
   function addStyles() {
     var css = document.createElement('style');
     css.textContent =
-      '.ac-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;border:1.5px solid #C9A84C;' +
-      'background:rgba(7,31,23,.94);color:#F3E3B0;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;' +
+      '.ac-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;border:1.5px solid #CFE0C8;' +
+      'background:#FFFFFF;color:#0A1F05;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;' +
       '-webkit-tap-highlight-color:transparent;padding:0}' +
-      '.ac-back:hover{background:#0C3324}.ac-back:focus-visible{outline:3px solid #F3E3B0;outline-offset:2px}' +
+      '.ac-back:hover{border-color:#68F830;background:#F3FDEE}.ac-back:focus-visible{outline:3px solid #23820E;outline-offset:2px}' +
       '.ac-back svg{width:18px;height:18px;flex:none}[dir=rtl] .ac-back svg{transform:scaleX(-1)}' +
       /* in the site header: a round arrow before the logo */
       '.ac-back-in{width:36px;height:36px;border-radius:50%;margin-inline-end:8px}' +
       '.ac-back-wrap{display:flex;align-items:center;min-width:0}' +
       '.dash-sidebar>.ac-back-wrap{margin-bottom:var(--space-lg,24px)}.dash-sidebar>.ac-back-wrap .nav-logo{margin-bottom:0}' +
       /* pages without a header: a small floating pill */
-      '.ac-back-float{position:fixed;left:12px;top:12px;z-index:95;height:38px;padding:0 14px 0 10px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.28)}' +
+      '.ac-back-float{position:fixed;left:12px;top:12px;z-index:95;height:38px;padding:0 14px 0 10px;border-radius:999px;box-shadow:0 6px 18px rgba(17,26,16,.16)}' +
       '[dir=rtl] .ac-back-float{left:auto;right:12px;padding:0 10px 0 14px}' +
       /* small phones: keep the logo, arrow and header buttons on one line */
       '@media (max-width:400px){.ac-back-in{width:32px;height:32px;margin-inline-end:6px}.ac-back-in svg{width:16px;height:16px}' +
-      '.ac-back-wrap .nav-logo{font-size:1rem;gap:.4rem}.ac-back-wrap .nav-logo img{width:28px;height:28px}}' +
-      '@media (max-width:350px){.ac-back-wrap .nav-logo{font-size:.95rem}.ac-back-wrap .nav-logo img{display:none}}' +
+      '.ac-back-wrap .nav-logo{font-size:1rem;gap:.4rem}.ac-back-wrap .nav-logo-icon{width:28px;height:28px}.ac-back-wrap .nav-logo-img{height:30px;width:auto}}' +
+      '@media (max-width:350px){.ac-back-wrap .nav-logo-img{height:26px}}' +
       'body.aca-full-open .ac-back-float{display:none}@media print{.ac-back{display:none}}';
     document.head.appendChild(css);
   }
