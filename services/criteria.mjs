@@ -7,7 +7,7 @@
 import { norm, COMMERCIAL_TYPES, formatPKR } from './util.mjs';
 import { GAZETTEER, CITY_NAMES, findPlace } from './places.mjs';
 
-// Every area we know (all six cities, data/cities.json) — matched like DB area names.
+// Every area we know (data/cities.json) — matched like DB area names.
 const KNOWN_AREAS = GAZETTEER.cities.flatMap((c) => c.areas).concat(GAZETTEER.shared.map((x) => x.name));
 const CITY_RE = GAZETTEER.cities.map((c) => [c.name, new RegExp('\\b(' + c.aliases.map((a) => a.replace(/\s+/g, '\\s*')).join('|') + ')\\b')]);
 
@@ -18,7 +18,7 @@ const UNIT_MULT = {
   thousand: 1e3, k: 1e3, hazar: 1e3, hazaar: 1e3
 };
 
-// Societies / localities that people type (all six cities; phases handled below).
+// Societies / localities that people type (every city we know; phases handled below).
 // Matching is token-based against listing.area, so "DHA" matches
 // "DHA Phase 2" and "Bahria Phase 7" matches "Bahria Town Phase 7".
 const SOCIETIES = [

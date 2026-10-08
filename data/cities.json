@@ -1,6 +1,6 @@
 {
  "_about": "AgenticCore city and area gazetteer: the single source for the websites (ac-cities.js, generated) and the bots (services/places.mjs). Area names follow how Zameen.com groups locations; 'shared' lists societies that sit across a city line (Zameen files DHA Defence phases under Islamabad and Bahria Town phases under Rawalpindi). Edit here, then run: node scripts/gen-cities.mjs",
- "launch_at": "2026-10-06T00:00:00+05:00",
+ "launch_at": null,
  "cities": [
   {
    "name": "Islamabad",
@@ -1970,7 +1970,7 @@
     "lhr",
     "lahor"
    ],
-   "launch_at": "2026-10-06T00:00:00+05:00",
+   "launch_at": null,
    "areas": [
     "DHA Lahore",
     "DHA Phase 1 Lahore",
@@ -4775,7 +4775,7 @@
     "khi",
     "krachi"
    ],
-   "launch_at": "2026-10-06T00:00:00+05:00",
+   "launch_at": null,
    "areas": [
     "DHA Karachi",
     "DHA Phase 1 Karachi",
@@ -6622,7 +6622,7 @@
     "skt",
     "sialkoat"
    ],
-   "launch_at": "2026-10-06T00:00:00+05:00",
+   "launch_at": null,
    "areas": [
     "Sialkot city",
     "Cantonment",
@@ -7001,7 +7001,7 @@
     "faisalbad",
     "lyallpur"
    ],
-   "launch_at": "2026-10-06T00:00:00+05:00",
+   "launch_at": null,
    "areas": [
     "Faisalabad city",
     "Citi Housing Faisalabad",

@@ -505,7 +505,7 @@ async function listingText(ctx, text) {
   const prev = (s.notes || []).length ? factsFromNotes(s.notes, areaNames) : null;
   s.notes = (s.notes || []).concat(contextualise(text, s.asked)).slice(-12);
   const facts = factsFromNotes(s.notes, areaNames);
-  // a city that opens on 6 October: say so once, then carry on (listings are saved now)
+  // a city with a future launch_at (none now): say so once, then carry on
   const notice = launchNotice(prev, facts, ctx.lang, ctx.deps.now && ctx.deps.now());
   // learning: the city a member chose for an area found in two cities, and
   // area names we don't know yet (both only count once 3 people agree)
@@ -632,7 +632,7 @@ async function myListings(ctx) {
   if (!ctx.account) return ctx.say('need_account', {}, buttons([[[t('btn_signup', ctx.lang), 'm:signup']], [[t('btn_have_account', ctx.lang), 'm:have']]]));
   const rows = await ctx.deps.store.ownListings(ctx.account.id);
   if (!rows.length) return ctx.say('my_listings_none', {}, menu(ctx));
-  const lines = rows.slice(0, 10).map((l, i) => (i + 1) + '. ' + l.title + (l.moderation_status === 'hidden' ? ' (hidden)' : '') + (l.city && !isLaunched(l.city) ? ' (shows from 6 Oct)' : '') + '\n' + ctx.deps.siteUrl + '/listing.html?id=' + l.id);
+  const lines = rows.slice(0, 10).map((l, i) => (i + 1) + '. ' + l.title + (l.moderation_status === 'hidden' ? ' (hidden)' : '') + (l.city && !isLaunched(l.city) ? ' (not public yet)' : '') + '\n' + ctx.deps.siteUrl + '/listing.html?id=' + l.id);
   return ctx.raw(t('my_listings', ctx.lang) + '\n\n' + lines.join('\n\n'), menu(ctx));
 }
 

@@ -65,7 +65,9 @@ test('Urdu-script searches become terms the search parser understands', () => {
 // ---------- general assistant ----------
 test('general assistant: approved answers and routing', async () => {
   const ask = async (t) => svc.handleTurn({ bot: 'guide', messages: [user(t)] }, det);
-  assert.match((await ask('What is AgenticCore Estate?')).reply, /serving 6 cities across Pakistan — Islamabad, Rawalpindi, Lahore, Karachi, Sialkot and Faisalabad/);
+  const about = (await ask('What is AgenticCore Estate?')).reply;
+  assert.match(about, /serving all of Pakistan/);
+  assert.doesNotMatch(about, /6 cities|October|launch in/i);
   assert.deepEqual((await ask('How do I list my property?')).actions.slice(0, 1), ['amaan_list']);
   const pro = await ask('I am a property consultant, how do I get a profile?');
   assert.ok(pro.actions.includes('join_professional'));

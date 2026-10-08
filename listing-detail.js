@@ -51,7 +51,7 @@ if (detailRoot) {
         return acMediaUrl(url) ? '<a href="' + acMediaUrl(url) + '" target="_blank" rel="noopener"><img src="' + acMediaUrl(url) + '" alt="" loading="lazy"></a>' : '';
       }).join('');
       const unit = acSizeUnitLabel(listing.sizeUnit || 'marla');
-      // Lahore, Karachi, Sialkot, Faisalabad before 6 Oct: only the owner can open it yet
+      // a city with a future launch_at (none now): only the owner can open it yet
       const prelaunch = !listing.is_sample && typeof acCityLaunching === 'function' && acCityLaunching(listing.city);
       detailRoot.innerHTML =
         (listing.is_sample ? acSampleNoticeHTML() : '') +

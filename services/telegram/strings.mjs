@@ -143,9 +143,9 @@ export const S = {
   learn_done: { en: '✓ {name}: {status}.', ur: '✓ {name}: {status}۔', ro: '✓ {name}: {status}.' },
   learn_digest: { en: '📚 {n} new place(s) to review — send /learn.', ur: '📚 {n} نئی جگہیں — /learn بھیجیں۔', ro: '📚 {n} nayi jagahein — /learn bhejein.' },
   published_prelaunch: {
-    en: 'Your listing is saved ✓\n{url}\n\nWe launch in {city} on 6 October — the listing will show to buyers from launch day. Until then only you can see it.\n\nListing quality: {score}/100.{tips}',
-    ur: 'آپ کی لسٹنگ محفوظ ہو گئی ✓\n{url}\n\nہم 6 اکتوبر کو {city} میں لانچ کر رہے ہیں — لسٹنگ لانچ کے دن سے خریداروں کو نظر آئے گی۔ تب تک صرف آپ اسے دیکھ سکتے ہیں۔\n\nلسٹنگ کوالٹی: {score}/100۔{tips}',
-    ro: 'Aap ki listing save ho gayi ✓\n{url}\n\nHum 6 October ko {city} mein launch kar rahe hain — listing launch ke din se khareedaron ko show hogi. Tab tak sirf aap isay dekh sakte hain.\n\nListing quality: {score}/100.{tips}'
+    en: 'Your listing is saved ✓\n{url}\n\nIt will show to buyers once {city} is open. Until then only you can see it.\n\nListing quality: {score}/100.{tips}',
+    ur: 'آپ کی لسٹنگ محفوظ ہو گئی ✓\n{url}\n\n{city} کھلنے پر لسٹنگ خریداروں کو نظر آئے گی۔ تب تک صرف آپ اسے دیکھ سکتے ہیں۔\n\nلسٹنگ کوالٹی: {score}/100۔{tips}',
+    ro: 'Aap ki listing save ho gayi ✓\n{url}\n\n{city} khulne par listing khareedaron ko show hogi. Tab tak sirf aap isay dekh sakte hain.\n\nListing quality: {score}/100.{tips}'
   },
   photos_failed: { en: 'Note: {n} photo(s) could not be saved. You can add photos later from your Dashboard on the website.', ur: 'نوٹ: {n} تصویر محفوظ نہیں ہو سکی۔ آپ بعد میں ویب سائٹ کے ڈیش بورڈ سے تصاویر شامل کر سکتے ہیں۔', ro: 'Note: {n} tasveer mehfooz nahin ho saki. Aap baad mein website ke Dashboard se tasveerein shamil kar sakte hain.' },
   check_failed: { en: 'I can\'t publish this yet: {reason}', ur: 'میں ابھی یہ شائع نہیں کر سکتا: {reason}', ro: 'Main abhi yeh publish nahin kar sakta: {reason}' },

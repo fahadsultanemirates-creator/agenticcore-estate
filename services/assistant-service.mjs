@@ -221,7 +221,7 @@ export function askFor(field, f, lang) {
   if (field === 'city' && f.area && f.city_options && f.city_options.length > 1) return AMAAN.city_which[lang].replace('{area}', f.area).replace('{options}', joinOr(f.city_options, lang));
   return AMAAN.ask[field][lang];
 }
-// Said once, when a city that opens on 6 October first comes up (before that date only).
+// Said once, when a city with a future launch_at first comes up (none have one now).
 export function launchNotice(prev, f, lang, now) {
   if (!f.city || isLaunched(f.city, now) || (prev && prev.city === f.city)) return '';
   return AMAAN.launching[lang].replace('{city}', f.city);
