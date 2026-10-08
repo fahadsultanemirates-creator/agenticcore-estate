@@ -215,3 +215,7 @@ body.aca-full-open .ac-wa-float, body.aca-full-open .wa-float, body.aca-full-ope
 .aca-lp-btn:hover, .aca-lp-btn:focus-visible { background: #68F830; color: #0A1F05; border-color: #68F830; outline: none; }
 .aca-full .aca-lp-btn { border-color: #68F830; background: #FFFFFF; color: #111A10; }
 .aca-full .aca-lp-btn:hover, .aca-full .aca-lp-btn:focus-visible { background: #68F830; color: #0A1F05; border-color: #68F830; }
+
+/* Amaan: the message box is the last thing on screen — nothing written below it */
+.aca-full .aca-hint, .aca-full .aca-foot { display: none; }
+.aca-full .aca-cwrap { padding-bottom: max(.8rem, env(safe-area-inset-bottom)); }
