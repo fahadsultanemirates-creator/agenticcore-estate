@@ -245,3 +245,9 @@ html[dir="rtl"] .nc-ro { text-align: right; }
 .h2-city-ur { color: var(--text-secondary); }
 .h2-city-plain .h2-city-launch { margin-top: auto; align-self: flex-start; }
 html[dir="rtl"] .h2-city-plain .h2-city-launch { align-self: flex-end; }
+
+/* ---------- Poster at the very top of the landing page ---------- */
+.hero-poster { padding: 6.5rem 16px 0.5rem; background: linear-gradient(180deg, #EEF9E6 0%, #FFFFFF 100%); }
+.hero-poster-inner { max-width: 520px; margin: 0 auto; }
+.hero-poster img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 12px 32px rgba(17, 26, 16, 0.12); }
+.hero-poster + .h2-hero { padding-top: 2.5rem; }
